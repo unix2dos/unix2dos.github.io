@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.2.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.2.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="做开发的同学，应该都会经常接触终端，有些时候我们在终端会做一些网络操作，比如下载gradle包等，由于一些你懂我也懂的原因，某些网络操作不是那么理想，这时候我们就需要设置代理来自由地访问网络。 Shadowsocks是我们常用的代理工具，它使用socks5协议，而终端很多工具目前只支持http和https等协议，对socks5协议支持不够好，所以我们为终端设置shadowsocks的思路就是将so">
+<meta name="keywords" content="linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为终端设置Shadowsocks代理">
+<meta property="og:url" content="http://yoursite.com/2016/11/07/为终端设置Shadowsocks代理/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="做开发的同学，应该都会经常接触终端，有些时候我们在终端会做一些网络操作，比如下载gradle包等，由于一些你懂我也懂的原因，某些网络操作不是那么理想，这时候我们就需要设置代理来自由地访问网络。 Shadowsocks是我们常用的代理工具，它使用socks5协议，而终端很多工具目前只支持http和https等协议，对socks5协议支持不够好，所以我们为终端设置shadowsocks的思路就是将so">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-04-19T11:04:05.084Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="为终端设置Shadowsocks代理">
+<meta name="twitter:description" content="做开发的同学，应该都会经常接触终端，有些时候我们在终端会做一些网络操作，比如下载gradle包等，由于一些你懂我也懂的原因，某些网络操作不是那么理想，这时候我们就需要设置代理来自由地访问网络。 Shadowsocks是我们常用的代理工具，它使用socks5协议，而终端很多工具目前只支持http和https等协议，对socks5协议支持不够好，所以我们为终端设置shadowsocks的思路就是将so">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/11/07/为终端设置Shadowsocks代理/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>为终端设置Shadowsocks代理 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/11/07/为终端设置Shadowsocks代理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">为终端设置Shadowsocks代理
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2016-11-07 22:19:41" itemprop="dateCreated datePublished" datetime="2016-11-07T22:19:41+08:00">2016-11-07</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2018-04-19 19:04:05" itemprop="dateModified" datetime="2018-04-19T19:04:05+08:00">2018-04-19</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>做开发的同学，应该都会经常接触终端，有些时候我们在终端会做一些网络操作，比如下载gradle包等，由于一些你懂我也懂的原因，某些网络操作不是那么理想，这时候我们就需要设置代理来自由地访问网络。</p>
+<p>Shadowsocks是我们常用的代理工具，它使用socks5协议，而终端很多工具目前只支持http和https等协议，对socks5协议支持不够好，所以我们为终端设置shadowsocks的思路就是将socks协议转换成http协议，然后为终端设置即可。仔细想想也算是适配器模式的一种现实应用吧。</p>
+<p>想要进行转换，需要借助工具，这里我们采用比较知名的polipo来实现。polipo是一个轻量级的缓存web代理程序。闲话休叙，让我们开始动手吧。</p>
+<h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><ul>
+<li>首先需要配置好一个可用的shadowsocks，客户端下载地址：<a href="https://github.com/shadowsocks/shadowsocks/releases" target="_blank" rel="noopener">https://github.com/shadowsocks/shadowsocks/releases</a></li>
+<li>如果没有帐号，可以从这里购买。</li>
+<li>安装和配置ss，请自行搜索解决。</li>
+</ul>
+<hr>
+<a id="more"></a>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>Fedora安装<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install polipo</span><br></pre></td></tr></table></figure></p>
+<p>Mac下使用Homebrew安装<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install polipo</span><br></pre></td></tr></table></figure></p>
+<p>Ubuntu安装<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install polipo</span><br></pre></td></tr></table></figure></p>
+<h3 id="修改配置-Linux"><a href="#修改配置-Linux" class="headerlink" title="修改配置(Linux)"></a>修改配置(Linux)</h3><p>如下打开配置文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/polipo/config</span><br></pre></td></tr></table></figure></p>
+<p>设置ParentProxy为Shadowsocks，通常情况下本机shadowsocks的地址如下<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Uncomment this if you want to use a parent SOCKS proxy:</span></span><br><span class="line">socksParentProxy = <span class="string">"localhost:1080"</span></span><br><span class="line">socksProxyType = socks5</span><br></pre></td></tr></table></figure></p>
+<p>设置日志输出文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">logFile=/var/<span class="built_in">log</span>/polipo</span><br><span class="line">logLevel=4</span><br></pre></td></tr></table></figure></p>
+<h3 id="修改配置-Mac"><a href="#修改配置-Mac" class="headerlink" title="修改配置(Mac)"></a>修改配置(Mac)</h3><p>设置每次登陆启动polipo<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -sfv /usr/<span class="built_in">local</span>/opt/polipo/*.plist ~/Library/LaunchAgents</span><br></pre></td></tr></table></figure></p>
+<p>修改文件<code>/usr/local/opt/polipo/homebrew.mxcl.polipo.plist</code>设置parentProxy<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span><br><span class="line"><span class="meta">&lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">plist</span> <span class="attr">version</span>=<span class="string">"1.0"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">key</span>&gt;</span>Label<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>homebrew.mxcl.polipo<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">key</span>&gt;</span>RunAtLoad<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">true</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">key</span>&gt;</span>KeepAlive<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">true</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">key</span>&gt;</span>ProgramArguments<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">string</span>&gt;</span>/usr/local/opt/polipo/bin/polipo<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">string</span>&gt;</span>socksParentProxy=localhost:1080<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- Set `ulimit -n 20480`. The default OS X limit is 256, that's</span></span><br><span class="line"><span class="comment">         not enough for Polipo (displays 'too many files open' errors).</span></span><br><span class="line"><span class="comment">         It seems like you have no reason to lower this limit</span></span><br><span class="line"><span class="comment">         (and unlikely will want to raise it). --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">key</span>&gt;</span>SoftResourceLimits<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">key</span>&gt;</span>NumberOfFiles<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">integer</span>&gt;</span>20480<span class="tag">&lt;/<span class="name">integer</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plist</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>修改的地方是增加了<code>&lt;string&gt;socksParentProxy=localhost:1080&lt;/string&gt;</code></p>
+<h3 id="启动（Linux）"><a href="#启动（Linux）" class="headerlink" title="启动（Linux）"></a>启动（Linux）</h3><p>先关闭正在运行的polipo，然后再次启动</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo service polipo stop</span><br><span class="line">sudo service polipo start</span><br></pre></td></tr></table></figure>
+<h3 id="启动-Mac"><a href="#启动-Mac" class="headerlink" title="启动(Mac)"></a>启动(Mac)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.polipo.plist</span><br><span class="line">launchctl load ~/Library/LaunchAgents/homebrew.mxcl.polipo.plist</span><br></pre></td></tr></table></figure>
+<p>注意：请确保Shadowsocks正常工作。</p>
+<h3 id="验证及使用"><a href="#验证及使用" class="headerlink" title="验证及使用"></a>验证及使用</h3><p>安装完成就需要进行验证是否work。这里展示一个最简单的验证方法，打开终端，如下执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ curl ip.gs</span><br><span class="line">当前 IP：125.39.112.15 来自：中国天津天津 联通</span><br><span class="line">$ http_proxy=http://localhost:8123 curl ip.gs</span><br><span class="line">当前 IP：210.140.193.128 来自：日本日本</span><br></pre></td></tr></table></figure>
+<p>如上所示，为某个命令设置代理，前面加上http_proxy=<a href="http://localhost:8123" target="_blank" rel="noopener">http://localhost:8123</a> 后接命令即可。</p>
+<p>注：8123是polipo的默认端口，如有需要，可以修改成其他有效端口。</p>
+<h3 id="设置别名"><a href="#设置别名" class="headerlink" title="设置别名"></a>设置别名</h3><p>bash中有一个很好的东西，就是别名alias. Linux用户修改~/.bashrc，Mac用户修改~/.bash_profile文件，增加如下设置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> hp=<span class="string">"http_proxy=http://localhost:8123"</span></span><br></pre></td></tr></table></figure>
+<p>然后Linux用户执行<code>source ~/.bashrc</code>，Mac用户执行<code>source ~/.bash_profile</code></p>
+<p>测试使用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ curl ip.gs</span><br><span class="line">当前 IP：125.39.112.14 来自：中国天津天津 联通</span><br><span class="line">$ hp curl ip.gs</span><br><span class="line">当前 IP：210.140.193.128 来自：日本日本</span><br></pre></td></tr></table></figure>
+<h3 id="当前会话全局设置"><a href="#当前会话全局设置" class="headerlink" title="当前会话全局设置"></a>当前会话全局设置</h3><p>如果嫌每次为每一个命令设置代理比较麻烦，可以为当前会话设置全局的代理。即使用<code>export http_proxy=http://localhost:8123</code>即可。 如果想撤销当前会话的http_proxy代理，使用 unset http_proxy 即可。 示例效果如下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ curl ip.gs</span><br><span class="line">当前 IP：125.39.112.14 来自：中国天津天津 联通</span><br><span class="line">$ <span class="built_in">export</span> http_proxy=http://localhost:8123</span><br><span class="line">$ curl ip.gs</span><br><span class="line">当前 IP：210.140.193.128 来自：日本日本 </span><br><span class="line">$ <span class="built_in">unset</span> http_proxy</span><br><span class="line">$ curl ip.gs</span><br><span class="line">当前 IP：125.39.112.14 来自：中国天津天津 联通</span><br></pre></td></tr></table></figure>
+<p>如果想要更长久的设置代理，可以将export http_proxy=<a href="http://localhost:8123加入.bashrc或者.bash_profile文件" target="_blank" rel="noopener">http://localhost:8123加入.bashrc或者.bash_profile文件</a></p>
+<h3 id="设置Git代理"><a href="#设置Git代理" class="headerlink" title="设置Git代理"></a>设置Git代理</h3><p>复杂一些的设置Git代理</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://android.googlesource.com/tools/repo --config http.proxy=localhost:8123</span><br><span class="line">Cloning into <span class="string">'repo'</span>...</span><br><span class="line">remote: Counting objects: 135, <span class="keyword">done</span></span><br><span class="line">remote: Finding sources: 100% (135/135)</span><br><span class="line">remote: Total 3483 (delta 1956), reused 3483 (delta 1956)</span><br><span class="line">Receiving objects: 100% (3483/3483), 2.63 MiB | 492 KiB/s, <span class="keyword">done</span>.</span><br><span class="line">Resolving deltas: 100% (1956/1956), <span class="keyword">done</span>.</span><br></pre></td></tr></table></figure>
+<p>其实这样还是比较复杂，因为需要记忆的东西比较多，下面是一个更简单的实现</p>
+<p>首先，在.bashrc或者.bash_profile文件加入这一句。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gp=<span class="string">" --config http.proxy=localhost:8123"</span></span><br></pre></td></tr></table></figure></p>
+<p>然后执行source操作，更新当前bash配置。</p>
+<p>更简单的使用git的方法</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span>  https://android.googlesource.com/tools/repo <span class="variable">$gp</span></span><br><span class="line">Cloning into <span class="string">'repo'</span>...</span><br><span class="line">remote: Counting objects: 135, <span class="keyword">done</span></span><br><span class="line">remote: Finding sources: 100% (135/135)</span><br><span class="line">remote: Total 3483 (delta 1956), reused 3483 (delta 1956)</span><br><span class="line">Receiving objects: 100% (3483/3483), 2.63 MiB | 483 KiB/s, <span class="keyword">done</span>.</span><br><span class="line">Resolving deltas: 100% (1956/1956), <span class="keyword">done</span>.</span><br></pre></td></tr></table></figure>
+<h3 id="git-全局设置代理-删除代理"><a href="#git-全局设置代理-删除代理" class="headerlink" title="git 全局设置代理,删除代理"></a>git 全局设置代理,删除代理</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git config --global http.proxy <span class="string">'localhost:8123'</span></span><br><span class="line">git config --global https.proxy <span class="string">'localhost:8123'</span></span><br><span class="line"></span><br><span class="line">git config --global --<span class="built_in">unset</span> http.proxy</span><br><span class="line">git config --global --<span class="built_in">unset</span> https.proxy</span><br></pre></td></tr></table></figure>
+<p>开始自由快速的开发吧。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/19/python读取文件去除html_xml标签/" rel="next" title="python读取文件去除html_xml标签">
+                <i class="fa fa-chevron-left"></i> python读取文件去除html_xml标签
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/16/golang配置vim/" rel="prev" title="golang配置vim">
+                golang配置vim <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">32</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#准备工作"><span class="nav-number">1.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">2.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改配置-Linux"><span class="nav-number">3.</span> <span class="nav-text">修改配置(Linux)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改配置-Mac"><span class="nav-number">4.</span> <span class="nav-text">修改配置(Mac)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动（Linux）"><span class="nav-number">5.</span> <span class="nav-text">启动（Linux）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动-Mac"><span class="nav-number">6.</span> <span class="nav-text">启动(Mac)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#验证及使用"><span class="nav-number">7.</span> <span class="nav-text">验证及使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置别名"><span class="nav-number">8.</span> <span class="nav-text">设置别名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#当前会话全局设置"><span class="nav-number">9.</span> <span class="nav-text">当前会话全局设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置Git代理"><span class="nav-number">10.</span> <span class="nav-text">设置Git代理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-全局设置代理-删除代理"><span class="nav-number">11.</span> <span class="nav-text">git 全局设置代理,删除代理</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Muse</a> v6.2.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.2.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.2.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.2.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.2.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.2.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

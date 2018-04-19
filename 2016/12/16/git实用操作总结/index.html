@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.2.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.2.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="git的配置 安装git 安装完成后，需要设置自己的用户名和email，在命令行输入：  12git config --global user.name &quot;levon&quot;git config --global user.email &quot;levonfly@gmail.com&quot; git和目录绑定 在一个目录里可以通过git init命令把这个目录变成Git可以管理的仓库,然后通过以下命令绑定提交的地址">
+<meta name="keywords" content="git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git实用操作总结">
+<meta property="og:url" content="http://yoursite.com/2016/12/16/git实用操作总结/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="git的配置 安装git 安装完成后，需要设置自己的用户名和email，在命令行输入：  12git config --global user.name &quot;levon&quot;git config --global user.email &quot;levonfly@gmail.com&quot; git和目录绑定 在一个目录里可以通过git init命令把这个目录变成Git可以管理的仓库,然后通过以下命令绑定提交的地址">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-04-19T11:04:05.078Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="git实用操作总结">
+<meta name="twitter:description" content="git的配置 安装git 安装完成后，需要设置自己的用户名和email，在命令行输入：  12git config --global user.name &quot;levon&quot;git config --global user.email &quot;levonfly@gmail.com&quot; git和目录绑定 在一个目录里可以通过git init命令把这个目录变成Git可以管理的仓库,然后通过以下命令绑定提交的地址">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/12/16/git实用操作总结/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>git实用操作总结 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/16/git实用操作总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">git实用操作总结
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2016-12-16 11:17:48" itemprop="dateCreated datePublished" datetime="2016-12-16T11:17:48+08:00">2016-12-16</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2018-04-19 19:04:05" itemprop="dateModified" datetime="2018-04-19T19:04:05+08:00">2018-04-19</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="git的配置"><a href="#git的配置" class="headerlink" title="git的配置"></a>git的配置</h3><ol>
+<li>安装git</li>
+<li>安装完成后，需要设置自己的用户名和email，在命令行输入：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name <span class="string">"levon"</span></span><br><span class="line">git config --global user.email <span class="string">"levonfly@gmail.com"</span></span><br></pre></td></tr></table></figure>
+<h3 id="git和目录绑定"><a href="#git和目录绑定" class="headerlink" title="git和目录绑定"></a>git和目录绑定</h3><ol>
+<li>在一个目录里可以通过git init命令把这个目录变成Git可以管理的仓库,然后通过以下命令绑定提交的地址</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin https://github.com/unix2dos/unix2dos.github.io</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>git clone 地址 就会创建目录和地址绑定<a id="more"></a>
+</li>
+</ol>
+<h3 id="git的基础操作"><a href="#git的基础操作" class="headerlink" title="git的基础操作"></a>git的基础操作</h3><ol>
+<li>命令git add           把文件添加到仓库</li>
+<li>命令git commit       把文件提交到仓库</li>
+<li>命令git pull       把远程仓库拉取文件</li>
+<li>命令git push       把文件提交到远程仓库</li>
+<li>命令git log           查看git提交日志</li>
+<li><p>如果嫌输出信息太多, 可以加上–pretty=oneline参数. 另外也可以花式log输出, git lg查看下</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global alias.lg <span class="string">"log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset' --abbrev-commit --date=relative"</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>命令git diff 查看版本之间文件修改变化</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff 87b91b6 f9b3075 [--name-only]加上可以只看文件名字</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="git-回滚版本"><a href="#git-回滚版本" class="headerlink" title="git 回滚版本"></a>git 回滚版本</h3><p>在Git中，用HEAD表示当前版本,上一个版本就是HEAD^,上上一个版本就是HEAD^^,当然往上100个版本写100个^比较容易数不过来，所以写成HEAD~100。</p>
+<ol>
+<li><p>回滚到上一个版本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD^</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>回滚到任意一个版本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard 版本号(通过git <span class="built_in">log</span>查看)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果git回滚到历史版本后, git log只能看历史版本再以前的版本号, 不到未来的版本号怎么办?</p>
+<blockquote>
+<p>git 提供了一个命令git reflog用来记录你的每一次命令</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="git回滚文件"><a href="#git回滚文件" class="headerlink" title="git回滚文件"></a>git回滚文件</h3><ul>
+<li>查看文件的修改记录</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">log</span> config.h</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看文件版本的差别</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff a3551 fd681 config.h</span><br></pre></td></tr></table></figure>
+<ul>
+<li>回退到指定的版本</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset fd681 config.h</span><br></pre></td></tr></table></figure>
+<ul>
+<li>提交到本地参考</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m <span class="string">"revert old file because commmit have a bug"</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>更新到工作目录</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout config.h</span><br></pre></td></tr></table></figure>
+<ul>
+<li>提交到远程仓库</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
+<h3 id="git撤销操作"><a href="#git撤销操作" class="headerlink" title="git撤销操作"></a>git撤销操作</h3><ul>
+<li>git修改文件后, 还没有add, commit.  这时撤销文件修改, 即回到上一版本的内容</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -- file</span><br></pre></td></tr></table></figure>
+<p>命令中的–很重要，没有–，就变成了“创建一个新分支”的命令，我们在后面的分支管理中会再次遇到git checkout命令。</p>
+<ul>
+<li>git add 文件后撤销add操作</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset HEAD file</span><br></pre></td></tr></table></figure>
+<h3 id="git解决冲突"><a href="#git解决冲突" class="headerlink" title="git解决冲突"></a>git解决冲突</h3><ol>
+<li><p>建议手动解决冲突</p>
+</li>
+<li><p>命令行可以使用别人或自己的版本</p>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout --theirs/--ours  file</span><br></pre></td></tr></table></figure>
+<h3 id="git全局配置"><a href="#git全局配置" class="headerlink" title="git全局配置"></a>git全局配置</h3><ul>
+<li>中文不再显示8进制  git status显示中文</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global core.quotepath <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>设置代理, 因为国内一些原因下载的很慢</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global http.proxy <span class="string">'localhost:8123'</span></span><br><span class="line">git config --global --<span class="built_in">unset</span> http.proxy</span><br></pre></td></tr></table></figure>
+<ul>
+<li>git区分文件大小写</li>
+</ul>
+<p>git默认不区分文件大小写,导致文件名改了以后git状态没有改变,需要设置一下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config core.ignorecase false</span><br></pre></td></tr></table></figure>
+<h3 id="git-分支操作"><a href="#git-分支操作" class="headerlink" title="git 分支操作"></a>git 分支操作</h3><p>查看分支：git branch</p>
+<p>创建分支：git branch <name></name></p>
+<p>切换分支：git checkout <name></name></p>
+<p>创建+切换分支：git checkout -b <name></name></p>
+<p>合并某分支到当前分支：git merge <name></name></p>
+<p>删除分支：git branch -d <name></name></p>
+<h3 id="git-标签操作"><a href="#git-标签操作" class="headerlink" title="git 标签操作"></a>git 标签操作</h3><p>命令git tag <name>用于新建一个标签，默认为HEAD，也可以指定一个commit id；</name></p>
+<p>git tag -a <tagname> -m “blablabla…”可以指定标签信息；</tagname></p>
+<p>git tag -s <tagname> -m “blablabla…”可以用PGP签名标签；</tagname></p>
+<p>命令git tag可以查看所有标签。</p>
+<p>命令git push origin <tagname>可以推送一个本地标签；</tagname></p>
+<p>命令git push origin –tags可以推送全部未推送过的本地标签；</p>
+<p>命令git tag -d <tagname>可以删除一个本地标签；</tagname></p>
+<p>命令git push origin :refs/tags/<tagname>可以删除一个远程标签。</tagname></p>
+<h3 id="github-fork后更新源仓库的代码"><a href="#github-fork后更新源仓库的代码" class="headerlink" title="github fork后更新源仓库的代码"></a>github fork后更新源仓库的代码</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git remote add upstream https://github.com/golang/go</span><br><span class="line">git remote -v</span><br><span class="line">git fetch upstream</span><br><span class="line">git merge upstream/master</span><br></pre></td></tr></table></figure>
+<h3 id="git撤销操作-1"><a href="#git撤销操作-1" class="headerlink" title="git撤销操作"></a>git撤销操作</h3><ul>
+<li>git push 后撤销</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git revert &lt;hash&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>commit消息撤销</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit --amend -m &apos;新的消息&apos;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>回滚文件的改动(未有commit) </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -- &lt;filename&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>回滚版本</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard &lt;hash&gt;  (--hard强制内容回归,如果修改内容保留不加此选项)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>停止追踪一个文件</li>
+</ul>
+<p>你偶然把application.log加到代码库里了，现在每次你运行应用，Git都会报告在application.log里有未提交的修改。你把 *.log放到了.gitignore文件里，可文件还是在代码库里，你怎样才能让Git“撤销”对这个文件的追踪呢？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rm --cached application.log</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/git/" rel="tag"># git</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/29/shell批量文件内容复制到一个文件内/" rel="next" title="shell批量文件内容复制到一个文件内">
+                <i class="fa fa-chevron-left"></i> shell批量文件内容复制到一个文件内
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/12/19/c++11的模板类型判断std_is_same和std_decay/" rel="prev" title="c++11的模板类型判断std::is_same和std::decay">
+                c++11的模板类型判断std::is_same和std::decay <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">32</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#git的配置"><span class="nav-number">1.</span> <span class="nav-text">git的配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git和目录绑定"><span class="nav-number">2.</span> <span class="nav-text">git和目录绑定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git的基础操作"><span class="nav-number">3.</span> <span class="nav-text">git的基础操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-回滚版本"><span class="nav-number">4.</span> <span class="nav-text">git 回滚版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git回滚文件"><span class="nav-number">5.</span> <span class="nav-text">git回滚文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git撤销操作"><span class="nav-number">6.</span> <span class="nav-text">git撤销操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git解决冲突"><span class="nav-number">7.</span> <span class="nav-text">git解决冲突</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git全局配置"><span class="nav-number">8.</span> <span class="nav-text">git全局配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-分支操作"><span class="nav-number">9.</span> <span class="nav-text">git 分支操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-标签操作"><span class="nav-number">10.</span> <span class="nav-text">git 标签操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#github-fork后更新源仓库的代码"><span class="nav-number">11.</span> <span class="nav-text">github fork后更新源仓库的代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git撤销操作-1"><span class="nav-number">12.</span> <span class="nav-text">git撤销操作</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Muse</a> v6.2.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.2.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.2.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.2.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.2.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.2.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -104,7 +104,7 @@
 
   <meta property="og:type" content="website">
 <meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:url" content="http://yoursite.com/page/2/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:locale" content="default">
 <meta name="twitter:card" content="summary">
@@ -115,7 +115,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/page/2/"/>
 
 
 
@@ -213,7 +213,7 @@
         
         
           
-          <li class="menu-item menu-item-home menu-item-active">
+          <li class="menu-item menu-item-home">
     <a href="/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
   </li>
@@ -274,7 +274,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/19/音频基础/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/19/iTerm2 + zsh配置/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John Doe">
@@ -293,8 +293,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/04/19/音频基础/" itemprop="url">
-                  音频基础
+                <a class="post-title-link" href="/2018/04/19/iTerm2 + zsh配置/" itemprop="url">
+                  iTerm2 + zsh配置
                 </a>
               
             
@@ -355,13 +355,12 @@
 
       
         
-          <h3 id="音频基础"><a href="#音频基础" class="headerlink" title="音频基础"></a>音频基础</h3><p>当前，我们所说的音频，都是数字音频。数字音频由采样频率、采样精度、声音通道数三个部分组成。</p>
-<p>采样频率：既采样率，指记录声音时每秒的采样个数，它用赫兹(Hz)来表示。<br>采样精度：指记录声音的动态范围，它以位(Bit)为单位。<br>声音通道：既声道数（1-8个）。</p>
-<p>采样率根据使用类型不同大概有以下几种（k既千位符号，1khz=1000hz）：<br>8khz：电话等使用，对于记录人声已经足够使用。<br>22.05khz：广播使用频率。<br>44.1kb：音频CD。<br>48khz：DVD、数字电视中使用。<br>96khz-192khz：DVD-Audio、蓝光高清等使用。</p>
-<p>采样精度常用范围为8bit-32bit，而CD中一般都使用16bit。<br>
+          <h3 id="安装zsh"><a href="#安装zsh" class="headerlink" title="安装zsh"></a>安装zsh</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh -c &quot;$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="修改主题"><a href="#修改主题" class="headerlink" title="修改主题"></a>修改主题</h3><p>修改文件~/.zshrc中的ZSH_THEME一行，改成这个 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ZSH_THEME=&quot;bullet-train&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">https://github.com/caiogondim/bullet-train-oh-my-zsh-theme/blob/master/bullet-train.zsh-theme</span><br></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/04/19/音频基础/#more" rel="contents">
+            <a class="btn" href="/2018/04/19/iTerm2 + zsh配置/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -417,7 +416,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/19/字符编码/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/19/golang多平台交叉编译/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John Doe">
@@ -436,8 +435,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/04/19/字符编码/" itemprop="url">
-                  字符编码
+                <a class="post-title-link" href="/2018/04/19/golang多平台交叉编译/" itemprop="url">
+                  golang多平台交叉编译
                 </a>
               
             
@@ -498,11 +497,11 @@
 
       
         
-          <h3 id="ASCII码"><a href="#ASCII码" class="headerlink" title="ASCII码"></a>ASCII码</h3><p>ASCII码的取值范围是0~127，可以用7个bit表示。C语言中char型变量的大小规定为一字节，如果存放ASCII码则只用到低7位，高位为0。以下是ASCII码表：</p>
-<p>绝大多数计算机的一个字节是8位，取值范围是0~255，而ASCII码并没有规定编号为128~255的字符，为了能表示更多字符，各厂商制定了很多种ASCII码的扩展规范。注意，虽然通常把这些规范称为扩展ASCII码（Extended ASCII），但其实它们并不属于ASCII码标准。</p>
+          <h3 id="cannot-execute-binary-file-exec-format-error"><a href="#cannot-execute-binary-file-exec-format-error" class="headerlink" title="cannot execute binary file exec format error"></a>cannot execute binary file exec format error</h3><p>是因为mac和ubuntu的二进制格式不一致</p>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>Go是一门编译型语言，所以在不同平台上，需要编译生成不同格式的二进制包。<br>由于Go 1.5对跨平台编译有了一些改进，包括统一了编译器、链接器等。<br>编译时候只需要指定两个参数：GOOS和GOARCH即可。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/04/19/字符编码/#more" rel="contents">
+            <a class="btn" href="/2018/04/19/golang多平台交叉编译/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -558,7 +557,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/19/xcode自定义Eclipse中常用的快捷键/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/19/golang_struct_interface嵌套传参和多态/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John Doe">
@@ -577,8 +576,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/04/19/xcode自定义Eclipse中常用的快捷键/" itemprop="url">
-                  xcode自定义Eclipse中常用的快捷键
+                <a class="post-title-link" href="/2018/04/19/golang_struct_interface嵌套传参和多态/" itemprop="url">
+                  golang_struct_interface嵌套传参和多态
                 </a>
               
             
@@ -639,13 +638,15 @@
 
       
         
-          <p>首先找到Xcode中的自带的配置文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/Applications/Xcode.app/Contents/Frameworks/IDEKit.framework/Versions/A/Resources/IDETextKeyBindingSet.plist</span><br></pre></td></tr></table></figure>
-<p>这个文件里配置了一些可以设置快捷键的操作, 使用常用的编辑器打开它（需要root权限）。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;key&gt;GDI Commands&lt;/key&gt;</span><br><span class="line">&lt;dict&gt;</span><br><span class="line">	&lt;key&gt;GDI Duplicate Current Line&lt;/key&gt;</span><br><span class="line">	&lt;string&gt;selectLine:, copy:, moveToEndOfLine:, insertNewline:, paste:, deleteBackward:&lt;/string&gt;</span><br><span class="line">	&lt;key&gt;GDI Delete Current Line&lt;/key&gt;</span><br><span class="line">	&lt;string&gt;deleteToBeginningOfLine:, moveToEndOfLine:, deleteToBeginningOfLine:, deleteBackward:, moveDown:, moveToBeginningOfLine:&lt;/string&gt;</span><br><span class="line">	&lt;key&gt;GDI Move Current Line Up&lt;/key&gt;</span><br><span class="line">	&lt;string&gt;selectLine:, cut:, moveUp:, moveToBeginningOfLine:, insertNewLine:, paste:, moveBackward:&lt;/string&gt;</span><br><span class="line">	&lt;key&gt;GDI Move Current Line Down&lt;/key&gt;</span><br><span class="line">	&lt;string&gt;selectLine:, cut:, moveDown:, moveToBeginningOfLine:, insertNewLine:, paste:, moveBackward:&lt;/string&gt;</span><br><span class="line">	&lt;key&gt;GDI Insert Line Above&lt;/key&gt;</span><br><span class="line">	&lt;string&gt;moveUp:, moveToEndOfLine:, insertNewline:&lt;/string&gt;</span><br><span class="line">	&lt;key&gt;GDI Insert Line Below&lt;/key&gt;</span><br><span class="line">	&lt;string&gt;moveToEndOfLine:, insertNewline:&lt;/string&gt;</span><br><span class="line">&lt;/dict&gt;</span><br></pre></td></tr></table></figure>
+          <h3 id="interface-struct-嵌套"><a href="#interface-struct-嵌套" class="headerlink" title="interface struct 嵌套"></a>interface struct 嵌套</h3><ol>
+<li>struct struct //继承(不能多态), 如果内部struct实现了接口, 它也相当于实现了接口</li>
+<li>struct interface //可以多态</li>
+<li>interface interface  //单纯的导入</li>
+<li>interface struct  //不允许</li>
+</ol>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/04/19/xcode自定义Eclipse中常用的快捷键/#more" rel="contents">
+            <a class="btn" href="/2018/04/19/golang_struct_interface嵌套传参和多态/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -701,7 +702,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/19/区块链介绍/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/19/github和gitee通过密钥来进行ssh连接/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John Doe">
@@ -720,8 +721,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/04/19/区块链介绍/" itemprop="url">
-                  区块链基础
+                <a class="post-title-link" href="/2018/04/19/github和gitee通过密钥来进行ssh连接/" itemprop="url">
+                  github和gitee通过密钥来进行ssh连接
                 </a>
               
             
@@ -782,21 +783,11 @@
 
       
         
-          <h1 id="区块链"><a href="#区块链" class="headerlink" title="区块链"></a>区块链</h1><p>区块链属于一种去中心化的记录技术。参与到系统上的节点，可能不属于同一组织、彼此无需信任；区块链数据由所有节点共同维护，每个参与维护节点都能复制获得一份完整记录的拷贝。</p>
-<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><p>跟传统的记账技术相比，其特点应该包括：</p>
-<ul>
-<li>维护一条不断增长的链，只可能添加记录，而发生过的记录都不可篡改；</li>
-<li>去中心化，或者说多中心化，无需集中的控制而能达成共识，实现上尽量分布式；</li>
-<li>通过密码学的机制来确保交易无法抵赖和破坏，并尽量保护用户信息和记录的隐私性。</li>
-</ul>
-<h3 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h3><p>区块链的基本原理理解起来并不难。基本概念包括：</p>
-<ul>
-<li>交易（Transaction）：一次操作，导致账本状态的一次改变，如添加一条记录；</li>
-<li>区块（Block）：记录一段时间内发生的交易和状态结果，是对当前账本状态的一次共识；</li>
-<li>链（Chain）：由一个个区块按照发生顺序串联而成，是整个状态变化的日志记录。
+          <h1 id="github-ssh"><a href="#github-ssh" class="headerlink" title="github ssh"></a>github ssh</h1><h4 id="1-生成公钥私钥"><a href="#1-生成公钥私钥" class="headerlink" title="1 生成公钥私钥"></a>1 生成公钥私钥</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -b 4096 -C &quot;levonfly@gmail.com&quot;</span><br></pre></td></tr></table></figure>
+<p>第一步sava file 写成github, 密码可以为空</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/04/19/区块链介绍/#more" rel="contents">
+            <a class="btn" href="/2018/04/19/github和gitee通过密钥来进行ssh连接/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -852,7 +843,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/19/xcode主题/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/19/gitHub提交PullRequest/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John Doe">
@@ -871,8 +862,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/04/19/xcode主题/" itemprop="url">
-                  xcode主题
+                <a class="post-title-link" href="/2018/04/19/gitHub提交PullRequest/" itemprop="url">
+                  gitHub提交PullRequest
                 </a>
               
             
@@ -933,11 +924,11 @@
 
       
         
-          <h3 id="Xcode-主题"><a href="#Xcode-主题" class="headerlink" title="Xcode 主题"></a>Xcode 主题</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/tursunovic/xcode-themes</span><br></pre></td></tr></table></figure>
-<h3 id="elfDark"><a href="#elfDark" class="headerlink" title="elfDark"></a>elfDark</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">https://code.google.com/archive/p/elf-ios-resource/downloads</span><br><span class="line"></span><br><span class="line">cd /Users/liuwei/Library/Developer/Xcode/UserData/FontAndColorThemes 放进去</span><br></pre></td></tr></table></figure>
+          <h3 id="fork别人的仓库"><a href="#fork别人的仓库" class="headerlink" title="fork别人的仓库"></a>fork别人的仓库</h3><p>首先，在 GitHub 上 fork 到自己的仓库，如 docker_user/blockchain_guide，然后 clone 到本地，并设置用户信息。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ git clone git@github.com:docker_user/blockchain_guide.git</span><br><span class="line">$ cd blockchain_guide</span><br><span class="line">$ #do some change on the content</span><br><span class="line">$ git commit -am &quot;Fix issue #1: change helo to hello&quot;</span><br><span class="line">$ git push</span><br></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/04/19/xcode主题/#more" rel="contents">
+            <a class="btn" href="/2018/04/19/gitHub提交PullRequest/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -993,7 +984,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/19/ssh_scp免密和服务器建立信任/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/19/dht分布式散列表和kad介绍/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John Doe">
@@ -1012,8 +1003,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/04/19/ssh_scp免密和服务器建立信任/" itemprop="url">
-                  ssh_scp免密和服务器建立信任
+                <a class="post-title-link" href="/2018/04/19/dht分布式散列表和kad介绍/" itemprop="url">
+                  dht分布式散列表和kad介绍
                 </a>
               
             
@@ -1074,21 +1065,17 @@
 
       
         
-          <ul>
-<li><p>在mac上生成密钥</p>
-<p>  生成两个文件<code>vultr</code>  <code>vultr.pub</code></p>
-<p>  <code>ssh-keygen -t rsa</code>   //passphrase可以为空</p>
+          <h3 id="如何实现散列表"><a href="#如何实现散列表" class="headerlink" title="如何实现散列表"></a>如何实现散列表</h3><ul>
+<li><p>在散列表这种数据结构中，会包含 N 个 bucket（桶）。对于某个具体的散列表，N（桶的数量）通常是【固定不变】的。于是可以对每个桶进行编号，从 0 到 N-1。</p>
 </li>
-<li><p>发送到远程服务器</p>
-<p>  第一种方式: </p>
-<p>  <code>scp ~/.ssh/vultr.pub root@207.246.80.69:/root/.ssh/authorized_keys</code></p>
-<p>  第二种方式:</p>
-<p>  <code>ssh-copy-id -i ~/.ssh/vultr.pub root@207.246.80.69</code></p>
+<li><p>“桶”是用来存储“键值对”的，你可以把它通俗理解成一个动态数组，里面可以存放【多个】“键值对”。</p>
+</li>
+<li><p>当使用某个 key 进行查找，会先用某个散列函数计算这个 key 的散列值。得到散列值通常是一个整数，然后用散列值对 N（桶数）进行“取模”运算（除法求余数），就可以算出对应的桶编号。（注：取模运算是最常用的做法，但不是唯一的做法）</p>
 </li>
 </ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/04/19/ssh_scp免密和服务器建立信任/#more" rel="contents">
+            <a class="btn" href="/2018/04/19/dht分布式散列表和kad介绍/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1144,7 +1131,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/19/rsync同步文件/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/19/c++stl容器循环earse用法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John Doe">
@@ -1163,8 +1150,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/04/19/rsync同步文件/" itemprop="url">
-                  rsync同步文件
+                <a class="post-title-link" href="/2018/04/19/c++stl容器循环earse用法/" itemprop="url">
+                  c++stl容器循环earse用法
                 </a>
               
             
@@ -1225,11 +1212,11 @@
 
       
         
-          <p>参考链接: <a href="http://blog.csdn.net/zpf336/article/details/51659666" target="_blank" rel="noopener">http://blog.csdn.net/zpf336/article/details/51659666</a></p>
-<h3 id="把本地文件同步到远程服务器"><a href="#把本地文件同步到远程服务器" class="headerlink" title="把本地文件同步到远程服务器"></a>把本地文件同步到远程服务器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rsync -avz &apos;-e ssh -i /Users/liuwei/.ssh/aws.pem&apos; /Users/liuwei/golang/src/web --progress ubuntu@54.191.9.26:/home/ubuntu</span><br></pre></td></tr></table></figure>
+          <h3 id="vector-deque"><a href="#vector-deque" class="headerlink" title="vector deque"></a>vector deque</h3><p>在使用 vector、deque遍历删除元素时，也可以通过erase的返回值来获取下一个元素的位置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">std::vector&lt; int&gt; Vec;</span><br><span class="line">std::vector&lt; int&gt;::iterator itVec;</span><br><span class="line">for( itVec = Vec.begin(); itVec != Vec.end(); )</span><br><span class="line">&#123;</span><br><span class="line">      if( WillDelete( *itVec) )</span><br><span class="line">      &#123;</span><br><span class="line">           itVec = Vec.erase( itVec);</span><br><span class="line">      &#125;</span><br><span class="line">      else</span><br><span class="line">         itList++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/04/19/rsync同步文件/#more" rel="contents">
+            <a class="btn" href="/2018/04/19/c++stl容器循环earse用法/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1285,7 +1272,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/19/mosh解决ssh远程连接延迟/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/19/aws部署golang_beego_nginx/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John Doe">
@@ -1304,8 +1291,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/04/19/mosh解决ssh远程连接延迟/" itemprop="url">
-                  mosh解决ssh远程连接延迟
+                <a class="post-title-link" href="/2018/04/19/aws部署golang_beego_nginx/" itemprop="url">
+                  aws部署golang_beego_nginx
                 </a>
               
             
@@ -1366,156 +1353,13 @@
 
       
         
-          
-            <h3 id="安装mosh"><a href="#安装mosh" class="headerlink" title="安装mosh"></a>安装mosh</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install mosh //server</span><br><span class="line">brew install mobile-shell //mac</span><br></pre></td></tr></table></figure>
-<h3 id="需要先设置本地"><a href="#需要先设置本地" class="headerlink" title="需要先设置本地"></a>需要先设置本地</h3><p>locale-gen zh_CN.UTF-8</p>
-<h3 id="远程服务器开启-mosh-server"><a href="#远程服务器开启-mosh-server" class="headerlink" title="远程服务器开启 mosh-server"></a>远程服务器开启 mosh-server</h3><h3 id="需要aws开启udp-mosh的端口"><a href="#需要aws开启udp-mosh的端口" class="headerlink" title="需要aws开启udp mosh的端口"></a>需要aws开启udp mosh的端口</h3><h3 id="客户端连接"><a href="#客户端连接" class="headerlink" title="客户端连接"></a>客户端连接</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mosh ubuntu@ec2-54-191-9-26.us-west-2.compute.amazonaws.com -ssh=&quot;ssh -i &apos;aws.pem&apos;&quot;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/19/mongodb操作教程/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/19/mongodb操作教程/" itemprop="url">
-                  mongodb操作教程
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2018-04-19 19:04:05" itemprop="dateCreated datePublished" datetime="2018-04-19T19:04:05+08:00">2018-04-19</time>
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="数据库操作"><a href="#数据库操作" class="headerlink" title="数据库操作"></a>数据库操作</h3><ul>
-<li>创建数据库</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">use study</span><br></pre></td></tr></table></figure>
-<p>如果你想查看所有数据库，可以使用 show dbs 命令：<br>刚创建的数据库并不在数据库的列表中， 要显示它，我们需要向 数据库插入一些数据。</p>
-<ul>
-<li>查看当前在哪个数据库</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; db</span><br><span class="line">study</span><br></pre></td></tr></table></figure>
+          <h3 id="通过ssh文件上传到服务器"><a href="#通过ssh文件上传到服务器" class="headerlink" title="通过ssh文件上传到服务器"></a>通过ssh文件上传到服务器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp -i /Users/liuwei/.ssh/aws.pem -C -r /Users/liuwei/golang/src/web ubuntu@ec2-54-191-9-26.us-west-2.compute.amazonaws.com:/home/ubuntu</span><br></pre></td></tr></table></figure>
+<p>aws.pem chmod 400</p>
+<p>scp  -C 加一个可能会更快</p>
+<h3 id="发行部署"><a href="#发行部署" class="headerlink" title="发行部署"></a>发行部署</h3><p>Go 语言的应用最后编译之后是一个二进制文件，你只需要 copy 这个应用到服务器上，运行起来就行。beego 由于带有几个静态文件、配置文件、模板文件三个目录，所以用户部署的时候需要同时 copy 这三个目录到相应的部署应用之下，下面以我实际的应用部署为例：</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/04/19/mongodb操作教程/#more" rel="contents">
+            <a class="btn" href="/2018/04/19/aws部署golang_beego_nginx/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1571,7 +1415,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/19/io多路复用, epoll介绍/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/28/aws搭建shadowsocks梯子翻墙/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John Doe">
@@ -1590,8 +1434,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/04/19/io多路复用, epoll介绍/" itemprop="url">
-                  io多路复用, epoll介绍
+                <a class="post-title-link" href="/2017/03/28/aws搭建shadowsocks梯子翻墙/" itemprop="url">
+                  aws搭建shadowsocks梯子翻墙
                 </a>
               
             
@@ -1617,9 +1461,25 @@
                 
               
 
-              <time title="Created: 2018-04-19 19:04:05" itemprop="dateCreated datePublished" datetime="2018-04-19T19:04:05+08:00">2018-04-19</time>
+              <time title="Created: 2017-03-28 18:04:22" itemprop="dateCreated datePublished" datetime="2017-03-28T18:04:22+08:00">2017-03-28</time>
             
 
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2018-04-19 19:04:05" itemprop="dateModified" datetime="2018-04-19T19:04:05+08:00">2018-04-19</time>
+              
             
           </span>
 
@@ -1652,26 +1512,186 @@
 
       
         
-          <h3 id="同步IO"><a href="#同步IO" class="headerlink" title="同步IO"></a>同步IO</h3><p>进程也可以换成线程</p>
-<ul>
-<li>阻塞IO (问一次 + 傻等)</li>
-</ul>
-<p>用户进程process在Blocking IO读recvfrom操作的两个阶段都是等待的。在数据没准备好的时候，process原地等待kernel准备数据。kernel准备好数据后，process继续等待kernel将数据copy到自己的buffer。在kernel完成数据的copy后process才会从recvfrom系统调用中返回。</p>
-<ul>
-<li>非阻塞IO (不停的催问 + 傻等)</li>
-</ul>
-<p>process在NonBlocking IO读recvfrom操作的第一个阶段是不会block等待的，如果kernel数据还没准备好，那么recvfrom会立刻返回一个EWOULDBLOCK错误。当kernel准备好数据后，进入处理的第二阶段的时候，process会等待kernel将数据copy到自己的buffer，在kernel完成数据的copy后process才会从recvfrom系统调用中返回。</p>
-<ul>
-<li>多路复用 (一个家长拦截 + 谁好了谁干活)</li>
-</ul>
-<p>IO多路复用，就是我们熟知的select、poll、epoll模型。在IO多路复用的时候，process在两个处理阶段都是block住等待的。初看好像IO多路复用没什么用，其实select、poll、epoll的优势在于可以以较少的代价来同时监听处理多个IO。<br>
+          <h3 id="部署aws"><a href="#部署aws" class="headerlink" title="部署aws"></a>部署aws</h3><ol>
+<li><p>aws免费1年,申请的时候需要信用卡,没有信用卡的可以淘宝购买虚拟信用卡</p>
+</li>
+<li><p>申请成功,创建Ec2实例, 下载私钥, 注意保存好</p>
+</li>
+<li><p>ssh连接aws, 因为淘宝购买的信用卡只能在美国2个地区部署, 中国连接会发现特别卡顿, 可以用mosh连接,后面我会写怎么使用mosh连接</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod 400 aws.pem</span><br><span class="line">ssh -i &quot;aws.pem&quot; ubuntu@ec2-54-191-9-26.us-west-2.compute.amazonaws.com</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改root密码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo passwd root</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/04/19/io多路复用, epoll介绍/#more" rel="contents">
+            <a class="btn" href="/2017/03/28/aws搭建shadowsocks梯子翻墙/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
           <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/02/20/ios录音遇到的问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/02/20/ios录音遇到的问题/" itemprop="url">
+                  iOS录音遇到的问题
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2017-02-20 09:54:54" itemprop="dateCreated datePublished" datetime="2017-02-20T09:54:54+08:00">2017-02-20</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2018-04-19 19:04:05" itemprop="dateModified" datetime="2018-04-19T19:04:05+08:00">2018-04-19</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="iOS使用openAL控制声音的输出设备"><a href="#iOS使用openAL控制声音的输出设备" class="headerlink" title="iOS使用openAL控制声音的输出设备"></a>iOS使用openAL控制声音的输出设备</h3><p>项目中播放ios录音的时候使用的是AVAudio相关库, 播放音效又是用的openAL.<br>如果同时或交替播放这两类声音, 会造成声音一会从听筒发声,一会从扬声器发声.<br>千辛万苦找到解决方案:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Interesting enough, it can be done!</span><br><span class="line"></span><br><span class="line">Basically you add a property listener to get route change events:</span><br><span class="line">    AudioSessionAddPropertyListener(kAudioSessionProperty_AudioRouteChange, audioRouteChangeListenerCallback,<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">	Then in the callback, determine <span class="keyword">if</span> its a headphone being plugged-in <span class="keyword">and</span> override the audio route:</span><br><span class="line">	        UInt32 audioRouteOverride = kAudioSessionOverrideAudioRoute_Speaker;</span><br><span class="line">			        AudioSessionSetProperty(kAudioSessionProperty_OverrideAudioRoute, <span class="keyword">sizeof</span>(audioRouteOverride), &amp;audioRouteOverride);</span><br><span class="line"></span><br><span class="line">					Too simple...</span><br></pre></td></tr></table></figure>
+<h3 id="iOS-AVAudioSession-监听静音开关"><a href="#iOS-AVAudioSession-监听静音开关" class="headerlink" title="iOS AVAudioSession 监听静音开关"></a>iOS AVAudioSession 监听静音开关</h3><p>录音使用AVAudioSession播放的时候, 无法识别Iphone手机的物理静音开关,需要修改下模式</p>
+<blockquote>
+<p>[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];</p>
+</blockquote>
+<p>修改成</p>
+<blockquote>
+<p>[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategorySoloAmbient error:nil];//监听静音</p>
+</blockquote>
+
+          
         
       
     </div>
@@ -1712,7 +1732,7 @@
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
