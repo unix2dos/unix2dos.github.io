@@ -26,7 +26,7 @@ archive_dir: archives
 category_dir: categories
 code_dir: downloads/code
 i18n_dir: :lang
-skip_render:
+skip_render: README.md
 
 # Writing
 new_post_name: :title.md # File name of new posts
@@ -285,7 +285,7 @@ links_layout: block
 # Sidebar Avatar
 # in theme directory(source/images): /images/avatar.gif
 # in site  directory(source/uploads): /uploads/avatar.gif
-#avatar: /images/avatar.gif
+avatar: /images/avatar.jpg
 
 # Table Of Contents in the Sidebar
 toc:
@@ -385,9 +385,9 @@ codeblock:
   #description: ex. subscribe to my blog by scanning my public wechat account
 
 # Reward
-#reward_comment: Donate comment here
-#wechatpay: /images/wechatpay.jpg
-#alipay: /images/alipay.jpg
+reward_comment: 坚持原创技术分享，您的支持将鼓励我继续创作！
+wechatpay: /images/wechatpay.jpg
+alipay: /images/alipay.jpg
 #bitcoin: /images/bitcoin.png
 
 # Related popular posts
@@ -438,7 +438,7 @@ custom_logo:
 # Code Highlight theme
 # Available values: normal | night | night eighties | night blue | night bright
 # https://github.com/chriskempson/tomorrow-theme
-highlight_theme: normal
+highlight_theme: night eighties
 
 # Enable "cheers" for archive page.
 cheers_enabled: true
@@ -559,7 +559,7 @@ pangu: false
 #swiftype_key:
 
 # Baidu Analytics ID
-#baidu_analytics:
+baidu_analytics: 87faa95368f037b15736b7b37b6e1aae
 
 # Disqus
 disqus:
@@ -599,7 +599,7 @@ valine:
 
 # Support for LiveRe comments system.
 # You can get your uid from https://livere.com/insight/myCode (General web site)
-#livere_uid: your uid
+livere_uid: MTAyMC8zNTgzOS8xMjM3NQ
 
 # Gitment
 # Introduction: https://imsun.net/posts/gitment-introduction/
@@ -723,9 +723,9 @@ rating:
 # Show number of visitors to each article.
 # You can visit https://leancloud.cn get AppID and AppKey.
 leancloud_visitors:
-  enable: false
-  app_id: #<app_id>
-  app_key: #<app_key>
+  enable: true
+  app_id: uYusYBwMVWpW5SYduvh2Gtdw-gzGzoHsz
+  app_key: yAt4PfT2NF0k1J1OL3OSyomX
   # Dependencies: https://github.com/theme-next/hexo-leancloud-counter-security
   # If you don't care about security in lc counter and just want to use it directly
   # (without hexo-leancloud-counter-security plugin), set the `security` to `false`.
@@ -784,6 +784,13 @@ calendar:
 # Algolia Search
 # See: https://github.com/theme-next/hexo-theme-next/blob/master/docs/ALGOLIA-SEARCH.md
 # Dependencies: https://github.com/theme-next/theme-next-algolia-instant-search
+algolia:
+  applicationID:  QXGFOAQS6S
+  apiKey: ae308abf6d4ca862cda81c706d174d77
+  adminApiKey:  03a0650ecd0ead0dfd9031178da3f591
+  indexName:  liuwei
+  chunkSize:  5000
+  
 algolia_search:
   enable: true
   hits:
