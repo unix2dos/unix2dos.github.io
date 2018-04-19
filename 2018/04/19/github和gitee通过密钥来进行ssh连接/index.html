@@ -8,7 +8,7 @@
   
 
 
-<html class="theme-next muse use-motion" lang="">
+<html class="theme-next gemini use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -78,7 +78,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Muse',
+    scheme: 'Gemini',
     version: '6.2.0',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: false,
@@ -106,10 +106,10 @@
 <meta name="keywords" content="git">
 <meta property="og:type" content="article">
 <meta property="og:title" content="github和gitee通过密钥来进行ssh连接">
-<meta property="og:url" content="http://yoursite.com/2018/04/19/github和gitee通过密钥来进行ssh连接/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:url" content="https://unix2dos.github.io/2018/04/19/github和gitee通过密钥来进行ssh连接/index.html">
+<meta property="og:site_name" content="Levon&#39;s Blog">
 <meta property="og:description" content="github ssh1 生成公钥私钥1ssh-keygen -t rsa -b 4096 -C &amp;quot;levonfly@gmail.com&amp;quot; 第一步sava file 写成github, 密码可以为空">
-<meta property="og:locale" content="default">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2018-04-19T11:04:05.078Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="github和gitee通过密钥来进行ssh连接">
@@ -120,7 +120,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/04/19/github和gitee通过密钥来进行ssh连接/"/>
+  <link rel="canonical" href="https://unix2dos.github.io/2018/04/19/github和gitee通过密钥来进行ssh连接/"/>
 
 
 
@@ -130,7 +130,7 @@
   };
 </script>
 
-  <title>github和gitee通过密钥来进行ssh连接 | Hexo</title>
+  <title>github和gitee通过密钥来进行ssh连接 | Levon's Blog</title>
   
 
 
@@ -170,7 +170,7 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
   
@@ -188,12 +188,12 @@
     <div class="custom-logo-site-title">
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Hexo</span>
+        <span class="site-title">Levon's Blog</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
       
-        <p class="site-subtitle"></p>
+        <p class="site-subtitle">微信:  L6241425</p>
       
   </div>
 
@@ -229,17 +229,57 @@
     <a href="/archives/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
   </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />Tags</a>
+  </li>
 
       
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />Search</a>
+        </li>
       
     </ul>
   
 
   
-    
 
   
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
 
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
   
 </nav>
 
@@ -258,6 +298,9 @@
     <main id="main" class="main">
       <div class="main-inner">
         <div class="content-wrap">
+          
+            
+
           
           <div id="content" class="content">
             
@@ -278,16 +321,16 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/19/github和gitee通过密钥来进行ssh连接/">
+    <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/2018/04/19/github和gitee通过密钥来进行ssh连接/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="Levon">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="Levon's Blog">
     </span>
 
     
@@ -401,8 +444,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/19/gitHub提交PullRequest/" rel="next" title="gitHub提交PullRequest">
-                <i class="fa fa-chevron-left"></i> gitHub提交PullRequest
+              <a href="/2018/04/19/golang_struct_interface嵌套传参和多态/" rel="next" title="golang_struct_interface嵌套传参和多态">
+                <i class="fa fa-chevron-left"></i> golang_struct_interface嵌套传参和多态
               </a>
             
           </div>
@@ -411,8 +454,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/04/19/golang_struct_interface嵌套传参和多态/" rel="prev" title="golang_struct_interface嵌套传参和多态">
-                golang_struct_interface嵌套传参和多态 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/04/19/golang多平台交叉编译/" rel="prev" title="golang多平台交叉编译">
+                golang多平台交叉编译 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -476,8 +519,8 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
-              <p class="site-author-name" itemprop="name">John Doe</p>
-              <p class="site-description motion-element" itemprop="description"></p>
+              <p class="site-author-name" itemprop="name">Levon</p>
+              <p class="site-description motion-element" itemprop="description">Never Give Up</p>
           </div>
 
           
@@ -549,6 +592,30 @@
           
 
           
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/unix2dos" target="_blank" title="GitHub"><i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:levonfly@gmail.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-globe"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/levonfly" target="_blank" title="Twitter"><i class="fa fa-fw fa-globe"></i>Twitter</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://weibo.com/l6241425" target="_blank" title="Weibo"><i class="fa fa-fw fa-globe"></i>Weibo</a>
+                  
+                </span>
+              
+            </div>
+          
 
           
           
@@ -598,7 +665,7 @@
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">Levon</span>
 
   
 
@@ -616,7 +683,7 @@
 
 
 
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Muse</a> v6.2.0</div>
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Gemini</a> v6.2.0</div>
 
 
 
@@ -666,6 +733,8 @@
 
 
 
+  
+
 
 
 
@@ -693,6 +762,11 @@
     <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
   
 
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
 
   
 
@@ -705,6 +779,13 @@
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.2.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.2.0"></script>
+
+
 
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=6.2.0"></script>
@@ -749,6 +830,19 @@
   
 
 
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=6.2.0"></script>
 
 
 
