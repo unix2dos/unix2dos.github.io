@@ -790,7 +790,7 @@ algolia:
   adminApiKey:  03a0650ecd0ead0dfd9031178da3f591
   indexName:  liuwei
   chunkSize:  5000
-  
+
 algolia_search:
   enable: true
   hits:
