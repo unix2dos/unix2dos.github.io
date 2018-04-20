@@ -871,9 +871,10 @@ tabs:
 # Reading progress bar
 # Dependencies: https://github.com/theme-next/theme-next-reading-progress
 reading_progress:
-  enable: false
+  enable: true
   color: "#37c6c0"
   height: 2px
+  
 
 
 #! ---------------------------------------------------------------
@@ -1060,10 +1061,7 @@ vendors:
   # Internal version: 1.0
   # https://github.com/theme-next/theme-next-reading-progress
   # Example: https://cdn.jsdelivr.net/gh/theme-next/theme-next-reading-progress@1.1/reading_progress.min.js
-reading_progress:
-  enable: true
-  color: "#37c6c0"
-  height: 2px
+  reading_progress:
 
   # valine comment
   # Example: https://cdn.jsdelivr.net/npm/valine@1.1.8/dist/Valine.min.js
