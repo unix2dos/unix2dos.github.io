@@ -68,7 +68,7 @@ sudo ssserver -c /etc/shadowsocks.json -d restart
 首先打开正在运行的实例，向右滚动表格，最后一项，安全组，点击进入，编辑入站规则，默认是开启了一个22端口（这是给ssh访问的）
 
 ![alt text][id2]
-[id1]: /images/1.png
-[id2]: /images/2.png
+[id1]: https://github.com/unix2dos/unix2dos.github.io/blob/source/source/images/1.png
+[id2]: https://github.com/unix2dos/unix2dos.github.io/blob/source/source/images/2.png
 >如果不放心流量超限的话可以设置下账单报警。
 
