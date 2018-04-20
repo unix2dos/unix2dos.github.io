@@ -720,6 +720,13 @@ rating:
   color:  fc6423
 # ---------------------------------------------------------------
 
+leancloud_counter_security:
+  enable_sync: true
+  app_id: uYusYBwMVWpW5SYduvh2Gtdw
+  app_key: yAt4PfT2NF0k1J1OL3OSyomX
+  username:
+  password:
+
 # Show number of visitors to each article.
 # You can visit https://leancloud.cn get AppID and AppKey.
 leancloud_visitors:
