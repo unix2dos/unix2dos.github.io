@@ -1,6 +1,7 @@
 ---
 title: 'hexo搭建博客'
 date: 2016-12-01 17:54:46
+tag: hexo
 ---
 
 ### 安装hexo
