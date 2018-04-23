@@ -59,16 +59,20 @@ shadowsocks.json需要自己创建，默认是没有的 注意端口修改的是
 ```
 sudo ssserver -c /etc/shadowsocks.json -d restart
 ```
+
+
 ### 配置aws和使用shadowsocks翻墙
 
->安装之后，添加服务器，地址为AWS的外网地址，登录AWS控制台，查看正在运行中的实例，找到公有ip。 端口号为刚才配置Shadowsocks服务器时的端口号，密码也是刚才配置的，设置完之后保存。
-![alt text][id1]
+安装之后，添加服务器，地址为AWS的外网地址，登录AWS控制台，查看正在运行中的实例，找到公有ip。 端口号为刚才配置Shadowsocks服务器时的端口号，密码也是刚才配置的，设置完之后保存。
 
->配置好shaodowsocks后，还需要将配置中的端口打开,这样客户端的服务才能链接得上EC2中的shadowsocks服务
+![id1](aws搭建shadowsocks梯子翻墙/1.png)
+
+
+配置好shaodowsocks后，还需要将配置中的端口打开,这样客户端的服务才能链接得上EC2中的shadowsocks服务
 首先打开正在运行的实例，向右滚动表格，最后一项，安全组，点击进入，编辑入站规则，默认是开启了一个22端口（这是给ssh访问的）
 
-![alt text][id2]
-[id1]: (/images/1.png)
-[id2]: (/images/2.png)
+![id2](aws搭建shadowsocks梯子翻墙/2.png)
+
+
 >如果不放心流量超限的话可以设置下账单报警。
 
