@@ -3,7 +3,6 @@ title: 为终端设置Shadowsocks代理
 date: 2016-11-07 22:19:41
 tags: linux
 ---
-做开发的同学，应该都会经常接触终端，有些时候我们在终端会做一些网络操作，比如下载gradle包等，由于一些你懂我也懂的原因，某些网络操作不是那么理想，这时候我们就需要设置代理来自由地访问网络。
 
 Shadowsocks是我们常用的代理工具，它使用socks5协议，而终端很多工具目前只支持http和https等协议，对socks5协议支持不够好，所以我们为终端设置shadowsocks的思路就是将socks协议转换成http协议，然后为终端设置即可。仔细想想也算是适配器模式的一种现实应用吧。
 
@@ -13,35 +12,25 @@ Shadowsocks是我们常用的代理工具，它使用socks5协议，而终端很
 ### 准备工作
 
 - 首先需要配置好一个可用的shadowsocks，客户端下载地址：https://github.com/shadowsocks/shadowsocks/releases
-- 如果没有帐号，可以从这里购买。
 - 安装和配置ss，请自行搜索解决。
----
-<!-- more -->
-### 安装
 
-Fedora安装
-```bash
-sudo yum install polipo
-```
-Mac下使用Homebrew安装
-```bash
-brew install polipo
-```
+<!-- more -->
+### Linux安装使用
 
 Ubuntu安装
+
 ```bash
 sudo apt-get install polipo
 ```
 
-
-### 修改配置(Linux)
-
 如下打开配置文件
+
 ```bash
 sudo vim /etc/polipo/config
 ```
 
 设置ParentProxy为Shadowsocks，通常情况下本机shadowsocks的地址如下
+
 ```bash
 # Uncomment this if you want to use a parent SOCKS proxy:
 socksParentProxy = "localhost:1080"
@@ -54,13 +43,29 @@ logFile=/var/log/polipo
 logLevel=4
 ```
 
-### 修改配置(Mac)
+
+先关闭正在运行的polipo，然后再次启动
+
+```bash
+sudo service polipo stop
+sudo service polipo start
+```
+
+
+### Mac安装使用
+Mac下使用Homebrew安装
+
+```bash
+brew install polipo
+```
 
 设置每次登陆启动polipo
+
 ```bash
 ln -sfv /usr/local/opt/polipo/*.plist ~/Library/LaunchAgents
 ```
 修改文件`/usr/local/opt/polipo/homebrew.mxcl.polipo.plist`设置parentProxy
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -92,20 +97,13 @@ ln -sfv /usr/local/opt/polipo/*.plist ~/Library/LaunchAgents
 修改的地方是增加了`<string>socksParentProxy=localhost:1080</string>`
 
 
-### 启动（Linux）
 
-先关闭正在运行的polipo，然后再次启动
+启动使用. 注意：请确保Shadowsocks正常工作。
 
-```bash
-sudo service polipo stop
-sudo service polipo start
-```
-### 启动(Mac)
 ```bash
 launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.polipo.plist
 launchctl load ~/Library/LaunchAgents/homebrew.mxcl.polipo.plist
 ```
-注意：请确保Shadowsocks正常工作。
 
 
 ### 验证及使用
