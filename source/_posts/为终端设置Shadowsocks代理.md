@@ -106,7 +106,7 @@ launchctl load ~/Library/LaunchAgents/homebrew.mxcl.polipo.plist
 ```
 
 
-### 验证及使用
+### 验证是否代理成功
 
 安装完成就需要进行验证是否work。这里展示一个最简单的验证方法，打开终端，如下执行
 
@@ -118,7 +118,9 @@ $ http_proxy=http://localhost:8123 curl ip.gs
 ```
 如上所示，为某个命令设置代理，前面加上http_proxy=http://localhost:8123 后接命令即可。
 
-注：8123是polipo的默认端口，如有需要，可以修改成其他有效端口。
+>注：8123是polipo的默认端口，如有需要，可以修改成其他有效端口。
+
+
 
 ### 设置别名
 
@@ -139,9 +141,9 @@ $ hp curl ip.gs
 当前 IP：210.140.193.128 来自：日本日本 
 ```
 
-### 当前会话全局设置
+### 全局设置, 删除当前会话
 
-如果嫌每次为每一个命令设置代理比较麻烦，可以为当前会话设置全局的代理。即使用`export http_proxy=http://localhost:8123`即可。 如果想撤销当前会话的http_proxy代理，使用 unset http_proxy 即可。 示例效果如下
+如果嫌每次为每一个命令设置代理比较麻烦，可以为当前会话设置全局的代理。使用`export http_proxy=http://localhost:8123`即可。 如果想撤销当前会话的http_proxy代理，使用 `unset http_proxy` 即可。 示例效果如下
 
 ```bash
 $ curl ip.gs
@@ -155,9 +157,8 @@ $ curl ip.gs
 ```
 如果想要更长久的设置代理，可以将export http_proxy=http://localhost:8123加入.bashrc或者.bash_profile文件
 
-### 设置Git代理
+### 设置git代理
 
-复杂一些的设置Git代理
 
 ```bash
 git clone https://android.googlesource.com/tools/repo --config http.proxy=localhost:8123
@@ -187,7 +188,10 @@ remote: Total 3483 (delta 1956), reused 3483 (delta 1956)
 Receiving objects: 100% (3483/3483), 2.63 MiB | 483 KiB/s, done.
 Resolving deltas: 100% (1956/1956), done.
 ```
-### git 全局设置代理,删除代理
+
+
+
+### git全局设置代理,删除代理
 
 ```bash
 git config --global http.proxy 'localhost:8123'
@@ -196,5 +200,3 @@ git config --global https.proxy 'localhost:8123'
 git config --global --unset http.proxy
 git config --global --unset https.proxy
 ```
-
-开始自由快速的开发吧。
