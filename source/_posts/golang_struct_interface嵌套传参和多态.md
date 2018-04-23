@@ -1,5 +1,6 @@
 ---
 title: 'golang_struct_interface嵌套传参和多态'
+date: 2017-09-01 17:54:46
 tags: golang
 ---
 

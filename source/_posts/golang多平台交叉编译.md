@@ -1,5 +1,6 @@
 ---
 title: 'golang多平台交叉编译'
+date: 2017-08-01 17:54:46
 tags: golang
 ---
 

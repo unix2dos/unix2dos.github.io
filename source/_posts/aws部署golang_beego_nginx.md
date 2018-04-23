@@ -1,5 +1,6 @@
 ---
 title: 'aws部署golang_beego_nginx'
+date: 2018-01-29 17:54:46
 tags:
 - golang
 - linux

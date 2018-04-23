@@ -1,6 +1,7 @@
 
 ---
 title: 'mosh解决ssh远程连接延迟'
+date: 2017-04-06 17:54:46
 tags: linux
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: 'rsync同步文件'
+date: 2017-04-18 17:54:46
 tags: linux
 ---
 
