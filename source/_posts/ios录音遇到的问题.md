@@ -26,12 +26,15 @@ Basically you add a property listener to get route change events:
 录音使用AVAudioSession播放的时候, 无法识别Iphone手机的物理静音开关,需要修改下模式
 
 
->[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+```
+[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+```
 
 修改成
         
-
->[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategorySoloAmbient error:nil];//监听静音
+```
+[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategorySoloAmbient error:nil];//监听静音
+```
 
 
 
