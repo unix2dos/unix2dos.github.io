@@ -27,6 +27,12 @@ tag: hexo
 	hexo clean --config source/_data/next.yml && hexo g -d --config source/_data/next.yml
 	```
 	
+### 不渲染 README
+
+将skip_render参数的值设置上。skip_render: README.md
+
+使用hexo d 命令就不会在渲染 README.md 这个文件了。
+	
 ### github pages
 
 + 建立带用户名的仓库 unix2dos.github.io
@@ -49,7 +55,18 @@ npm install hexo --save
 npm install hexo-deployer-git --save
 ```
 
-### 问题
+### 问题解决方案
 
 + 生成页面如果空白的话, 换个主题再来一次
 
+### 常用命令
+
+```
+hexo clean --config source/_data/next.yml && hexo g -d --config source/_data/next.yml
+hexo algolia  --config source/_data/next.yml 
+
+---
+title: '基础'
+---
+<!-- more -->
+```
