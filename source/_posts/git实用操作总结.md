@@ -213,3 +213,9 @@ git reset --hard <hash>  (--hard强制内容回归,如果修改内容保留不�
 git rm --cached application.log
 ```
 
+
+### git lg 完美显示
+
+```
+git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+```
