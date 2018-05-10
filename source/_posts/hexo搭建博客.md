@@ -66,7 +66,10 @@ hexo clean --config source/_data/next.yml && hexo g -d --config source/_data/nex
 hexo algolia  --config source/_data/next.yml 
 
 ---
-title: '基础'
+title: git实用操作总结
+date: 2016-12-16 11:17:48
+tags: git
 ---
+
 <!-- more -->
 ```

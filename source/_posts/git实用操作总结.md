@@ -171,6 +171,20 @@ git tag -s <tagname> -m "blablabla..."可以用PGP签名标签；
 命令git push origin :refs/tags/<tagname>可以删除一个远程标签。
 
 
+### git 合并 commit
+
+```
+git rebase -i "合并前一个版本号"// 合并前一个 版本号
+
+	pick 是用commit
+	squash 是合并前一个
+
+:wq 退出修改合并后的 commit log
+
+git rebase --abort 如果出现失误来撤销
+```
+
+
 ### github fork后更新源仓库的代码
 
 ```bash
@@ -180,6 +194,12 @@ git fetch upstream
 git merge upstream/master
 ```
 
+### git 增加 远程仓库 orgin(名字不一样)
+
+```
+git remote add github git@github.com:unix2dos/dht.git
+git push github master
+```
 
 ### git撤销操作
 
