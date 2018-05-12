@@ -791,22 +791,22 @@ calendar:
 # Algolia Search
 # See: https://github.com/theme-next/hexo-theme-next/blob/master/docs/ALGOLIA-SEARCH.md
 # Dependencies: https://github.com/theme-next/theme-next-algolia-instant-search
-algolia:
-  applicationID:  QXGFOAQS6S
-  apiKey: ae308abf6d4ca862cda81c706d174d77
-  adminApiKey:  03a0650ecd0ead0dfd9031178da3f591
-  indexName:  liuwei
-  chunkSize:  5000
-
-algolia_search:
-  enable: false
-  hits:
-    per_page: 10
-  labels:
-    input_placeholder: Search for Posts
-    hits_empty: "We didn't find any results for the search: ${query}"
-    hits_stats: "${hits} results found in ${time} ms"
-
+#algolia:
+#  applicationID:  QXGFOAQS6S
+#  apiKey: ae308abf6d4ca862cda81c706d174d77
+#  adminApiKey:  03a0650ecd0ead0dfd9031178da3f591
+#  indexName:  liuwei
+#  chunkSize:  5000
+#
+#algolia_search:
+#  enable: false
+#  hits:
+#    per_page: 10
+#  labels:
+#    input_placeholder: Search for Posts
+#    hits_empty: "We didn't find any results for the search: ${query}"
+#    hits_stats: "${hits} results found in ${time} ms"
+#
 # Local search
 # Dependencies: https://github.com/theme-next/hexo-generator-searchdb
 local_search:

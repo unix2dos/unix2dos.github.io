@@ -62,7 +62,7 @@ npm install hexo-deployer-git --save
 
 ### 绑定域名
 
-+ CNAME 放到 source 文件夹
++ CNAME 放到 source 文件夹, 里面写上xuanyueting.com
 + 向你的 DNS 配置中添加 3 条记录
 
 ```
