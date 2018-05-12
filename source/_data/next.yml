@@ -818,6 +818,11 @@ local_search:
   top_n_per_article: 1
   # unescape html strings to the readable one
   unescape: false
+search:
+  path: search.xml
+  field: post
+  format: html
+  limit: 10000
 
 # Bookmark Support
 # Dependencies: https://github.com/theme-next/theme-next-bookmark

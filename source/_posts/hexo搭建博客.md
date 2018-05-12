@@ -58,6 +58,7 @@ npm install hexo-deployer-git --save
 ### 问题解决方案
 
 + 生成页面如果空白的话, 换个主题再来一次
++ local search 一直 loading 看错误信息, 解决非 utf-8问题
 
 
 ### 绑定域名
