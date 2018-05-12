@@ -201,6 +201,13 @@ git remote add github git@github.com:unix2dos/dht.git
 git push github master
 ```
 
+### git 分支修改名字
+
+```
+git branch -m 原名 新名
+```
+
+
 ### git撤销操作
 
 + git push 后撤销

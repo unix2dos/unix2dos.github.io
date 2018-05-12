@@ -59,6 +59,19 @@ npm install hexo-deployer-git --save
 
 + 生成页面如果空白的话, 换个主题再来一次
 
+
+### 绑定域名
+
++ CNAME 放到 source 文件夹
++ 向你的 DNS 配置中添加 3 条记录
+
+```
+@          A             192.30.252.153
+@          A             192.30.252.154
+www      CNAME           username.github.io.
+```
+
+
 ### 常用命令
 
 ```
