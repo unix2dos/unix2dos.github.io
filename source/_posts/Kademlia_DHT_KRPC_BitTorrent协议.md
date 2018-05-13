@@ -279,7 +279,7 @@ KRPC 协议是由 bencode 编码组成的一个简单的 RPC 结构，他使用 
 所有的请求都包含一个关键字 id，它包含了请求节点的节点 ID。所有的回复也包含关键字id，它包含了回复节点的节点 ID
  
  
-<font color="red"> `ping`: 检测节点是否可达，请求包含一个参数id，代表该节点的nodeID。对应的回复也应该包含回复者的nodeID </font>
++ <font color="red"> ping: 检测节点是否可达，请求包含一个参数id，代表该节点的nodeID。对应的回复也应该包含回复者的nodeID </font>
 
 ```
 ping Query = {"t":"aa", "y":"q", "q":"ping", "a":{"id":"abcdefghij0123456789"}}
@@ -289,7 +289,7 @@ Response = {"t":"aa", "y":"r", "r": {"id":"mnopqrstuvwxyz123456"}}
 bencoded = d1:rd2:id20:mnopqrstuvwxyz123456e1:t2:aa1:y1:re
 ```
  
-<font color="red"> `find_node`: find_node 被用来查找给定 ID 的DHT节点的联系信息，该请求包含两个参数id(代表该节点的nodeID)和target。回复中应该包含被请求节点的路由表中距离target最接近的K个nodeID以及对应的nodeINFO</font>
++ <font color="red"> find_node: find_node 被用来查找给定 ID 的DHT节点的联系信息，该请求包含两个参数id(代表该节点的nodeID)和target。回复中应该包含被请求节点的路由表中距离target最接近的K个nodeID以及对应的nodeINFO</font>
 	
 ```
 find_node Query = {"t":"aa", "y":"q", "q":"find_node", "a": {"id":"abcdefghij0123456789", "target":"mnopqrstuvwxyz123456"}}
@@ -316,7 +316,7 @@ find_node 请求包含 2 个参数，第一个参数是 id，包含了请求节�
 3. 被请求节点的id: 在节点的递归查询中，请求方由远及近不断询问整个链路上的节点，沿途的每个节点在返回时都要带上自己的id号
 
 	
-<font color="red"> `get_peers`: 获取 infohash 的 peers</font>
++ <font color="red"> get_peers: 获取 infohash 的 peers</font>
 
 
 1. get_peers 请求包含 2 个参数(id请求节点ID，info_hash代表torrent文件的infohash，infohash为种子文件的SHA1哈希值，也就是磁力链接的btih值)
@@ -337,7 +337,7 @@ find_node 请求包含 2 个参数，第一个参数是 id，包含了请求节�
 {"id" : "<queried nodes id>", "token" :"<opaque write token>", "nodes" : "<compact node info>"}
 ```
 	
-<font color="red"> `announce_peer`: 这个请求用来表明发出 announce_peer 请求的节点，正在某个端口下载 torrent 文件</font>
++ <font color="red"> announce_peer: 这个请求用来表明发出 announce_peer 请求的节点，正在某个端口下载 torrent 文件</font>
 
 announce_peer 包含 4 个参数
 	
@@ -441,11 +441,9 @@ DHT 由节点组成，它存储了 peer 的位置。BitTorrent 客户端包含�
 6. 当桶装满了好节点，新的节点会被丢弃。一旦桶中的某个节点变为了坏的节点，那么我们就用新的节点来替换这个坏的节点。如果桶中有在 15 分钟内都没有活跃过的节点，我们将这样的节点视为可疑的节点，这时我们向最久没有联系的节点发送 ping。如果被 ping 的节点给出了回复，那么我们向下一个可疑的节点发送 ping，不断这样循环下去，直到有某一个节点没有给出 ping 的回复，或者当前桶中的所有节点都是好的(也就是所有节点都不是可疑节点，他们在过去 15 分钟内都有活动)。如果桶中的某个节点没有对我们的 ping 给出回复，我们最好再试一次(再发送一次 ping，因为这个节点也许仍然是活跃的，但由于网络拥塞，所以发生了丢包现象，注意 DHT 的包都是 UDP 的)，而不是立即丢弃这个节点或者直接用新节点来替代它。这样，我们得路由表将充满稳定的长时间在线的节点 
 
 7. 每个桶都应该维持一个 lastchange 字段来表明桶中节点的"新鲜"度。当桶中的节点被 ping 并给出了回复，或者一个节点被加入到了桶，或者一个节点被新的节点所替代，桶的 lastchange 字段都应当被更新。如果一个桶的 lastchange 在过去的 15 分钟内都没有变化，那么我们将更新它。这个更新桶操作是这样完成的
-    
-    1) 从这个桶所覆盖的范围中随机选择一个 ID，并对这个 ID 执行 find_nodes 查找操作。
-    
-    
-    2) 常常收到请求的节点通常不需要常常更新自己的桶, 反之，不常常收到请求的节点常常需要周期性的执行更新所有桶的操作，这样才能保证当我们用到 DHT 的时候，里面有足够多的好的节点 
+
+	+ 从这个桶所覆盖的范围中随机选择一个 ID，并对这个 ID 执行 find_nodes 查找操作。
+	+ 常常收到请求的节点通常不需要常常更新自己的桶, 反之，不常常收到请求的节点常常需要周期性的执行更新所有桶的操作，这样才能保证当我们用到 DHT 的时候，里面有足够多的好的节点 
 
 8. 在插入第一个节点到路由表并启动服务后，这个节点应试着查找 DHT 中离自己更近的节点，这个查找工作是通过不断的发出 find_node 消息给越来越近的节点来完成的，当不能找到更近的节点时，这个扩散工作就结束了
 
@@ -526,4 +524,4 @@ BT原生依靠Tracker，后来才加入dht
 # 4. uTP协议 
 
 
-//TODO:111111
+//TODO:
