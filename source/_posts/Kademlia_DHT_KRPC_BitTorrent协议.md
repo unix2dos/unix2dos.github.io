@@ -279,97 +279,98 @@ KRPC 协议是由 bencode 编码组成的一个简单的 RPC 结构，他使用 
 所有的请求都包含一个关键字 id，它包含了请求节点的节点 ID。所有的回复也包含关键字id，它包含了回复节点的节点 ID
  
  
- 1. `ping`: 检测节点是否可达，请求包含一个参数id，代表该节点的nodeID。对应的回复也应该包含回复者的nodeID
+<font color="red"> `ping`: 检测节点是否可达，请求包含一个参数id，代表该节点的nodeID。对应的回复也应该包含回复者的nodeID </font>
 
- ```
-	ping Query = {"t":"aa", "y":"q", "q":"ping", "a":{"id":"abcdefghij0123456789"}}
-	bencoded = d1:ad2:id20:abcdefghij0123456789e1:q4:ping1:t2:aa1:y1:qe
+```
+ping Query = {"t":"aa", "y":"q", "q":"ping", "a":{"id":"abcdefghij0123456789"}}
+bencoded = d1:ad2:id20:abcdefghij0123456789e1:q4:ping1:t2:aa1:y1:qe
 	
-	Response = {"t":"aa", "y":"r", "r": {"id":"mnopqrstuvwxyz123456"}}
-	bencoded = d1:rd2:id20:mnopqrstuvwxyz123456e1:t2:aa1:y1:re
- ```
+Response = {"t":"aa", "y":"r", "r": {"id":"mnopqrstuvwxyz123456"}}
+bencoded = d1:rd2:id20:mnopqrstuvwxyz123456e1:t2:aa1:y1:re
+```
  
- 2. `find_node`: find_node 被用来查找给定 ID 的DHT节点的联系信息，该请求包含两个参数id(代表该节点的nodeID)和target。回复中应该包含被请求节点的路由表中距离target最接近的K个nodeID以及对应的nodeINFO
+<font color="red"> `find_node`: find_node 被用来查找给定 ID 的DHT节点的联系信息，该请求包含两个参数id(代表该节点的nodeID)和target。回复中应该包含被请求节点的路由表中距离target最接近的K个nodeID以及对应的nodeINFO</font>
 	
-	```
-	find_node Query = {"t":"aa", "y":"q", "q":"find_node", "a": {"id":"abcdefghij0123456789", "target":"mnopqrstuvwxyz123456"}}
-	# "id" containing the node ID of the querying node, and "target" containing the ID of the node sought by the queryer. 
-	bencoded = d1:ad2:id20:abcdefghij01234567896:target20:mnopqrstuvwxyz123456e1:q9:find_node1:t2:aa1:y1:qe
+```
+find_node Query = {"t":"aa", "y":"q", "q":"find_node", "a": {"id":"abcdefghij0123456789", "target":"mnopqrstuvwxyz123456"}}
+# "id" containing the node ID of the querying node, and "target" containing the ID of the node sought by the queryer. 
+bencoded = d1:ad2:id20:abcdefghij01234567896:target20:mnopqrstuvwxyz123456e1:q9:find_node1:t2:aa1:y1:qe
 	
-	Response = {"t":"aa", "y":"r", "r": {"id":"0123456789abcdefghij", "nodes": "def456..."}}
-	bencoded = d1:rd2:id20:0123456789abcdefghij5:nodes9:def456...e1:t2:aa1:y1:re
-	```
+Response = {"t":"aa", "y":"r", "r": {"id":"0123456789abcdefghij", "nodes": "def456..."}}
+bencoded = d1:rd2:id20:0123456789abcdefghij5:nodes9:def456...e1:t2:aa1:y1:re
+```
 
-	find_node 请求包含 2 个参数，第一个参数是 id，包含了请求节点的ID。第二个参数是 target，包含了请求者正在查找的节点的ID
+find_node 请求包含 2 个参数，第一个参数是 id，包含了请求节点的ID。第二个参数是 target，包含了请求者正在查找的节点的ID
 	
-	当一个节点接收到了 find_node 的请求，他应该给出对应的回复，回复中包含 2 个关键字 id(被请求节点的id) 和 nodes，nodes 是字符串类型，包含了被请求节点的路由表中最接近目标节点的 K(8) 个最接近的节点的联系信息(被请求方每次都统一返回最靠近目标节点的节点列表K捅)
+当一个节点接收到了 find_node 的请求，他应该给出对应的回复，回复中包含 2 个关键字 id(被请求节点的id) 和 nodes，nodes 是字符串类型，包含了被请求节点的路由表中最接近目标节点的 K(8) 个最接近的节点的联系信息(被请求方每次都统一返回最靠近目标节点的节点列表K捅)
 	
-	```
-	参数: {"id" : "<querying nodes id>", "target" : "<id of target node>"}
+```
+参数: {"id" : "<querying nodes id>", "target" : "<id of target node>"}
 回复: {"id" : "<queried nodes id>", "nodes" : "<compact node info>"}
-	```
+```
+
+这里要明确3个概念:
 	
-	这里要明确3个概念
-	
-	```
-	1. 请求方的id: 发起这个DHT节点寻址的节点自身的ID，可以类比DNS查询中的客户端
+1. 请求方的id: 发起这个DHT节点寻址的节点自身的ID，可以类比DNS查询中的客户端
 2. 目标target id: 需要查询的目标ID号，可以类比于DNS查询中的URL，这个ID在整个递归查询中是一直不变的
 3. 被请求节点的id: 在节点的递归查询中，请求方由远及近不断询问整个链路上的节点，沿途的每个节点在返回时都要带上自己的id号
-	```
-	
-3. `get_peers`: 获取 infohash 的 peers
 
-	```
-	1. get_peers 请求包含 2 个参数(id请求节点ID，info_hash代表torrent文件的infohash，infohash为种子文件的SHA1哈希值，也就是磁力链接的btih值)
+	
+<font color="red"> `get_peers`: 获取 infohash 的 peers</font>
+
+
+1. get_peers 请求包含 2 个参数(id请求节点ID，info_hash代表torrent文件的infohash，infohash为种子文件的SHA1哈希值，也就是磁力链接的btih值)
+
 2. response get_peer: 
-    1) 如果被请求的节点有对应 info_hash 的 peers，他将返回一个关键字 values，这是一个列表类型的字符串。每一个字符串包含了 "CompactIP-address/portinfo" 格式的 peers 信息(即对应的机器ip/port信息)(peer的info信息和DHT节点的info信息是一样的)
-    2) 如果被请求的节点没有这个 infohash 的 peers，那么他将返回关键字 nodes(需要注意的是，如果该节点没有对应的infohash信息，而只是返回了nodes，则请求方会认为该节点是一个"可疑节点"，则会从自己的路由表K捅中删除该节点)，这个关键字包含了被请求节点的路由表中离 info_hash 最近的 K 个节点(我这里没有该节点，去别的节点试试运气)，使用 "Compactnodeinfo" 格式回复。在这两种情况下，关键字 token 都将被返回。token 关键字在今后的 annouce_peer 请求中必须要携带。token 是一个短的二进制字符串
-	```
-	
-	
-	```
-	参数: {"id" : "<querying nodes id>", "info_hash" : "<20-byte infohash of target torrent>"}
-	
-	回复: 
-	{"id" : "<queried nodes id>", "token" :"<opaque write token>", "values" : ["<peer 1 info string>", "<peer 2 info string>"]}
-	或: 	
-	{"id" : "<queried nodes id>", "token" :"<opaque write token>", "nodes" : "<compact node info>"}
-	```
-	
-4. `announce_peer`: 这个请求用来表明发出 announce_peer 请求的节点，正在某个端口下载 torrent 文件
 
-	announce_peer 包含 4 个参数
+	1) 如果被请求的节点有对应 info_hash 的 peers，他将返回一个关键字 values，这是一个列表类型的字符串。每一个字符串包含了 "CompactIP-address/portinfo" 格式的 peers 信息(即对应的机器ip/port信息)(peer的info信息和DHT节点的info信息是一样的)
+
+	2) 如果被请求的节点没有这个 infohash 的 peers，那么他将返回关键字 nodes(需要注意的是，如果该节点没有对应的infohash信息，而只是返回了nodes，则请求方会认为该节点是一个"可疑节点"，则会从自己的路由表K捅中删除该节点)，这个关键字包含了被请求节点的路由表中离 info_hash 最近的 K 个节点(我这里没有该节点，去别的节点试试运气)，使用 "Compactnodeinfo" 格式回复。在这两种情况下，关键字 token 都将被返回。token 关键字在今后的 annouce_peer 请求中必须要携带。token 是一个短的二进制字符串
+
 	
-	```
-	1. 第一个参数是 id: 包含了请求节点的 ID
-	2. 第二个参数是 info_hash: 包含了 torrent 文件的 infohash
-	3. 第三个参数是 port: 包含了整型的端口号，表明 peer 在哪个端口下载
-	4. 第四个参数数是 token: 这是在之前的 get_peers 请求中收到的回复中包含的。收到 announce_peer 请求的节点必须检查这个 token 与之前我们回复给这个节点 get_peers 的 token 是否相同(也就说，所有下载者/发布者都要参与检测新加入的发布者是否伪造了该资源，但是这个机制有一个问题，如果最开始的那个发布者就伪造，则整条链路都是一个伪造的错的资源infohash信息了)
-	如果相同，那么被请求的节点将记录发送 announce_peer 节点的 IP 和请求中包含的 port 端口号在 peer 联系信息中对应的 infohash 下，这意味着一个一个事实: 当前这个资源有一个新的peer提供者了，下一次有其他节点希望或者这个资源的时候，会把这个新的(前一次请求下载资源的节点)也当作一个peer返回给请求者，这样，资源的提供者就越来越多，资源共享速度就越来越快
-	```
+```
+参数: {"id" : "<querying nodes id>", "info_hash" : "<20-byte infohash of target torrent>"}
 	
-	一个peer正在下载某个资源，意味着该peer有能够访问到该资源的渠道，且该peer本地是有这份资源的全部或部分拷贝的，它需要向DHT网络广播announce消息，告诉其他节点这个资源的下载地址
+回复: 
+{"id" : "<queried nodes id>", "token" :"<opaque write token>", "values" : ["<peer 1 info string>", "<peer 2 info string>"]}
+或: 	
+{"id" : "<queried nodes id>", "token" :"<opaque write token>", "nodes" : "<compact node info>"}
+```
 	
-	```
-	arguments:  {"id" : "<querying nodes id>",
-	"implied_port": <0 or 1>,
-	"info_hash" : "<20-byte infohash of target torrent>",
-	"port" : <port number>,
-	"token" : "<opaque token>"}
+<font color="red"> `announce_peer`: 这个请求用来表明发出 announce_peer 请求的节点，正在某个端口下载 torrent 文件</font>
+
+announce_peer 包含 4 个参数
 	
-	response: {"id" : "<queried nodes id>"}
-	```
+```
+1. 第一个参数是 id: 包含了请求节点的 ID
+2. 第二个参数是 info_hash: 包含了 torrent 文件的 infohash
+3. 第三个参数是 port: 包含了整型的端口号，表明 peer 在哪个端口下载
+4. 第四个参数数是 token: 这是在之前的 get_peers 请求中收到的回复中包含的。收到 announce_peer 请求的节点必须检查这个 token 与之前我们回复给这个节点 get_peers 的 token 是否相同(也就说，所有下载者/发布者都要参与检测新加入的发布者是否伪造了该资源，但是这个机制有一个问题，如果最开始的那个发布者就伪造，则整条链路都是一个伪造的错的资源infohash信息了)
+如果相同，那么被请求的节点将记录发送 announce_peer 节点的 IP 和请求中包含的 port 端口号在 peer 联系信息中对应的 infohash 下，这意味着一个一个事实: 当前这个资源有一个新的peer提供者了，下一次有其他节点希望或者这个资源的时候，会把这个新的(前一次请求下载资源的节点)也当作一个peer返回给请求者，这样，资源的提供者就越来越多，资源共享速度就越来越快
+```
 	
-	报文包例子 Example Packets 
+一个peer正在下载某个资源，意味着该peer有能够访问到该资源的渠道，且该peer本地是有这份资源的全部或部分拷贝的，它需要向DHT网络广播announce消息，告诉其他节点这个资源的下载地址
 	
-	```
-	announce_peers Query = {"t":"aa", "y":"q", "q":"announce_peer", "a": {"id":"abcdefghij0123456789", "implied_port": 1, "info_hash":"mnopqrstuvwxyz123456", "port": 6881, "token": "aoeusnth"}}
-	bencoded = d1:ad2:id20:abcdefghij01234567899:info_hash20:<br />
-	mnopqrstuvwxyz1234564:porti6881e5:token8:aoeusnthe1:q13:announce_peer1:t2:aa1:y1:qe
+```
+arguments:  {"id" : "<querying nodes id>",
+"implied_port": <0 or 1>,
+"info_hash" : "<20-byte infohash of target torrent>",
+"port" : <port number>,
+"token" : "<opaque token>"}
 	
-	Response = {"t":"aa", "y":"r", "r": {"id":"mnopqrstuvwxyz123456"}}
-	bencoded = d1:rd2:id20:mnopqrstuvwxyz123456e1:t2:aa1:y1:re
-	```
+response: {"id" : "<queried nodes id>"}
+```
+	
+报文包例子 Example Packets 
+	
+```
+announce_peers Query = {"t":"aa", "y":"q", "q":"announce_peer", "a": {"id":"abcdefghij0123456789", "implied_port": 1, "info_hash":"mnopqrstuvwxyz123456", "port": 6881, "token": "aoeusnth"}}
+bencoded = d1:ad2:id20:abcdefghij01234567899:info_hash20:<br />
+mnopqrstuvwxyz1234564:porti6881e5:token8:aoeusnthe1:q13:announce_peer1:t2:aa1:y1:qe
+	
+Response = {"t":"aa", "y":"r", "r": {"id":"mnopqrstuvwxyz123456"}}
+bencoded = d1:rd2:id20:mnopqrstuvwxyz123456e1:t2:aa1:y1:re
+```
 	
 ### 0x3: 回复 Responses
 
@@ -387,3 +388,142 @@ bencoded = d1:eli201e23:A Generic Error Ocurrede1:t2:aa1:y1:ee
 
 
 # 3. BitTorrent协议
+
+BitTorrent 使用"分布式哈希表"(DHT)来为无 tracker 的种子(torrents)存储 peer 之间的联系信息。这样每个 peer 都成了 tracker。这个协议基于 Kademila 网络并且在 UDP 上实现
+
+
+```
+1. "peer" 是在一个 TCP 端口上监听的客户端/服务器，它实现了 BitTorrent 协议 
+2. "节点" 是在一个 UDP 端口上监听的客户端/服务器，它实现了 DHT(分布式哈希表) 协议 
+DHT 由节点组成，它存储了 peer 的位置。BitTorrent 客户端包含一个 DHT 节点，这个节点用来联系 DHT 中其他节点，从而得到 peer 的位置，进而通过 BitTorrent 协议下载 
+```
+
+
+每个节点有一个全局唯一的标识符，作为 "node ID"。节点 ID 是一个随机选择的 160bit(20字节) 空间，BitTorrent infohash 也使用这样的 160bit 空间。"距离"用来比较两个节点 ID 之间或者节点 ID 和 infohash 之间的"远近"(节点和节点、节点和文件之间的距离)。节点必须维护一个路由表，路由表中含有一部分其它节点的联系信息。其它节点距离自己越近时，路由表信息越详细。因此每个节点都知道 DHT 中离自己很"近"的节点的联系信息，而离自己非常远的 ID 的联系信息却知道的很少 
+在 Kademlia 网络中，距离是通过异或(XOR)计算的，结果为无符号整数。distance(A, B) = |A xor B|，值越小表示越近
+
+
+
+1. 当节点要为 torrent(种子文件) 寻找 peer(保存了目标资源的IP) 时，它将自己路由表中的节点 ID 和 torrent 的 infohash(资源HASH) 进行"距离对比"(节点和目标文件的距离)，然后向路由表中离 infohash 最近的节点发送请求，问它们正在下载这个 torrent 的 peer 的联系信息
+
+2. 因为资源HASH和节点HASH都共用一套20bytes的命名空间，所以DHT节点充当了peer节点的"代理"的工作，我们不能直接向peer节点发起资源获取请求(即使这个peer节点确实存储了我们的目标资源)，因为peer节点本身不具备处理P2P request/response能力的，我们需要借助DHT的能力，让DHT告诉我们哪个peer节点保存了我们想要的资源或者哪个DHT节点可能知道从而递归地继续去问那个DHT网络
+
+3. 如果一个被联系的节点知道下载这个 torrent 的 peer 信息，那个 peer 的联系信息将被回复给当前节点。否则，那个被联系的节点则必须回复在它的路由表中离该 torrent 的 infohash 最近的节点的联系信息，(`get_peers`)
+
+4. 最初的节点重复地请求比目标 infohash 更近的节点，直到不能再找到更近的节点为止
+
+5. 查询完了之后，客户端把自己作为一个 peer 插入到所有回复节点中离种子最近的那个节点中，这一步背后的含义是: 我之前是请求这个资源的人，我们现在获取到资源了，我在下载这个文件的同时，我也要充当一个新的peer来向其他的客户端贡献自己的文件共享，这样，当另外的其他客户端在发起新的请求的时候，DHT节点就有可能把当前客户端对应的peer返回给新的请求方，这样不断发展下去，这个资源的热度就越来越热，下载速度也越来越快(`announce_peer`)
+
+6. 请求 peer 的返回值包含一个不透明的值，称之为"令牌(token)"
+
+7. 如果一个节点宣布它所控制的 peer 正在下载一个种子(即该节点拥有该文件资源)，它必须在回复请求节点的同时，附加上对方向我们发送的最近的"令牌(token)"。这样当一个节点试图"宣布"正在下载一个种子时，被请求的节点核对令牌和发出请求的节点的 IP 地址。这是为了防止恶意的主机登记其它主机的种子。由于令牌仅仅由请求节点返回给收到令牌的同一个节点，所以没有规定他的具体实现。但是令牌必须在一个规定的时间内被接受，超时后令牌则失效。在 BitTorrent 的实现中，token 是在 IP 地址后面连接一个 secret(通常是一个随机数)，这个 secret 每五分钟改变一次，其中 token 在十分钟以内是可接受的
+
+
+这种握手验证的原理是:
+
+> 请求方生成一个随机值，跟着我的请求发给被请求方，被请求方回复的时候要带上这个随机值，那请求方就知道，你是我刚才想请求的那个人
+
+### 0x1: 路由表 Routing Table
+
+
+1. 每个节点维护一个路由表保存已知的好节点。路由表中的节点是用来作为在 DHT 中请求的起始点。路由表中的节点是在不断的向其他节点请求过程中，对方节点回复的。即DHT中的K桶中的节点，当我们请求一个目标资源的时候，我们根据HASH XOR从自己的K桶中选择最有可能知道该资源的节点发起请求，而被请求的节点也不一定知道目标资源所在的peer，这个时候被请求方会返回一个新的"它认为可能知道这个peer的节点"，请求方收到这个新的节点后，会把这个节点保存进自己的K桶内，然后继续发起请求，直到找到目标资源所在的peer为止
+
+2. 并不是我们在请求过程中收到的节点都是平等的，有的节点是好的，而另一些则不是。许多使用 DHT 协议的节点都可以发送请求并接收回复，但是不能主动回复其他节点的请求，这种节点被称之为"坏节点"
+
+3. 节点的路由表只包含已知的好节点，这很重要。好节点是指在过去的 15 分钟以内，曾经对我们的某一个请求给出过回复的节点(存活好节点)，或者曾经对我们的请求给出过一个回复(不用在15分钟以内)，并且在过去的 15 分钟给我们发送过请求。上述两种情况都可将节点视为好节点。在 15 分钟之后，对方没有上述 2种情况发生，这个节点将变为可疑的。当节点不能给我们的一系列请求给出回复时，这个节点将变为坏的。相比那些未知状态的节点，已知的好节点会被给于更高的优先级。(看源码确实是这样的)
+
+	> 这就反过来告诉我们，如果我们要做DHT嗅探，我们的嗅探器除了要能够发出FIND_NODE请求及接收返回之外，还需要能够响应其他节点发来的请求(`get_peers/announce_peer`)，这样才不会被其他节点列入"可疑"甚至"坏节点"列表中
+
+4. 路由表覆盖从 0 到 2^160 全部的节点 ID 空间。路由表又被划分为桶(bucket)，每个桶包含一部分的 ID 空间。空的路由表只有一个桶，它的 ID 范围从 min=0 到 max=2^160。当 ID 为 N 的节点插入到表中时，它将被放到 ID 范围在 min <= N < max 的 桶 中
+
+5. 空的路由表只有一个桶，所以所有的节点都将被放到这个桶中。每个桶最多只能保存 K 个节点，当前 K=8。当一个桶放满了好节点之后，将不再允许新的节点加入，除非我们自身的节点 ID 在这个桶的范围内。在这样的情况下，这个桶将被分裂为 2 个新的桶，每个新桶的范围都是原来旧桶的一半。原来旧桶中的节点将被重新分配到这两个新的桶中。如果一个新表只有一个桶，这个包含整个范围的桶将总被分裂为 2 个新的桶，每个桶的覆盖范围从 0..2^159 和 2^159..2^160  以log2N的方式不断分裂，类似于Kademlia中的K桶机制
+
+6. 当桶装满了好节点，新的节点会被丢弃。一旦桶中的某个节点变为了坏的节点，那么我们就用新的节点来替换这个坏的节点。如果桶中有在 15 分钟内都没有活跃过的节点，我们将这样的节点视为可疑的节点，这时我们向最久没有联系的节点发送 ping。如果被 ping 的节点给出了回复，那么我们向下一个可疑的节点发送 ping，不断这样循环下去，直到有某一个节点没有给出 ping 的回复，或者当前桶中的所有节点都是好的(也就是所有节点都不是可疑节点，他们在过去 15 分钟内都有活动)。如果桶中的某个节点没有对我们的 ping 给出回复，我们最好再试一次(再发送一次 ping，因为这个节点也许仍然是活跃的，但由于网络拥塞，所以发生了丢包现象，注意 DHT 的包都是 UDP 的)，而不是立即丢弃这个节点或者直接用新节点来替代它。这样，我们得路由表将充满稳定的长时间在线的节点 
+
+7. 每个桶都应该维持一个 lastchange 字段来表明桶中节点的"新鲜"度。当桶中的节点被 ping 并给出了回复，或者一个节点被加入到了桶，或者一个节点被新的节点所替代，桶的 lastchange 字段都应当被更新。如果一个桶的 lastchange 在过去的 15 分钟内都没有变化，那么我们将更新它。这个更新桶操作是这样完成的
+    
+    1) 从这个桶所覆盖的范围中随机选择一个 ID，并对这个 ID 执行 find_nodes 查找操作。
+    
+    
+    2) 常常收到请求的节点通常不需要常常更新自己的桶, 反之，不常常收到请求的节点常常需要周期性的执行更新所有桶的操作，这样才能保证当我们用到 DHT 的时候，里面有足够多的好的节点 
+
+8. 在插入第一个节点到路由表并启动服务后，这个节点应试着查找 DHT 中离自己更近的节点，这个查找工作是通过不断的发出 find_node 消息给越来越近的节点来完成的，当不能找到更近的节点时，这个扩散工作就结束了
+
+9. 路由表应当被启动工作和客户端软件保存(也就是启动的时候从客户端中读取路由表信息，结束的时候客户端软件记录到文件中)
+
+
+### 0x2: BitTorrent 协议扩展 BitTorrent Protocol Extension
+
+
+BitTorrent 协议已经被扩展为可以在通过 tracker 得到的 peer 之间互相交换节点的 UDP 端口号(也就是告诉对方我们的 DHT 服务端口号)，在这样的方式下，客户端可以通过下载普通的种子文件来自动扩展 DHT 路由表(我直接知道某个节点有某一个资源)。新安装的客户端第一次试着下载一个无 tracker 的种子时，它的路由表中将没有任何节点，这是它需要在 torrent 文件中找到联系信息
+
+
+1. peers 如果支持 DHT 协议就将 BitTorrent 协议握手消息的保留位的第 8 字节的最后一位置为 1
+2. 这时如果 peer 收到一个 handshake 表明对方支持 DHT 协议，就应该发送 PORT 消息。它由字节 0x09 开始，payload 的长度是 2 个字节，包含了这个 peer 的 DHT 服务使用的网络字节序的 UDP 端口号
+3. 当 peer 收到这样的消息时应当向对方的 IP 和消息中指定的端口号的节点发送 ping
+4. 如果收到了 ping 的回复，那么应当使用上述的方法将新节点的联系信息加入到路由表中 
+
+### 0x3: Torrent 文件扩展 Torrent File Extensions(种子文件)
+
+一个无 tracker 的 torrent 文件字典不包含 announce 关键字，而使用 nodes 关键字来替代。这个关键字对应的内容应该设置为 torrent 创建者的路由表中 K 个最接近的节点(可供选择的)，这个关键字也可以设置为一个已知的可用节点(这意味着接收到这个种子文件的客户端能够向这些节点发出解析请求，询问资源的所在位置)，比如这个 torrent 文件的创建者.
+
+请不要自动加入 router.bittorrent.com 到 torrent 文件中或者自动加入这个节点到客户端路由表中。这里可以仔细思考一下，这么做还有另一个好处，这个对等网络可以保持无中心化，对于外部新加入的新节点来说，它可以不用通过"中心引导节点"来加入网络，隐藏了"中心引导节点"的存在，增强了对等网络的隐蔽性
+
+
+bt 种子文件是使用 bencode 编码的，整个文件就 dictionary，包含以下键
+
+```
+1. info(dictinary): 必选, 表示该bt种子文件的文件信息 
+    1) 文件信息包括文件的公共部分
+        1.1) piece length(integer): 必选, 每一数据块的长度
+        1.2) pieces(string): 必选, 所有数据块的 SHA1 校验值
+        1.3) publisher(string):    可选, 发布者
+        1.4) publisher.utf-8(string): 可选, 发布者的 UTF-8 编码
+        1.5) publisher-url(string): 可选, 发布者的 URL
+        1.6) publisher-url.utf-8(string): 可选, 发布者的 URL 的 UTF-8 编码
+    2) 如果 bt 种子包含的是单个文件，包含以下内容
+        2.1) name(string): 必选, 推荐的文件名称
+        2.2) name.utf-8(string): 可选, 推荐的文件名称的 UTF-8 编码
+        2.3) length(int): 必选，文件的长度单位是字节
+    3) 如果是多文件，则包含以下部分:
+        3.1) name(string): 必选, 推荐的文件夹名称
+        3.2) name.utf-8(string): 可选, 推荐的文件名称的 UTF-8 编码
+        3.3) files(list): 必选, 文件列表，每个文件列表下面是包括每一个文件的信息，文件信息是个字典 
+    4) 文件字典
+        4.1) length(int): 必选，文件的长度单位是字节
+        4.2) path(string): 必选，文件名称，包含文件夹在内
+        4.3) path.utf-8(string): 必选，文件名称 UTF-8 表示，包含文件夹在内
+        4.4) filehas(string): 可选，文件hash
+        4.5) ed2k(string): 可选, ed2k 信息 
+
+2. announce(string): 必选, tracker 服务器的地址
+3. announce-list(list): 可选, 可选的 tracker 服务器地址
+4. creation date(interger): 必选, 文件创建时间
+5. comment(string): 可选, bt 文件注释
+6. created by(string): 可选，文件创建者
+```
+
+<font color="red">pieces是一个字符串，它的长度是20的倍数，每一段20个字符表示对应文件块的sha1 hash值。</font>
+
+
+
+
+这里要特别注意一点：磁力链接的infohash也是根据info字段来计算的，info字段的pieces为每个数据块的校验值，其作用是验证下载下来的文件是否正确，如果下载下来的文件块计算出来的SHA1值和pieces中的SHA1校验值不一致，该数据块要重新下载。 所以，我们可以看出根据磁力链接下载文件是分成两个步骤的
+
+1. 先根据infohash下载种子文件的info字段，种子文件并不是必须的，但是info字段却必不可少
+2. 然后根据infohash下载源文件，将下载的每一个数据块和info中的对应的SHA1校验码进行比较，不一致重新下载该数据块
+
+需要注意的是
+
+1. 一般的种子文件会包含announce，也就是tracker服务器的地址(trackerless是BTTorrent的趋势)
+2. 如果没有tracker服务器，文件中可能会包含nodes，nodes是存有种子信息的peer节点，这样的种子文件就是trackerless torrent。如果有nodes客户端直接从nodes获取种子信息
+3. <font color="red">而从DHT网络中下载下来的种子文件既没有annouce也没有nodes，客户端只能通过info字段计算出hashinfo，再从bootstrap node节点开始在DHT网络中寻找种子信息</font>
+
+
+BT原生依靠Tracker，后来才加入dht
+
+
+# 4. uTP协议 
+
+
+//TODO:111111

@@ -65,56 +65,59 @@ TLS 1.2为SSL 3.3。
 
 + 安装工具certbot
 
-	```
-	git clone https://github.com/certbot/certbot
-	cd certbot
-	chmod +x certbot-auto
+```
+git clone https://github.com/certbot/certbot
+cd certbot
+chmod +x certbot-auto
 	
-	# certbot-auto 即为自动化脚本工具, 他会判断你的服务是nginx还是apache, 然后执行对应逻辑
-	./certbot-auto --help
-	```
+# certbot-auto 即为自动化脚本工具, 他会判断你的服务是nginx还是apache, 然后执行对应逻辑
+./certbot-auto --help
+```
 
 + 生成证书
 
-	```
-	# webroot代表webroot根目录模式, certonly代表只生成证书 邮箱亲测没啥大用, 域名一定要和自己要申请证书的域名一致
-	./certbot-auto certonly --webroot --agree-tos -v -t --email 你的邮箱 -w 服务器根目录 -d 你要申请的域名
+```
+# webroot代表webroot根目录模式, certonly代表只生成证书 邮箱亲测没啥大用, 域名一定要和自己要申请证书的域名一致
+./certbot-auto certonly --webroot --agree-tos -v -t --email 你的邮箱 -w 服务器根目录 -d 你要申请的域名
 	
 	
-	# 实际如下
-	./certbot-auto certonly --webroot --agree-tos -v -t --email levonfly@gmail.com -w /var/www/html/ -d a.xuanyueting.com
-	```
+# 实际如下
+./certbot-auto certonly --webroot --agree-tos -v -t --email levonfly@gmail.com -w /var/www/html/ -d a.xuanyueting.com
+```
 	
-	> 然后会在/etc/letsencrypt/目录下生成相关文件, 你所需要的证书其实是在/etc/letsencrypt/live/a.xuanyueting.com/目录中 `fullchain.pem`可以看作是证书公钥, `privkey.pem`是证书私钥, 是我们下面需要使用到的两个文件
+
+然后会在/etc/letsencrypt/目录下生成相关文件, 你所需要的证书其实是在/etc/letsencrypt/live/a.xuanyueting.com/目录中 
+
+`fullchain.pem`可以看作是证书公钥, `privkey.pem`是证书私钥, 是我们下面需要使用到的两个文件
 
 
 + nginx 配置支持 https
 
-	```
-	server {
-        listen 80 default_server;
-        listen [::]:80 default_server;
-        rewrite ^ https://$http_host$request_uri? permanent; #https 跳转到 https
-	}
+```
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    rewrite ^ https://$http_host$request_uri? permanent; #https 跳转到 https
+}
 
 
-	server {
- 		  listen 443 ssl default_server;
-        listen [::]:443 ssl default_server;
-        ssl_certificate "/etc/letsencrypt/live/a.xuanyueting.com/fullchain.pem";
-        ssl_certificate_key "/etc/letsencrypt/live/a.xuanyueting.com/privkey.pem";
-        
-        root /var/www/html;
-        ....
-    }
-	```
+server {
+	  listen 443 ssl default_server;
+    listen [::]:443 ssl default_server;
+    ssl_certificate "/etc/letsencrypt/live/a.xuanyueting.com/fullchain.pem";
+    ssl_certificate_key "/etc/letsencrypt/live/a.xuanyueting.com/privkey.pem";
+    
+    root /var/www/html;
+    ....
+}
+```
 
 + 重启 nginx 验证
 	
-	```
-	sudo service nginx restart
-	```
-	访问 a.xuanyueting.com, 会发现出现了小绿锁
+```
+sudo service nginx restart
+```
+访问 a.xuanyueting.com, 会发现出现了小绿锁
 
 
 
@@ -125,63 +128,62 @@ TLS 1.2为SSL 3.3。
 
 + 生成私钥和证书
 
-	```
-	openssl genrsa -out server.key 2048 //生成私钥
-	openssl req -new -x509 -key server.key -out server.pem -days 3650 //生成证书
-	```
+```
+openssl genrsa -out server.key 2048 //生成私钥
+openssl req -new -x509 -key server.key -out server.pem -days 3650 //生成证书
+```
 	
-+ example
++ server.go
 
-	```
-	package main
+```
+package main
 	
-	import (
-		"fmt"
-		"net/http"
-	)
+import (
+	"fmt"
+	"net/http"
+)
 	
-	func handler(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Hi, This is an example of https service in golang!")
-	}
+func handler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hi, This is an example of https service in golang!")
+}
 	
-	func main() {
-		http.HandleFunc("/", handler)
-		http.ListenAndServeTLS(":8081", "server.pem", "server.key", nil)
-	}
+func main() {
+	http.HandleFunc("/", handler)
+	http.ListenAndServeTLS(":8081", "server.pem", "server.key", nil)
+}
 	
-	```
+```
 
-+ 访问
-	通过浏览器访问：https://localhost:8081 会出现您的连接不是私密连接, 因为我们使用的是自签发的数字证书
+通过浏览器访问：https://localhost:8081 会出现您的连接不是私密连接, 因为我们使用的是自签发的数字证书
 	
 
 + 客户端访问
 
-	```
-	package main
+```
+package main
 	
-	import (
-		"crypto/tls"
-		"fmt"
-		"io/ioutil"
-		"net/http"
-	)
+import (
+	"crypto/tls"
+	"fmt"
+	"io/ioutil"
+	"net/http"
+)
 	
-	func main() {
-		//通过设置tls.Config的InsecureSkipVerify为true，client将不再对服务端的证书进行校验。
-		ts := &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}} 
-		client := &http.Client{Transport: ts}
+func main() {
+	//通过设置tls.Config的InsecureSkipVerify为true，client将不再对服务端的证书进行校验。
+	ts := &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}} 
+	client := &http.Client{Transport: ts}
 	
-		resp, err := client.Get("https://localhost:8081")
-		if err != nil {
-			fmt.Println("error:", err)
-			return
-		}
-		defer resp.Body.Close()
-		body, err := ioutil.ReadAll(resp.Body)
-		fmt.Println(string(body))
+	resp, err := client.Get("https://localhost:8081")
+	if err != nil {
+		fmt.Println("error:", err)
+		return
 	}
-	```
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	fmt.Println(string(body))
+}
+```
 
 
 ### 对服务端数字证书进行验证
@@ -190,186 +192,173 @@ TLS 1.2为SSL 3.3。
 
 - 首先我们来建立我们自己的CA，需要生成一个CA私钥和一个CA的数字证书:
 	
-	```
-	openssl genrsa -out ca.key 2048
+```
+openssl genrsa -out ca.key 2048
 	
-	openssl req -x509 -new -nodes -key ca.key -subj "/CN=tonybai.com" -days 5000 -out ca.crt
-	```
+openssl req -x509 -new -nodes -key ca.key -subj "/CN=tonybai.com" -days 5000 -out ca.crt
+```
 
 - 接下来，生成server端的私钥，生成数字证书请求，并用我们的ca私钥签发server的数字证书：
 
-	```
-	openssl genrsa -out server.key 2048
+```
+openssl genrsa -out server.key 2048
 	
-	openssl req -new -key server.key -subj "/CN=localhost" -out server.csr
+openssl req -new -key server.key -subj "/CN=localhost" -out server.csr
 	
-	openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt -days 5000
-	```
+openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt -days 5000
+```
 	
 - 现在我们的工作目录下有如下一些私钥和证书文件：
 
-	```
-	CA:
-	私钥文件 ca.key
-	数字证书 ca.crt
+```
+CA:
+私钥文件 ca.key
+数字证书 ca.crt
 
-	Server:
-   私钥文件 server.key
-   数字证书 server.crt
-	```
+Server:
+私钥文件 server.key
+数字证书 server.crt
+```
 
 + 客户端验证服务端数字证书
 
-	```
-	package main
+```
+package main
 	
-	import (
-		"crypto/tls"
-		"crypto/x509"
-		"fmt"
-		"io/ioutil"
-		"net/http"
-	)
+import (
+	"crypto/tls"
+	"crypto/x509"
+	"fmt"
+	"io/ioutil"
+	"net/http"
+)
 	
-	func main() {
+func main() {
 	
-		pool := x509.NewCertPool()
-		caCrt, err := ioutil.ReadFile("ca.crt")
-		if err != nil {
-			fmt.Println("ReadFile err:", err)
-			return
-		}
-		pool.AppendCertsFromPEM(caCrt)
-	
-		ts := &http.Transport{
-			TLSClientConfig: &tls.Config{
-				RootCAs:            pool,
-				InsecureSkipVerify: false,
-			},
-		}
-		client := &http.Client{Transport: ts}
-	
-		resp, err := client.Get("https://localhost:8081")
-		if err != nil {
-			fmt.Println("error:", err)
-			return
-		}
-		defer resp.Body.Close()
-		body, err := ioutil.ReadAll(resp.Body)
-		fmt.Println(string(body))
+	pool := x509.NewCertPool()
+	caCrt, err := ioutil.ReadFile("ca.crt")
+	if err != nil {
+		fmt.Println("ReadFile err:", err)
+		return
 	}
+	pool.AppendCertsFromPEM(caCrt)
 	
-	```
+	ts := &http.Transport{
+		TLSClientConfig: &tls.Config{
+			RootCAs:            pool,
+			InsecureSkipVerify: false,
+		},
+	}
+	client := &http.Client{Transport: ts}
+	
+	resp, err := client.Get("https://localhost:8081")
+	if err != nil {
+		fmt.Println("error:", err)
+		return
+	}
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	fmt.Println(string(body))
+}
+```
 
 
 ### 对客户端的证书进行校验(双向证书校验）
 
 + 要对客户端数字证书进行校验，首先客户端需要先有自己的证书。
 
-	```
-	openssl genrsa -out client.key 2048
+```
+openssl genrsa -out client.key 2048
 	
-	openssl req -new -key client.key -subj "/CN=tonybai_cn" -out client.csr
+openssl req -new -key client.key -subj "/CN=tonybai_cn" -out client.csr
 	
-	openssl x509 -req -in client.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out client.crt -days 5000
-	```
+openssl x509 -req -in client.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out client.crt -days 5000
+```
 
 + 首先server端需要要求校验client端的数字证书，并且加载用于校验数字证书的ca.crt，因此我们需要对server进行更加灵活的控制：
 
-	```
-	package main
+```
+package main
 	
-	import (
-		"crypto/tls"
-		"crypto/x509"
-		"fmt"
-		"io/ioutil"
-		"net/http"
-	)
+import (
+	"crypto/tls"
+	"crypto/x509"
+	"fmt"
+	"io/ioutil"
+	"net/http"
+)
 	
-	func handler(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Hi, This is an example of https service in golang!")
+func handler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hi, This is an example of https service in golang!")
+}
+	
+func main() {
+	pool := x509.NewCertPool()
+	caCrt, err := ioutil.ReadFile("ca.crt")
+	if err != nil {
+		fmt.Println("ReadFile err:", err)
+		return
+	}
+	pool.AppendCertsFromPEM(caCrt)
+	
+	s := &http.Server{
+		Addr:    ":8081",
+		Handler: http.HandlerFunc(handler),
+		TLSConfig: &tls.Config{
+			ClientCAs:  pool,
+			ClientAuth: tls.RequireAndVerifyClientCert, //强制校验client端证书
+		},
 	}
 	
-	func main() {
-		pool := x509.NewCertPool()
-		caCrt, err := ioutil.ReadFile("ca.crt")
-		if err != nil {
-			fmt.Println("ReadFile err:", err)
-			return
-		}
-		pool.AppendCertsFromPEM(caCrt)
-	
-		s := &http.Server{
-			Addr:    ":8081",
-			Handler: http.HandlerFunc(handler),
-			TLSConfig: &tls.Config{
-				ClientCAs:  pool,
-				ClientAuth: tls.RequireAndVerifyClientCert, //强制校验client端证书
-			},
-		}
-	
-		s.ListenAndServeTLS("server.crt", "server.key")
-	}
-	```
+	s.ListenAndServeTLS("server.crt", "server.key")
+}
+```
 
 + client端变化也很大，需要加载client.key和client.crt用于server端连接时的证书校验：
 
-	```
-	package main
+```
+package main
 	
-	import (
-		"crypto/tls"
-		"crypto/x509"
-		"fmt"
-		"io/ioutil"
-		"net/http"
-	)
+import (
+	"crypto/tls"
+	"crypto/x509"
+	"fmt"
+	"io/ioutil"
+	"net/http"
+)
 	
-	func main() {
+func main() {
 	
-		pool := x509.NewCertPool()
-		caCrt, err := ioutil.ReadFile("ca.crt")
-		if err != nil {
-			fmt.Println("ReadFile err:", err)
-			return
-		}
-		pool.AppendCertsFromPEM(caCrt)
-	
-		cliCrt, err := tls.LoadX509KeyPair("client.crt", "client.key")
-		if err != nil {
-			fmt.Println("Loadx509keypair err:", err)
-			return
-		}
-	
-		ts := &http.Transport{
-			TLSClientConfig: &tls.Config{
-				RootCAs:            pool, //client端是 RootCAs
-				Certificates:       []tls.Certificate{cliCrt},
-				InsecureSkipVerify: false,
-			},
-		}
-		client := &http.Client{Transport: ts}
-	
-		resp, err := client.Get("https://localhost:8081")
-		if err != nil {
-			fmt.Println("error:", err)
-			return
-		}
-		defer resp.Body.Close()
-		body, err := ioutil.ReadAll(resp.Body)
-		fmt.Println(string(body))
+	pool := x509.NewCertPool()
+	caCrt, err := ioutil.ReadFile("ca.crt")
+	if err != nil {
+		fmt.Println("ReadFile err:", err)
+		return
 	}
-	```
-
-
-
-
-
-
-
-
-
-
-
-
+	pool.AppendCertsFromPEM(caCrt)
+	
+	cliCrt, err := tls.LoadX509KeyPair("client.crt", "client.key")
+	if err != nil {
+		fmt.Println("Loadx509keypair err:", err)
+		return
+	}
+	
+	ts := &http.Transport{
+		TLSClientConfig: &tls.Config{
+			RootCAs:            pool, //client端是 RootCAs
+			Certificates:       []tls.Certificate{cliCrt},
+			InsecureSkipVerify: false,
+		},
+	}
+	client := &http.Client{Transport: ts}
+	
+	resp, err := client.Get("https://localhost:8081")
+	if err != nil {
+		fmt.Println("error:", err)
+		return
+	}
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	fmt.Println(string(body))
+}
+```
