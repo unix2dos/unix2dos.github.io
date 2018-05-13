@@ -80,13 +80,12 @@ TLS 1.2为SSL 3.3。
 	# webroot代表webroot根目录模式, certonly代表只生成证书 邮箱亲测没啥大用, 域名一定要和自己要申请证书的域名一致
 	./certbot-auto certonly --webroot --agree-tos -v -t --email 你的邮箱 -w 服务器根目录 -d 你要申请的域名
 	
+	
 	# 实际如下
 	./certbot-auto certonly --webroot --agree-tos -v -t --email levonfly@gmail.com -w /var/www/html/ -d a.xuanyueting.com
 	```
 	
-	然后会在`/etc/letsencrypt/`目录下生成相关文件, 你所需要的证书其实是在`/etc/letsencrypt/live/a.xuanyueting.com/`目录中
-	
-	`fullchain.pem`可以看作是证书公钥, `privkey.pem`是证书私钥, 是我们下面需要使用到的两个文件.
+	> 然后会在/etc/letsencrypt/目录下生成相关文件, 你所需要的证书其实是在/etc/letsencrypt/live/a.xuanyueting.com/目录中 `fullchain.pem`可以看作是证书公钥, `privkey.pem`是证书私钥, 是我们下面需要使用到的两个文件
 
 
 + nginx 配置支持 https

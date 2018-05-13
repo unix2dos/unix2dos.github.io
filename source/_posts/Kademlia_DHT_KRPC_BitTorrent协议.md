@@ -2,7 +2,6 @@
 title: 'Kademlia_DHT_KRPC_BitTorrent协议'
 date: 2018-05-13 22:48:16
 tags:
-- golang
 - dht
 ---
 
@@ -120,7 +119,7 @@ Kademlia路由表由多个列表组成，<font color=red>每个列表对应节�
 在Kademlia相关的论文中，列表也称为K桶，其中K是一个系统变量，如20，每一个K桶是一个最多包含K个条目的列表，也就是说，网络中所有节点的一个列表(对应于某一位，与该节点相距一个特定的距离)最多包含20个节点。随着对应的bit位变低(即对应的异或距离越来越短)(bit位越小，可能的距离MAX值就越小了，即距离目标节点的距离越近)，K桶包含的可能节点数迅速下降(K定义的是该bit对应的列表最多能存储K个条目，但不一定都是K存满，当到最低几个bit位的时候，K桶里可能就只有几个个位数的条目了)。由于网络中节点的实际数量远远小于可能ID号的数量，所以对应那些短距离的某些K桶可能一直是空的(如果异或距离只有1，可能的数量就最大只能为1，这个异或距离为1的节点如果没有发现，则对应于异或距离为1的K桶则是空的)
 
 
-![1](bt/1.png)
+![1](Kademlia_DHT_KRPC_BitTorrent协议/1.png)
 
 从这个逻辑图中可以看出
 
@@ -223,5 +222,168 @@ Kademlia可在文件分享网络中使用，通过制作Kademlia关键字搜索�
 
 # 2. KRPC 协议 KRPC Protocol
 
+KRPC是BitTorrent在Kademlia理论基础之上定义的一个通信消息格式协议，主要用来支持peer节点的获取(get_peer)和peer节点的声明(announce_peer)，以及判活心跳(ping)、节点寻址(find_node)，它在find_node的原理上和DHT是一样的，同时增加了get_peer/announce_peer/ping协议的支持
 
-//TODO:
+KRPC协议是由B编码组成的一个简单的RPC结构，有4种请求：ping、find_node、get_peers 和 announce_peer
+
+
+### 0x0: bencode编码
+
+bencode 有 4 种数据类型: string, integer, list 和 dictionary
+
+```
+1. string: 字符是以这种方式编码的: <字符串长度>:<字符串> 
+如 hell: 4:hell
+
+2. integer: 整数是一这种方式编码的: i<整数>e 
+如 1999: i1999e
+
+3. list: 列表是一这种方式编码的: l[数据1][数据2][数据3][…]e 
+如列表 [hello, world, 101]：l5:hello5:worldi101ee
+
+4. dictionary: 字典是一这种方式编码的: d[key1][value1][key2][value2][…]e，其中 key 必须是 string 而且按照字母顺序排序 
+如字典 {aa:100, bb:bb, cc:200}： d2:aai100e2:bb2:bb2:cci200ee
+```
+
+KRPC 协议是由 bencode 编码组成的一个简单的 RPC 结构，他使用 UDP 报文发送。一个独立的请求包被发出去然后一个独立的包被回复。这个协议没有重发(UDP是无连接协议)
+
+
+### 0x1: KRPC字典基本组成元素
+
+一条 KRPC 消息即可能是request，也可能是response，由一个独立的字典组成
+
+```
+1. t关键字: 每条消息都包含 t 关键字，它是一个代表了 transaction ID 的字符串。transaction ID 由请求节点产生，并且回复中要包含回显该字段(挑战-响应模型)，所以回复可能对应一个节点的多个请求。transaction ID 应当被编码为一个短的二进制字符串，比如 2 个字节，这样就可以对应 2^16 个请求
+2. y关键字: 它由一个字节组成，表明这个消息的类型。y 对应的值有三种情况
+    1) q 表示请求(请求Queries): q类型的消息它包含 2 个附加的关键字 q 和 a
+        1.1) 关键字 q: 是字符串类型，包含了请求的方法名字(get_peers/announce_peer/ping/find_node)
+        1.2) 关键字 a: 一个字典类型包含了请求所附加的参数(info_hash/id..)
+    2) r 表示回复(回复 Responses): 包含了返回的值。发送回复消息是在正确解析了请求消息的基础上完成的，包含了一个附加的关键字 r。关键字 r 是字典类型
+        2.1) id: peer节点id号或者下一跳DHT节点
+                2.2) nodes": "" 
+                2.3) token: token
+    3) e 表示错误(错误 Errors): 包含一个附加的关键字 e，关键字 e 是列表类型
+        3.1) 第一个元素是数字类型，表明了错误码，当一个请求不能解析或出错时，错误包将被发送。下表描述了可能出现的错误码
+        201: 一般错误
+        202: 服务错误
+        203: 协议错误，比如不规范的包，无效的参数，或者错误的 toke
+        204: 未知方法 
+        3.2) 第二个元素是字符串类型，表明了错误信息
+```
+
+以上是整个KRPC的协议框架结构，具体到请求Query/回复Response/错误Error还有具体的协议实现
+
+
+### 0x2: 请求Query具体协议
+
+所有的请求都包含一个关键字 id，它包含了请求节点的节点 ID。所有的回复也包含关键字id，它包含了回复节点的节点 ID
+ 
+ 
+ 1. `ping`: 检测节点是否可达，请求包含一个参数id，代表该节点的nodeID。对应的回复也应该包含回复者的nodeID
+
+ ```
+	ping Query = {"t":"aa", "y":"q", "q":"ping", "a":{"id":"abcdefghij0123456789"}}
+	bencoded = d1:ad2:id20:abcdefghij0123456789e1:q4:ping1:t2:aa1:y1:qe
+	
+	Response = {"t":"aa", "y":"r", "r": {"id":"mnopqrstuvwxyz123456"}}
+	bencoded = d1:rd2:id20:mnopqrstuvwxyz123456e1:t2:aa1:y1:re
+ ```
+ 
+ 2. `find_node`: find_node 被用来查找给定 ID 的DHT节点的联系信息，该请求包含两个参数id(代表该节点的nodeID)和target。回复中应该包含被请求节点的路由表中距离target最接近的K个nodeID以及对应的nodeINFO
+	
+	```
+	find_node Query = {"t":"aa", "y":"q", "q":"find_node", "a": {"id":"abcdefghij0123456789", "target":"mnopqrstuvwxyz123456"}}
+	# "id" containing the node ID of the querying node, and "target" containing the ID of the node sought by the queryer. 
+	bencoded = d1:ad2:id20:abcdefghij01234567896:target20:mnopqrstuvwxyz123456e1:q9:find_node1:t2:aa1:y1:qe
+	
+	Response = {"t":"aa", "y":"r", "r": {"id":"0123456789abcdefghij", "nodes": "def456..."}}
+	bencoded = d1:rd2:id20:0123456789abcdefghij5:nodes9:def456...e1:t2:aa1:y1:re
+	```
+
+	find_node 请求包含 2 个参数，第一个参数是 id，包含了请求节点的ID。第二个参数是 target，包含了请求者正在查找的节点的ID
+	
+	当一个节点接收到了 find_node 的请求，他应该给出对应的回复，回复中包含 2 个关键字 id(被请求节点的id) 和 nodes，nodes 是字符串类型，包含了被请求节点的路由表中最接近目标节点的 K(8) 个最接近的节点的联系信息(被请求方每次都统一返回最靠近目标节点的节点列表K捅)
+	
+	```
+	参数: {"id" : "<querying nodes id>", "target" : "<id of target node>"}
+回复: {"id" : "<queried nodes id>", "nodes" : "<compact node info>"}
+	```
+	
+	这里要明确3个概念
+	
+	```
+	1. 请求方的id: 发起这个DHT节点寻址的节点自身的ID，可以类比DNS查询中的客户端
+2. 目标target id: 需要查询的目标ID号，可以类比于DNS查询中的URL，这个ID在整个递归查询中是一直不变的
+3. 被请求节点的id: 在节点的递归查询中，请求方由远及近不断询问整个链路上的节点，沿途的每个节点在返回时都要带上自己的id号
+	```
+	
+3. `get_peers`: 获取 infohash 的 peers
+
+	```
+	1. get_peers 请求包含 2 个参数(id请求节点ID，info_hash代表torrent文件的infohash，infohash为种子文件的SHA1哈希值，也就是磁力链接的btih值)
+2. response get_peer: 
+    1) 如果被请求的节点有对应 info_hash 的 peers，他将返回一个关键字 values，这是一个列表类型的字符串。每一个字符串包含了 "CompactIP-address/portinfo" 格式的 peers 信息(即对应的机器ip/port信息)(peer的info信息和DHT节点的info信息是一样的)
+    2) 如果被请求的节点没有这个 infohash 的 peers，那么他将返回关键字 nodes(需要注意的是，如果该节点没有对应的infohash信息，而只是返回了nodes，则请求方会认为该节点是一个"可疑节点"，则会从自己的路由表K捅中删除该节点)，这个关键字包含了被请求节点的路由表中离 info_hash 最近的 K 个节点(我这里没有该节点，去别的节点试试运气)，使用 "Compactnodeinfo" 格式回复。在这两种情况下，关键字 token 都将被返回。token 关键字在今后的 annouce_peer 请求中必须要携带。token 是一个短的二进制字符串
+	```
+	
+	
+	```
+	参数: {"id" : "<querying nodes id>", "info_hash" : "<20-byte infohash of target torrent>"}
+	
+	回复: 
+	{"id" : "<queried nodes id>", "token" :"<opaque write token>", "values" : ["<peer 1 info string>", "<peer 2 info string>"]}
+	或: 	
+	{"id" : "<queried nodes id>", "token" :"<opaque write token>", "nodes" : "<compact node info>"}
+	```
+	
+4. `announce_peer`: 这个请求用来表明发出 announce_peer 请求的节点，正在某个端口下载 torrent 文件
+
+	announce_peer 包含 4 个参数
+	
+	```
+	1. 第一个参数是 id: 包含了请求节点的 ID
+	2. 第二个参数是 info_hash: 包含了 torrent 文件的 infohash
+	3. 第三个参数是 port: 包含了整型的端口号，表明 peer 在哪个端口下载
+	4. 第四个参数数是 token: 这是在之前的 get_peers 请求中收到的回复中包含的。收到 announce_peer 请求的节点必须检查这个 token 与之前我们回复给这个节点 get_peers 的 token 是否相同(也就说，所有下载者/发布者都要参与检测新加入的发布者是否伪造了该资源，但是这个机制有一个问题，如果最开始的那个发布者就伪造，则整条链路都是一个伪造的错的资源infohash信息了)
+	如果相同，那么被请求的节点将记录发送 announce_peer 节点的 IP 和请求中包含的 port 端口号在 peer 联系信息中对应的 infohash 下，这意味着一个一个事实: 当前这个资源有一个新的peer提供者了，下一次有其他节点希望或者这个资源的时候，会把这个新的(前一次请求下载资源的节点)也当作一个peer返回给请求者，这样，资源的提供者就越来越多，资源共享速度就越来越快
+	```
+	
+	一个peer正在下载某个资源，意味着该peer有能够访问到该资源的渠道，且该peer本地是有这份资源的全部或部分拷贝的，它需要向DHT网络广播announce消息，告诉其他节点这个资源的下载地址
+	
+	```
+	arguments:  {"id" : "<querying nodes id>",
+	"implied_port": <0 or 1>,
+	"info_hash" : "<20-byte infohash of target torrent>",
+	"port" : <port number>,
+	"token" : "<opaque token>"}
+	
+	response: {"id" : "<queried nodes id>"}
+	```
+	
+	报文包例子 Example Packets 
+	
+	```
+	announce_peers Query = {"t":"aa", "y":"q", "q":"announce_peer", "a": {"id":"abcdefghij0123456789", "implied_port": 1, "info_hash":"mnopqrstuvwxyz123456", "port": 6881, "token": "aoeusnth"}}
+	bencoded = d1:ad2:id20:abcdefghij01234567899:info_hash20:<br />
+	mnopqrstuvwxyz1234564:porti6881e5:token8:aoeusnthe1:q13:announce_peer1:t2:aa1:y1:qe
+	
+	Response = {"t":"aa", "y":"r", "r": {"id":"mnopqrstuvwxyz123456"}}
+	bencoded = d1:rd2:id20:mnopqrstuvwxyz123456e1:t2:aa1:y1:re
+	```
+	
+### 0x3: 回复 Responses
+
+回复 Responses的包已经在上面的Query里说明了
+
+
+### 0x4: 错误 Errors
+
+错误包例子 Example Error Packets
+
+```
+generic error = {"t":"aa", "y":"e", "e":[201, "A Generic Error Ocurred"]}
+bencoded = d1:eli201e23:A Generic Error Ocurrede1:t2:aa1:y1:ee
+```
+
+
+# 3. BitTorrent协议
