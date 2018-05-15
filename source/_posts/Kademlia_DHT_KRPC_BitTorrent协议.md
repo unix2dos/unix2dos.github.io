@@ -644,7 +644,7 @@ Peer Wire协议是Peer之间的通信协议，通常由一个握手消息开始�
 Peer Wire协议是在uTP协议基础上里层应用态协议。收到握手消息后，对方也会回复一个握手消息，并且开始协商一些基本的信息。
 
 
-# 6. BitTorrent协议扩展与`ut_metadata`和`ut_pex`(Extension for Peers to Send Metadata Files) (磁力链接核心)
+# 6. BitTorrent协议扩展ut_metadata和ut_pex(Extension for Peers to Send Metadata Files) (磁力链接核心)
 
 ```
 BEP:9 		Title:	Extension for Peers to Send Metadata Files
