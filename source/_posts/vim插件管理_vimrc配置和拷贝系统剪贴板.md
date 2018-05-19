@@ -1,5 +1,5 @@
 ---
-title: 'vim插件管理_拷贝系统剪贴板'
+title: 'vim插件管理_vimrc配置和拷贝系统剪贴板'
 date: 2018-05-15 22:06:13
 tags:
 - vim
@@ -16,7 +16,7 @@ https://github.com/junegunn/vim-plug
 ```
 
 
-### mac vim 拷贝到系统剪贴板
+### vim 拷贝到系统剪贴板
 
 1. which vim可以看到当前使用的vim是哪个，vim --version可以看到当前使用的vim支持哪些feature，'+'前缀表示拥有的feature，'-'前缀表示未拥有；
 
@@ -147,4 +147,5 @@ set pumheight=10                " Completion window max size
 set nocursorcolumn              " Dont highlight column
 set nocursorline                " Dont highlight cursor
 set lazyredraw                  " Wait to redraw
+set cursorcolumn
 ```
