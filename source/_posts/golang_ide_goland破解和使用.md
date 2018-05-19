@@ -1,6 +1,6 @@
 
 ---
-title: golang_ide_goland破解使用
+title: golang_ide_goland破解和使用
 date: 2018-05-10 18:17:48
 tags: golang
 ---
@@ -40,8 +40,7 @@ cmd + [] 进入返回
 	-  cmd + [] + shift
 
 + 代码提交比较
-	- VCS -> Local History
-	- TODO: 好像不是,需要再研究
+	- VCS -> Local History | Commit 查看
 
 + 文件导航 
 	- cmd + f12 
