@@ -1,5 +1,5 @@
 ---
-title: 'golang优雅的等待所有goroutine退出'
+title: 'golang优雅的等待或通知goroutine退出'
 date: 2018-05-28 00:03:21
 tags:
 - golang

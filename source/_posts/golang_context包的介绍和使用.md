@@ -1,5 +1,5 @@
 ---
-title: 'golang_context使用'
+title: 'golang_context包的介绍和使用'
 date: 2018-05-19 11:21:53
 tags:
 - golang
@@ -136,7 +136,7 @@ type Context interface {
 * Done方法返回一个只读的chan，类型为struct{}，我们在goroutine中，如果该方法返回的chan可以读取，则意味着parent context已经发起了取消请求，我们通过Done方法收到这个信号后，就应该做清理操作，然后退出goroutine，释放资源。
 
 * Err方法返回取消的错误原因，因为什么Context被取消。
- 
+
 * Value方法获取该Context上绑定的值，是一个键值对，所以要通过一个Key才可以获取对应的值，这个值一般是线程安全的。
 
 
