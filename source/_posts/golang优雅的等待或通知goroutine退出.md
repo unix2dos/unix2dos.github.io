@@ -5,15 +5,19 @@ tags:
 - golang
 ---
 
-### 通过Channel传递退出信号
+
+
+### 优雅的等待goroutine退出
+
+
+
+#### 通过Channel传递退出信号
 
 Go的一大设计哲学就是：通过Channel共享数据，而不是通过共享内存共享数据。主流程可以通过channel向任何goroutine发送停止信号，就像下面这样：
 
 
 
 这种方式可以实现优雅地停止goroutine，但是当goroutine特别多的时候，这种方式不管在代码美观上还是管理上都显得笨拙不堪。
-
-
 
 ```
 package main
@@ -55,9 +59,7 @@ func main() {
 
 <!-- more -->
 
-### 使用Waitgroup
-
-
+#### 使用Waitgroup
 
 通常情况下，我们像下面这样使用waitgroup:
 
@@ -148,7 +150,34 @@ func main() {
 ```
 
 
-### Goroutine优雅控制退出
+
+### 优雅的通知 goroutine 退出
+
+
+
+有时候我们需要通知goroutine停止它正在干的事情，比如一个正在执行计算的web服务，然而它的客户端已经断开了和服务端的连接。
+
+Go语言并没有提供在一个goroutine中终止另一个goroutine的方法，由于这样会导致goroutine之间的共享变量落在未定义的状态上。
+
+在rocket launch程序中，我们往名字叫abort的channel里发送了一个简单的值，在countdown的goroutine中会把这个值理解为自己的退出信号。但是如果我们想要退出两个或者任意多个goroutine怎么办呢？
+
+
+
+一种可能的手段是向abort的channel里发送和goroutine数目一样多的事件来退出它们。如果这些goroutine中已经有一些自己退出了，那么会导致我们的channel里的事件数比goroutine还多，这样导致我们的发送直接被阻塞。另一方面，如果这些goroutine又生成了其它的goroutine，我们的channel里的数目又太少了，所以有些goroutine可能会无法接收到退出消息。一般情况下我们是很难知道在某一个时刻具体有多少个goroutine在运行着的。
+
+
+
+另外，当一个goroutine从abort channel中接收到一个值的时候，他会消费掉这个值，这样其它的goroutine就没法看到这条信息。为了能够达到我们退出goroutine的目的，我们需要更靠谱的策略，来通过一个channel把消息广播出去，这样goroutine们能够看到这条事件消息，并且在事件完成之后，可以知道这件事已经发生过了。
+
+
+
+回忆一下我们关闭了一个channel并且被消费掉了所有已发送的值，操作channel之后的代码可以立即被执行，并且会产生零值。我们可以将这个机制扩展一下，来作为我们的广播机制：***不要向channel发送值，而是用关闭一个channel来进行广播。***
+
+
+
+
+
+### 优雅的控制 goroutine 退出
 
 通常`Goroutine`会因为两种情况阻塞：
 
