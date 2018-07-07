@@ -1,5 +1,5 @@
 ---
-title: "golang闭包的坑.md"
+title: "golang闭包的坑"
 date: 2018-07-07 13:33:01
 tags:
 - golang
