@@ -126,7 +126,7 @@ sudo apt-get install libtool
 
 
 
-xcode 编译成功后设置 Remote
++ xcode 编译成功后运行客户端设置 Remote
 
 
 
@@ -135,3 +135,17 @@ xcode 编译成功后设置 Remote
 在浏览器中访问`http://localhost:9091/transmission/web` 并输入设置的用户名及密码就可以看到如下界面
 
 ![2](transmission/4.png)
+
++ 使用编译好的transmission-daemon并且启动
+
+    配置文件在`/Users/liuwei/Library/Application\ Support/transmission-daemon/settings.json`
+
+    
+
+    设置环境变量后通过浏览器访问`http://localhost:9091/transmission/web`
+
+    ```
+    export TRANSMISSION_WEB_HOME=/Users/liuwei/workspace/transmission/web
+    ```
+
+
