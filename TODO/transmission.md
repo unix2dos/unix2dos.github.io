@@ -1,3 +1,61 @@
+
+
+安装
+
+yum install transmission-cli transmission-common transmission-daemon
+
+
+
+访问外网ip
+
+**unauthorized ip address403: ForbiddenUnauthorized IP Address.Either disable the IP address whitelist or add your address to it.If you're editing settings.json, see the 'rpc-whitelist' and 'rpc-whitelist-enabled' entries.If you're still using ACLs, use a whitelist instead. See the transmission-daemon manpage for details.**
+
+transmission/.config/transmission-daemon/settings.json  "rpc-whitelist-enabled": true,  ture改成false。
+
+
+
+Csrf 解决
+
+http://172.24.120.53:9092/transmission/web/#cancel
+
+
+
+
+
+
+
+curl Mac问题
+
+http://www.fatalerrors.org/a/curl-58-ssl-can-t-load-the-certificate-and-its-private-key-osstatus-25299.html
+
+
+
+
+
+TLS handshake error from :EOF 问题
+
+
+
+
+
+
+
+Could NOT find CURL (missing: CURL_LIBRARY CURL_INCLUDE_DIR)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Requests
 
 + A required "method" string telling the name of the method to invoke

@@ -62,6 +62,7 @@ sudo apt-get install libssl-dev
 
 ```
 sudo apt-get install libcurl4-openssl-dev
+yum install curl-devel
 ```
 
 3. autogen.sh: not found
