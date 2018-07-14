@@ -1,5 +1,5 @@
 ---
-title: "transmission"
+title: "transmission介绍和golang_rpc调用"
 date: 2018-07-08 16:38:13
 tags:
 - golang
@@ -32,8 +32,6 @@ Xcode project file (Transmission.xcodeproj) for building in Xcode.
 ## ubuntu 16.04编译transmission
 
 ```
-$ sudo apt-get update
-$ sudo apt-get upgrade 
 $ sudo apt-get install build-essential automake autoconf libtool pkg-config intltool libcurl4-openssl-dev libglib2.0-dev libevent-dev libminiupnpc-dev libgtk-3-dev libappindicator3-dev
 
 $ git clone https://github.com/transmission/transmission Transmission
@@ -62,7 +60,7 @@ sudo apt-get install libssl-dev
 
 ```
 sudo apt-get install libcurl4-openssl-dev
-yum install curl-devel
+yum install curl-devel//centos
 ```
 
 3. autogen.sh: not found
@@ -75,7 +73,7 @@ sudo apt-get install libtool
 
 
 
-## Transmission 介绍
+## transmission 介绍
 
 - transmission-cli： 独立的命令行客户端。
 - transmission-create： 用来建立.torrent种子文件的命令行工具。
@@ -96,7 +94,7 @@ sudo apt-get install libtool
 
 
 
-配置主要是通过修改 `/var/lib/transmission-daemon/info/settings.json` 文件中的参数来实现的。 **注意**：在编辑 Transmission 配置文件的时候，需要先关闭 daemon 进程，否则编辑的参数将会被恢复到原来的状态。
+配置主要是通过修改 `/var/lib/transmission-daemon/info/settings.json` 文件中的参数来实现的。 **注意**：在编辑 transmission 配置文件的时候，需要先关闭 daemon 进程，否则编辑的参数将会被恢复到原来的状态。
 
 
 
@@ -123,11 +121,11 @@ sudo apt-get install libtool
 
 
 
-## mac使用Web界面控制Transmission daemon
+## mac使用web界面控制transmission daemon
 
 
 
-+ 运行Xcode 编译好的客户端, 设置 Remote
+##### 运行Xcode 编译好的客户端, 设置 Remote
 
 
 
@@ -137,16 +135,40 @@ sudo apt-get install libtool
 
 ![2](transmission/4.png)
 
-+ 运行Xcode编译好的transmission-daemon
+##### 运行Xcode编译好的transmission-daemon
 
-    
+  
 
-    配置文件在`/Users/liuwei/Library/Application\ Support/transmission-daemon/settings.json`
++ 配置文件在 /Users/liuwei/Library/Application\ Support/transmission-daemon/settings.json
 
-    
++ 设置环境变量后 export TRANSMISSION_WEB_HOME=/Users/liuwei/workspace/transmission/web
 
-    设置环境变量后`export TRANSMISSION_WEB_HOME=/Users/liuwei/workspace/transmission/web`
++ 通过浏览器访问`http://localhost:9091/transmission/web`
 
-    
 
-    通过浏览器访问`http://localhost:9091/transmission/web`
+
+1. 访问外网ip错误
+
+unauthorized ip address403: ForbiddenUnauthorized IP Address.Either disable the IP address whitelist or add your address to it.If you're editing settings.json, see the 'rpc-whitelist' and 'rpc-whitelist-enabled' entries.If you're still using ACLs, use a whitelist instead. See the transmission-daemon manpage for details.
+
+```
+transmission/.config/transmission-daemon/settings.json  
+
+"rpc-whitelist-enabled": true,  ture改成false。
+```
+
+
+
+## golang通过rpc调用transmission
+
+
+
+rpc api
+
+https://github.com/transmission/transmission/blob/master/extras/rpc-spec.txt
+
+
+
+golang lib for Transmission API
+
+https://github.com/pyed/transmission
