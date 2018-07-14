@@ -25,7 +25,7 @@ Xcode project file (Transmission.xcodeproj) for building in Xcode.
 + 下图第一个是编译 mac 应用程序
 + 下面可以编译 transmission-daemon 程序
 
-![1](transmission/1.png)
+![1](transmission介绍和golang_rpc调用/1.png)
 
 <!-- more -->
 
@@ -44,7 +44,7 @@ $ make
 $ sudo make install
 ```
 
-![2](transmission/2.png)
+![2](transmission介绍和golang_rpc调用/2.png)
 
 
 
@@ -129,11 +129,11 @@ sudo apt-get install libtool
 
 
 
-![2](transmission/3.png)
+![2](transmission介绍和golang_rpc调用/3.png)
 
 在浏览器中访问`http://localhost:9091/transmission/web` 并输入设置的用户名及密码就可以看到如下界面
 
-![2](transmission/4.png)
+![2](transmission介绍和golang_rpc调用/4.png)
 
 ##### 运行Xcode编译好的transmission-daemon
 
@@ -163,12 +163,12 @@ transmission/.config/transmission-daemon/settings.json
 
 
 
-rpc api
++ rpc api
 
 https://github.com/transmission/transmission/blob/master/extras/rpc-spec.txt
 
 
 
-golang lib for Transmission API
++ golang lib for Transmission API
 
 https://github.com/pyed/transmission
