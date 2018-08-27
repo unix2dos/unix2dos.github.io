@@ -32,7 +32,7 @@ Xcode project file (Transmission.xcodeproj) for building in Xcode.
 ## ubuntu 16.04编译transmission
 
 ```
-$ sudo apt-get install build-essential automake autoconf libtool pkg-config intltool libcurl4-openssl-dev libglib2.0-dev libevent-dev libminiupnpc-dev libgtk-3-dev libappindicator3-dev
+$ sudo apt-get install make build-essential automake autoconf libtool pkg-config intltool libcurl4-openssl-dev libglib2.0-dev libevent-dev libminiupnpc-dev libgtk-3-dev libappindicator3-dev gettext libssl-dev
 
 $ git clone https://github.com/transmission/transmission Transmission
 $ cd Transmission
@@ -48,7 +48,9 @@ $ sudo make install
 
 
 
-1.  CMAKE_MAKE_PROGRAM is not set
+##### 编译时遇到的问题:
+
+1. CMAKE_MAKE_PROGRAM is not set
 
 ```
 sudo apt-get install gettext
@@ -59,7 +61,7 @@ sudo apt-get install libssl-dev
 2. missing: CURL_LIBRARY CURL_INCLUDE_DIR
 
 ```
-sudo apt-get install libcurl4-openssl-dev
+sudo apt-get install libcurl4-openssl-dev//ubuntu
 yum install curl-devel//centos
 ```
 
@@ -70,6 +72,10 @@ sudo apt-get install autoconf
 sudo apt-get install automake
 sudo apt-get install libtool
 ```
+
+4. transmission libevent 变成了event
+
+   把所有的依赖全部装一遍, 安装后删除build. 重新cmake一下
 
 
 
@@ -147,7 +153,7 @@ sudo apt-get install libtool
 
 
 
-1. 访问外网ip错误
+##### 访问外网ip错误
 
 unauthorized ip address403: ForbiddenUnauthorized IP Address.Either disable the IP address whitelist or add your address to it.If you're editing settings.json, see the 'rpc-whitelist' and 'rpc-whitelist-enabled' entries.If you're still using ACLs, use a whitelist instead. See the transmission-daemon manpage for details.
 
