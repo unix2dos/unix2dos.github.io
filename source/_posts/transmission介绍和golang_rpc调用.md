@@ -32,7 +32,7 @@ Xcode project file (Transmission.xcodeproj) for building in Xcode.
 ## ubuntu 16.04编译transmission
 
 ```
-$ sudo apt-get install build-essential automake autoconf libtool pkg-config intltool libcurl4-openssl-dev libglib2.0-dev libevent-dev libminiupnpc-dev libgtk-3-dev libappindicator3-dev
+$ sudo apt-get install make build-essential automake autoconf libtool pkg-config intltool libcurl4-openssl-dev libglib2.0-dev libevent-dev libminiupnpc-dev libgtk-3-dev libappindicator3-dev gettext libssl-dev
 
 $ git clone https://github.com/transmission/transmission Transmission
 $ cd Transmission
