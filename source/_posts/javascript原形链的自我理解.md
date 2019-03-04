@@ -94,5 +94,24 @@ OK, 如果我调用一个函数, 那么先在我身上找这个函数.
 + 再看function Function()  它的技能仓库是 Function.prototype, 技能仓库名字是 function Function() .  另外过分的是function Function() 是被它自己function Function()创建出来的, 所以它的 \__proto\__指向了自己的技能仓库
 
 中间部分: 
-+ function Object的  \__proto\_ 指向了Function.prototype 看来所有鸡的钥匙都指向了Function.prototype
++ function Object的  \__proto\__  指向了Function.prototype 看来所有鸡的钥匙都指向了Function.prototype
 + 技能仓库Function.prototype的 \__proto\__ 指向了 Object.prototype,  Object.prototype的  \__proto\__ 指向了 null 
+
+
+
+### instanceof 寻仓库运算符
+
+instanceof运算符的第一个变量是一个对象(蛋家族)，暂时称为A；第二个变量一般是一个函数(鸡家族)，暂时称为B。
+
+Instanceof的判断队则是：沿着A的 \__proto\__ 这条线来找，同时沿着B的prototype这条线来找，如果两条线能找到同一个引用，即同一个对象，那么就返回true。如果找到终点还未重合，则返回false。
+
+
+
+```javascript
+console.log(Object instanceof Function); //true
+console.log(Function instanceof Object); //true
+console.log(Function instanceof Function); //true
+```
+
+
+
