@@ -27,7 +27,7 @@ tags:
 
 
 
-### 2. 安装
+### 2. 安装酷Q docker版本
 
 + 安装docker(已安装docker直接看下一步)
 
