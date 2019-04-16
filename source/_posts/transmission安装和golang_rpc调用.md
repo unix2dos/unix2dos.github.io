@@ -8,9 +8,9 @@ tags:
 - transmission
 ---
 
-## mac编译transmission
+### 1. mac编译transmission
 
-##### 下载项目
++ 下载项目
 
 ```
 git clone https://github.com/transmission/transmission Transmission
@@ -21,16 +21,17 @@ Xcode project file (Transmission.xcodeproj) for building in Xcode.
 
 
 
-##### 在 xcode中编译
++ 在 xcode中编译
 
-+ 下图第一个是编译 mac 应用程序
-+ 下面可以编译 transmission-daemon 程序
+  下图第一个是编译 mac 的应用程序,  第二个是可以编译 transmission-daemon 程序
 
 ![1](transmission安装和golang_rpc调用/1.png)
 
 <!-- more -->
 
-## ubuntu 16.04编译transmission
+
+
+### 2. ubuntu 16.04编译transmission
 
 ```
 $ sudo apt-get install cmake make build-essential automake autoconf libtool pkg-config intltool libcurl4-openssl-dev libglib2.0-dev libevent-dev libminiupnpc-dev libgtk-3-dev libappindicator3-dev gettext libssl-dev
@@ -45,11 +46,13 @@ $ make
 $ sudo make install
 ```
 
+安装完成后出现以下命令:
+
 ![2](transmission安装和golang_rpc调用/2.png)
 
 
 
-##### 编译时遇到的问题:
+编译时遇到的问题:
 
 1. CMAKE_MAKE_PROGRAM is not set
 
@@ -80,7 +83,7 @@ sudo apt-get install libtool
 
 
 
-## transmission 介绍
+### 3. transmission 介绍
 
 - transmission-cli： 独立的命令行客户端。
 - transmission-create： 用来建立.torrent种子文件的命令行工具。
@@ -91,7 +94,7 @@ sudo apt-get install libtool
 
 
 
-配置文件目录里面包含如下一些文件：
+1. 配置文件目录里面包含如下一些文件：
 
 - settings.json： 主要的配置文件，设置daemon的各项参数，包括RPC的用户名密码配置。它实际上是一个符号链接，指向的原始文件是/etc/transmission-daemon/settings.json。里面的参数解释可以参考官网的配置说明。
 - torrents/： 用户存放.torrent种子文件的目录,凡是添加到下载任务的种子，都存放在这里。.torrent的命名包含,种子文件本身的名字和种子的SHA1 HASH值。
@@ -105,9 +108,7 @@ sudo apt-get install libtool
 
 
 
-##### **配置RPC**:
-
- 主要需要修改以下参数
+2. RPC参数介绍: 
 
 ```
 {
@@ -128,35 +129,41 @@ sudo apt-get install libtool
 
 
 
-## mac使用web界面控制transmission daemon
+### 4. mac使用web界面控制transmission daemon
 
 
 
-##### 运行Xcode 编译好的客户端, 设置 Remote
++ 运行Xcode 编译好的客户端, 设置 Remote
 
 
 
 ![2](transmission安装和golang_rpc调用/3.png)
 
+
+
+
+
 在浏览器中访问`http://localhost:9091/transmission/web` 并输入设置的用户名及密码就可以看到如下界面
 
 ![2](transmission安装和golang_rpc调用/4.png)
 
-##### 运行Xcode编译好的transmission-daemon
++ 运行Xcode编译好的transmission-daemon
 
-  
+ 
 
-+ 配置文件在 /Users/liuwei/Library/Application\ Support/transmission-daemon/settings.json
+配置文件在 `/Users/liuwei/Library/Application\ Support/transmission-daemon/settings.json` 
 
-+ 设置环境变量后 export TRANSMISSION_WEB_HOME=/Users/liuwei/workspace/transmission/web
+设置环境变量后 `export TRANSMISSION_WEB_HOME=/Users/liuwei/workspace/transmission/web`
 
-+ 通过浏览器访问`http://localhost:9091/transmission/web`
+通过浏览器访问`http://localhost:9091/transmission/web`
 
 
 
-##### 访问外网ip错误
++ 访问外网ip错误
 
 unauthorized ip address403: ForbiddenUnauthorized IP Address.Either disable the IP address whitelist or add your address to it.If you're editing settings.json, see the 'rpc-whitelist' and 'rpc-whitelist-enabled' entries.If you're still using ACLs, use a whitelist instead. See the transmission-daemon manpage for details.
+
+
 
 ```
 transmission/.config/transmission-daemon/settings.json  
@@ -166,7 +173,7 @@ transmission/.config/transmission-daemon/settings.json
 
 
 
-## golang通过rpc调用transmission
+### 5. golang通过rpc调用transmission
 
 
 
