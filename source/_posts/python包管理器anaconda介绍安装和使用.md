@@ -17,17 +17,13 @@ anaconda 是一个用于科学计算的Python发行版，支持 Linux, Mac, Wind
 
 
 
-<!-- more -->
-
-
-
 这里先解释下conda、anaconda这些概念的差别，详细差别见下节。
 
 - anaconda
 
 anaconda 则是一个打包的集合，里面预装好了 conda、某个版本的python、众多packages、科学计算工具等等，所以也称为Python的一种发行版。其实还有Miniconda，顾名思义，它只包含最基本的内容——python与conda，以及相关的必须依赖项，对于空间要求严格的用户，Miniconda是一种选择。
 
-
+<!-- more -->
 
 - conda
 
@@ -152,7 +148,7 @@ conda结合了pip和virtualenv的功能。
 
 
 
-##### a. 下载安装  <https://www.anaconda.com/distribution/#download-section>
+A. 下载安装  <https://www.anaconda.com/distribution/#download-section>
 
 
 
@@ -163,8 +159,6 @@ which python3
 
 /Users/liuwei/anaconda3/bin/python3
 ```
-
-
 
 安装成功后在应用程序里打开 `Anaconda Navigator`，会展示出已经安装好的其他常用应用，如：
 
@@ -180,7 +174,9 @@ which python3
 
 
 
-##### b. 安装后在终端输入conda 无法识别这个命令
+B. 安装后在终端输入conda 无法识别这个命令:
+
+
 
 ```shell
 export PATH="${HOME}/anaconda3/bin:$PATH"
@@ -188,7 +184,9 @@ export PATH="${HOME}/anaconda3/bin:$PATH"
 
 
 
-##### c. 修改conda镜像源
+C. 修改conda镜像源:
+
+
 
 如不修改conda的镜像源，99.99%会报http链接失败的错误（网友踩坑经验）。
 
