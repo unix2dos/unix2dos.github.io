@@ -22,13 +22,11 @@ tags:
 sudo pip3 install virtualenv
 ```
 
-
-
 然后，假定我们要开发一个新的项目，需要一套独立的Python运行环境，可以这么做：
 
+
+
 <!-- more -->
-
-
 
 + 第一步，创建目录：
 
