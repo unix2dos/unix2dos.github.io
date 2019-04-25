@@ -1,7 +1,10 @@
 ---
 title: 'aws搭建shadowsocks梯子翻墙'
 date: 2017-03-28 18:04:22
-tags: linux
+tags:
+- linux
+- shadowsocks
+- aws
 ---
 
 ### 部署aws

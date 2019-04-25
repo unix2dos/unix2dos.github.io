@@ -74,7 +74,7 @@ pip install PyInstaller
 + pyqt教程
   http://zetcode.com/gui/pyqt5/    
 
-  **应该花至少一个下午的时间先撸一遍教程**
+  **应该花至少一个下午的时间先撸一遍这个教程**
 
 
 
@@ -82,7 +82,10 @@ pip install PyInstaller
 
   https://doc-snapshots.qt.io/qt5-5.9/qtdesigner-manual.html
 
+  **应该花至少一个上午的时间先撸一遍这个教程**
+
   
+
 
   使用qt designer 设计程序后, 保存为.ui文件.  然后用pycharm的 External tools -> PyUIC 生成 py文件
 

@@ -1,5 +1,5 @@
 ---
-title: "Python_IDE_Pycharm的使用"
+title: "python最好用IDE之pycharm的使用"
 date: 2019-03-11 22:14:00
 tags:
 - python
@@ -16,7 +16,7 @@ tags:
 1. PyCharm -> Preferences -> Plugins -> Save Actions -> install and restart ide
 2. PyCharm -> Preferences -> Save Actions -> Reformat file
 
-![1](Python_IDE_Pycharm使用/1.png)
+![1](python最好用IDE之pycharm的使用/1.png)
 
 <!-- more -->
 
