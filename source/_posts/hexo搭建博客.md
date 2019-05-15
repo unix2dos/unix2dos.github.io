@@ -39,7 +39,7 @@ tag: hexo
 
 + 建立带用户名的仓库 unix2dos.github.io
 
-- CNAME 放到 source 文件夹, 里面写上 blog.xuanyueting.com
+- CNAME 放到 source 文件夹, 里面写上 www.liuvv.com
 - 向你的 DNS 配置中添加 3 条记录
 
 ```
