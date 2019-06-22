@@ -6,7 +6,7 @@ tags:
 - linux
 ---
 
-tmux是一款优秀的终端复用软件，它比Screen更加强大. tmux之所以受人们喜爱，主要得益于以下功能：
+tmux是一款优秀的终端复用软件，它比Screen更加强大。 tmux之所以受人们喜爱，主要得益于以下功能：
 
 - 丝滑分屏（split），虽然iTem2也提供了横向和竖向分屏功能，但这种分屏功能非常拙劣，完全等同于屏幕新开一个窗口，新开的pane不会自动进入到当前目录，也没有记住当前登录状态。这意味着如果我ssh进入到远程服务器时，iTem2新开的pane中，我依然要重新走一遍ssh登录的老路（omg）。tmux就不会这样，tmux窗口中，新开的pane，默认进入到之前的路径，如果是ssh连接，登录状态也依旧保持着，如此一来，我就可以随意的增删pane，这种灵活性，好处不言而喻。
 - 保护现场（attach），即使命令行的工作只进行到一半，关闭终端后还可以重新进入到操作现场，继续工作。对于ssh远程连接而言，即使网络不稳定也没有关系，掉线后重新连接，可以直奔现场，之前运行中的任务，依旧在跑，就好像从来没有离开过一样；特别是在远程服务器上运行耗时的任务，tmux可以帮你一直保持住会话。如此一来，你就可以随时随地放心地进行移动办公，只要你附近的计算机装有tmux（没有你也可以花几分钟装一个），你就能继续刚才的工作。
@@ -52,28 +52,47 @@ set -g mouse on  # 最好关掉, 要不然影响iterm2自带鼠标选中
 
 
 
- Oh My Tmux! 
+ Oh My Tmux 快捷键
 
-+  自动把 ctrl + a 当做第二个前缀
-+  <prefix> m 切换鼠标开启状态
-+ <prefix> e 自动打开配置, <prefix> r 刷新配置
-+ <prefix> C-c  新建一个 Session
-+ <prefix> C-h 和 <prefix> C-l 向左向右切换 window
-+ <prefix> Tab 回到上一个 window
-+ <prefix> - 和 <prefix> _  水平和垂直分屏
-+ <prefix> h, <prefix> j, <prefix> k and <prefix> l    移动 panel
-+ <prefix> + 让当前 panel 成为 window, 注意 再一次还能回到 panel
-+  <prefix> H, <prefix> J, <prefix> K, <prefix> L     微调panel 大小(用的少)
-+  <prefix> <  and <prefix> > 交换panel(用的少)
+```bash
+自动把 ctrl + a 当做第二个前缀
+
+<prefix> m #切换鼠标开启状态
+
+<prefix> e #自动打开配置
+
+<prefix> r # 刷新配置
+
+<prefix> C-c  #新建一个 Session
+
+<prefix> C-h 和 <prefix> C-l # 向左向右切换 window
+
+<prefix> Tab #回到上一个 window
+
+<prefix> - 和 <prefix> _  #水平和垂直分屏
+
+<prefix> h, <prefix> j, <prefix> k and <prefix> l    #移动 panel
+
+<prefix> + #让当前 panel 成为 window, 注意 再一次还能回到 panel
+
+<prefix> H, <prefix> J, <prefix> K, <prefix> L     #微调panel 大小(用的少)
+
+<prefix> <  and <prefix> > #交换panel(用的少)
+```
 
 
 
-修改Oh My Tmux! 配置
+修改Oh My Tmux 配置
 
-+ tmux_conf_new_window_retain_current_path=true  window保持路径
-+ tmux_conf_new_pane_reconnect_ssh=true  重新连接 ssh
-+ tmux_conf_new_session_prompt=true  新建 session 输入名字
-+ tmux_conf_theme_status_left=' ❐ #S '  左边状态栏精简
+```bash
+tmux_conf_new_window_retain_current_path=true  #window保持路径
+
+tmux_conf_new_pane_reconnect_ssh=true  #重新连接 ssh
+
+tmux_conf_new_session_prompt=true  #新建 session 输入名字
+
+tmux_conf_theme_status_left=' ❐ #S '  #左边状态栏精简
+```
 
 
 
@@ -158,10 +177,18 @@ tmux kill-server  #关闭服务器，所有的会话都将关闭
 
   
 
-### 4. tmux TODO
+### 4. tmux 遇到的问题
 
 1. off, 鼠标无法滚动
 
-2.   on, 鼠标智能选中
+   In iTerm2 all you need to do is to go to Preferences > Profile > Terminal and check ‘Save lines to scrollback when an app status bar is present’.
 
-3. 无论off, on   不是open   https://stackoverflow.com/questions/24761558/iterm2-cmd-click-to-open-file-doesnt-work-under-tmux-session
+2. on, 鼠标无法智能选中
+
+   快速关闭, m
+
+3. 无论off, on  鼠标点击文件不是默认 app 打开
+
+   https://stackoverflow.com/a/56715244/7062454
+
+   自己强答一题: 先退出 tmux seesion, 用鼠标点击通过默认 app 打开, 再进入 tmux session 就可以了
