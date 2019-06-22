@@ -50,18 +50,6 @@ www      CNAME           unix2dos.github.io.
 
 
 
-### 第三方插件
-
-+ algolia //放弃采用local-search
-
-```
-npm install --save hexo-algolia
-export HEXO_ALGOLIA_INDEXING_KEY=03a0650ecd0ead0dfd9031178da3f591 (admin key)
-hexo algolia  --config source/_data/next.yml 
-```
-
-
-
 ### 常用命令
 
 ```html
@@ -92,14 +80,10 @@ npm install hexo-deployer-git --save
 npm ls --depth 0  //查看丢失的包
 npm install hexo-generator-archive --save //逐一安装缺失的包
 
-git submodule update --init //下载next主题
-```
 
+### hexo-next 主题
+git clone https://github.com/theme-next/hexo-theme-next themes/next //下载next主题
 
-
-#### 第三方扩展
-
-```shell
 cd themes/next
 
 git clone https://github.com/theme-next/theme-next-needmoreshare2 source/lib/needsharebutton  //分享按钮
@@ -107,6 +91,8 @@ git clone https://github.com/theme-next/theme-next-needmoreshare2 source/lib/nee
 git clone https://github.com/theme-next/theme-next-canvas-ribbon source/lib/canvas-ribbon //丝带
 
 git clone https://github.com/theme-next/theme-next-canvas-nest source/lib/canvas-nest //蜘蛛网
+
+git clone https://github.com/theme-next/theme-next-three source/lib/three // 三种特效
 
 git clone https://github.com/theme-next/theme-next-han source/lib/Han //特殊汉字
 
@@ -121,6 +107,12 @@ git clone https://github.com/theme-next/theme-next-fancybox3 source/lib/fancybox
 git clone https://github.com/theme-next/theme-next-pangu.git source/lib/pangu //文字显示加空格
 
 git clone https://github.com/theme-next/theme-next-reading-progress source/lib/reading_progress //读取进度
+
+
+### hexo-next 插件
+
+npm install hexo-symbols-count-time --save   # 读取次数
+
 ```
 
 
