@@ -1,5 +1,5 @@
 ---
-title: "transmission安装和golang_rpc调用"
+title: "transmission编译安装和golang_rpc的调用"
 date: 2018-07-08 16:38:13
 tags:
 - golang
@@ -12,7 +12,7 @@ tags:
 
 + 下载项目
 
-```
+```bash
 git clone https://github.com/transmission/transmission Transmission
 cd Transmission
 git submodule update --init
@@ -25,7 +25,7 @@ Xcode project file (Transmission.xcodeproj) for building in Xcode.
 
   下图第一个是编译 mac 的应用程序,  第二个是可以编译 transmission-daemon 程序
 
-![1](transmission安装和golang_rpc调用/1.png)
+![1](transmission/1.png)
 
 <!-- more -->
 
@@ -33,7 +33,7 @@ Xcode project file (Transmission.xcodeproj) for building in Xcode.
 
 ### 2. ubuntu 16.04编译transmission
 
-```
+```bash
 $ sudo apt-get install cmake make build-essential automake autoconf libtool pkg-config intltool libcurl4-openssl-dev libglib2.0-dev libevent-dev libminiupnpc-dev libgtk-3-dev libappindicator3-dev gettext libssl-dev
 
 $ git clone https://github.com/transmission/transmission Transmission
@@ -43,12 +43,12 @@ $ mkdir build
 $ cd build
 $ cmake ..
 $ make
-$ sudo make install
+$ sudo make install (make install DESTDIR=a)
 ```
 
 安装完成后出现以下命令:
 
-![2](transmission安装和golang_rpc调用/2.png)
+![2](transmission/2.png)
 
 
 
@@ -137,7 +137,7 @@ sudo apt-get install libtool
 
 
 
-![2](transmission安装和golang_rpc调用/3.png)
+![2](transmission/3.png)
 
 
 
@@ -145,7 +145,7 @@ sudo apt-get install libtool
 
 在浏览器中访问`http://localhost:9091/transmission/web` 并输入设置的用户名及密码就可以看到如下界面
 
-![2](transmission安装和golang_rpc调用/4.png)
+![2](transmission/4.png)
 
 + 运行Xcode编译好的transmission-daemon
 
@@ -180,8 +180,6 @@ transmission/.config/transmission-daemon/settings.json
 + rpc api
 
 https://github.com/transmission/transmission/blob/master/extras/rpc-spec.txt
-
-
 
 + golang lib for Transmission API
 
