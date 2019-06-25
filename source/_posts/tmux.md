@@ -74,10 +74,6 @@ set -g mouse on  # 最好关掉, 要不然影响iterm2自带鼠标选中
 <prefix> h, <prefix> j, <prefix> k and <prefix> l    #移动 panel
 
 <prefix> + #让当前 panel 成为 window, 注意 再一次还能回到 panel
-
-<prefix> H, <prefix> J, <prefix> K, <prefix> L     #微调panel 大小(用的少)
-
-<prefix> <  and <prefix> > #交换panel(用的少)
 ```
 
 
@@ -92,6 +88,31 @@ tmux_conf_new_pane_reconnect_ssh=true  #重新连接 ssh
 tmux_conf_new_session_prompt=true  #新建 session 输入名字
 
 tmux_conf_theme_status_left=' ❐ #S '  #左边状态栏精简
+
+增加配置
+
+bind N previous-window # 上一个窗口
+bind n next-window # 下一个窗口
+
+bind-key -n C-S-Left swap-window -t -1 # Ctrl+Shift+Left  window向左(不需要prefix)
+bind-key -n C-S-Right swap-window -t +1 #  Ctrl+Shift+Left window向右(不需要prefix)
+
+bind-key x kill-pane # 关闭确认
+bind-key & kill-window # 关闭确认
+
+set-option -g status-position top # 状态栏放到上面
+
+set -g status-right 'Continuum status: #{continuum_status}'
+set -g @continuum-save-interval '1440'
+
+# List of plugins
+set -g @tpm_plugins '          \
+	tmux-plugins/tpm             \
+	tmux-plugins/tmux-resurrect  \
+	tmux-plugins/tmux-continuum  \
+'
+# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+run '~/.tmux/plugins/tpm/tpm'
 ```
 
 
@@ -192,3 +213,40 @@ tmux kill-server  #关闭服务器，所有的会话都将关闭
    https://stackoverflow.com/a/56715244/7062454
 
    自己强答一题: 先退出 tmux seesion, 用鼠标点击通过默认 app 打开, 再进入 tmux session 就可以了
+
+
+
+### 5. tmux 插件
+
++ tpm
+
+```bash
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
+set -g status-right 'Continuum status: #{continuum_status}'
+set -g @continuum-save-interval '10'
+
+# List of plugins
+ set -g @tpm_plugins '          \
+   tmux-plugins/tpm             \
+   tmux-plugins/tmux-resurrect  \
+   tmux-plugins/tmux-continuum  \
+ '
+# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+ run '~/.tmux/plugins/tpm/tpm'
+```
+
+
+
++ tmux-resurrect
+
+  ```bash
+  <prefix> ctrl + s #save
+  <prefix> ctrl + r #load
+  ```
+
+
+
+### 5. 参考资料
+
+进阶: http://louiszhai.github.io/2017/09/30/tmux/

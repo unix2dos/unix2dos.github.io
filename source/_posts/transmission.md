@@ -81,6 +81,15 @@ sudo apt-get install libtool
 
    把所有的依赖全部装一遍, 安装后删除build. 重新cmake一下
 
+5. undefined reference to `g_log_structured_standard`
+
+   ```bash
+   apt-get remove --purge libglib*
+   apt-get install libglib-2.x-y  # where x and y are whatever the package version says.
+   ```
+
+   
+
 
 
 ### 3. transmission 介绍
