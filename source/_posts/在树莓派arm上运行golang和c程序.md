@@ -1,11 +1,12 @@
 ---
-title: "在树莓派arm上运行golang和c程序"
-date: 2018-08-27 10:18:13
+title: 在树莓派arm上运行golang和c程序
 tags:
-- golang
-- arm
-- linux
-- 树莓派
+  - golang
+  - arm
+  - linux
+  - 树莓派
+abbrlink: 21dd607c
+date: 2018-08-27 10:18:13
 ---
 
 

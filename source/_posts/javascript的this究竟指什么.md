@@ -1,8 +1,9 @@
 ---
-title: "javascript的this究竟指什么"
-date: 2019-03-07 22:22:22
+title: javascript的this究竟指什么
 tags:
-- javascript
+  - javascript
+abbrlink: d14f4ebd
+date: 2019-03-07 22:22:22
 ---
 
 

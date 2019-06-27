@@ -1,8 +1,9 @@
 ---
-title: "英语语法结构"
-date: 2019-06-27 01:01:01
+title: 英语语法结构
 tags:
-- english
+  - english
+abbrlink: d2e27e6
+date: 2019-06-27 01:01:01
 ---
 
 # 一. 句子结构

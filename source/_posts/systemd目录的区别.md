@@ -1,9 +1,10 @@
 ---
-title: "/etc/systemd/system和/lib/systemd/system的区别"
-date: 2019-06-22 20:58:46
+title: /etc/systemd/system和/lib/systemd/system的区别
 tags:
-- linux
-- systemd
+  - linux
+  - systemd
+abbrlink: c1403091
+date: 2019-06-22 20:58:46
 ---
 
 

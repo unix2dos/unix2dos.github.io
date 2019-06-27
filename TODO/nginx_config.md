@@ -376,15 +376,7 @@ http {
 
 
 
-
-
-
-
-
-
-
-
-server 模块 (http的子模块)
+### 3.4 server 模块 (http的子模块, 虚拟主机, 最重要)
 
 
 
@@ -394,145 +386,82 @@ sever 模块是http的子模块，它用来定一个虚拟主机。
 
 我们看一下一个简单的server 是如何做的？
 
+```nginx
+server {
+         listen       8080;
+         server_name  test.liuvv.com;
+         root   /home/levonfly/www;         # 全局定义，如果都是这一个目录，这样定义最简单。
+         index  index.php index.html index.htm; 
+         charset utf-8;
+         access_log  usr/local/var/log/host.access.log  main;
+         aerror_log  usr/local/var/log/host.error.log  error;
+         ....
+}
 
-
-1. server {
-2. ​        listen       8080;
-3. ​        server_name  localhost 192.168.12.10 www.yangyi.com;
-4. ​        \# 全局定义，如果都是这一个目录，这样定义最简单。
-5. ​        root   /Users/yangyi/www;
-6. ​        index  index.php index.html index.htm; 
-7. ​        charset utf-8;
-8. ​        access_log  usr/local/var/log/host.access.log  main;
-9. ​        aerror_log  usr/local/var/log/host.error.log  error;
-10. ​        ....
-11. }
-
-
-
-
-
-server标志定义虚拟主机开始。 
+```
 
 
 
-listen用于指定虚拟主机的服务端口。 
++ server标志定义虚拟主机开始。 
+
++ listen用于指定虚拟主机的服务端口。 
+
++ server_name用来指定IP地址或者域名，多个域名之间用空格分开。 
+
++ root 表示在这整个server虚拟主机内，全部的root web根目录。注意要和locate {}下面定义的区分开来。 
+
++ index 全局定义访问的默认首页地址。注意要和locate {}下面定义的区分开来。 
+
++ charset用于设置网页的默认编码格式。 
+
++ access_log用来指定此虚拟主机的访问日志存放路径，最后的main用于指定访问日志的输出格式。
 
 
 
-server_name用来指定IP地址或者域名，多个域名之间用空格分开。 
+### 3.5 location 模块(server的子模块)
 
-
-
-root 表示在这整个server虚拟主机内，全部的root web根目录。注意要和locate {}下面定义的区分开来。 
-
-
-
-index 全局定义访问的默认首页地址。注意要和locate {}下面定义的区分开来。 
-
-
-
-charset用于设置网页的默认编码格式。 
-
-
-
-access_log用来指定此虚拟主机的访问日志存放路径，最后的main用于指定访问日志的输出格式。
-
-
-
-
-
-
-
-location 模块(server的子模块)
-
-
-
-location模块是nginx中用的最多的，也是最重要的模块了，什么负载均衡啊、反向代理啊、虚拟域名啊都与它相关。慢慢来讲：
-
-
+location模块是nginx中用的最多的，也是最重要的模块了，什么负载均衡啊、反向代理啊、虚拟域名啊都与它相关。
 
 location 根据它字面意思就知道是来定位的，定位URL，解析URL，所以，它也提供了强大的正则匹配功能，也支持条件判断匹配，用户可以通过location指令实现Nginx对动、静态网页进行过滤处理。
 
 
 
-
-
 我们先来看这个，设定默认首页和虚拟机目录。
 
+```nginx
+location / {
+	root   /home/levonfly//www;
+	index  index.php index.html index.htm;
+}
+```
 
++ location /表示匹配访问根目录。
 
-1. location / {
-2. ​            root   /Users/yangyi/www;
-3. ​            index  index.php index.html index.htm;
-4. ​        }
++ root指令用于指定访问根目录时，虚拟主机的web目录，这个目录可以是相对路径（相对路径是相对于nginx的安装目录）。也可以是绝对路径。
 
-
-
-
-
-location /表示匹配访问根目录。
-
-root指令用于指定访问根目录时，虚拟主机的web目录，这个目录可以是相对路径（相对路径是相对于nginx的安装目录）。也可以是绝对路径。
-
-index用于设定我们只输入域名后访问的默认首页地址，有个先后顺序：index.php index.html index.htm，如果没有开启目录浏览权限，又找不到这些默认首页，就会报403错误。
-
-location 还有一种方式就是正则匹配，开启正则匹配这样：location ~。后面加个~。
++ index用于设定我们只输入域名后访问的默认首页地址，有个先后顺序：index.php index.html index.htm，如果没有开启目录浏览权限，又找不到这些默认首页，就会报403错误。
 
 
 
-
-
-下面这个例子是运用正则匹配来链接php。我们之前搭建环境也是这样做：
-
-
-
-1. location ~ \.php$ {
-2. ​            root           /Users/yangyi/www;
-3. ​            fastcgi_pass   127.0.0.1:9000;
-4. ​            fastcgi_index  index.php;
-5. ​            include        fastcgi.conf;
-6. ​        }
-
-\.php$ 熟悉正则的我们直到，这是匹配.php结尾的URL，用来解析php文件。里面的root也是一样，用来表示虚拟主机的根目录。 
-
-fast_pass链接的是php-fpm 的地址，之前我们也搭建过。其他几个参数我们以后再说。
-
-
-
-
-
-upstream 模块(http子模块)
-
-
-
-
+### 3.6 upstream 模块(http子模块)
 
 upstream 模块负债负载均衡模块，通过一个简单的调度算法来实现客户端IP到后端服务器的负载均衡。我先学习怎么用，具体的使用实例以后再说。
 
+```nginx
+upstream liuvv.com{
+     ip_hash;
+     server 192.168.12.1:80;
+     server 192.168.12.2:80 down;
+     server 192.168.12.3:8080  max_fails=3  fail_timeout=20s;
+     server 192.168.12.4:8080;
+}
+```
 
-
-1. upstream iyangyi.com{
-2. ​    ip_hash;
-3. ​    server 192.168.12.1:80;
-4. ​    server 192.168.12.2:80 down;
-5. ​    server 192.168.12.3:8080  max_fails=3  fail_timeout=20s;
-6. ​    server 192.168.12.4:8080;
-7. }
-
-
-
-
-
-在上面的例子中，通过upstream指令指定了一个负载均衡器的名称iyangyi.com。这个名称可以任意指定，在后面需要的地方直接调用即可。
+在上面的例子中，通过upstream指令指定了一个负载均衡器的名称liuvv.com。这个名称可以任意指定，在后面需要的地方直接调用即可。
 
 
 
 里面是ip_hash这是其中的一种负载均衡调度算法，下面会着重介绍。紧接着就是各种服务器了。用server关键字表识，后面接ip。
-
-
-
-
 
 Nginx的负载均衡模块目前支持4种调度算法:
 
@@ -543,11 +472,7 @@ Nginx的负载均衡模块目前支持4种调度算法:
 
 
 
-
-
 在HTTP Upstream模块中，可以通过server指令指定后端服务器的IP地址和端口，同时还可以设定每个后端服务器在负载均衡调度中的状态。常用的状态有：
-
-
 
 - down，表示当前的server暂时不参与负载均衡。
 - backup，预留的备份机器。当其他所有的非backup机器出现故障或者忙的时候，才会请求backup机器，因此这台机器的压力最轻。
@@ -560,57 +485,30 @@ Nginx的负载均衡模块目前支持4种调度算法:
 
 
 
+# 4. 参考资料
 
 
 
+https://www.zybuluo.com/phper/note/89391 nginx的配置、虚拟主机、负载均衡和反向代理
 
-https://www.jianshu.com/p/4ee4098f2bbd
+https://www.zybuluo.com/phper/note/90310  2
 
-https://www.zybuluo.com/phper/note/89391
-
-
-
-
-
-https://juejin.im/post/5aa7704c6fb9a028bb18a993 //基本配置
-
-https://my.oschina.net/duxuefeng/blog/34880 //详细参数
-
-https://www.jianshu.com/p/a7c86efe1987//中文版
+https://www.zybuluo.com/phper/note/133244  3
 
 
 
-https://juejin.im/post/5aa7704c6fb9a028bb18a993 //配置
+https://juejin.im/post/5aa7704c6fb9a028bb18a993 //Nginx 基本配置详解
 
-http://www.nginx.cn/591.html//不错
+https://my.oschina.net/duxuefeng/blog/34880 //nginx配置详解
 
+https://www.jianshu.com/p/a7c86efe1987    //nginx配置文件详解中文版
 
-
-
-
-
+http://www.nginx.cn/591.html  //nginx配置入门
 
 
 
+https://jkzhao.github.io/2018/01/23/Nginx%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%E5%8F%8A%E4%BC%98%E5%8C%96   //Nginx配置详解及优化/
 
-
-
-
-https://jkzhao.github.io/2018/01/23/Nginx%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%E5%8F%8A%E4%BC%98%E5%8C%96   //优化
-
-https://www.kancloud.cn/curder/nginx/96672 //笔记
+https://www.kancloud.cn/curder/nginx/96672 //nginx学习笔记
 
  https://nginxconfig.io/ //在线生成
-
-
-
-
-
-
-
-
-
-
-
-
-

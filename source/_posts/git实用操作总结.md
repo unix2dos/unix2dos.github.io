@@ -1,7 +1,8 @@
 ---
 title: git实用操作总结
-date: 2016-12-16 11:17:48
 tags: git
+abbrlink: 42eae4e7
+date: 2016-12-16 11:17:48
 ---
 
 ### git的配置

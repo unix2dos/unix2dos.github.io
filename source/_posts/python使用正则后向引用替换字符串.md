@@ -1,7 +1,8 @@
 ---
 title: python使用正则后向引用替换字符串
-date: 2016-11-25 16:11:51
 tags: python
+abbrlink: 136fd428
+date: 2016-11-25 16:11:51
 ---
 >工作需要把 `Mud makes my mom mad.` 这句话带有m的加上颜色,或者把某些单词加上颜色
 >临时写了个脚本处理

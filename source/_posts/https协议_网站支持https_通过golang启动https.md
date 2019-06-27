@@ -1,9 +1,10 @@
 ---
 title: https协议_网站支持https_通过golang启动https
-date: 2018-05-13 19:08:01
 tags:
-- http
-- linux
+  - http
+  - linux
+abbrlink: fcd8becb
+date: 2018-05-13 19:08:01
 ---
 
 

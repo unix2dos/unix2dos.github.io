@@ -1,9 +1,10 @@
 ---
-title: "python隔离环境virtualenv和virtualenvwrapper的使用"
-date: 2019-04-16 19:54:46
+title: python隔离环境virtualenv和virtualenvwrapper的使用
 tags:
-- python
-- virtualenv
+  - python
+  - virtualenv
+abbrlink: 8731aeb9
+date: 2019-04-16 19:54:46
 ---
 
 

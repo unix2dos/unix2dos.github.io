@@ -1,8 +1,9 @@
 ---
-title: "golang_runtime函数调用信息"
-date: 2018-07-07 14:19:52
+title: golang_runtime函数调用信息
 tags:
-- golang
+  - golang
+abbrlink: 375281af
+date: 2018-07-07 14:19:52
 ---
 
 

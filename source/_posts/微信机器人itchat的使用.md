@@ -1,10 +1,11 @@
 ---
-title: "微信机器人itchat的使用"
-date: 2019-03-31 12:01:00
+title: 微信机器人itchat的使用
 tags:
-- wechat
-- python
-- robot
+  - wechat
+  - python
+  - robot
+abbrlink: 4f93001b
+date: 2019-03-31 12:01:00
 ---
 
 

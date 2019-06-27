@@ -1,8 +1,9 @@
 ---
-title: "javascript原形链的自我理解"
-date: 2019-02-21 21:05:22
+title: javascript原形链的自我理解
 tags:
-- javascript
+  - javascript
+abbrlink: 6d00c950
+date: 2019-02-21 21:05:22
 ---
 
 ### Object 和 Function

@@ -1,7 +1,8 @@
 ---
-title: 'gitHub提交PullRequest'
-date: 2017-04-02 17:54:46
+title: gitHub提交PullRequest
 tags: git
+abbrlink: a35ae0bf
+date: 2017-04-02 17:54:46
 ---
 
 

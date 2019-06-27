@@ -1,9 +1,10 @@
 ---
-title: "pyqt安装使用打包教程"
-date: 2019-04-18 17:58:01
+title: pyqt安装使用打包教程
 tags:
-- python
-- pyqt
+  - python
+  - pyqt
+abbrlink: a0594c46
+date: 2019-04-18 17:58:01
 ---
 
 

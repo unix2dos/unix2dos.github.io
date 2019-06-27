@@ -1,8 +1,9 @@
 ---
-title: 'golang内存模型和happens_before'
-date: 2018-05-27 22:13:58
+title: golang内存模型和happens_before
 tags:
-- golang
+  - golang
+abbrlink: 6196d525
+date: 2018-05-27 22:13:58
 ---
 
 

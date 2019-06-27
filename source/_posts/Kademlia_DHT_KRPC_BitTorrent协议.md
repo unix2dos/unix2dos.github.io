@@ -1,8 +1,9 @@
 ---
-title: 'Kademlia_DHT_KRPC_BitTorrent协议'
-date: 2018-05-13 22:48:16
+title: Kademlia_DHT_KRPC_BitTorrent协议
 tags:
-- dht
+  - dht
+abbrlink: 1ea24e2a
+date: 2018-05-13 22:48:16
 ---
 
 # 0.引言

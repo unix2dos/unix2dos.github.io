@@ -1,11 +1,12 @@
 ---
-title: "node版本管理nvm的安装和使用"
-date: 2019-05-10 20:02:00
+title: node版本管理nvm的安装和使用
 tags:
-- node
-- npm
-- nvm
-- javascript
+  - node
+  - npm
+  - nvm
+  - javascript
+abbrlink: df22a20c
+date: 2019-05-10 20:02:00
 ---
 
 

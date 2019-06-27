@@ -1,9 +1,10 @@
 ---
-title: 'aws部署golang_beego_nginx'
-date: 2018-01-29 17:54:46
+title: aws部署golang_beego_nginx
 tags:
-- golang
-- linux
+  - golang
+  - linux
+abbrlink: 8956ebfb
+date: 2018-01-29 17:54:46
 ---
 
 

@@ -1,9 +1,10 @@
 ---
-title: 'vim插件管理_vimrc配置和拷贝系统剪贴板'
-date: 2018-05-15 22:06:13
+title: vim插件管理_vimrc配置和拷贝系统剪贴板
 tags:
-- vim
-- linux
+  - vim
+  - linux
+abbrlink: 1b9bff9b
+date: 2018-05-15 22:06:13
 ---
 
 

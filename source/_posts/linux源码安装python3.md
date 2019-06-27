@@ -1,9 +1,10 @@
 ---
-title: "linux源码安装python3"
-date: 2019-03-31 12:02:01
+title: linux源码安装python3
 tags:
-- python
-- linux
+  - python
+  - linux
+abbrlink: 95e70f76
+date: 2019-03-31 12:02:01
 ---
 
 

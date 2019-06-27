@@ -1,9 +1,10 @@
 ---
-title: 'nsq介绍和go-nsq使用'
-date: 2018-05-19 11:01:13
+title: nsq介绍和go-nsq使用
 tags:
-- golang
-- nsq
+  - golang
+  - nsq
+abbrlink: 17c769c4
+date: 2018-05-19 11:01:13
 ---
 
 ### nsq 介绍

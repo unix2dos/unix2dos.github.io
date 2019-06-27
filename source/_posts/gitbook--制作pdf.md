@@ -1,7 +1,8 @@
 ---
 title: gitbook--制作pdf
-date: 2016-10-18 16:21:24
 tags: others
+abbrlink: 1f9c8aa6
+date: 2016-10-18 16:21:24
 ---
 
 ## 命令行:

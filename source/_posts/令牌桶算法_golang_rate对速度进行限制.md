@@ -1,8 +1,9 @@
 ---
-title: '令牌桶算法_golang_rate对速度进行限制'
-date: 2018-05-19 17:00:26
+title: 令牌桶算法_golang_rate对速度进行限制
 tags:
-- golang
+  - golang
+abbrlink: e25fe1fc
+date: 2018-05-19 17:00:26
 ---
 
 ### 限流算法

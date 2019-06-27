@@ -1,9 +1,10 @@
 ---
-title: 'golang_ide_vscode的使用调试和问题解决'
-date: 2018-05-19 10:41:27
+title: golang_ide_vscode的使用调试和问题解决
 tags:
-- golang
-- vscode
+  - golang
+  - vscode
+abbrlink: 127812f2
+date: 2018-05-19 10:41:27
 ---
 
 

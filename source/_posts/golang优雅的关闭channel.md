@@ -1,8 +1,9 @@
 ---
-title: 'golang优雅的关闭channel'
-date: 2018-05-27 23:31:19
+title: golang优雅的关闭channel
 tags:
-- golang
+  - golang
+abbrlink: 8b210700
+date: 2018-05-27 23:31:19
 ---
 
 

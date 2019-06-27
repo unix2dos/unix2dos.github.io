@@ -1,8 +1,9 @@
 ---
-title: "YAML语言教程"
-date: 2018-12-27 14:41:00
+title: YAML语言教程
 tags:
-- yaml
+  - yaml
+abbrlink: f2ad59fc
+date: 2018-12-27 14:41:00
 ---
 
 ## YAML介绍

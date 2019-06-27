@@ -1,8 +1,9 @@
 ---
-title: "搭建webRTC视频聊天"
-date: 2019-01-29 16:00:00
+title: 搭建webRTC视频聊天
 tags:
-- webrtc
+  - webrtc
+abbrlink: 697b4dfa
+date: 2019-01-29 16:00:00
 ---
 
 

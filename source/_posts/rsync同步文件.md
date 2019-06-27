@@ -1,7 +1,8 @@
 ---
-title: 'rsync同步文件'
-date: 2017-04-18 17:54:46
+title: rsync同步文件
 tags: linux
+abbrlink: f67a2ed5
+date: 2017-04-18 17:54:46
 ---
 
 

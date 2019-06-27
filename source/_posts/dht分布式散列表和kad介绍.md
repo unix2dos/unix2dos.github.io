@@ -1,7 +1,8 @@
 ---
-title: 'dht分布式散列表和kad介绍'
-date: 2018-05-14 00:30:01
+title: dht分布式散列表和kad介绍
 tags: dht
+abbrlink: 2c46e603
+date: 2018-05-14 00:30:01
 ---
 	
 

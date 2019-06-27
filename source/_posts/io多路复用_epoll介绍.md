@@ -1,7 +1,8 @@
 ---
-title: 'io多路复用_epoll介绍'
-date: 2017-05-01 17:54:46
+title: io多路复用_epoll介绍
 tags: linux
+abbrlink: 457c2d1f
+date: 2017-05-01 17:54:46
 ---
 
 

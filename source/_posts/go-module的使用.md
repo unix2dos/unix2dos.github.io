@@ -1,8 +1,9 @@
 ---
-title: "go-module的使用"
-date: 2019-06-03 15:56:46
+title: go-module的使用
 tags:
-- golang
+  - golang
+abbrlink: 6c6632b7
+date: 2019-06-03 15:56:46
 ---
 
 

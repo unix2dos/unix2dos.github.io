@@ -1,9 +1,10 @@
 ---
 title: golang配置vim
-date: 2016-11-16 22:14:49
 tags:
-- vim
-- golang
+  - vim
+  - golang
+abbrlink: 3feff448
+date: 2016-11-16 22:14:49
 ---
 ### 配置文件和快速设置
 - [.vimrc][1]

@@ -1,10 +1,10 @@
-
 ---
-title: 'xcode主题'
+title: xcode主题
+tags:
+  - xcode
+  - iOS
+abbrlink: b884c3b7
 date: 2016-12-13 17:54:46
-tags: 
-- xcode
-- iOS
 ---
 
 

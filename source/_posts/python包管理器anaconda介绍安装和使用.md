@@ -1,10 +1,11 @@
 ---
-title: "python包管理器anaconda介绍安装和使用"
-date: 2019-04-16 19:54:47
+title: python包管理器anaconda介绍安装和使用
 tags:
-- python
-- anaconda
-- virtualenv
+  - python
+  - anaconda
+  - virtualenv
+abbrlink: 3c2948a5
+date: 2019-04-16 19:54:47
 ---
 
 

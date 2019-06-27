@@ -1,8 +1,9 @@
 ---
-title: "python最好用IDE之pycharm的使用"
-date: 2019-03-11 22:14:00
+title: python最好用IDE之pycharm的使用
 tags:
-- python
+  - python
+abbrlink: b3d62374
+date: 2019-03-11 22:14:00
 ---
 
 

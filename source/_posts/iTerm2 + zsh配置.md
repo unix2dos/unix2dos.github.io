@@ -1,7 +1,8 @@
 ---
-title: 'iTerm2 + zsh配置'
-date: 2017-03-11 17:54:46
+title: iTerm2 + zsh配置
 tags: linux
+abbrlink: 6600d67c
+date: 2017-03-11 17:54:46
 ---
 
 

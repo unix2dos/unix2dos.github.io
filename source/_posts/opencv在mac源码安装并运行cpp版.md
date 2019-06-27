@@ -1,9 +1,10 @@
 ---
-title: "opencv在mac源码安装并运行cpp版"
-date: 2019-03-14 20:00:00
+title: opencv在mac源码安装并运行cpp版
 tags:
-- opencv
-- cpp
+  - opencv
+  - cpp
+abbrlink: 9c99a6b7
+date: 2019-03-14 20:00:00
 ---
 
 

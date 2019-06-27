@@ -1,10 +1,11 @@
 ---
-title: "QQ机器人酷Q的使用"
-date: 2019-03-31 12:00:00
+title: QQ机器人酷Q的使用
 tags:
-- qq
-- docker
-- robot
+  - qq
+  - docker
+  - robot
+abbrlink: 545a4e78
+date: 2019-03-31 12:00:00
 ---
 
 

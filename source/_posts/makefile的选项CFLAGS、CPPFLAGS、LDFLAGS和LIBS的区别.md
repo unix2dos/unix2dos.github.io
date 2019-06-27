@@ -1,9 +1,10 @@
 ---
-title: "makefile的选项CFLAGS、CPPFLAGS、LDFLAGS和LIBS的区别"
-date: 2018-10-9 18:34:02
+title: makefile的选项CFLAGS、CPPFLAGS、LDFLAGS和LIBS的区别
 tags:
-- makefile
-- linux
+  - makefile
+  - linux
+abbrlink: 271bdf2a
+date: 2018-10-09 18:34:02
 ---
 
 

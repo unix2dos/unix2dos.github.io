@@ -1,9 +1,10 @@
 ---
-title: "nodejs介绍和javascript的区别"
-date: 2019-05-10 20:00:00
+title: nodejs介绍和javascript的区别
 tags:
-- node
-- javascript
+  - node
+  - javascript
+abbrlink: 74d8b7c3
+date: 2019-05-10 20:00:00
 ---
 
 ### 1. nodejs的诞生

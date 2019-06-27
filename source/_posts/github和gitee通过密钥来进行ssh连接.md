@@ -1,7 +1,8 @@
 ---
-title: 'github和gitee通过密钥来进行ssh连接'
-date: 2017-04-01 17:54:46
+title: github和gitee通过密钥来进行ssh连接
 tags: git
+abbrlink: a9407b5
+date: 2017-04-01 17:54:46
 ---
 
 # github ssh

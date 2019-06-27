@@ -1,8 +1,9 @@
 ---
-title: 'docker从入门到实践'
-date: 2018-05-26 22:01:19
+title: docker从入门到实践
 tags:
-- docker
+  - docker
+abbrlink: 3fc66628
+date: 2018-05-26 22:01:19
 ---
 
 

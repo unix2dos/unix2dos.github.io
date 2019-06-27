@@ -1,9 +1,10 @@
 ---
-title: "shadowsocks加速的几种方案"
-date: 2019-04-29 20:54:47
+title: shadowsocks加速的几种方案
 tags:
-- linux
-- shadowsocks
+  - linux
+  - shadowsocks
+abbrlink: 4241e56c
+date: 2019-04-29 20:54:47
 ---
 
 

@@ -1,9 +1,10 @@
 ---
-title: "深入了解CPU架构"
-date: 2018-08-27 10:36:53
+title: 深入了解CPU架构
 tags:
-- linux
-- cpu
+  - linux
+  - cpu
+abbrlink: 690c18bd
+date: 2018-08-27 10:36:53
 ---
 
 

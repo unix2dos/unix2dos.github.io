@@ -1,9 +1,10 @@
 ---
-title: "nodejs的模块安装和package.json"
-date: 2019-05-10 20:01:00
+title: nodejs的模块安装和package.json
 tags:
-- nodejs
-- npm
+  - nodejs
+  - npm
+abbrlink: d100a0c2
+date: 2019-05-10 20:01:00
 ---
 
 

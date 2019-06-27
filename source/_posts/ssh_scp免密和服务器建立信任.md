@@ -1,7 +1,8 @@
 ---
-title: 'ssh_scp免密和服务器建立信任'
-date: 2018-02-13 17:54:46
+title: ssh_scp免密和服务器建立信任
 tags: ssh
+abbrlink: fe0e5995
+date: 2018-02-13 17:54:46
 ---
 
 + 在mac上生成密钥

@@ -1,8 +1,9 @@
 ---
-title: "golang闭包的坑"
-date: 2018-07-07 13:33:01
+title: golang闭包的坑
 tags:
-- golang
+  - golang
+abbrlink: 4c5612cb
+date: 2018-07-07 13:33:01
 ---
 
 ### 循环内goroutine使用闭包

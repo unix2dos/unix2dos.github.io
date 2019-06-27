@@ -1,7 +1,8 @@
 ---
 title: 'c++11的模板类型判断std::is_same和std::decay'
-date: 2016-12-19 14:57:51
 tags: c++
+abbrlink: 1e4be646
+date: 2016-12-19 14:57:51
 ---
 
 问题提出：有一个模板函数，函数在处理int型和double型时需要进行特殊的处理，那么怎么在编译期知道传入的参数的数据类型是int型还是double型呢？ 

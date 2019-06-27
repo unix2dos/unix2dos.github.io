@@ -1,9 +1,10 @@
 ---
-title: 'linux开启ftp服务和golang实现ftp_server_client'
-date: 2018-05-30 22:42:26
+title: linux开启ftp服务和golang实现ftp_server_client
 tags:
-- golang
-- linux
+  - golang
+  - linux
+abbrlink: d43abcbd
+date: 2018-05-30 22:42:26
 ---
 
 

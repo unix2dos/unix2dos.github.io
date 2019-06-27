@@ -1,7 +1,8 @@
 ---
 title: mac系统vim升级流程
-date: 2016-11-17 17:49:00
 tags: vim
+abbrlink: 4ea69092
+date: 2016-11-17 17:49:00
 ---
 
 #### 执行命令安装vim 注意要加上`--with-override-system-vi`

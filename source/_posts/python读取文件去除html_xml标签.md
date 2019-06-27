@@ -1,7 +1,8 @@
 ---
 title: python读取文件去除html_xml标签
-date: 2016-10-19 15:53:58
 tags: python
+abbrlink: f3ea3847
+date: 2016-10-19 15:53:58
 ---
 
 > 自己写的一个简单去除html标签(xml)的脚本

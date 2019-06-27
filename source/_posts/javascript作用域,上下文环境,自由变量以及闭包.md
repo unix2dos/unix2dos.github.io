@@ -1,8 +1,9 @@
 ---
-title: "javascript作用域,上下文环境,自由变量以及闭包"
-date: 2019-03-07 23:53:10
+title: 'javascript作用域,上下文环境,自由变量以及闭包'
 tags:
-- javascript
+  - javascript
+abbrlink: 1e35a583
+date: 2019-03-07 23:53:10
 ---
 
 

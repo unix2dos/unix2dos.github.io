@@ -1,10 +1,11 @@
 ---
-title: "交叉编译arm-transmission-2.94"
-date: 2018-10-08 17:02:00
+title: 交叉编译arm-transmission-2.94
 tags:
-- arm
-- linux
-- transmission
+  - arm
+  - linux
+  - transmission
+abbrlink: 73da9612
+date: 2018-10-08 17:02:00
 ---
 
 

@@ -1,8 +1,9 @@
 ---
-title: "nat穿透,stun,turn,ice介绍"
-date: 2019-01-29 15:54:16
+title: 'nat穿透,stun,turn,ice介绍'
 tags:
-- nat
+  - nat
+abbrlink: f3e0f5f5
+date: 2019-01-29 15:54:16
 ---
 
 ### 1. NAT网络地址转换:  

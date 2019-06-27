@@ -1,9 +1,10 @@
 ---
-title: "opencv在python下的安装和使用"
-date: 2019-03-14 20:01:01
+title: opencv在python下的安装和使用
 tags:
-- opencv
-- python
+  - opencv
+  - python
+abbrlink: 415d206d
+date: 2019-03-14 20:01:01
 ---
 
 

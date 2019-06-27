@@ -1,7 +1,9 @@
 ---
-title: 'hexo搭建博客'
-date: 2016-12-01 17:54:46
+title: hexo搭建博客
+urlname: hexo_blog
 tag: hexo
+abbrlink: b37651
+date: 2016-12-01 17:54:46
 ---
 
 ### 安装hexo
@@ -111,8 +113,26 @@ git clone https://github.com/theme-next/theme-next-reading-progress source/lib/r
 
 ### hexo-next 插件
 
-npm install hexo-symbols-count-time --save   # 读取次数
+1. npm install hexo-symbols-count-time --save   # 统计字数
 
+symbols_count_time:
+  symbols: true
+  time: true
+  total_symbols: true
+  total_time: true
+  separated_meta: true
+  item_text_post: true
+  item_text_total: false
+  awl: 4
+  wpm: 275
+
+
+2. npm install hexo-abbrlink --save # 链接持久
+
+permalink: post/:abbrlink.html
+abbrlink:
+  alg: crc16 #support crc16(default) and crc32
+  rep: hex    #support dec(default) and hex
 ```
 
 

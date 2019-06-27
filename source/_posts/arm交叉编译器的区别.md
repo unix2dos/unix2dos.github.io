@@ -1,9 +1,10 @@
 ---
-title: "arm交叉编译器的区别"
-date: 2018-10-08 16:33:11
+title: arm交叉编译器的区别
 tags:
-- arm
-- linux
+  - arm
+  - linux
+abbrlink: a63b0191
+date: 2018-10-08 16:33:11
 ---
 
 

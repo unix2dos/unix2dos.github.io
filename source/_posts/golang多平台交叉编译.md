@@ -1,7 +1,8 @@
 ---
-title: 'golang多平台交叉编译'
-date: 2017-08-01 17:54:46
+title: golang多平台交叉编译
 tags: golang
+abbrlink: 37af4aa1
+date: 2017-08-01 17:54:46
 ---
 
 

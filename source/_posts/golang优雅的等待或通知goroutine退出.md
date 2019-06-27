@@ -1,8 +1,9 @@
 ---
-title: 'golang优雅的等待或通知goroutine退出'
-date: 2018-05-28 00:03:21
+title: golang优雅的等待或通知goroutine退出
 tags:
-- golang
+  - golang
+abbrlink: aca47db0
+date: 2018-05-28 00:03:21
 ---
 
 

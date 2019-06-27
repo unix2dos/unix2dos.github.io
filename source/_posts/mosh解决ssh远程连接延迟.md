@@ -1,8 +1,8 @@
-
 ---
-title: 'mosh解决ssh远程连接延迟'
-date: 2017-04-06 17:54:46
+title: mosh解决ssh远程连接延迟
 tags: linux
+abbrlink: 21b6636c
+date: 2017-04-06 17:54:46
 ---
 
 

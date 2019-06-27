@@ -1,7 +1,8 @@
 ---
 title: android自动添加文件到android-mk
-date: 2016-10-18 16:53:11
 tags: android
+abbrlink: 99b8fe68
+date: 2016-10-18 16:53:11
 ---
 
 将

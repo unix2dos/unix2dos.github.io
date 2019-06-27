@@ -1,7 +1,8 @@
 ---
 title: markdown语法集合
-date: 2016-10-18 17:19:37
 tags: markdown
+abbrlink: 1ef7af3b
+date: 2016-10-18 17:19:37
 ---
 
 

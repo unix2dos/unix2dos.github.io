@@ -1,11 +1,12 @@
 ---
-title: "transmission编译安装和golang_rpc的调用"
-date: 2018-07-08 16:38:13
+title: transmission编译安装和golang_rpc的调用
 tags:
-- golang
-- torrent
-- c
-- transmission
+  - golang
+  - torrent
+  - c
+  - transmission
+abbrlink: bf531b37
+date: 2018-07-08 16:38:13
 ---
 
 ### 1. mac编译transmission

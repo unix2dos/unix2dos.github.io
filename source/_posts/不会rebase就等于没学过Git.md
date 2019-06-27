@@ -1,13 +1,10 @@
 ---
-title: "不会rebase就等于没学过Git"
-
-date: 2018-07-07 12:40:10
-
+title: 不会rebase就等于没学过Git
 tags:
-
-- git
-
-- linux
+  - git
+  - linux
+abbrlink: b1718ace
+date: 2018-07-07 12:40:10
 ---
 
 
