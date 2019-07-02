@@ -1,10 +1,11 @@
 ---
-title: tmux和oh_my_tmux的使用
+title: iterm2上tmux和oh_my_tmux的使用
 tags:
   - tmux
   - linux
+  - iterm2
 abbrlink: 29f1e79c
-date: 2019-06-22 08:22:46
+date: 2019-07-02 08:22:46
 ---
 
 tmux是一款优秀的终端复用软件，它比Screen更加强大。 tmux之所以受人们喜爱，主要得益于以下功能：
