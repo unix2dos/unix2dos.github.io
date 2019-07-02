@@ -1,5 +1,5 @@
 ---
-title: iTerm2 + zsh配置
+title: mac下iterm2_zsh配置
 tags: linux
 abbrlink: 6600d67c
 date: 2017-03-11 17:54:46
@@ -51,12 +51,19 @@ https://github.com/powerline/fonts
 ### 4. zsh 插件
 
 ```bash
-https://github.com/zsh-users/zsh-autosuggestions  #自动补充命令
-https://github.com/zsh-users/zsh-syntax-highlighting # 命令高亮
-
 ### autojump ###
 brew install autojump
 [[ -s $(brew --prefix)/etc/profile.d/autojump.sh ]] && . $(brew --prefix)/etc/profile.d/autojump.sh
 source $ZSH/oh-my-zsh.sh
+
+### git ###
+plugins=(git)
+source ~/.oh-my-zsh/plugins/git/git.plugin.zsh
+
+### 自动补充命令 ###
+https://github.com/zsh-users/zsh-autosuggestions  
+
+### 命令高亮 ###
+https://github.com/zsh-users/zsh-syntax-highlighting
 ```
 
