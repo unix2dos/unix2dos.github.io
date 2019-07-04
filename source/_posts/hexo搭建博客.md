@@ -146,3 +146,15 @@ abbrlink:
 2. WARN  No layout
 
    看看主题里面究竟有没有东西,文件夹名字和主题是否对应
+   
+3. 使用链接持久后图片无法显示(https://github.com/rozbo/hexo-abbrlink/issues/19)
+
+   ```bash
+   1、在源码的12行附近var link = data.permalink;这一行的下面，添加 一行var abbrlink = data.abbrlink
+   （意思是定义一个变量abbrlink）
+   2、在44行附近，源码的 $(this).attr('src' , '/' + link + src);这一行，修改 为下面一行：
+   $(this).attr('src' , '/' + link + abbrlink + '/' + src);
+   （意思是生成的图片链接中，拼接abbrlink）
+   ```
+
+   
