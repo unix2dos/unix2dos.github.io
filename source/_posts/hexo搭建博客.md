@@ -162,4 +162,6 @@ abbrlink:
        }
    ```
    
-   
+4. TypeError: Cannot read property 'enable_sync' of undefined
+
+   是因为替换配置文件的时候忘记加 `leancloud_counter_security` 了
