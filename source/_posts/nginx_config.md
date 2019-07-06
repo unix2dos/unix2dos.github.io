@@ -1,16 +1,15 @@
 ---
-title: "nginx常用功能和配置详解"
-date: 2019-06-22 23:54:46
+title: nginx常用功能和配置详解
 tags:
-- nginx
-- linux
+  - nginx
+  - linux
+abbrlink: 7245bfc7
+date: 2019-07-07 23:54:46
 ---
 
 
 
 Nginx功能丰富，可作为HTTP服务器，也可作为反向代理服务器，邮件服务器。支持FastCGI、SSL、Virtual Host、URL Rewrite、Gzip等功能。并且支持很多第三方的模块扩展。
-
-<!-- more -->
 
 # 1. nginx 常用功能说明
 
@@ -25,7 +24,7 @@ Nginx功能丰富，可作为HTTP服务器，也可作为反向代理服务器�
 
 Nginx在做反向代理时，提供性能稳定，并且能够提供配置灵活的转发功能。Nginx可以根据不同的正则匹配，采取不同的转发策略，比如图片文件结尾的走文件服务器，动态页面走web服务器，只要你正则写的没问题，又有相对应的服务器解决方案，你就可以随心所欲的玩。并且Nginx对返回结果进行错误页跳转，异常判断等。如果被分发的服务器存在异常，他可以将请求重新转发给另外一台服务器，然后自动去除异常服务器。
 
-
+<!-- more -->
 
 ### 1.2 负载均衡
 
@@ -53,130 +52,38 @@ nginx可以对不同的文件做不同的缓存处理，配置灵活，并且支
 
 
 
-
-
 # 2. nginx配置文件结构
 
 
 
-先放一个默认配置 /etc/nginx/nginx.conf
+先放一个配置demo
 
 ```nginx
-#user  nobody;
+user  nobody;
 worker_processes  1;
-
-#error_log  logs/error.log;
-#error_log  logs/error.log  notice;
-#error_log  logs/error.log  info;
-
-#pid        logs/nginx.pid;
-
+pid        logs/nginx.pid;
 
 events {
     worker_connections  1024;
 }
 
+upstream mysvr {   
+  server 127.0.0.1:7878;
+  server 192.168.10.121:3333 backup;
+}
 
 http {
     include       mime.types;
     default_type  application/octet-stream;
-
-    #log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
-    #                  '$status $body_bytes_sent "$http_referer" '
-    #                  '"$http_user_agent" "$http_x_forwarded_for"';
-
-    #access_log  logs/access.log  main;
-
-    sendfile        on;
-    #tcp_nopush     on;
-
-    #keepalive_timeout  0;
-    keepalive_timeout  65;
-
-    #gzip  on;
-
+  
     server {
         listen       80;
         server_name  localhost;
-
-        #charset koi8-r;
-
-        #access_log  logs/host.access.log  main;
-
         location / {
             root   html;
             index  index.html index.htm;
         }
-
-        #error_page  404              /404.html;
-
-        # redirect server error pages to the static page /50x.html
-        #
-        error_page   500 502 503 504  /50x.html;
-        location = /50x.html {
-            root   html;
-        }
-
-        # proxy the PHP scripts to Apache listening on 127.0.0.1:80
-        #
-        #location ~ \.php$ {
-        #    proxy_pass   http://127.0.0.1;
-        #}
-
-        # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
-        #
-        #location ~ \.php$ {
-        #    root           html;
-        #    fastcgi_pass   127.0.0.1:9000;
-        #    fastcgi_index  index.php;
-        #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
-        #    include        fastcgi_params;
-        #}
-
-        # deny access to .htaccess files, if Apache's document root
-        # concurs with nginx's one
-        #
-        #location ~ /\.ht {
-        #    deny  all;
-        #}
     }
-
-
-    # another virtual host using mix of IP-, name-, and port-based configuration
-    #
-    #server {
-    #    listen       8000;
-    #    listen       somename:8080;
-    #    server_name  somename  alias  another.alias;
-
-    #    location / {
-    #        root   html;
-    #        index  index.html index.htm;
-    #    }
-    #}
-
-
-    # HTTPS server
-    #
-    #server {
-    #    listen       443 ssl;
-    #    server_name  localhost;
-
-    #    ssl_certificate      cert.pem;
-    #    ssl_certificate_key  cert.key;
-
-    #    ssl_session_cache    shared:SSL:1m;
-    #    ssl_session_timeout  5m;
-
-    #    ssl_ciphers  HIGH:!aNULL:!MD5;
-    #    ssl_prefer_server_ciphers  on;
-
-    #    location / {
-    #        root   html;
-    #        index  index.html index.htm;
-    #    }
-    #}
-
 }
 ```
 
@@ -184,13 +91,13 @@ http {
 
 ### 2.1 配置文件结构
 
-+ main(全局块)
-+ events (nginx工作模式)
++ main(全局块)[一个]
++ events (nginx工作模式)[一个]
 
-+ http(http设置)1个
-  + server(主机设置)多个
-    + location(URL匹配)多个
-  + upstream(负载均衡服务器设置)1个
++ http(http设置)[一个]
+  + server(主机设置)[http里多个]
+    + location(URL匹配)[server里多个]
+  + upstream(负载均衡服务器设置)[http里一个]
 
 
 
@@ -279,8 +186,6 @@ http {
 
 # 3. 详细配置说明
 
-
-
 ### 3.1 main模块
 
 ```nginx
@@ -295,7 +200,7 @@ worker_rlimit_nofile 1024;
 
 + user 来指定Nginx Worker进程运行用户以及用户组，默认由nobody账号运行。
 
-+ worker_processes来指定了Nginx要开启的子进程数。每个Nginx进程平均耗费10M~12M内存。根据经验，一般指定1个进程就足够了，如果是多核CPU，建议指定和CPU的数量一样的进程数即可。我这里写2，那么就会开启2个子进程，总共3个进程。
++ worker_processes来指定了Nginx要开启的子进程数。每个Nginx进程平均耗费10M~12M内存。根据经验，一般指定1个进程就足够了，如果是多核CPU，建议指定和CPU的数量一样的进程数即可。我这里写2，那么就会开启2个子进程，总共3个进程。可以写 auto.
 
 + error_log用来定义全局错误日志文件。日志输出级别有debug、info、notice、warn、error、crit可供选择，其中，debug输出日志最为最详细，而crit输出日志最少。
 
@@ -376,15 +281,9 @@ http {
 
 
 
-### 3.4 server 模块 (http的子模块, 虚拟主机, 最重要)
+### 3.4 server 模块 (http的子模块, 虚拟主机)
 
-
-
-sever 模块是http的子模块，它用来定一个虚拟主机。
-
-
-
-我们看一下一个简单的server 是如何做的？
+sever 模块是http的子模块，它用来定一个虚拟主机。我们看一下一个简单的server 是如何做的？
 
 ```nginx
 server {
@@ -418,7 +317,7 @@ server {
 
 
 
-### 3.5 location 模块(server的子模块)
+### 3.5 location 模块(server的子模块, 重要)
 
 location模块是nginx中用的最多的，也是最重要的模块了，什么负载均衡啊、反向代理啊、虚拟域名啊都与它相关。
 
@@ -430,7 +329,7 @@ location 根据它字面意思就知道是来定位的，定位URL，解析URL�
 
 ```nginx
 location / {
-	root   /home/levonfly//www;
+	root   /home/levonfly/www;
 	index  index.php index.html index.htm;
 }
 ```
@@ -440,6 +339,22 @@ location / {
 + root指令用于指定访问根目录时，虚拟主机的web目录，这个目录可以是相对路径（相对路径是相对于nginx的安装目录）。也可以是绝对路径。
 
 + index用于设定我们只输入域名后访问的默认首页地址，有个先后顺序：index.php index.html index.htm，如果没有开启目录浏览权限，又找不到这些默认首页，就会报403错误。
+
+  
+
+location 还有一种方式就是正则匹配，开启正则匹配这样：`location ~`。后面加个`~`。下面这个例子是运用`正则匹配`来链接php。
+
+```nginx
+location ~ \.php$ {
+            root           /home/levonfly/www;
+            fastcgi_pass   127.0.0.1:9000;
+            fastcgi_index  index.php;
+            include        fastcgi.conf;
+        }
+```
+
+`\.php$` 熟悉正则的我们直到，这是匹配`.php`结尾的URL，用来解析php文件。里面的`root`也是一样，用来表示虚拟主机的根目录。 
+`fast_pass`链接的是`php-fpm` 的地址，之前我们也搭建过。其他几个参数我们以后再说。
 
 
 
@@ -483,32 +398,65 @@ Nginx的负载均衡模块目前支持4种调度算法:
 
 
 
+# 4. nginx 配置实战
+
+### 4.1 虚拟主机配置
+
+nginx 使用域名，主要是使用`server`模块下的` server_name`选项。
+
+参考: http://www.liuvv.com/p/d039.html
+
+### 4.2 反向代理配置
+
+nginx 使用反向代理，主要是使用 `server`模块下 `location`模块下的`proxy_pass`选项。
+
+![1](nginx_config/4.png)
+
+这时候访问 `c.liuvv.com` 就是百度的首页.
+
+### 4.3 负载均衡配置(TODO)
+
+nginx 使用反向代理，主要是使用`upstream`模块(和server 平级)。
+
+负载均衡的好处是可以集群多台机器一起工作，并且对外的IP 和 域名是一样的，外界看起来就好像一台机器一样。
+
+### 4.4 URL路由重写(TODO)
+
+nginx 使用url 重写，主要是使用`server`模块下的` location`模块。
+
+首先看下`location 正则匹配`的使用。 我们用`~`来表示location开启正则匹配, 这样：`location ~`。例如可以用这个来匹配静态资源，缓存它们，设置过期时间：
+
+```nginx
+location ~ .*\.(gif|jpg|jpeg|bmp|png|ico|txt|mp3|mp4|swf){
+    expires 15d;
+}
+location ~ .*\.(css|js){
+    expires 12h;
+}
+```
 
 
-# 4. 参考资料
 
+# 5. 参考资料
 
++ nginx的配置、虚拟主机、负载均衡和反向代理
 
-https://www.zybuluo.com/phper/note/89391 nginx的配置、虚拟主机、负载均衡和反向代理
+  https://www.zybuluo.com/phper/note/89391  
 
-https://www.zybuluo.com/phper/note/90310  2
+  https://www.zybuluo.com/phper/note/90310  
 
-https://www.zybuluo.com/phper/note/133244  3
+  https://www.zybuluo.com/phper/note/133244  
 
++ nginx 配置详解
 
+  https://my.oschina.net/duxuefeng/blog/34880
 
-https://juejin.im/post/5aa7704c6fb9a028bb18a993 //Nginx 基本配置详解
+  http://www.nginx.cn/591.html 
 
-https://my.oschina.net/duxuefeng/blog/34880 //nginx配置详解
+  https://jkzhao.github.io/2018/01/23/Nginx%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%E5%8F%8A%E4%BC%98%E5%8C%96 
 
-https://www.jianshu.com/p/a7c86efe1987    //nginx配置文件详解中文版
+  https://www.kancloud.cn/curder/nginx/96672 
 
-http://www.nginx.cn/591.html  //nginx配置入门
++ 在线生成nginx 配置
 
-
-
-https://jkzhao.github.io/2018/01/23/Nginx%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%E5%8F%8A%E4%BC%98%E5%8C%96   //Nginx配置详解及优化/
-
-https://www.kancloud.cn/curder/nginx/96672 //nginx学习笔记
-
- https://nginxconfig.io/ //在线生成
+   https://nginxconfig.io
