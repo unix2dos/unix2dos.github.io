@@ -81,6 +81,7 @@ theme: next
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
+    - 
      type: git
      repo: https://github.com/unix2dos/unix2dos.github.io.git
      branch: master
@@ -895,9 +896,9 @@ rating:
   color:  fc6423
 # ---------------------------------------------------------------
 leancloud_counter_security:
-  sync: true
-  app_id: uYusYBwMVWpW5SYduvh2Gtdw
-  app_key: yAt4PfT2NF0k1J1OL3OSyomX
+  enable_sync: true
+  app_id: Y4ry1QHkYxVXKLQBrx6LJXld-gzGzoHsz
+  app_key: TXITOypSvI7JO61NI8EG5exk
   username:
   password:
 
@@ -905,13 +906,13 @@ leancloud_counter_security:
 # You can visit https://leancloud.cn to get AppID and AppKey.
 leancloud_visitors:
   enable: true
-  app_id: uYusYBwMVWpW5SYduvh2Gtdw-gzGzoHsz
-  app_key: yAt4PfT2NF0k1J1OL3OSyomX
+  app_id: Y4ry1QHkYxVXKLQBrx6LJXld-gzGzoHsz
+  app_key: TXITOypSvI7JO61NI8EG5exk
   # Dependencies: https://github.com/theme-next/hexo-leancloud-counter-security
   # If you don't care about security in leancloud counter and just want to use it directly
   # (without hexo-leancloud-counter-security plugin), set `security` to `false`.
   security: true
-  betterPerformance: true
+  betterPerformance: false
 
 # Another tool to show number of visitors to each article.
 # Visit https://console.firebase.google.com/u/0/ to get apiKey and projectId.

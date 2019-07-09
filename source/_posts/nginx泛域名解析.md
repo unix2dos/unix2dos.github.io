@@ -170,7 +170,7 @@ server_name *.liuvv.com;
 
 c. 以通配符*结束的字符串:
 
-```server_name www.\*;
+```
 server_name www.*;
 ```
 

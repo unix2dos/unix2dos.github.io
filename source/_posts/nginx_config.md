@@ -400,13 +400,104 @@ Nginx的负载均衡模块目前支持4种调度算法:
 
 # 4. nginx 配置实战
 
-### 4.1 虚拟主机配置
+### 4.1 nginx指令
+
+```
+nginx -s signal
+```
+
+Where *signal* may be one of the following:
+
+- stop — fast shutdown
+- quit — graceful shutdown
+- reload — reloading the configuration file
+- reopen — reopening the log files
+
+
+
+### 4.2 [nginx 快速配置教程](https://nginx.org/en/docs/beginners_guide.html)
+
+##### 4.2.1 如果有多个location模块, 匹配最长的
+
+```nginx
+    location / {
+            root /home/levonfly/www;	#http://test.liuvv.com/
+    }
+
+    location /images/ { # 路径是两者相加/home/levonfly/images/
+            root /home/levonfly;	#http://test.liuvv.com/images/1.png
+    }
+```
+
+##### 4.2.2 一个nginx实例可以通过listen监听不同端口
+
+```nginx
+server {
+    listen 8080;
+    root /home/levonfly/8080;  # location没有root, 就用这里的root, 继承关系
+
+    location / {
+    }
+}
+
+server {
+        listen 80;
+        server_name *.liuvv.com;
+        location / {
+                proxy_pass http://localhost:8080;
+        }
+        location /images/ {   
+                root /home/levonfly/; # http://test.liuvv.com/images/1.png
+        }
+  
+  	    #location ~ \.(gif|jpg|png)$ {  # 1.判断后缀 2. 波浪线是正则
+        #        root /home/levonfly/images; # http://test.liuvv.com/1.png
+        #}
+}
+```
+
+##### 4.2.3 fastcgi方式
+
+nginx本身不能处理php，它只是个web服务器，当接收到请求后，如果是php请求，则发给php解释器处理，并把结果返回给客户端。nginx一般是把请求发fastcgi管理进程处理，fascgi管理进程选择cgi子进程处理结果并返回给nginx. php-fpm是一个php fastcgi管理器, 目前直接集成在php中.
+
+
+
+安装php:
+
+```bash
+sudo apt install php
+sudo systemctl restart php7.0-fpm.service
+```
+
+nginx配置:
+
+```nginx
+server {
+        listen 80;
+        server_name *.liuvv.com;
+        root /home/levonfly/www;
+        index index.php index.html index.htm;
+  
+        location ~* \.php$ {
+                fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+                include         fastcgi_params;
+                fastcgi_param   SCRIPT_FILENAME    $document_root$fastcgi_script_name;
+                fastcgi_param   SCRIPT_NAME        $fastcgi_script_name;
+        }
+}
+```
+
+
+
+### 4.3 虚拟主机配置
 
 nginx 使用域名，主要是使用`server`模块下的` server_name`选项。
 
 参考: http://www.liuvv.com/p/d039.html
 
-### 4.2 反向代理配置
+
+
+### 4.4 反向代理配置
 
 nginx 使用反向代理，主要是使用 `server`模块下 `location`模块下的`proxy_pass`选项。
 
@@ -414,26 +505,19 @@ nginx 使用反向代理，主要是使用 `server`模块下 `location`模块下
 
 这时候访问 `c.liuvv.com` 就是百度的首页.
 
-### 4.3 负载均衡配置(TODO)
 
-nginx 使用反向代理，主要是使用`upstream`模块(和server 平级)。
 
-负载均衡的好处是可以集群多台机器一起工作，并且对外的IP 和 域名是一样的，外界看起来就好像一台机器一样。
-
-### 4.4 URL路由重写(TODO)
+### 4.5 URL路由重写
 
 nginx 使用url 重写，主要是使用`server`模块下的` location`模块。
 
-首先看下`location 正则匹配`的使用。 我们用`~`来表示location开启正则匹配, 这样：`location ~`。例如可以用这个来匹配静态资源，缓存它们，设置过期时间：
+参考: http://www.liuvv.com/p/51e59d76.html
 
-```nginx
-location ~ .*\.(gif|jpg|jpeg|bmp|png|ico|txt|mp3|mp4|swf){
-    expires 15d;
-}
-location ~ .*\.(css|js){
-    expires 12h;
-}
-```
+
+
+### 4.6 负载均衡配置(TODO)
+
+nginx 使用反向代理，主要是使用`upstream`模块(和server 平级)。
 
 
 
