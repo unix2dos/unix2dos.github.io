@@ -84,12 +84,13 @@ set -g mouse on  # 最好关掉, 要不然影响iterm2自带鼠标选中
 
 ```bash
 tmux_conf_new_window_retain_current_path=true  #window保持路径
-
 tmux_conf_new_pane_reconnect_ssh=true  #重新连接 ssh
-
 tmux_conf_new_session_prompt=true  #新建 session 输入名字
 
 tmux_conf_theme_status_left=' ❐ #S '  #左边状态栏精简
+tmux_conf_theme_status_right='#{prefix}#{pairing}#{synchronized} #(curl wttr.in?format=3) , #[fg=blue]%a | %Y-%m-%d | %H:%M:%S' # 右边显示天气时间
+tmux_conf_theme_prefix='🍎 🍐 🍊 🍋 🍌 🍉 '  # 前缀显示emoji
+
 
 增加配置
 
@@ -99,13 +100,13 @@ bind n next-window # 下一个窗口
 bind-key -n C-S-Left swap-window -t -1 # Ctrl+Shift+Left  window向左(不需要prefix)
 bind-key -n C-S-Right swap-window -t +1 #  Ctrl+Shift+Left window向右(不需要prefix)
 
-bind-key x kill-pane # 关闭确认
-bind-key & kill-window # 关闭确认
+#bind-key x kill-pane # 关闭确认
+#bind-key & kill-window # 关闭确认
 
 set-option -g status-position top # 状态栏放到上面
 
 set -g status-right 'Continuum status: #{continuum_status}'
-set -g @continuum-save-interval '1440'
+set -g @continuum-save-interval '10'
 
 # List of plugins
 set -g @tpm_plugins '          \
@@ -242,10 +243,10 @@ set -g @continuum-save-interval '10'
 
 + tmux-resurrect
 
-  ```bash
-  <prefix> ctrl + s #save
-  <prefix> ctrl + r #load
-  ```
+```bash
+<prefix> ctrl + s #save
+<prefix> ctrl + r #load
+```
 
 
 
