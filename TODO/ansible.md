@@ -1,3 +1,165 @@
+# 1. ansible 简介
+
+在 ansible 的世界里，我们会通过 **inventory 档案**来定义有哪些 **Managed node** (被控端)，并借由 **SSH** 和 **Python** 进行沟通。
+
+
+
+换句话说，当 Control Machine (主控端) 可以用 SSH 连上 Managed node，且被连上的机器里有预载 Python 时，Ansile 就可以运作了.
+
+
+
+# 2. ansible 安装
+
++ 控制端
+
+```bash
+sudo apt install ansible #linux
+ 
+brew install ansible # mac
+```
+
++ 被控端
+
+  要安装 python, 并且能被控制端 ssh 
+
+
+
+# 3. ansible 使用
+
+
+
+### 3.1 ansible 配置
+
+ansible的默认配置文件路径为 /etc/ansible，然而，一个常见的用途是将其安装在一个virtualenv中，在这种情况下，我们一般不会使用这些默认文件。我们可以根据需要在本地目录中创建配置文件。
+
+您可以创建一个inventory文件，用于定义将要管理的服务器。这个文件可以命名为任何名字，但我们通常会命名为hosts或者项目的名称。 
+
+在hosts文件中，我们可以定义一些要管理的服务器。这里我们将定义我们可能要在“web”标签下管理的两个服务器。标签是任意的。
+
+```bash
+[web]
+192.168.22.10
+192.168.22.11
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+结合openvpn, 服务器搞起来
+
+
+
+
+
+
+
+
+
+. ~/venv/ansible/bin/activate
+
+
+
+ansible-playbook -i stage sites/kinema_box.yml -u root -b -k -t tmd
+
+
+
+roles/kinema-client/defaults/main.yml  ---> tmd_dist_url: https://release.cloudfh.com/tmd-294a-r5.tar.gz
+
+
+
+10.168.192.204
+
+172.24.120.53
+
+
+
+
+
+
+
+
+
+2087952 最新daemon大小
+
+
+
+
+
+
+
+\1. ERROR! the role 'Stouts.ntp' was not found
+
+
+
+安装 ansible-galaxy install stouts.ntp
+
+
+
+
+
+/etc/default/user/tmd
+
+/home/kinema/.config/kinema/tmd.env
+
+
+
+
+
+
+
+
+
+ansible学习
+
+
+
+
+
+
+
+
+
+
+
+ansible localhost -m template -a "src=./profile.j2 dest=./profile.json" --connection=local
+
+ansible --inventory-file=hosts localhost -m template -a "src=./profile.j2 dest=./profile.json" --connection=local
+
+
+
+mv profile.json ~/Library/Application\ Support/iTerm2/DynamicProfiles/
+
+
+
+
+
+
+
+### 参考资料
+
++ https://www.w3cschool.cn/automate_with_ansible/ Ansible自动化运维教程
+
++ [Ansible 快速入门](https://www.cnblogs.com/dachenzi/p/8916521.html)
+
++ https://blog.csdn.net/pushiqiang/article/details/78126063 非常好的Ansible入门教程
+
+  
+
+
 ## Inventory文件
 
 您可以创建一个inventory文件，用于定义将要管理的服务器。这个文件可以命名为任何名字，但我们通常会命名为hosts或者项目的名称。 

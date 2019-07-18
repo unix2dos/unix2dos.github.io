@@ -896,7 +896,7 @@ rating:
   color:  fc6423
 # ---------------------------------------------------------------
 leancloud_counter_security:
-  enable_sync: true
+  enable_sync: false
   app_id: Y4ry1QHkYxVXKLQBrx6LJXld-gzGzoHsz
   app_key: TXITOypSvI7JO61NI8EG5exk
   username:
@@ -905,7 +905,7 @@ leancloud_counter_security:
 # Show number of visitors to each article.
 # You can visit https://leancloud.cn to get AppID and AppKey.
 leancloud_visitors:
-  enable: true
+  enable: false
   app_id: Y4ry1QHkYxVXKLQBrx6LJXld-gzGzoHsz
   app_key: TXITOypSvI7JO61NI8EG5exk
   # Dependencies: https://github.com/theme-next/hexo-leancloud-counter-security
