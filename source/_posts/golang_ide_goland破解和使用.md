@@ -10,9 +10,9 @@ date: 2018-05-10 18:17:48
 
 + 启动时在 License server 输入  `http://idea.youbbs.org` 即可(已失效)
 
-+ 或者用破解网站的注册码 http://idea.lanyus.com/(再次失效)
++ 或者用破解网站的注册码 http://idea.lanyus.com/           (再次失效)
 
-+ https://zhile.io/2018/08/25/jetbrains-license-server-crack.html(最新成功)
++ https://zhile.io/2018/08/25/jetbrains-license-server-crack.html        (最新成功)
 + https://blog.csdn.net/u014044812/article/details/87621168
 
 
