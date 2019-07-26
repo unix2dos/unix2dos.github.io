@@ -392,12 +392,161 @@ location ^~ /t/ { # 特殊的规则是, alias必须以"/" 结束
 
 
 
+### 3. proxy_pass模块
+
+proxy_pass指令是将请求反向代理到URL参数指定的服务器上，URL可以是主机名或者IP地址+端口号的形式，例如：
+
+```
+proxy_pass http://proxy_server;
+proxy_pass http://192.168.9.2:8000;
+proxy_pass https://192.168.9.2:8000;
+```
+
+proxy_pass模块基本配置： 
++ proxy_set_header：设置服务器获取用户的主机名或者真实ip地址，以及代理者的真实ip地址。 
++ client_body_buffer_size：用于指定客户端请求主体缓冲区大小，可以理解为先保存到本地再传给用户 
++ proxy_connect_timeout：表示连接服务器的超时时间，即发起tcp握手等候响应的超时时间 
++ proxy_send_time：服务器的数据传回时间，在规定时间内服务器必须传回完所有数据，否则，nginx将断开这个连接 
++ proxy_read_time：设置nginx从代理的后端服务器获取数据的时间，表示连接建立成功后，+ nginx等待服务器的响应时间，其实是nginx已经进入服务器的排队中等候处理的时间。 
++ proxy_buffer_size：设置缓冲区大小，默认该缓冲区大小等于proxy_buffers设置的大小 
++ proxy_buffers：设置缓冲区的数量和大小，nginx从代理的服务器获取响应数据会放置到缓冲区 
++ proxy_busy_buffers_size：用于设置系统很忙时可以使用的proxy_buffers大小，官方推荐大小为proxy_buffers*2 
++ proxy_temp_file_write_size：指定proxy缓存临时文件的大小
+
+
+
+##### 3.1 proxy_set_header
+
+```bash
+语法:    proxy_set_header field value;
+默认值:    
+proxy_set_header Host $proxy_host; # 注意这个是proxy_host
+proxy_set_header Connection close;
+
+
+上下文:    http, server, location
+```
+
+允许重新定义或者添加发往后端服务器的请求头。value可以包含文本、变量或者它们的组合。 当且仅当当前配置级别中没有定义proxy_set_header指令时，会从上面的级别继承配置。默认情况下，只有两个请求头会被重新定义：
+
+```nginx
+proxy_set_header Host       $proxy_host;
+proxy_set_header Connection close;
+```
+
+
+
+proxy_set_header也可以自定义参数，如：proxy_set_header test paroxy_test;
+
+如果想要支持下划线的话，需要增加如下配置：`underscores_in_headers on`; 
+
+```bash
+语法：underscores_in_headers on|off
+默认值：off
+使用字段：http, server
+是否允许在header的字段中带下划线
+```
+
+
+
++ 问题1: 经过反向代理后，由于在客户端和web服务器之间增加了中间层，因此web服务器无法直接拿到客户端的ip，通过$remote_addr变量拿到的将是反向代理服务器的ip地址.
+
+  解答1: 如果我们想要在web端获得用户的真实ip，就必须在nginx这里作一个赋值操作，如下：
+
+  ```nginx
+  proxy_set_header            X-real-ip $remote_addr;
+  ```
+
+  其中这个X-real-ip是一个自定义的变量名，名字可以随意取，这样做完之后，用户的真实ip就被放在X-real-ip这个变量里了，然后，在web端可以这样获取：`request.getAttribute("X-real-ip")`
+
+  
+
++ 问题2:  通常我们会看到有这样一些配置:
+
+  ```
+  server {
+          server_name liuwei.fhyx.com;
+  
+          proxy_set_header       X-Real-IP $remote_addr;
+          proxy_set_header       X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header       Host $http_host;
+          proxy_redirect         off;
+          proxy_http_version     1.1;
+          proxy_set_header       Upgrade $http_upgrade;
+          proxy_set_header       Connection "upgrade";
+          proxy_buffering        off;
+  
+          location / {
+                  proxy_pass     http://127.0.0.1:8000;
+          }
+  
+          location ~ "/(box|c|bub)/" {
+                  proxy_pass     http://127.0.0.1:8081;
+          }
+  
+          location ~ /(a|o2)/ {
+                  proxy_pass     http://127.0.0.1:3010;
+          }
+  
+          location ~ "/api/(v\d{1,2})/" {
+                  proxy_pass     http://127.0.0.1:5010;
+          }
+  
+  }
+  ```
+
+  解答2: 
+  
+  + `proxy_set_header    X-real-ip $remote_addr;`
+  
+    这句话之前已经解释过，有了这句就可以在web服务器端获得用户的真实ip, 但是，实际上要获得用户的真实ip，不是只有这一个方法。
+  
+  + `proxy_set_header            X-Forwarded-For $proxy_add_x_forwarded_for;`
+  
+    X-Forwarded-For 是一个 HTTP 扩展头部。HTTP/1.1（RFC 2616）协议并没有对它的定义，它最开始是由 Squid 这个缓存代理软件引入，用来表示 HTTP 请求端真实 IP。如今它已经成为事实上的标准，被各大 HTTP 代理、负载均衡等转发服务广泛使用，并被写入 [RFC 7239](http://tools.ietf.org/html/rfc7239)（Forwarded HTTP Extension）标准之中。
+  
+    X-Forwarded-For 请求头格式非常简单，就这样：
+  
+    ```bash
+    X-Forwarded-For: client, proxy1, proxy2
+    ```
+  
+    可以看到，XFF 的内容由「英文逗号 + 空格」隔开的多个部分组成，最开始的是离服务端最远的设备 IP，然后是每一级代理设备的 IP。
+  
+    
+  
+    如果一个 HTTP 请求到达服务器之前，经过了三个代理 Proxy1、Proxy2、Proxy3，IP 分别为 IP1、IP2、IP3，用户真实 IP 为 IP0，那么按照 XFF 标准，服务端最终会收到以下信息：
+  
+    ```bash
+    X-Forwarded-For: IP0, IP1, IP2
+    ```
+  
+    Proxy3 直连服务器，它会给 XFF 追加 IP2，表示它是在帮 Proxy2 转发请求。列表中并没有 IP3，IP3 可以在服务端通过 Remote Address 字段获得。我们知道 HTTP 连接基于 TCP 连接，HTTP 协议中没有 IP 的概念，Remote Address 来自 TCP 连接，表示与服务端建立 TCP 连接的设备 IP，在这个例子里就是 IP3。
+  
+    Remote Address 无法伪造，因为建立 TCP 连接需要三次握手，如果伪造了源 IP，无法建立 TCP 连接，更不会有后面的 HTTP 请求。不同语言获取 Remote Address 的方式不一样，例如 php 是 `$_SERVER["REMOTE_ADDR"]`，Node.js 是 `req.connection.remoteAddress`，但原理都一样。
+  
+    
+  
+    对于 Web 应用来说，`X-Forwarded-For` 和 `X-Real-IP` 就是两个普通的请求头，自然就不做任何处理原样输出了。这说明，对于直连部署方式，除了从 TCP 连接中得到的 Remote Address 之外，请求头中携带的 IP 信息都不能信。
+  
+    
+  
+  + `proxy_set_header       Host $http_host;`
+  
+    - `$host`：请求中的主机头(HOST)字段，如果请求中的主机头不可用或者空，则为处理请求的server名称(处理请求的server的server_name指令的值)。值为小写，不包含端口!!!!
+    
+    - 如果客户端发过来的请求的header中有’HOST’这个字段时， $http_host和$host都是原始的’HOST’字段比如请求的时候HOST的值是www.csdn.net 那么反代后还是www.csdn.net
+      
+      如果客户端发过来的请求的header中没有有’HOST’这个字段时， 建议使用$host，这表示请求中的server name。
+    
+    
+
+
+
 ### 参考资料:
 
 + https://nginx.org/en/docs/
-
 + https://www.xiebruce.top/710.html
-
 + https://blog.csdn.net/kikajack/article/details/79322194
-
 + https://www.hi-linux.com/posts/53878.html
++ https://imququ.com/post/x-forwarded-for-header-in-http.html

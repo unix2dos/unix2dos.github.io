@@ -88,7 +88,7 @@ tmux_conf_new_pane_reconnect_ssh=true  #重新连接 ssh
 tmux_conf_new_session_prompt=true  #新建 session 输入名字
 
 tmux_conf_theme_status_left=' ❐ #S '  #左边状态栏精简
-tmux_conf_theme_status_right='#{prefix}#{pairing}#{synchronized} #(curl wttr.in?format=3) , #[fg=blue]%a | %Y-%m-%d | %H:%M:%S' # 右边显示天气时间
+tmux_conf_theme_status_right='#{prefix}#{pairing}#{synchronized} #(curl wttr.in?format=3) | %Y-%m-%d | %H:%M:%S | w-#(echo $(((%j/7)+(%j%7>0)))) , %a' # 右边显示天气, 和week of year
 tmux_conf_theme_prefix='🍎 🍐 🍊 🍋 🍌 🍉 '  # 前缀显示emoji
 
 
