@@ -7,7 +7,15 @@ abbrlink: 6600d67c
 date: 2019-07-02 21:40:46
 ---
 
-### 0. 配色iterm2
+先上下效果图
+
+![1](iterm2_zsh配置/3.png)
+
+![1](iterm2_zsh配置/2.png)
+
+
+
+### 1. 配色iterm2
 
 ```bash
 https://github.com/mbadolato/iTerm2-Color-Schemes # 这上面好多, 慢慢挑
@@ -15,9 +23,9 @@ https://github.com/dracula/dracula-theme/ # 选用的这个
 https://github.com/MartinSeeler/iterm2-material-design 
 ```
 
+<!-- more -->
 
-
-### 1. 安装zsh
+### 2. 安装zsh
 
 ```
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
@@ -25,7 +33,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/mas
 
 
 
-### 2. 修改主题 powerlevel9k
+### 3. 修改主题 powerlevel9k
 
 ```bash
 cd ~/.zgen/robbyrussell/oh-my-zsh-master/themes
@@ -35,9 +43,9 @@ git clone https://github.com/bhilburn/powerlevel9k/
 ZSH_THEME="powerlevel9k/powerlevel9k"
 ```
 
-<!-- more -->
 
-### 3. 设置字体
+
+### 4. 设置字体
 
 ```bash
 # powerline
@@ -65,7 +73,7 @@ brew cask install font-hack-nerd-font
 
 
 
-### 4. 主题配置
+### 5. 主题配置
 
 ```bash
 POWERLEVEL9K_MODE='nerdfont-complete'
@@ -81,9 +89,7 @@ POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status time dir_writable ip public_ip ram lo
 
 
 
-
-
-### 5. zsh 安装插件
+### 6. zsh 安装插件
 
 ```bash
 #1. git
@@ -118,22 +124,21 @@ source $(dirname $(gem which colorls))/tab_complete.sh
 
 
 
-
-
-### 6. 参考资料
-
-https://blog.biezhi.me/2018/11/build-a-beautiful-mac-terminal-environment.html #打造 Mac 下高颜值好用的终端环境
-
-https://medium.com/@Clovis_app/configuration-of-a-beautiful-efficient-terminal-and-prompt-on-osx-in-7-minutes-827c29391961
-
-
-
 ### 7. 遇到的问题
 
-+ 图案不显示
+- 图案不显示
 
 ```bash
 POWERLEVEL9K_MODE='nerdfont-complete' #这句话一定要在下面之前
 source $ZSH/oh-my-zsh.sh
 ```
+
+
+
+### 8. 参考资料
+
+https://blog.biezhi.me/2018/11/build-a-beautiful-mac-terminal-environment.html #打造 Mac 下高颜值好用的终端环境
+
+https://medium.com/@Clovis_app/configuration-of-a-beautiful-efficient-terminal-and-prompt-on-osx-in-7-minutes-827c29391961
+
 
