@@ -1,5 +1,5 @@
 ---
-title: nginx常用功能和配置详解
+title: nginx介绍和常用模块配置
 tags:
   - nginx
   - linux
@@ -7,11 +7,9 @@ abbrlink: 7245bfc7
 date: 2019-07-07 23:54:46
 ---
 
-
-
 Nginx功能丰富，可作为HTTP服务器，也可作为反向代理服务器，邮件服务器。支持FastCGI、SSL、Virtual Host、URL Rewrite、Gzip等功能。并且支持很多第三方的模块扩展。
 
-# 1. nginx 常用功能说明
+# 一. nginx 常用功能说明
 
 
 
@@ -52,7 +50,7 @@ nginx可以对不同的文件做不同的缓存处理，配置灵活，并且支
 
 
 
-# 2. nginx配置文件结构
+# 二. nginx配置文件结构
 
 
 
@@ -184,7 +182,7 @@ http {
 
 
 
-# 3. 详细配置说明
+# 三. 模块配置说明
 
 ### 3.1 main模块
 
@@ -296,10 +294,7 @@ server {
          aerror_log  usr/local/var/log/host.error.log  error;
          ....
 }
-
 ```
-
-
 
 + server标志定义虚拟主机开始。 
 
@@ -398,7 +393,7 @@ Nginx的负载均衡模块目前支持4种调度算法:
 
 
 
-# 4. nginx 配置实战
+# 四. nginx 配置实战
 
 ### 4.1 nginx指令
 
@@ -415,7 +410,9 @@ Where *signal* may be one of the following:
 
 
 
-### 4.2 [nginx 快速配置教程](https://nginx.org/en/docs/beginners_guide.html)
+### 4.2 nginx 快速配置教程
+
+https://nginx.org/en/docs/beginners_guide.html
 
 ##### 4.2.1 如果有多个location模块, 匹配最长的
 
@@ -487,41 +484,33 @@ server {
 }
 ```
 
-
-
 ### 4.3 虚拟主机配置
 
 nginx 使用域名，主要是使用`server`模块下的` server_name`选项。
 
 参考: http://www.liuvv.com/p/d039.html
 
-
-
-### 4.4 反向代理配置
-
-nginx 使用反向代理，主要是使用 `server`模块下 `location`模块下的`proxy_pass`选项。
-
-![1](nginx_config/4.png)
-
-这时候访问 `c.liuvv.com` 就是百度的首页.
-
-
-
-### 4.5 URL路由重写
+### 4.4 URL路由重写
 
 nginx 使用url 重写，主要是使用`server`模块下的` location`模块。
 
 参考: http://www.liuvv.com/p/51e59d76.html
 
+### 4.5 反向代理配置
 
+nginx 使用反向代理，主要是使用 `server`模块下 `location`模块下的`proxy_pass`选项。
 
-### 4.6 负载均衡配置(TODO)
+参考: http://www.liuvv.com/p/51e59d76.html
+
+### 4.6 负载均衡配置
 
 nginx 使用反向代理，主要是使用`upstream`模块(和server 平级)。
 
+参考: https://www.liuvv.com/p/4c38afcc.html
 
 
-# 5. 参考资料
+
+# 五. 参考资料
 
 + nginx的配置、虚拟主机、负载均衡和反向代理
 
@@ -544,3 +533,9 @@ nginx 使用反向代理，主要是使用`upstream`模块(和server 平级)。
 + 在线生成nginx 配置
 
    https://nginxconfig.io
+   
++ nginx 优秀教程
+
+   https://xuexb.github.io/learn-nginx/example/  
+
+   https://www.kancloud.cn/hfpp2012/nginx-tutorial/467009

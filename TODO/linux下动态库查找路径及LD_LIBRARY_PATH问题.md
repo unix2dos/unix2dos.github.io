@@ -1,9 +1,11 @@
 ---
-title: "Linux下动态库查找路径及LD_LIBRARY_PATH问题"
-date: 2018-10-09 19:02:59
+title: "linux下动态库查找路径及LD_LIBRARY_PATH问题"
+date: 2019-08-11 19:02:59
 tags:
 - linux
 ---
+
+1
 
 
 
@@ -53,3 +55,12 @@ Cflags: -I${incdir}
 -L/usr/local/lib -lrtmp -lz -lssl -lcrypto
 ```
 
+
+
+
+
+
+
+### 参考资料
+
++ http://blog.chinaunix.net/uid-23069658-id-4028681.html
