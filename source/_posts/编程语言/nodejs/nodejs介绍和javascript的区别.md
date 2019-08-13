@@ -1,7 +1,7 @@
 ---
 title: nodejs介绍和javascript的区别
 tags:
-  - node
+  - nodejs
   - javascript
 abbrlink: 74d8b7c3
 categories:

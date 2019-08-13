@@ -3,7 +3,7 @@ title: grpc在golang_cpp_python下的实践
 tags:
   - golang
   - python
-  - cpp
+  - c++
   - protobuf
   - grpc
 abbrlink: c0435795

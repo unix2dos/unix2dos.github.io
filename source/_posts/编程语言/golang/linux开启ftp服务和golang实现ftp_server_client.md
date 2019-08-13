@@ -2,7 +2,6 @@
 title: linux开启ftp服务和golang实现ftp_server_client
 tags:
   - golang
-  - linux
 abbrlink: d43abcbd
 categories:
   - 编程语言
@@ -64,13 +63,9 @@ mac 可以下载 filezilla 客户端进行连接
 
 ## golang 实现 ftp-server ftp-client
 
-
-
 ### server
 
 https://github.com/fclairamb/ftpserver 
-
-
 
 ### client
 
@@ -81,8 +76,6 @@ https://github.com/jlaffaye/ftp
 ### io progress
 
 https://github.com/mitchellh/ioprogress
-
-
 
 #### 注意事项:
 

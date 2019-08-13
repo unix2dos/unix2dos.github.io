@@ -93,6 +93,14 @@ deploy:
 auto_category:
     enable: true
     depth:
+
+search:
+    path: search.json
+    field: post
+    format: html
+    limit: 10000
+    content: true
+
 ######################## THEME CONFIG ########################
 
 # ---------------------------------------------------------------
@@ -254,19 +262,19 @@ baidu_push: true
 # Value after `||` delimiter is the name of FontAwesome icon. If icon (with or without delimiter) is not specified, question icon will be loaded.
 # External url should start with http:// or https://
 menu:
-  home: / || home
-  #about: /about/ || user
-  categories: /categories/ || th
-  tags: /tags/ || tags
-  archives: /archives/ || archive
-  #schedule: /schedule/ || calendar
-  #sitemap: /sitemap.xml || sitemap
-  #commonweal: /404/ || heartbeat
+    home: / || home
+    categories: /categories/ || th
+    archives: /archives/ || archive
+    tags: /tags/ || tags
+    #about: /about/ || user
+    #schedule: /schedule/ || calendar
+    #sitemap: /sitemap.xml || sitemap
+    #commonweal: /404/ || heartbeat
 
 # Enable / Disable menu icons / item badges.
 menu_settings:
-  icons: true
-  badges: false
+    icons: true
+    badges: false
 
 
 # ---------------------------------------------------------------

@@ -75,8 +75,8 @@ int main()
 > 这里说个题外话，大家是否通过std::is_same发现，char既不是unsigned char也不是signed char，char就是char，这和int是signed int的缩写是不一样的，char的表达范围可能等同于signed char，也可能等同于unsigned char，取决于编译器，一般是等同于signed char，但这个仅仅是范围等同，就像32位上int和long范围是一样的，但不是同一个类型。
 > 
 > 因为用途不同，char用于表达字符，理论上不应该关心其正负的实现，而signed char 和 unsigned char 用于表达数值，或可移植的char。
- 
- 
+
+
 回到正文，std::is_same可以判断两种类似是否一样，那么用在模板里就是利器了，本位一开始提到的那个问题就可以这样写：
 
 ```cpp

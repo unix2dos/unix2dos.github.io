@@ -1,8 +1,7 @@
 ---
-title: aws部署golang_beego_nginx
+title: linux部署golang的方式
 tags:
   - golang
-  - linux
 abbrlink: 8956ebfb
 categories:
   - 编程语言
@@ -53,7 +52,7 @@ $ cp -fr conf /opt/app/beepkg
 
 就是一共上传3个文件夹和1个可执行文件
 
-### 独立部署
+### 1. 独立部署
 在 linux 下面部署，我们可以利用 nohup 命令，把应用部署在后端，如下所示：
 
 ```
@@ -63,10 +62,8 @@ nohup ./beepkg &
 
 
 
-
-
-### Supervisord 管理
-Supervisord 是用 Python 实现的一款非常实用的进程管理工具，supervisord 还要求管理的程序是非 daemon 程序，supervisord 会帮你把它转成 daemon 程序，因此如果用 supervisord 来管理 nginx 的话，必须在 nginx 的配置文件里添加一行设置 daemon off 让 nginx 以非 daemon 方式启动。
+### 2. supervisord 管理
+supervisord 是用 Python 实现的一款非常实用的进程管理工具，supervisord 还要求管理的程序是非 daemon 程序，supervisord 会帮你把它转成 daemon 程序，因此如果用 supervisord 来管理 nginx 的话，必须在 nginx 的配置文件里添加一行设置 daemon off 让 nginx 以非 daemon 方式启动。
 
 1. 安装 setuptools
 
@@ -101,26 +98,26 @@ redirect_stderr = true
 stdout_logfile = /var/log/supervisord/beepkg.log
 ```
 
-### supervisord 管理
+##### supervisord 管理
 
-Supervisord 安装完成后有两个可用的命令行 supervisord 和 supervisorctl，命令使用解释如下：
+supervisord 安装完成后有两个可用的命令行 supervisord 和 supervisorctl，命令使用解释如下：
 
   ● supervisord，初始启动 Supervisord，启动、管理配置中设置的进程。
-  
+
   ● supervisorctl stop programxxx，停止某一个进程(programxxx)，programxxx 为 [program:beepkg] 里配置的值，这个示例就是 beepkg。
-  
+
   ● supervisorctl start programxxx，启动某个进程
-  
+
   ● supervisorctl restart programxxx，重启某个进程
-  
+
   ● supervisorctl stop groupworker: ，重启所有属于名为 groupworker 这个分组的进程(start,restart 同理)
-  
+
   ● supervisorctl stop all，停止全部进程，注：start、restart、stop 都不会载入最新的配置文件。
-  
+
   ● supervisorctl reload，载入最新的配置文件，停止原有进程并按新的配置启动、管理所有进程。
-  
+
   ● supervisorctl update，根据最新的配置文件，启动新配置或有改动的进程，配置没有改动的进程不会受影响而重启。
-  
+
 注意：显示用 stop 停止掉的进程，用 reload 或者 update 都不会自动重启。
 
 
@@ -139,13 +136,12 @@ redirect_stderr = true
 stdout_logfile = /var/log/supervisord/web.log
 ```
 
-
 sudo supervisord //启动
 sudo supervisorctl stop web //结束
 
 
 
-### nginx部署
+### 3. nginx部署
 
 1 安装nginx 
 
@@ -156,13 +152,13 @@ sudo apt-get install nginx
 Ubuntu安装之后的文件结构大致为：
 
   ● 所有的配置文件都在/etc/nginx下，并且每个虚拟主机已经安排在了/etc/nginx/sites-available下
-  
+
   ● 程序文件在/usr/sbin/nginx
-  
+
   ● 日志放在了/var/log/nginx中
-  
+
   ● 并已经在/etc/init.d/下创建了启动脚本nginx
-  
+
   ● 默认的虚拟主机的目录设置在了/var/www/nginx-default (有的版本 默认的虚拟主机的目录设置在了/var/www, 请参考/etc/nginx/sites-available里的配置)
 
 2 启动nginx

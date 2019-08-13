@@ -2,7 +2,7 @@
 title: xcode自定义Eclipse中常用的快捷键
 tags:
   - xcode
-  - iOS
+  - ios
 abbrlink: 30321ed4
 categories:
   - mac工具使用

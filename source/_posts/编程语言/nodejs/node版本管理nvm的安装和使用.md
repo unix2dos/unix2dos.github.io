@@ -1,7 +1,7 @@
 ---
 title: node版本管理nvm的安装和使用
 tags:
-  - node
+  - nodejs
   - npm
   - nvm
   - javascript

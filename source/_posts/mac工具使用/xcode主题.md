@@ -2,7 +2,7 @@
 title: xcode主题
 tags:
   - xcode
-  - iOS
+  - ios
 abbrlink: b884c3b7
 categories:
   - mac工具使用

@@ -143,11 +143,25 @@ auto_category:
  depth:
  
  
-4. npm install hexo-generator-searchdb --save # 本地搜索,next主题把本地搜索打开
+4. npm install hexo-generator-searchdb --save # 本地搜索
+
+search:
+  path: search.json
+  field: post
+  format: html
+  limit: 10000
+  content: true
+  
+#然后打开本地local_search
 local_search:
 	enable: true
   
-5. 归档->时间轴,  搜索->站内搜索
+  
+5. npm install hexo-tag-cloud --save # 标签云
+
+https://github.com/MikeCoder/hexo-tag-cloud
+
+6. 归档->时间轴,  搜索->站内搜索
 ```
 
 
