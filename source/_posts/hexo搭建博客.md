@@ -3,10 +3,11 @@ title: hexo搭建博客
 urlname: hexo_blog
 tag: hexo
 abbrlink: b37651
+categories: []
 date: 2016-12-01 17:54:46
 ---
 
-### 安装hexo
+### 1. 安装hexo
 
 + 安装node.js
 + 安装hexo
@@ -20,11 +21,11 @@ date: 2016-12-01 17:54:46
 
 <!-- more -->
 
-### hexo配置
+### 2. hexo配置
 
 + 因为主站有个配置, 主题也有个配置, 建议两个配置合并一起, 需要Hexo版本在 3 以上
 
-+ 在站点的 source/_data 目录下新建 next.yml 文件（_data目录可能需要新建）迁移站点配置文件和主题配置文件中的配置到 next.yml 中(包含了_config.yml和theme.yml)
++ 在站点的 `source/_data` 目录下新建 `next.yml` 文件（`_data`目录可能需要新建）迁移站点配置文件和主题配置文件中的配置到 `next.yml` 中(包含了`_config.yml`和`theme.yml`)
   
 	```
 	hexo clean --config source/_data/next.yml && hexo g -d --config source/_data/next.yml
@@ -37,7 +38,7 @@ date: 2016-12-01 17:54:46
 
 
 
-### github pages + 绑定域名
+### 3. github pages + 绑定域名
 
 + 建立带用户名的仓库 unix2dos.github.io
 
@@ -52,7 +53,7 @@ www      CNAME           unix2dos.github.io.
 
 
 
-### 常用命令
+### 4. 常用命令
 
 ```html
 hexo clean --config source/_data/next.yml && hexo g -d --config source/_data/next.yml
@@ -73,7 +74,7 @@ tags:
 
 
 
-### 另外一台电脑同步hexo
+### 5. 另外一台电脑同步hexo
 
 ```shell
 npm install hexo --save
@@ -133,13 +134,27 @@ permalink: post/:abbrlink.html
 abbrlink:
   alg: crc16 #support crc16(default) and crc32
   rep: hex    #support dec(default) and hex
+  
+  
+3. npm install hexo-auto-category --save #自动分类
+
+auto_category:
+ enable: true
+ depth:
+ 
+ 
+4. npm install hexo-generator-searchdb --save # 本地搜索,next主题把本地搜索打开
+local_search:
+	enable: true
+  
+5. 归档->时间轴,  搜索->站内搜索
 ```
 
 
 
 
 
-### 问题解决方案
+### 6. 问题解决方案
 
 1. 生成页面如果空白的话, 换个主题再重新生成一次
 
@@ -162,6 +177,9 @@ abbrlink:
        }
    ```
    
-4. TypeError: Cannot read property 'enable_sync' of undefined
 
-   是因为替换配置文件的时候忘记加 `leancloud_counter_security` 了
+
+
+### 7. 参考资料
+
++ https://iuok.me/posts/3159684541/ 插件

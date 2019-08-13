@@ -86,6 +86,13 @@ deploy:
      repo: https://github.com/unix2dos/unix2dos.github.io.git
      branch: master
 
+
+# Generate categories from directory-tree
+# Dependencies: https://github.com/xu-song/hexo-auto-category
+# depth: the depth of directory-tree you want to generate, should > 0
+auto_category:
+    enable: true
+    depth:
 ######################## THEME CONFIG ########################
 
 # ---------------------------------------------------------------
@@ -249,8 +256,8 @@ baidu_push: true
 menu:
   home: / || home
   #about: /about/ || user
+  categories: /categories/ || th
   tags: /tags/ || tags
-  #categories: /categories/ || th
   archives: /archives/ || archive
   #schedule: /schedule/ || calendar
   #sitemap: /sitemap.xml || sitemap
@@ -962,7 +969,7 @@ algolia_search:
 # Local search
 # Dependencies: https://github.com/theme-next/hexo-generator-searchdb
 local_search:
-  enable: false
+  enable: true
   # If auto, trigger search by changing input.
   # If manual, trigger search by pressing enter key or search button.
   trigger: auto
