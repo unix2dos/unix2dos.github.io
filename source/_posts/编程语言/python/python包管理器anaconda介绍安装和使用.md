@@ -23,13 +23,13 @@ anaconda 是一个用于科学计算的Python发行版，支持 Linux, Mac, Wind
 
 这里先解释下conda、anaconda这些概念的差别，详细差别见下节。
 
-1. **anaconda**
+1. ##### anaconda
 
 anaconda 则是一个打包的集合，里面预装好了 conda、某个版本的python、众多packages、科学计算工具等等，所以也称为Python的一种发行版。其实还有Miniconda，顾名思义，它只包含最基本的内容——python与conda，以及相关的必须依赖项，对于空间要求严格的用户，Miniconda是一种选择。
 
 <!-- more -->
 
-2. **conda**
+2. ##### conda
 
 conda 可以理解为一个工具，也是一个可执行命令，其核心功能是`包管理`与`环境管理`。 包管理与pip的使用类似，环境管理则允许用户方便地安装不同版本的python并可以快速切换。
 
@@ -43,13 +43,9 @@ conda 可以理解为一个工具，也是一个可执行命令，其核心功�
 
 ### 1. anaconda、conda、pip、virtualenv的区别
 
-
-
 **1. anaconda**
 
 anaconda是一个包含180+的科学包及其依赖项的发行版本。其包含的科学包包括：conda, numpy, scipy, ipython notebook等。
-
-
 
 **2. conda**
 
@@ -59,14 +55,10 @@ conda是包及其依赖项和环境的管理工具。
 + 适用平台：Windows, macOS, Linux
 + 用途：快速安装、运行和升级包及其依赖项；在计算机中便捷地创建、保存、加载和切换环境。
 
-
-
 如果你需要的包要求不同版本的Python，你无需切换到不同的环境，因为conda同样是一个环境管理器。仅需要几条命令，你可以创建一个完全独立的环境来运行不同的Python版本，同时继续在你常规的环境中使用你常用的Python版本。
 
 + conda为Python项目而创造，但可适用于上述的多种语言。
-+ conda包和环境管理器包含于Anaconda的所有版本当中。
-
-
++ conda包和环境管理器包含于anaconda的所有版本当中。
 
 **3. pip**
 
@@ -122,19 +114,6 @@ virtualenv将会为它自己的安装目录创建一个环境，这并不与其�
 
 
 
-### 2.1 pip集成到conda里用pip安装
-
-```shell
-conda install pip
-
-which pip
-/Users/liuwei/anaconda3/bin/pip
-
-pip install xxx
-```
-
-
-
 ### 3. conda与pip、virtualenv的关系
 
 conda结合了pip和virtualenv的功能。
@@ -147,15 +126,12 @@ conda结合了pip和virtualenv的功能。
 
 **1. 下载安装anaconda**  
 
-
-
 下载链接: https://www.anaconda.com/distribution/#download-section
 
 傻瓜安装后, anaconda会把系统Path中的python指向自己自带的Python，并且Anaconda安装的第三方模块会安装在Anaconda自己的路径下，不影响系统已安装的Python目录。
 
 ```shell
 which python3
-
 /Users/liuwei/anaconda3/bin/python3
 ```
 
@@ -175,8 +151,6 @@ which python3
 
 **2. 安装后在终端输入conda 无法识别这个命令:**
 
-
-
 ```shell
 export PATH="${HOME}/anaconda3/bin:$PATH"
 ```
@@ -191,7 +165,6 @@ export PATH="${HOME}/anaconda3/bin:$PATH"
 
 ```shell
 conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/ 
-
 conda config --set show_channel_urls yes
 ```
 
@@ -232,15 +205,12 @@ conda create -n py27 python=2.7 或 conda create --name py27 python=2.7
 ```shell
 conda info -e
 
-
 WARNING: The conda.compat module is deprecated and will be removed in a future release.
 
 # conda environments:
 #
-
 base                  *  /Users/liuwei/anaconda3
 py27                     /Users/liuwei/anaconda3/envs/py27
-
 ```
 
 星号表示当前激活的环境。
@@ -294,3 +264,27 @@ conda list
 在`Project Interpreter` 增加 virtualenvs的特定环境下的执行程序
 
 ![1](python包管理器anaconda介绍安装和使用/3.png)
+
+
+
+
+
+### 7. 常用命令总结
+
+```bash
+conda info -e  # 查看有哪些环境
+conda create --name py27 python=2.7 # 创建一个环境
+conda env remove --name py37 # 删除一个环境
+conda activate py27 # 激活某个环境
+conda deactivate  #退出当前环境
+conda list # 查看安装了哪些包
+
+# conda 里集成 pip, 以防 conda 没有的包, 通过 pip 来安装
+conda install pip
+
+which pip
+/Users/liuwei/anaconda3/bin/pip
+
+pip install xxx
+```
+
