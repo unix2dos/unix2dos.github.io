@@ -2,9 +2,6 @@
 title: node版本管理nvm的安装和使用
 tags:
   - nodejs
-  - npm
-  - nvm
-  - javascript
 abbrlink: df22a20c
 categories:
   - 编程语言

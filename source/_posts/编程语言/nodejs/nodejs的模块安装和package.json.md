@@ -2,7 +2,6 @@
 title: nodejs的模块安装和package.json
 tags:
   - nodejs
-  - npm
 abbrlink: d100a0c2
 categories:
   - 编程语言

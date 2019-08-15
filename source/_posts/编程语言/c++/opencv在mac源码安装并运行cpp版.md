@@ -12,9 +12,7 @@ date: 2019-03-14 20:00:00
 
 
 
-### mac 安装 cmake
-
-
+### 1. mac 安装 cmake
 
 + 下载安装 CMake。
 
@@ -28,7 +26,7 @@ sudo "/Applications/CMake.app/Contents/bin/cmake-gui" --install
 
 
 
-### 源码安装 opencv
+### 2. 源码安装 opencv
 
 目前opencv已经出到4.0+版本了, 网上大部分教程都是2.0,3.0版本的.
 
@@ -45,7 +43,7 @@ sudo make install
 
 <!-- more -->
 
-### xcode 配置opencv
+### 3. xcode 配置opencv
 
 如果不想用xcode来开发, 编译的时候直接指定下面的选项
 
@@ -72,7 +70,7 @@ sudo make install
 
 
 
-### opencv rotate code
+### 4. opencv rotate code
 
 ```cpp
 #include <stdio.h>
