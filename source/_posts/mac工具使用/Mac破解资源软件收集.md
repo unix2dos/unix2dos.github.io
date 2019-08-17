@@ -15,6 +15,10 @@ date: 2019-07-18 14:22:40
 
 + 苹果软件破解 https://www.waitsun.com/
 
++ 苹果软件破解 https://www.macenjoy.co/
+
++ 苹果软件破解 https://www.macsky.net/
+
 + 苹果软件破解 https://macbold.com/
 
 + 苹果软件破解 https://www.naodai.org/
