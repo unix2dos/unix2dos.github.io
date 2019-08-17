@@ -162,6 +162,14 @@ local_search:
 https://github.com/MikeCoder/hexo-tag-cloud
 
 6. 归档->时间轴,  搜索->站内搜索
+
+7.  gittalk评论系统
+
+https://github.com/theme-next/hexo-theme-next/pull/464
+https://asdfv1929.github.io/2018/01/20/gitalk/
+https://github.com/settings/developers
+
+Homepage URL 和 Authorization callback URL 都填写自己配置的域名
 ```
 
 
