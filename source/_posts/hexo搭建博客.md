@@ -179,7 +179,9 @@ https://github.com/MikeCoder/hexo-tag-cloud
 3. 使用链接持久后图片无法显示(https://github.com/rozbo/hexo-abbrlink/issues/19)
 
    ```javascript
-       if(/.*\/index\.html$/.test(link)) {
+   # vi node_modules/hexo-asset-image/index.js
+   
+   if(/.*\/index\.html$/.test(link)) {
          // when permalink is end with index.html, for example 2019/02/20/xxtitle/index.html
          // image in xxtitle/ will go to xxtitle/index/
          appendLink = 'index/';

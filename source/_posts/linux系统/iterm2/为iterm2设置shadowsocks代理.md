@@ -20,11 +20,9 @@ shadowsocks是我们常用的代理工具，它使用socks5协议，而终端很
 ```bash
 export http_proxy=http://127.0.0.1:1087;export https_proxy=http://127.0.0.1:1087;
 ```
+<!-- more -->
 
 ![1](为iterm2设置shadowsocks代理/1.png)
-
-
-<!-- more -->
 
 
 
@@ -37,8 +35,6 @@ alias disproxy='unset http_proxy https_proxy' # 取消终端代理
 
 alias ip='curl cip.cc' # 测试
 ```
-
-
 
 另外我们可以通过`ShadowsocksX-NG` 的偏好设置看到以下相关配置.
 
