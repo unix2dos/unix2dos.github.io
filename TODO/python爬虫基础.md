@@ -194,7 +194,7 @@ title = tree.xpath("//*[@class='content']/div[@class='content']/h3")
 
 
 
-brew install phantomjs
+brew cask install phantomjs
 
 
 
