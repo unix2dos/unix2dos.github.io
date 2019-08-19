@@ -117,6 +117,7 @@ set-option -g status-position top # 状态栏放到上面
 
 set -g status-right 'Continuum status: #{continuum_status}'
 set -g @continuum-save-interval '10'
+set -g @continuum-restore 'on'
 
 # List of plugins
 set -g @tpm_plugins '          \
@@ -235,21 +236,7 @@ tmux kill-server  #关闭服务器，所有的会话都将关闭
 
 ```bash
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-
-set -g status-right 'Continuum status: #{continuum_status}'
-set -g @continuum-save-interval '10'
-
-# List of plugins
- set -g @tpm_plugins '          \
-   tmux-plugins/tpm             \
-   tmux-plugins/tmux-resurrect  \
-   tmux-plugins/tmux-continuum  \
- '
-# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
- run '~/.tmux/plugins/tpm/tpm'
 ```
-
-
 
 + tmux-resurrect
 

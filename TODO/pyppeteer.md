@@ -1,4 +1,6 @@
-https://www.chromium.org/getting-involved/download-chromium
+
+
+下载: https://download-chromium.appspot.com/
 
 
 
