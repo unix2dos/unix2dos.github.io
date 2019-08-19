@@ -535,7 +535,53 @@ Remote Address 无法伪造，因为建立 TCP 连接需要三次握手，如果
   如果客户端发过来的请求的header中没有有’HOST’这个字段时， 建议使用$host，这表示请求中的server name。
   
 
-### 4. 参考资料:
+
+
+### 4. websocket反向代理
+
++ nginx 首先确认版本必须是1.3以上。
+
++ map指令的作用： 该作用主要是根据客户端请求中$http_upgrade的值，来构造改变$connection_upgrade的值，即根据变量$http_upgrade的值创建新的变量$connection_upgrade， 创建的规则就是{}里面的东西。其中的规则没有做匹配，因此使用默认的，即 $connection_upgrade的值会一直是 upgrade。然后如果 $http_upgrade为空字符串的话， 那值会是 close。
+
+```nginx
+#必须添加的
+map $http_upgrade $connection_upgrade {
+        default upgrade;
+        '' close;
+}
+
+#监听websocket
+upstream websocket {
+    #ip_hash;
+    #转发到服务器上相应的ws端口
+    server localhost:3344;
+    #server localhost:8011;
+}
+server {
+    listen 80;
+    server_name schoolsocket.zhuzhida.vip;
+    location / {
+        #转发到http://websocket
+        proxy_pass http://websocket;
+        proxy_read_timeout 300s;
+        proxy_send_timeout 300s;
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        #升级http1.1到 websocket协议  
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection  $connection_upgrade;
+    }
+}
+```
+
+
+
+
+
+### 5. 参考资料:
 
 + https://nginx.org/en/docs/
 + https://www.xiebruce.top/710.html
