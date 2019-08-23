@@ -1,9 +1,13 @@
 ---
-title: "golang的websocket的使用"
-date: 2019-08-23 21:44:16
+title: golang的websocket的使用
 tags:
-- golang
-- websocket
+  - golang
+  - websocket
+categories:
+  - 编程语言
+  - golang
+abbrlink: fae4c74c
+date: 2019-08-23 21:44:16
 ---
 
 

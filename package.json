@@ -10,7 +10,6 @@
     "eslint": "^6.1.0",
     "hexo": "^3.9.0",
     "hexo-abbrlink": "^2.0.5",
-    "hexo-algolia": "^1.2.5",
     "hexo-asset-image": "git+https://github.com/CodeFalling/hexo-asset-image.git",
     "hexo-auto-category": "^0.2.0",
     "hexo-deployer-git": "^1.0.0",
@@ -25,7 +24,6 @@
     "hexo-renderer-marked": "^1.0.1",
     "hexo-renderer-stylus": "^0.3.3",
     "hexo-server": "^0.2.2",
-    "hexo-symbols-count-time": "^0.6.0",
-    "hexo-tag-cloud": "^2.1.1"
+    "hexo-symbols-count-time": "^0.6.0"
   }
 }

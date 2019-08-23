@@ -281,8 +281,8 @@ KRPC 协议是由 bencode 编码组成的一个简单的 RPC 结构，他使用 
 ### 0x2: 请求Query具体协议
 
 所有的请求都包含一个关键字 id，它包含了请求节点的节点 ID。所有的回复也包含关键字id，它包含了回复节点的节点 ID
- 
- 
+
+
 + <font color="red"> ping: 检测节点是否可达，请求包含一个参数id，代表该节点的nodeID。对应的回复也应该包含回复者的nodeID </font>
 
 ```
@@ -292,7 +292,7 @@ bencoded = d1:ad2:id20:abcdefghij0123456789e1:q4:ping1:t2:aa1:y1:qe
 Response = {"t":"aa", "y":"r", "r": {"id":"mnopqrstuvwxyz123456"}}
 bencoded = d1:rd2:id20:mnopqrstuvwxyz123456e1:t2:aa1:y1:re
 ```
- 
+
 + <font color="red"> find_node: find_node 被用来查找给定 ID 的DHT节点的联系信息，该请求包含两个参数id(代表该节点的nodeID)和target。回复中应该包含被请求节点的路由表中距离target最接近的K个nodeID以及对应的nodeINFO</font>
 	
 ```
@@ -340,7 +340,7 @@ find_node 请求包含 2 个参数，第一个参数是 id，包含了请求节�
 或: 	
 {"id" : "<queried nodes id>", "token" :"<opaque write token>", "nodes" : "<compact node info>"}
 ```
-	
+
 + <font color="red"> announce_peer: 这个请求用来表明发出 announce_peer 请求的节点，正在某个端口下载 torrent 文件</font>
 
 announce_peer 包含 4 个参数
@@ -352,7 +352,7 @@ announce_peer 包含 4 个参数
 4. 第四个参数数是 token: 这是在之前的 get_peers 请求中收到的回复中包含的。收到 announce_peer 请求的节点必须检查这个 token 与之前我们回复给这个节点 get_peers 的 token 是否相同(也就说，所有下载者/发布者都要参与检测新加入的发布者是否伪造了该资源，但是这个机制有一个问题，如果最开始的那个发布者就伪造，则整条链路都是一个伪造的错的资源infohash信息了)
 如果相同，那么被请求的节点将记录发送 announce_peer 节点的 IP 和请求中包含的 port 端口号在 peer 联系信息中对应的 infohash 下，这意味着一个一个事实: 当前这个资源有一个新的peer提供者了，下一次有其他节点希望或者这个资源的时候，会把这个新的(前一次请求下载资源的节点)也当作一个peer返回给请求者，这样，资源的提供者就越来越多，资源共享速度就越来越快
 ```
-	
+
 一个peer正在下载某个资源，意味着该peer有能够访问到该资源的渠道，且该peer本地是有这份资源的全部或部分拷贝的，它需要向DHT网络广播announce消息，告诉其他节点这个资源的下载地址
 	
 ```
@@ -364,7 +364,7 @@ arguments:  {"id" : "<querying nodes id>",
 	
 response: {"id" : "<queried nodes id>"}
 ```
-	
+
 报文包例子 Example Packets 
 	
 ```
@@ -375,7 +375,7 @@ mnopqrstuvwxyz1234564:porti6881e5:token8:aoeusnthe1:q13:announce_peer1:t2:aa1:y1
 Response = {"t":"aa", "y":"r", "r": {"id":"mnopqrstuvwxyz123456"}}
 bencoded = d1:rd2:id20:mnopqrstuvwxyz123456e1:t2:aa1:y1:re
 ```
-	
+
 ### 0x3: 回复 Responses
 
 回复 Responses的包已经在上面的Query里说明了
@@ -543,7 +543,7 @@ uTP协议是一个基于UDP的开放的BT点对点文件共享协议。在uTP协
 	```
 2. ver: This is the protocol version. The current version is 1.
 3. extension: The type of the first extension in a linked list of extension headers. 
-    
+  
     ```
     1) 0 means no extension.
     2) Selective acks: There is currently one extension:
@@ -799,3 +799,10 @@ piece 2: 0x8001 ~ 0xb141 长度0x3141
 
 磁力链是为了简化BT种子文件的分发，封装了一个简化版的magnet url，客户端解析这个magnet磁力链之后，需要在DHT网络中寻找infohash对应的peer节点，获取节点成功后，向目标peer节点获取真正的BitTorrent种子(.torrent文件)信息(包含了完整的pieces SHA1杂凑信息)，另一个渠道就是传统的Bt种子论坛会分发.BT种子文件
 
+
+
+
+
+# 6. 参考资料
+
++ https://www.cnblogs.com/LittleHann/p/6180296.html
