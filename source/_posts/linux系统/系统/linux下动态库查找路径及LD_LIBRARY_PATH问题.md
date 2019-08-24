@@ -193,3 +193,4 @@ libfaac.so.0 => /usr/local/lib/libfaac.so.0 (0x006e8000)
 ### 4. 参考资料
 
 + http://blog.chinaunix.net/uid-23069658-id-4028681.html
++ https://prefetch.net/articles/linkers.badldlibrary.html
