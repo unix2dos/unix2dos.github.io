@@ -231,13 +231,6 @@ pip install pyspider
 
 安装成功后在 [python 3.7 下运行就报错](https://github.com/binux/pyspider/issues/817), 看来作者很久没维护了
 
-pyspider all
-
-  File "/Users/liuwei/anaconda3/envs/py3.7/lib/python3.7/site-packages/pyspider/run.py", line 231
-    async=True, get_object=False, no_input=False):
-        ^
-SyntaxError: invalid syntax
-
 
 
 
