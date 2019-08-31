@@ -1,4 +1,29 @@
-1
+---
+title: "cookie的介绍和使用"
+date: 2019-08-31 14:27:46
+tags:
+- golang
+- http
+- python
+- cookie
+---
+
+
+
+Cookie 是在 HTTP 协议下，服务器或脚本可以维护客户工作站上信息的一种方式。Cookie 是由 Web 服务器保存在用户浏览器（客户端）上的小文本文件，它可以包含有关用户的信息。无论何时用户链接到服务器，Web 站点都可以访问 Cookie 信息。
+
+Cookie实际上是一小段的文本信息。客户端请求服务器，如果服务器需要记录该用户状态，就使用response向客户端浏览器颁发一个Cookie。客户端浏览器会把Cookie保存起来。当浏览器再请求该网站时，浏览器把请求的网址连同该Cookie一同提交给服务器。服务器检查该Cookie，以此来辨认用户状态。服务器还可以根据需要修改Cookie的内容。
+
+
+
+
+
+
+<!-- more -->
+
+
+
+### 1. cookie 介绍
 
 Cookie 是一些数据, 存储于你电脑上的文本文件中。
 
@@ -153,10 +178,21 @@ Set-Cookie: name=Nicholas; HttpOnly
 
 
 
+### 2. golang 使用 cookie
 
 
 
+### 3. python 使用 cookie
+
+
+
+### 4. 参考资料
+
+http://caibaojian.com/about-cookie.html
+
+https://www.w3cschool.cn/pegosu/
+
+https://studygolang.com/articles/5905
 
 https://javascript.ruanyifeng.com/bom/cookie.html
 
-https://studygolang.com/articles/5905
