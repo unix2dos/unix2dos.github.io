@@ -31,6 +31,12 @@ pyperteer是puppeteer的Python实现，相比于selenium具有异步加载、速
 
 ### 1. pyppeteer使用
 
+```bash
+pip3 install pyppeteer
+```
+
+
+
 
 
 ##### 1.1 无头模式
@@ -56,7 +62,7 @@ page.click('.rfm input[name="cookietime"]')
 
 
 
-### 2. pyppeteer 问题解决方案
+### 2. pyppeteer  linux运行问题
 
 ##### 2.1 centos无法运行pyppeteer
 
@@ -66,7 +72,33 @@ yum -y install libX11 libXcomposite libXcursor libXdamage libXext libXi libXtst 
 
 
 
-##### 2.2 抓取js 渲染后的数据
+##### 2.2 Bad NaCl helper startup ack
+
+```
+ERROR:nacl_fork_delegate_linux.cc(314)] Bad NaCl helper startup ack (0 bytes)\n\n(chrome:24935)
+```
+
+使用无头模式
+
+
+
+##### 2.3 Navigation Timeout Exceeded: 30000 ms exceeded
+
+```
+await page.goto("https://www.baidu.com", timeout=0)
+```
+
++ 加上timeout
+
++ 检测封禁 ip
+
+
+
+
+
+### 3. pyppeteer 问题解决方案
+
+##### 3.1 抓取js 渲染后的数据
 
 使用 requests 是无法正常抓取到相关数据的。因为什么？因为这个页面是 JavaScript 渲染而成的，我们所看到的内容都是网页加载后又执行了 JavaScript 之后才呈现出来的，因此这些条目数据并不存在于原始 HTML 代码中，而 requests 仅仅抓取的是原始 HTML 代码。
 
@@ -100,7 +132,7 @@ asyncio.get_event_loop().run_until_complete(main())
 
 
 
-##### 2.3 webdriver 检测问题
+##### 3.2 webdriver 检测问题
 
 有些网站还是会检测到是 webdriver 吧，比如淘宝检测到是 webdriver 就会禁止登录了
 
@@ -123,7 +155,7 @@ asyncio.get_event_loop().run_until_complete(main())
 
 
 
-##### 2.4 保持用户记录
+##### 3.3 保持用户记录
 
 很多朋友在每次启动 Selenium 或 Pyppeteer 的时候总是是一个全新的浏览器，那就是没有设置用户目录，如果设置了它，每次打开就不再是一个全新的浏览器了，它可以恢复之前的历史记录，也可以恢复很多网站的登录信息。那么这个怎么来做呢？很简单，在启动的时候设置 userDataDir 就好了，示例如下：
 
@@ -142,9 +174,10 @@ asyncio.get_event_loop().run_until_complete(main())
 
 
 
-### 3. 参考资料
+### 4. 参考资料
 
 + https://github.com/miyakogi/pyppeteer
-+ https://juejin.im/post/5c35944b6fb9a049de6d8dd2
-+ https://zhuanlan.zhihu.com/p/63634783
-+ https://www.sanfenzui.com/pyppeteer-bug-collection.html
++ [Python爬虫入门教程 24-100 微医挂号网医生数据抓取](https://juejin.im/post/5c35944b6fb9a049de6d8dd2)
++ [Python中与selenium齐名的pyppeteer库](https://zhuanlan.zhihu.com/p/63634783)
++ [pyppeteer使用遇到的bug及解决方法](https://www.sanfenzui.com/pyppeteer-bug-collection.html)
++ https://juejin.im/post/59e5a86c51882578bf185dba
