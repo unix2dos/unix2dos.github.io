@@ -213,8 +213,191 @@ while True:
 
 ### 8. 打开文件设置编码读取
 
-```
+```python
 with open("1.html", "r", encoding='gbk') as f:
   contents = f.read()
   parse_html(contents)
 ```
+
+
+
+### 9. 读写 json 文件
+
+```python
+class File(object):
+    def __init__(self):
+        self.name = "zk8.json"
+        if not os.path.exists(self.name): # 没有就写一下
+            with open(self.name, 'w'): pass
+
+
+    def save(self, data):
+        with open(self.name, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=4)
+
+
+    def load(self):
+        with open(self.name, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            return data
+
+```
+
+
+
+### 10. 数据结构 操作
+
+```python
+############ list ############
+>>> fruits = ['orange', 'apple', 'pear', 'banana', 'kiwi', 'apple', 'banana']
+>>> fruits.count('apple')
+2
+>>> fruits.count('tangerine')
+0
+>>> fruits.index('banana')
+3
+>>> fruits.index('banana', 4)  # Find next banana starting a position 4
+6
+>>> fruits.reverse()
+>>> fruits
+['banana', 'apple', 'kiwi', 'banana', 'pear', 'apple', 'orange']
+>>> fruits.append('grape')
+>>> fruits
+['banana', 'apple', 'kiwi', 'banana', 'pear', 'apple', 'orange', 'grape']
+>>> fruits.sort()
+>>> fruits
+['apple', 'apple', 'banana', 'banana', 'grape', 'kiwi', 'orange', 'pear']
+>>> fruits.pop()
+'pear'
+
+
+############ tuple ############
+
+>>> t = 12345, 54321, 'hello!'
+>>> t[0]
+12345
+>>> t
+(12345, 54321, 'hello!')
+>>> # Tuples may be nested:
+... u = t, (1, 2, 3, 4, 5)
+>>> u
+((12345, 54321, 'hello!'), (1, 2, 3, 4, 5))
+>>> # Tuples are immutable:
+... t[0] = 88888
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'tuple' object does not support item assignment
+>>> # but they can contain mutable objects:
+... v = ([1, 2, 3], [3, 2, 1])
+>>> v
+([1, 2, 3], [3, 2, 1])
+
+############ set ############
+
+>>> basket = {'apple', 'orange', 'apple', 'pear', 'orange', 'banana'}
+>>> print(basket)                      # show that duplicates have been removed
+{'orange', 'banana', 'pear', 'apple'}
+>>> 'orange' in basket                 # fast membership testing
+True
+>>> 'crabgrass' in basket
+False
+
+>>> # Demonstrate set operations on unique letters from two words
+...
+>>> a = set('abracadabra')
+>>> b = set('alacazam')
+>>> a                                  # unique letters in a
+{'a', 'r', 'b', 'c', 'd'}
+>>> a - b                              # letters in a but not in b
+{'r', 'd', 'b'}
+>>> a | b                              # letters in a or b or both
+{'a', 'c', 'r', 'd', 'b', 'm', 'z', 'l'}
+>>> a & b                              # letters in both a and b
+{'a', 'c'}
+>>> a ^ b                              # letters in a or b but not both
+{'r', 'd', 'b', 'm', 'z', 'l'}
+
+
+
+
+############ dict ############
+>>> tel = {'jack': 4098, 'sape': 4139}
+>>> tel['guido'] = 4127
+>>> tel
+{'jack': 4098, 'sape': 4139, 'guido': 4127}
+>>> tel['jack']
+4098
+>>> del tel['sape']
+>>> tel['irv'] = 4127
+>>> tel
+{'jack': 4098, 'guido': 4127, 'irv': 4127}
+>>> list(tel)
+['jack', 'guido', 'irv']
+>>> sorted(tel)
+['guido', 'irv', 'jack']
+>>> 'guido' in tel
+True
+>>> 'jack' not in tel
+False
+
+# 避免 循环中删除 key 报错
+for i in list(d):
+  del d[i]
+```
+
+
+
+
+
+### 11. 类的特殊函数
+
+```python
+# __init__ 构造
+class Foo:
+    def __init__(self, a, b, c):
+x = Foo(1, 2, 3) 
+
+## __del__ 析构
+class FileObject:
+    def __del__(self):
+        self.file.close()
+        del self.file
+
+
+# __call__ 类变成可调用
+class Foo:
+    def __call__(self, a, b, c):
+x = Foo()
+x(1, 2, 3) 
+
+
+#__getattr__ 不存在的属性
+class Dummy(object):
+    def __getattr__(self, attr):
+        return attr.upper()
+d = Dummy()
+d.does_not_exist # 'DOES_NOT_EXIST'
+```
+
+
+
+### 12. 枚举
+
+```python
+from enum import Enum 
+class Animal(Enum):
+    ant = 1
+    bee = 2
+    cat = 3
+    dog = 4
+```
+
+
+
+### 13. 新的线程定时执行函数
+
+```python
+timer = threading.Timer(10, func)
+timer.start()
+```
+

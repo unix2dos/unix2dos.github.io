@@ -1,5 +1,5 @@
 ---
-title: nginx的rewrite规则
+title: nginx的location用法和rewrite规则
 tags:
   - nginx
   - linux
@@ -139,13 +139,87 @@ location @custom {
 
 
 
-##### 1.5 URL尾部的`/`需不需要
+
+##### 1.5 root和alias的区别
+
+nginx指定文件路径有两种方式root和alias.
+
+- root
+
+```
+[root]
+语法：root path
+默认值：root html
+配置段：http、server、location、if
+```
+
+例如:
+
+```nginx
+location ^~ /t/ { 
+     root /www/root/html/;
+}
+```
+
+如果一个请求的URI是/t/a.html时，web服务器将会返回服务器上的/www/root/html/t/a.html的文件。
+
+- alias
+
+```
+[alias]
+语法：alias path
+配置段：location
+```
+
+例如:
+
+```nginx
+location ^~ /t/ { # 特殊的规则是, alias必须以"/" 结束
+ alias /www/root/html/new_t/;
+}
+```
+
+如果一个请求的URI是/t/a.html时，web服务器将会返回服务器上的/www/root/html/new_t/a.html的文件。注意这里是new_t，因为alias会把location后面配置的路径丢弃掉，把当前匹配到的目录指向到指定的目录。
+
+
+
+##### 1.6 nginx显示目录结构
+
+nginx默认是不允许列出整个目录的。如需此功能, 在server或location 段里添加上autoindex on;
+
+```nginx
+autoindex_exact_size off;
+默认为on，显示出文件的确切大小，单位是bytes。
+改为off后，显示出文件的大概大小，单位是kB或者MB或者GB
+
+autoindex_localtime on;
+默认为off，显示的文件时间为GMT时间。
+改为on后，显示的文件时间为文件的服务器时间
+```
+
+可以下面的例子:
+
+```nginx
+location ^~ "/upload-preview" {
+		alias /tmp/cistern/;
+		autoindex on;
+		autoindex_localtime on;
+}
+```
+
+
+
+##### 1.7 URL尾部的`/`需不需要
 
 关于URL尾部的`/`有三点也需要说明一下。第一点与location配置有关，其他两点无关。
 
-1. location配置中的字符有没有`/`都没有影响。也就是说`/user/`和`/user`是一样的。
-2. 如果URL结构是`https://domain.com/`的形式，尾部有没有`/`都不会造成重定向。因为浏览器在发起请求的时候，默认加上了`/`。虽然很多浏览器在地址栏里也不会显示`/`。这一点，可以访问[baidu](https://www.baidu.com/)验证一下。
-3. 如果URL的结构是`https://domain.com/some-dir/`。尾部如果缺少`/`将导致重定向。因为根据约定，URL尾部的`/`表示目录，没有`/`表示文件。所以访问`/some-dir/`时，服务器会自动去该目录下找对应的默认文件。如果访问`/some-dir`的话，服务器会先去找`some-dir`文件，找不到的话会将`some-dir`当成目录，重定向到`/some-dir/`，去该目录下找默认文件。
++ location配置中的字符有没有`/`都没有影响(只是location, 不是alias)。也就是说`/user/`和`/user`是一样的。
+
++ 如果URL结构是`https://domain.com/`的形式，尾部有没有`/`都不会造成重定向。因为浏览器在发起请求的时候，默认加上了`/`。虽然很多浏览器在地址栏里也不会显示`/`。这一点，可以访问[baidu](https://www.baidu.com/)验证一下。
+
++ 如果URL的结构是`https://domain.com/some-dir/`。尾部如果缺少`/`将导致重定向。因为根据约定，URL尾部的`/`表示目录，没有`/`表示文件。
+
+  所以访问`/some-dir/`时，服务器会自动去该目录下找对应的默认文件。如果访问`/some-dir`的话，服务器会先去找`some-dir`文件，找不到的话会将`some-dir`当成目录，重定向到`/some-dir/`，去该目录下找默认文件。
 
 
 
@@ -352,49 +426,6 @@ if (-f $request_filename) {
 
 
 
-##### 2.5 alias
-
-nginx指定文件路径有两种方式root和alias.
-
-+ root
-
-```
-[root]
-语法：root path
-默认值：root html
-配置段：http、server、location、if
-```
-
-例如:
-
-```nginx
-location ^~ /t/ { 
-     root /www/root/html/;
-}
-```
-
-如果一个请求的URI是/t/a.html时，web服务器将会返回服务器上的/www/root/html/t/a.html的文件。
-
-+ alias
-
-```
-[alias]
-语法：alias path
-配置段：location
-```
-
-例如:
-
-```nginx
-location ^~ /t/ { # 特殊的规则是, alias必须以"/" 结束
- alias /www/root/html/new_t/;
-}
-```
-
-如果一个请求的URI是/t/a.html时，web服务器将会返回服务器上的/www/root/html/new_t/a.html的文件。注意这里是new_t，因为alias会把location后面配置的路径丢弃掉，把当前匹配到的目录指向到指定的目录。
-
-
-
 ### 3. proxy_pass模块
 
 proxy_pass指令是将请求反向代理到URL参数指定的服务器上，URL可以是主机名或者IP地址+端口号的形式，例如：
@@ -584,7 +615,7 @@ server {
 ### 5. 参考资料:
 
 + https://nginx.org/en/docs/
-+ https://www.xiebruce.top/710.html
-+ https://blog.csdn.net/kikajack/article/details/79322194
-+ https://www.hi-linux.com/posts/53878.html
-+ https://imququ.com/post/x-forwarded-for-header-in-http.html
++ [Nginx配置location、if以及return、rewrite和 try_files 指令](https://www.xiebruce.top/710.html)
++ [Nginx 基本功能 - 将 Nginx 配置为 Web 服务器](https://blog.csdn.net/kikajack/article/details/79322194)
++ [Nginx 的 try_files 指令使用实例](https://www.hi-linux.com/posts/53878.html)
++ [HTTP 请求头中的 X-Forwarded-For](https://imququ.com/post/x-forwarded-for-header-in-http.html)

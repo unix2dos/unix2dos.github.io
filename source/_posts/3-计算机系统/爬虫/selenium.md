@@ -45,6 +45,13 @@ browser.find_element_by_css_selector('button[name="loginsubmit"]').send_keys(Key
 
 # 只等3秒
 browser.implicitly_wait(3)
+
+# 获取cookie
+cookies_list = driver.get_cookies()
+cookies_dict = {}
+for cookie in cookies_list:
+    cookies_dict[cookie['name']] = cookie['value']
+print(cookies_dict)
 ```
 
 
@@ -55,7 +62,7 @@ browser.implicitly_wait(3)
 
 ##### 2.1 [ImportError: cannot import name 'webdriver'](https://stackoverflow.com/questions/29092970/importerror-cannot-import-name-webdriver)
 
-if your file name is **selenium** change it to something else and delete .pyc files too.
+文件不能命名为`selenium`
 
 
 
@@ -65,7 +72,7 @@ if your file name is **selenium** change it to something else and delete .pyc fi
 
 
 
-##### 2.3 selenium.common.exceptions.WebDriverException: Message: unknown error: cannot find Chrome binary
+##### 2.3 Message: unknown error: cannot find Chrome binary
 
 + centos 安装 chrome
 
