@@ -401,3 +401,96 @@ timer = threading.Timer(10, func)
 timer.start()
 ```
 
+
+
+### 14. PYTHONPATH 
+
+主要解决 ModuleNotFoundError: No module named 'pkg'
+
+```bash
+echo $PYTHONPATH
+export PYTHONPATH="/Users/liuwei/workspace/python/zk8"
+```
+
+
+
+### 15. time
+
+```python
+# time format
+from datetime import datetime
+datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+# time diff
+def get_time_diff(date):
+    FMT = '%Y-%m-%d %H:%M'
+    now = datetime.datetime.strptime(time.strftime(FMT), FMT)
+    start = datetime.datetime.strptime(date, FMT)
+    return (now - start).seconds
+  
+  
+# seconds to human  
+str(datetime.timedelta(seconds=get_time_diff(10000)))
+```
+
+
+
+### 16. try catch
+
+```python
+# except and raise
+try:
+    f = open('myfile.txt')
+    s = f.readline()
+    i = int(s.strip())
+except OSError as err:
+    print("OS error: {0}".format(err))
+except ValueError:
+    print("Could not convert data to an integer.")
+except:
+    print("Unexpected error:", sys.exc_info()[0])
+    raise
+    
+
+ # 拿到 error 信息
+try:
+  except Exception as e:
+  else:
+    
+ try:
+  except Exception as e:
+  finally:
+```
+
+
+
+### 17. string
+
+```python
+string = 'GeeksforGeeks'
+print(string.lower()) 
+print(string.upper()) 
+
+
+# contain
+>>> str = "Messi is the best soccer player"
+>>> "soccer" in str
+True
+```
+
+
+
+
+
+### 18. 类
+
+```python
+"""
+（1）_xxx      "单下划线 " 开始的成员变量叫做保护变量，意思是只有类实例和子类实例能访问到这些变量，
+需通过类提供的接口进行访问；不能用'from module import *'导入
+（2）__xxx    类中的私有变量/方法名 （Python的函数也是对象，所以成员方法称为成员变量也行得通。）,
+" 双下划线 " 开始的是私有成员，意思是只有类对象自己能访问，连子类对象也不能访问到这个数据。
+（3）__xxx__ 系统定义名字，前后均有一个“双下划线” 代表python里特殊方法专用的标识，如 __init__（）代表类的构造函数。
+"""
+```
+
