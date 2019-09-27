@@ -96,7 +96,7 @@ pip install PyInstaller
   在生成的py下面加入这些话, 可以运行
 
   ```python
-  if name == 'main':
+  if __name__ == '__main__':
       import sys
       app = QtWidgets.QApplication(sys.argv)
       MainWindow = QtWidgets.QMainWindow()

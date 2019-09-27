@@ -494,3 +494,19 @@ True
 """
 ```
 
+
+
+
+
+### 19. 打乱list
+
+```
+cats = list(range(10, 17))
+random.shuffle(cats)
+```
+
+
+
+### *arg 和**args
+
+http://www.wklken.me/posts/2013/12/21/how-to-use-args-and-kwargs-in-python.html
