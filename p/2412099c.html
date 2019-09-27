@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.json',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="0. 前言网络爬虫（又被称为网页蜘蛛，网络机器人，在FOAF社区中间，更经常的称为网页追逐者），是一种按照一定的规则，自动的抓取万维网信息的程序或者脚本。 我认为一次爬虫的过程, 就是网络请求到数据后, 处理数据, 然后发送数据的过程.">
+<meta name="keywords" content="python,爬虫">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python爬虫基础">
+<meta property="og:url" content="https://levonfly.github.io/p/2412099c.html">
+<meta property="og:site_name" content="Levon&#39;s Blog">
+<meta property="og:description" content="0. 前言网络爬虫（又被称为网页蜘蛛，网络机器人，在FOAF社区中间，更经常的称为网页追逐者），是一种按照一定的规则，自动的抓取万维网信息的程序或者脚本。 我认为一次爬虫的过程, 就是网络请求到数据后, 处理数据, 然后发送数据的过程.">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-27T15:36:51.213Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python爬虫基础">
+<meta name="twitter:description" content="0. 前言网络爬虫（又被称为网页蜘蛛，网络机器人，在FOAF社区中间，更经常的称为网页追逐者），是一种按照一定的规则，自动的抓取万维网信息的程序或者脚本。 我认为一次爬虫的过程, 就是网络请求到数据后, 处理数据, 然后发送数据的过程.">
+  <link rel="canonical" href="https://levonfly.github.io/p/2412099c">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>python爬虫基础 | Levon's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta custom-logo">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Levon's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">微信:  L6241425</h1>
+      
+      <a>
+        <img class="custom-logo-image" src="[object Object]" alt="Levon's Blog">
+      </a>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://levonfly.github.io/p/2412099c.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Levon">
+      <meta itemprop="description" content="Never Give Up">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Levon's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">python爬虫基础
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-31 10:38:46" itemprop="dateCreated datePublished" datetime="2019-08-31T10:38:46+08:00">2019-08-31</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-27 23:36:51" itemprop="dateModified" datetime="2019-09-27T23:36:51+08:00">2019-09-27</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/3-计算机系统/" itemprop="url" rel="index"><span itemprop="name">3-计算机系统</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/3-计算机系统/爬虫/" itemprop="url" rel="index"><span itemprop="name">爬虫</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span>4.3k</span>
+            </span>
+          
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span>4 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h3><p>网络爬虫（又被称为网页蜘蛛，网络机器人，在FOAF社区中间，更经常的称为网页追逐者），是一种按照一定的规则，自动的抓取万维网信息的程序或者脚本。</p>
+<p>我认为一次爬虫的过程, 就是网络请求到数据后, 处理数据, 然后发送数据的过程.</p>
+<a id="more"></a>
+
+<h3 id="1-网络请求-requests"><a href="#1-网络请求-requests" class="headerlink" title="1. 网络请求(requests)"></a>1. 网络请求(requests)</h3><p> python网络请求主要有 <code>urllib</code> 和 <code>requests</code>  库, 墙裂推荐<code>requests</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">'http://www.baidu.com'</span></span><br><span class="line">response = requests.get(url)</span><br><span class="line">html = response.text</span><br><span class="line">print(html)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">"http://docs.python-requests.org/zh_CN/latest/_static/requests-sidebar.png"</span></span><br><span class="line">response = requests.get(url)</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'image.png'</span>,<span class="string">'wb'</span>) <span class="keyword">as</span> f:</span><br><span class="line">  f.write(response.content)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-数据提取-pyquery"><a href="#2-数据提取-pyquery" class="headerlink" title="2. 数据提取 (pyquery)"></a>2. 数据提取 (pyquery)</h3><p>一般我们请求的数据主要分以下几类:</p>
+<ul>
+<li>html, xml</li>
+<li>json</li>
+<li>字符串</li>
+</ul>
+<p>对于 html, xml 我们要使用相关的库进行处理, json直接反序列化处理, 字符串可能需要字符串匹配 和 正则表达式 处理</p>
+<blockquote>
+<p>对html/xml 处理的库主要有以下几种:</p>
+</blockquote>
+<h5 id="2-1-beautifulsoup"><a href="#2-1-beautifulsoup" class="headerlink" title="2.1 beautifulsoup"></a>2.1 beautifulsoup</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install beautifulsoup4</span><br></pre></td></tr></table></figure>
+
+<p>beautiful Soup将复杂HTML文档转换成一个复杂的树形结构,每个节点都是Python对象</p>
+<h5 id="2-2-lxml"><a href="#2-2-lxml" class="headerlink" title="2.2 lxml"></a>2.2 lxml</h5><p>lxml 使用的是 xpath 技术</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install lxml</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-3-lxml-beautifulSoup-对比"><a href="#2-3-lxml-beautifulSoup-对比" class="headerlink" title="2.3  lxml, beautifulSoup 对比"></a>2.3  lxml, beautifulSoup 对比</h5><p>BeautifulSoup是一个库，而XPath是一种技术，python中最常用的XPath库是lxml，因此，这里就拿lxml来和BeautifulSoup做比较吧.</p>
+<ul>
+<li>性能 lxml &gt;&gt; BeautifulSoup</li>
+</ul>
+<p>BeautifulSoup和lxml的原理不一样，BeautifulSoup是基于DOM的，会载入整个文档，解析整个DOM树，因此时间和内存开销都会大很多。而lxml只会局部遍历，另外lxml是用c写的，而BeautifulSoup是用python写的，因此性能方面自然会差很多。</p>
+<ul>
+<li>易用性 BeautifulSoup &gt;&gt; lxml</li>
+</ul>
+<p>BeautifulSoup用起来比较简单，API非常人性化，支持css选择器。lxml的XPath写起来麻烦，开发效率不如BeautifulSoup。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">title = soup.select(&apos;.content div.title h3&apos;)</span><br></pre></td></tr></table></figure>
+
+<p>同样的代码用Xpath写起来会很麻烦</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">title = tree.xpath(&quot;//*[@class=&apos;content&apos;]/div[@class=&apos;content&apos;]/h3&quot;)</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-4-pyquery"><a href="#2-4-pyquery" class="headerlink" title="2.4. pyquery"></a>2.4. pyquery</h5><p>pyquery 可让你用 jQuery 的语法来对 html/xml 进行操作。这和 jQuery 十分类似。这个库不是（至少还不是）一个可以和 JavaScript交互的代码库，它只是非常像 jQuery API 而已。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install pyquery</span><br></pre></td></tr></table></figure>
+
+<p>我们可以看下面这个例子:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse_html</span><span class="params">(self,content)</span>:</span></span><br><span class="line">    doc = pq(content)</span><br><span class="line">    items = doc(<span class="string">".dt"</span>).items()</span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> items:</span><br><span class="line">        title = item.find(<span class="string">"center"</span>).text()</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> item.find(<span class="string">"th"</span>).items():</span><br><span class="line">            category = i.find(<span class="string">"a"</span>).eq(<span class="number">0</span>).text()</span><br><span class="line">            neirong = i.find(<span class="string">"a"</span>).eq(<span class="number">1</span>).text()</span><br><span class="line">            url = i.find(<span class="string">"a"</span>).eq(<span class="number">1</span>).attr(<span class="string">'href'</span>)</span><br><span class="line"></span><br><span class="line">            one_data = &#123;</span><br><span class="line">                <span class="string">"category"</span>: category,</span><br><span class="line">                <span class="string">"context"</span>: neirong,</span><br><span class="line">                <span class="string">"url"</span>: url,</span><br><span class="line">            &#125;</span><br><span class="line">            print(one_data)</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-无头浏览器-pyppeteer"><a href="#3-无头浏览器-pyppeteer" class="headerlink" title="3. 无头浏览器(pyppeteer)"></a>3. 无头浏览器(pyppeteer)</h3><p>以前写爬虫，遇到需要登录的页面，一般都是通过chrome的检查元素，查看登录需要的参数和加密方法，如果网站的加密非常复杂，例如登录qq的，就会很蛋疼。</p>
+<p>现在有了无头浏览器，再也不需要考虑登录的参数和加密了，用无头浏览器打开页面，通过JS或JQuery语句，填入账号和密码，然后点击登陆，然后把Cookies保存下来，就可以模拟登陆了。</p>
+<h5 id="3-1-PhantomJS-暂停开发"><a href="#3-1-PhantomJS-暂停开发" class="headerlink" title="3.1 PhantomJS(暂停开发)"></a>3.1 PhantomJS(暂停开发)</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">serWarning: Selenium support for PhantomJS has been deprecated, please use headless versions of Chrome or Firefox instead</span><br><span class="line"></span><br><span class="line">新版本的Selenium不再支持PhantomJS了，请使用Chrome或Firefox的无头版本来替代。</span><br></pre></td></tr></table></figure>
+
+<p>PhantomJS是一个无界面的,可脚本编程的WebKit浏览器引擎。它原生支持多种web 标准：DOM 操作，CSS选择器，JSON，Canvas 以及SVG。因此可以比浏览器更加快速的解析处理js加载。</p>
+<p>有时，我们需要浏览器处理网页，但并不需要浏览，比如生成网页的截图、抓取网页数据等操作。<a href="http://phantomjs.org/" target="_blank" rel="noopener">PhantomJS</a>的功能，就是提供一个浏览器环境的命令行接口，你可以把它看作一个“虚拟浏览器”，除了不能浏览，其他与正常浏览器一样。它的内核是WebKit引擎，不提供图形界面，只能在命令行下使用，我们可以用它完成一些特殊的用途。</p>
+<p>下载: <a href="https://phantomjs.org/download.html" target="_blank" rel="noopener">https://phantomjs.org/download.html</a> , 然后把二进制放到一个目录下, 增加个$PATH 指定即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">phantomjs -v</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-2-selenium"><a href="#3-2-selenium" class="headerlink" title="3.2. selenium"></a>3.2. selenium</h5><p>selenium 是什么？一句话，自动化测试工具。它支持各种浏览器，包括 Chrome，Safari，Firefox 等主流界面式浏览器。换句话说叫 Selenium 支持这些浏览器驱动。话说回来，PhantomJS不也是一个浏览器吗，那么 Selenium 支持不？答案是肯定的，这样二者便可以实现无缝对接了。有人问，为什么不直接用浏览器而用一个没界面的 PhantomJS 呢？答案是：效率高！</p>
+<p>嗯，所以呢？安装一下 Python 的 Selenium 库，再安装好 PhantomJS，不就可以实现 Python＋Selenium＋PhantomJS 的无缝对接了嘛！Selenium 用来驱动浏览器, PhantomJS 用来渲染解析界面, Python 进行后期的处理，完美的三剑客！</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install selenium</span><br></pre></td></tr></table></figure>
+
+<p>然后我们看一个例子, 通过 selenium 驱动 <a href="https://sites.google.com/a/chromium.org/chromedriver/downloads" target="_blank" rel="noopener">chrome driver</a>打开百度搜索关键词</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.common.keys <span class="keyword">import</span> Keys</span><br><span class="line"></span><br><span class="line">browser = webdriver.Chrome(executable_path=<span class="string">"./drivers/chromedriver"</span>)</span><br><span class="line">browser.get(<span class="string">'http://www.baidu.com/'</span>)</span><br><span class="line"></span><br><span class="line">kw = browser.find_element_by_id(<span class="string">"kw"</span>)</span><br><span class="line">kw.send_keys(<span class="string">"Selenium"</span>, Keys.RETURN)</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-3-pyppeteer"><a href="#3-3-pyppeteer" class="headerlink" title="3.3. pyppeteer"></a>3.3. pyppeteer</h5><p>pyppeteer 是依赖于 chromium 这个浏览器来运行的,  并且是基于 python 的新特性 async 实现的，所以它的一些执行也支持异步操作，效率相对于 selenium 来说也提高了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install pyppeteer</span><br></pre></td></tr></table></figure>
+
+<p>我们可以来看下面这个例子, 是打开baidu 后截图</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">from</span> pyppeteer <span class="keyword">import</span> launch</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    browser = <span class="keyword">await</span> launch()</span><br><span class="line">    page = <span class="keyword">await</span> browser.newPage()</span><br><span class="line">    <span class="keyword">await</span> page.goto(<span class="string">'http://www.baidu.com'</span>)</span><br><span class="line">    <span class="keyword">await</span> page.screenshot(&#123;<span class="string">'path'</span>: <span class="string">'example.png'</span>&#125;)</span><br><span class="line">    <span class="keyword">await</span> browser.close()</span><br><span class="line"></span><br><span class="line">asyncio.get_event_loop().run_until_complete(main())</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-爬虫框架"><a href="#4-爬虫框架" class="headerlink" title="4. 爬虫框架"></a>4. 爬虫框架</h3><h5 id="4-1-pyspider"><a href="#4-1-pyspider" class="headerlink" title="4.1 pyspider"></a>4.1 pyspider</h5><p>pyspider上手更简单，操作更加简便，因为它增加了 WEB 界面，写爬虫迅速，集成了phantomjs，可以用来抓取js渲染的页面。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install pyspider</span><br></pre></td></tr></table></figure>
+
+<p>安装成功后在 <a href="https://github.com/binux/pyspider/issues/817" target="_blank" rel="noopener">python 3.7 下运行就报错</a>, 看来作者很久没维护了</p>
+<h5 id="4-2-scrapy"><a href="#4-2-scrapy" class="headerlink" title="4.2 scrapy"></a>4.2 scrapy</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install Scrapy</span><br></pre></td></tr></table></figure>
+
+<p>scrapy自定义程度高，比 PySpider更底层一些，适合学习研究，需要学习的相关知识多，不过自己拿来研究分布式和多线程等等是非常合适的。</p>
+<h3 id="5-爬虫其他-TODO"><a href="#5-爬虫其他-TODO" class="headerlink" title="5. 爬虫其他(TODO)"></a>5. 爬虫其他(TODO)</h3><h5 id="5-1-多线程"><a href="#5-1-多线程" class="headerlink" title="5.1 多线程"></a>5.1 多线程</h5><p> thread 库</p>
+<h5 id="5-2-多进程"><a href="#5-2-多进程" class="headerlink" title="5.2 多进程"></a>5.2 多进程</h5><p>multiprocessing 库</p>
+<h3 id="6-参考资料"><a href="#6-参考资料" class="headerlink" title="6. 参考资料"></a>6. 参考资料</h3><ul>
+<li><a href="https://cuiqingcai.com/1052.html" target="_blank" rel="noopener">https://cuiqingcai.com/1052.html</a></li>
+<li><a href="https://cuiqingcai.com/6942.html" target="_blank" rel="noopener">https://cuiqingcai.com/6942.html</a></li>
+<li><a href="https://github.com/Kr1s77/Python-crawler-tutorial-starts-from-zero" target="_blank" rel="noopener">https://github.com/Kr1s77/Python-crawler-tutorial-starts-from-zero</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作, 一个耿直的笑脸~</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechatpay.jpg" alt="Levon 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="Levon 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/python/" rel="tag"># python</a>
+            
+              <a href="/tags/爬虫/" rel="tag"># 爬虫</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/p/4a761254.html" rel="next" title="python_requests的使用">
+                  <i class="fa fa-chevron-left"></i> python_requests的使用
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/p/6b1ba1b4.html" rel="prev" title="python爬虫利器pyppeteer的使用">
+                  python爬虫利器pyppeteer的使用 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#0-前言"><span class="nav-number">1.</span> <span class="nav-text">0. 前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-网络请求-requests"><span class="nav-number">2.</span> <span class="nav-text">1. 网络请求(requests)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-数据提取-pyquery"><span class="nav-number">3.</span> <span class="nav-text">2. 数据提取 (pyquery)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-beautifulsoup"><span class="nav-number">3.0.1.</span> <span class="nav-text">2.1 beautifulsoup</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-lxml"><span class="nav-number">3.0.2.</span> <span class="nav-text">2.2 lxml</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-3-lxml-beautifulSoup-对比"><span class="nav-number">3.0.3.</span> <span class="nav-text">2.3  lxml, beautifulSoup 对比</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-4-pyquery"><span class="nav-number">3.0.4.</span> <span class="nav-text">2.4. pyquery</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-无头浏览器-pyppeteer"><span class="nav-number">4.</span> <span class="nav-text">3. 无头浏览器(pyppeteer)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-PhantomJS-暂停开发"><span class="nav-number">4.0.1.</span> <span class="nav-text">3.1 PhantomJS(暂停开发)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2-selenium"><span class="nav-number">4.0.2.</span> <span class="nav-text">3.2. selenium</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-3-pyppeteer"><span class="nav-number">4.0.3.</span> <span class="nav-text">3.3. pyppeteer</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-爬虫框架"><span class="nav-number">5.</span> <span class="nav-text">4. 爬虫框架</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#4-1-pyspider"><span class="nav-number">5.0.1.</span> <span class="nav-text">4.1 pyspider</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-scrapy"><span class="nav-number">5.0.2.</span> <span class="nav-text">4.2 scrapy</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-爬虫其他-TODO"><span class="nav-number">6.</span> <span class="nav-text">5. 爬虫其他(TODO)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#5-1-多线程"><span class="nav-number">6.0.1.</span> <span class="nav-text">5.1 多线程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-2-多进程"><span class="nav-number">6.0.2.</span> <span class="nav-text">5.2 多进程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-参考资料"><span class="nav-number">7.</span> <span class="nav-text">6. 参考资料</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="Levon">
+  <p class="site-author-name" itemprop="name">Levon</p>
+  <div class="site-description" itemprop="description">Never Give Up</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">109</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">67</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/unix2dos" title="GitHub &rarr; https://github.com/unix2dos" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:levonfly@gmail.com" title="E-Mail &rarr; mailto:levonfly@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://twitter.com/levonfly" title="Twitter &rarr; https://twitter.com/levonfly" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://weibo.com/l6241425" title="Weibo &rarr; https://weibo.com/l6241425" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+    
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Levon</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">459k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">6:57</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

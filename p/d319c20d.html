@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.json',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="1. 模块Python 模块(Module)，是一个 Python 文件，以 .py 结尾，包含了 Python 对象定义和Python语句。 12345678from pkg.func import hello# pkg 是模块名字,就是目录名字# pkg.func 是 pkg 目录下的 func 文件# hello 是 func 文件的 hello函数from pkg.topic import">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python基础实践">
+<meta property="og:url" content="https://levonfly.github.io/p/d319c20d.html">
+<meta property="og:site_name" content="Levon&#39;s Blog">
+<meta property="og:description" content="1. 模块Python 模块(Module)，是一个 Python 文件，以 .py 结尾，包含了 Python 对象定义和Python语句。 12345678from pkg.func import hello# pkg 是模块名字,就是目录名字# pkg.func 是 pkg 目录下的 func 文件# hello 是 func 文件的 hello函数from pkg.topic import">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-27T15:36:51.127Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python基础实践">
+<meta name="twitter:description" content="1. 模块Python 模块(Module)，是一个 Python 文件，以 .py 结尾，包含了 Python 对象定义和Python语句。 12345678from pkg.func import hello# pkg 是模块名字,就是目录名字# pkg.func 是 pkg 目录下的 func 文件# hello 是 func 文件的 hello函数from pkg.topic import">
+  <link rel="canonical" href="https://levonfly.github.io/p/d319c20d">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>python基础实践 | Levon's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta custom-logo">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Levon's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">微信:  L6241425</h1>
+      
+      <a>
+        <img class="custom-logo-image" src="[object Object]" alt="Levon's Blog">
+      </a>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://levonfly.github.io/p/d319c20d.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Levon">
+      <meta itemprop="description" content="Never Give Up">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Levon's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">python基础实践
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-27 23:10:46" itemprop="dateCreated datePublished" datetime="2019-08-27T23:10:46+08:00">2019-08-27</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-27 23:36:51" itemprop="dateModified" datetime="2019-09-27T23:36:51+08:00">2019-09-27</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/1-编程语言/" itemprop="url" rel="index"><span itemprop="name">1-编程语言</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/1-编程语言/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span>8.4k</span>
+            </span>
+          
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span>8 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="1-模块"><a href="#1-模块" class="headerlink" title="1. 模块"></a>1. 模块</h3><p>Python 模块(Module)，是一个 Python 文件，以 .py 结尾，包含了 Python 对象定义和Python语句。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pkg.func <span class="keyword">import</span> hello</span><br><span class="line"><span class="comment"># pkg 是模块名字,就是目录名字</span></span><br><span class="line"><span class="comment"># pkg.func 是 pkg 目录下的 func 文件</span></span><br><span class="line"><span class="comment"># hello 是 func 文件的 hello函数</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pkg.topic <span class="keyword">import</span> Topic</span><br><span class="line"><span class="comment"># Topic 是 topic 文件的 类</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>__init__.py</code> ,如果目录中存在该文件，该目录就会被识别为 module package 。</li>
+<li><code>__init__.py</code> 在包被导入时会被执行。该文件就是一个正常的python代码文件，因此可以将初始化代码放入该文件中。</li>
+</ul>
+<a id="more"></a>
+
+<h3 id="2-python命名规范"><a href="#2-python命名规范" class="headerlink" title="2. python命名规范"></a>2. python命名规范</h3><h5 id="2-1-模块"><a href="#2-1-模块" class="headerlink" title="2.1 模块"></a>2.1 模块</h5><ul>
+<li>模块尽量使用小写命名，首字母保持小写，尽量不要用下划线(除非多个单词，且数量不多的情况)</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 正确的模块名</span></span><br><span class="line"><span class="keyword">import</span> decoder</span><br><span class="line"><span class="keyword">import</span> html_parser</span><br><span class="line"></span><br><span class="line"><span class="comment"># 不推荐的模块名</span></span><br><span class="line"><span class="keyword">import</span> Decoder</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-2-类名"><a href="#2-2-类名" class="headerlink" title="2.2 类名"></a>2.2 类名</h5><ul>
+<li>类名使用驼峰(CamelCase)命名风格，首字母大写，私有类可用一个下划线开头</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Farm</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AnimalFarm</span><span class="params">(Farm)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_PrivateFarm</span><span class="params">(Farm)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>将相关的类和顶级函数放在同一个模块里. 不像Java, 没必要限制一个类一个模块.</li>
+</ul>
+<h5 id="2-3-函数"><a href="#2-3-函数" class="headerlink" title="2.3 函数"></a>2.3 函数</h5><ul>
+<li>函数名一律小写，如有多个单词，用下划线隔开</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run_with_env</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>私有函数在函数前加一个下划线_</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_private_func</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="2-4-变量名"><a href="#2-4-变量名" class="headerlink" title="2.4 变量名"></a>2.4 变量名</h5><ul>
+<li>变量名尽量小写, 如有多个单词，用下划线隔开</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    school_name = <span class="string">''</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="2-5-常量"><a href="#2-5-常量" class="headerlink" title="2.5 常量"></a>2.5 常量</h5><ul>
+<li>常量使用以下划线分隔的大写命名</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MAX_CLIENT = <span class="number">100</span></span><br><span class="line">MAX_CONNECTION = <span class="number">1000</span></span><br><span class="line">CONNECTION_TIMEOUT = <span class="number">600</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-python-方法返回多个值"><a href="#3-python-方法返回多个值" class="headerlink" title="3. python 方法返回多个值"></a>3. python 方法返回多个值</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span>, <span class="literal">False</span></span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">x, y = f()</span><br><span class="line">print(x)</span><br><span class="line">print(y)</span><br><span class="line"></span><br><span class="line">gives:</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-sprintf-格式化输出"><a href="#4-sprintf-格式化输出" class="headerlink" title="4. sprintf()格式化输出"></a>4. sprintf()格式化输出</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 字符串</span></span><br><span class="line"><span class="string">'%s %s'</span> % (<span class="string">'one'</span>, <span class="string">'two'</span>)</span><br><span class="line"><span class="string">'&#123;&#125; &#123;&#125;'</span>.format(<span class="string">'one'</span>, <span class="string">'two'</span>)</span><br><span class="line">one two</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># int</span></span><br><span class="line"><span class="string">'%d %d'</span> % (<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"><span class="string">'&#123;&#125; &#123;&#125;'</span>.format(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"><span class="number">1</span> <span class="number">2</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># float</span></span><br><span class="line"><span class="string">'%f'</span> % (<span class="number">3.141592653589793</span>,)</span><br><span class="line"><span class="string">'&#123;:f&#125;'</span>.format(<span class="number">3.141592653589793</span>)</span><br><span class="line"><span class="number">3.141593</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 顺序</span></span><br><span class="line"><span class="string">'&#123;1&#125; &#123;0&#125;'</span>.format(<span class="string">'one'</span>, <span class="string">'two'</span>)</span><br><span class="line">two one</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-for循环"><a href="#5-for循环" class="headerlink" title="5.  for循环"></a>5.  for循环</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># for in 循环</span></span><br><span class="line">fruits = [<span class="string">"apple"</span>, <span class="string">"banana"</span>, <span class="string">"cherry"</span>]</span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> fruits:</span><br><span class="line">  print(x)</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="comment"># range循环</span></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">2</span>, <span class="number">6</span>):</span><br><span class="line">  print(x)<span class="comment">#2 3 4 5</span></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">2</span>, <span class="number">10</span>, <span class="number">3</span>):</span><br><span class="line">  print(x)<span class="comment"># 2 5 8</span></span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"></span><br><span class="line"><span class="comment"># 循环带 k, v</span></span><br><span class="line">presidents = [<span class="string">"Washington"</span>, <span class="string">"Adams"</span>, <span class="string">"Jefferson"</span>, <span class="string">"Madison"</span>, <span class="string">"Monroe"</span>, <span class="string">"Adams"</span>, <span class="string">"Jackson"</span>]</span><br><span class="line"><span class="keyword">for</span> num, name <span class="keyword">in</span> enumerate(presidents, start=<span class="number">1</span>):</span><br><span class="line">    print(<span class="string">"President &#123;&#125;: &#123;&#125;"</span>.format(num, name))</span><br><span class="line">    </span><br><span class="line">  </span><br><span class="line"><span class="comment"># 循环多个</span></span><br><span class="line">colors = [<span class="string">"red"</span>, <span class="string">"green"</span>, <span class="string">"blue"</span>, <span class="string">"purple"</span>]</span><br><span class="line">ratios = [<span class="number">0.2</span>, <span class="number">0.3</span>, <span class="number">0.1</span>, <span class="number">0.4</span>]</span><br><span class="line"><span class="keyword">for</span> color, ratio <span class="keyword">in</span> zip(colors, ratios):</span><br><span class="line">    print(<span class="string">"&#123;&#125;% &#123;&#125;"</span>.format(ratio * <span class="number">100</span>, color))</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line"><span class="comment"># 死循环</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">  <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="6-if-name-39-main-39"><a href="#6-if-name-39-main-39" class="headerlink" title="6. if __name__ == &#39;main&#39;"></a>6. <code>if __name__ == &#39;main&#39;</code></h3><p>一个python的文件有两种使用的方法，第一是直接作为脚本执行，第二是import到其他的python脚本中被调用（模块重用）执行。</p>
+<p><code>if __name__ == &#39;main&#39;</code>: 的作用就是控制这两种情况执行代码的过程，在<code>if __name__ == &#39;main&#39;</code>: 下的代码只有在第一种情况下（即文件作为脚本直接执行）才会被执行，而import到其他脚本中是不会被执行的。</p>
+<h3 id="7-pycache"><a href="#7-pycache" class="headerlink" title="7. __pycache__"></a>7. <code>__pycache__</code></h3><p>在python中运行程序时，解释器首先将其编译为字节码，并将其存储在<code>__pycache__</code>文件夹。如果您在那里查找，您将发现一堆文件共享的名称。在项目文件夹中的Py文件，只有它们的扩展名才是其中之一.PYC或.pyo.。这些分别是字节码编译和优化字节码编译版本的程序的文件。</p>
+<p>下次再执行工程时，若解释器发现这个 *.py 脚本没有修改过，就会跳过编译这一步，直接运行以前生成的保存在 <strong>pycache</strong>文件夹里的 *.pyc 文件。</p>
+<p>这样工程较大时就可以大大缩短项目运行前的准备时间；如果你只需执行一个小工程，没关系 忽略这个文件夹就行。</p>
+<h3 id="8-打开文件设置编码读取"><a href="#8-打开文件设置编码读取" class="headerlink" title="8. 打开文件设置编码读取"></a>8. 打开文件设置编码读取</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">"1.html"</span>, <span class="string">"r"</span>, encoding=<span class="string">'gbk'</span>) <span class="keyword">as</span> f:</span><br><span class="line">  contents = f.read()</span><br><span class="line">  parse_html(contents)</span><br></pre></td></tr></table></figure>
+
+<h3 id="9-读写-json-文件"><a href="#9-读写-json-文件" class="headerlink" title="9. 读写 json 文件"></a>9. 读写 json 文件</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">File</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.name = <span class="string">"zk8.json"</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(self.name): <span class="comment"># 没有就写一下</span></span><br><span class="line">            <span class="keyword">with</span> open(self.name, <span class="string">'w'</span>): <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">save</span><span class="params">(self, data)</span>:</span></span><br><span class="line">        <span class="keyword">with</span> open(self.name, <span class="string">'w'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</span><br><span class="line">            json.dump(data, f, ensure_ascii=<span class="literal">False</span>, indent=<span class="number">4</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">load</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">with</span> open(self.name, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</span><br><span class="line">            data = json.load(f)</span><br><span class="line">            <span class="keyword">return</span> data</span><br></pre></td></tr></table></figure>
+
+<h3 id="10-数据结构-操作"><a href="#10-数据结构-操作" class="headerlink" title="10. 数据结构 操作"></a>10. 数据结构 操作</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">############ list ############</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>fruits = [<span class="string">'orange'</span>, <span class="string">'apple'</span>, <span class="string">'pear'</span>, <span class="string">'banana'</span>, <span class="string">'kiwi'</span>, <span class="string">'apple'</span>, <span class="string">'banana'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>fruits.count(<span class="string">'apple'</span>)</span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>fruits.count(<span class="string">'tangerine'</span>)</span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>fruits.index(<span class="string">'banana'</span>)</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>fruits.index(<span class="string">'banana'</span>, <span class="number">4</span>)  <span class="comment"># Find next banana starting a position 4</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>fruits.reverse()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>fruits</span><br><span class="line">[<span class="string">'banana'</span>, <span class="string">'apple'</span>, <span class="string">'kiwi'</span>, <span class="string">'banana'</span>, <span class="string">'pear'</span>, <span class="string">'apple'</span>, <span class="string">'orange'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>fruits.append(<span class="string">'grape'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>fruits</span><br><span class="line">[<span class="string">'banana'</span>, <span class="string">'apple'</span>, <span class="string">'kiwi'</span>, <span class="string">'banana'</span>, <span class="string">'pear'</span>, <span class="string">'apple'</span>, <span class="string">'orange'</span>, <span class="string">'grape'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>fruits.sort()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>fruits</span><br><span class="line">[<span class="string">'apple'</span>, <span class="string">'apple'</span>, <span class="string">'banana'</span>, <span class="string">'banana'</span>, <span class="string">'grape'</span>, <span class="string">'kiwi'</span>, <span class="string">'orange'</span>, <span class="string">'pear'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>fruits.pop()</span><br><span class="line"><span class="string">'pear'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">############ tuple ############</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>t = <span class="number">12345</span>, <span class="number">54321</span>, <span class="string">'hello!'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>t[<span class="number">0</span>]</span><br><span class="line"><span class="number">12345</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>t</span><br><span class="line">(<span class="number">12345</span>, <span class="number">54321</span>, <span class="string">'hello!'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># Tuples may be nested:</span></span><br><span class="line"><span class="meta">... </span>u = t, (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>u</span><br><span class="line">((<span class="number">12345</span>, <span class="number">54321</span>, <span class="string">'hello!'</span>), (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>))</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># Tuples are immutable:</span></span><br><span class="line"><span class="meta">... </span>t[<span class="number">0</span>] = <span class="number">88888</span></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">TypeError: <span class="string">'tuple'</span> object does <span class="keyword">not</span> support item assignment</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># but they can contain mutable objects:</span></span><br><span class="line"><span class="meta">... </span>v = ([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>v</span><br><span class="line">([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment">############ set ############</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>basket = &#123;<span class="string">'apple'</span>, <span class="string">'orange'</span>, <span class="string">'apple'</span>, <span class="string">'pear'</span>, <span class="string">'orange'</span>, <span class="string">'banana'</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(basket)                      <span class="comment"># show that duplicates have been removed</span></span><br><span class="line">&#123;<span class="string">'orange'</span>, <span class="string">'banana'</span>, <span class="string">'pear'</span>, <span class="string">'apple'</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'orange'</span> <span class="keyword">in</span> basket                 <span class="comment"># fast membership testing</span></span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'crabgrass'</span> <span class="keyword">in</span> basket</span><br><span class="line"><span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># Demonstrate set operations on unique letters from two words</span></span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = set(<span class="string">'abracadabra'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = set(<span class="string">'alacazam'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a                                  <span class="comment"># unique letters in a</span></span><br><span class="line">&#123;<span class="string">'a'</span>, <span class="string">'r'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">'d'</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a - b                              <span class="comment"># letters in a but not in b</span></span><br><span class="line">&#123;<span class="string">'r'</span>, <span class="string">'d'</span>, <span class="string">'b'</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a | b                              <span class="comment"># letters in a or b or both</span></span><br><span class="line">&#123;<span class="string">'a'</span>, <span class="string">'c'</span>, <span class="string">'r'</span>, <span class="string">'d'</span>, <span class="string">'b'</span>, <span class="string">'m'</span>, <span class="string">'z'</span>, <span class="string">'l'</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a &amp; b                              <span class="comment"># letters in both a and b</span></span><br><span class="line">&#123;<span class="string">'a'</span>, <span class="string">'c'</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a ^ b                              <span class="comment"># letters in a or b but not both</span></span><br><span class="line">&#123;<span class="string">'r'</span>, <span class="string">'d'</span>, <span class="string">'b'</span>, <span class="string">'m'</span>, <span class="string">'z'</span>, <span class="string">'l'</span>&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">############ dict ############</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>tel = &#123;<span class="string">'jack'</span>: <span class="number">4098</span>, <span class="string">'sape'</span>: <span class="number">4139</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>tel[<span class="string">'guido'</span>] = <span class="number">4127</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>tel</span><br><span class="line">&#123;<span class="string">'jack'</span>: <span class="number">4098</span>, <span class="string">'sape'</span>: <span class="number">4139</span>, <span class="string">'guido'</span>: <span class="number">4127</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>tel[<span class="string">'jack'</span>]</span><br><span class="line"><span class="number">4098</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">del</span> tel[<span class="string">'sape'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>tel[<span class="string">'irv'</span>] = <span class="number">4127</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>tel</span><br><span class="line">&#123;<span class="string">'jack'</span>: <span class="number">4098</span>, <span class="string">'guido'</span>: <span class="number">4127</span>, <span class="string">'irv'</span>: <span class="number">4127</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(tel)</span><br><span class="line">[<span class="string">'jack'</span>, <span class="string">'guido'</span>, <span class="string">'irv'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sorted(tel)</span><br><span class="line">[<span class="string">'guido'</span>, <span class="string">'irv'</span>, <span class="string">'jack'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'guido'</span> <span class="keyword">in</span> tel</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'jack'</span> <span class="keyword">not</span> <span class="keyword">in</span> tel</span><br><span class="line"><span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 避免 循环中删除 key 报错</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> list(d):</span><br><span class="line">  <span class="keyword">del</span> d[i]</span><br></pre></td></tr></table></figure>
+
+<h3 id="11-类的特殊函数"><a href="#11-类的特殊函数" class="headerlink" title="11. 类的特殊函数"></a>11. 类的特殊函数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># __init__ 构造</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, a, b, c)</span>:</span></span><br><span class="line">x = Foo(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>) </span><br><span class="line"></span><br><span class="line"><span class="comment">## __del__ 析构</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FileObject</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__del__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.file.close()</span><br><span class="line">        <span class="keyword">del</span> self.file</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># __call__ 类变成可调用</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self, a, b, c)</span>:</span></span><br><span class="line">x = Foo()</span><br><span class="line">x(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>) </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#__getattr__ 不存在的属性</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dummy</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getattr__</span><span class="params">(self, attr)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> attr.upper()</span><br><span class="line">d = Dummy()</span><br><span class="line">d.does_not_exist <span class="comment"># 'DOES_NOT_EXIST'</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="12-枚举"><a href="#12-枚举" class="headerlink" title="12. 枚举"></a>12. 枚举</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> enum <span class="keyword">import</span> Enum </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span><span class="params">(Enum)</span>:</span></span><br><span class="line">    ant = <span class="number">1</span></span><br><span class="line">    bee = <span class="number">2</span></span><br><span class="line">    cat = <span class="number">3</span></span><br><span class="line">    dog = <span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="13-新的线程定时执行函数"><a href="#13-新的线程定时执行函数" class="headerlink" title="13. 新的线程定时执行函数"></a>13. 新的线程定时执行函数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">timer = threading.Timer(<span class="number">10</span>, func)</span><br><span class="line">timer.start()</span><br></pre></td></tr></table></figure>
+
+<h3 id="14-PYTHONPATH"><a href="#14-PYTHONPATH" class="headerlink" title="14. PYTHONPATH"></a>14. PYTHONPATH</h3><p>主要解决 ModuleNotFoundError: No module named ‘pkg’</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="variable">$PYTHONPATH</span></span><br><span class="line"><span class="built_in">export</span> PYTHONPATH=<span class="string">"/Users/liuwei/workspace/python/zk8"</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="15-time"><a href="#15-time" class="headerlink" title="15. time"></a>15. time</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># time format</span></span><br><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line">datetime.now().strftime(<span class="string">"%Y-%m-%d %H:%M:%S"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># time diff</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_time_diff</span><span class="params">(date)</span>:</span></span><br><span class="line">    FMT = <span class="string">'%Y-%m-%d %H:%M'</span></span><br><span class="line">    now = datetime.datetime.strptime(time.strftime(FMT), FMT)</span><br><span class="line">    start = datetime.datetime.strptime(date, FMT)</span><br><span class="line">    <span class="keyword">return</span> (now - start).seconds</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="comment"># seconds to human  </span></span><br><span class="line">str(datetime.timedelta(seconds=get_time_diff(<span class="number">10000</span>)))</span><br></pre></td></tr></table></figure>
+
+<h3 id="16-try-catch"><a href="#16-try-catch" class="headerlink" title="16. try catch"></a>16. try catch</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># except and raise</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    f = open(<span class="string">'myfile.txt'</span>)</span><br><span class="line">    s = f.readline()</span><br><span class="line">    i = int(s.strip())</span><br><span class="line"><span class="keyword">except</span> OSError <span class="keyword">as</span> err:</span><br><span class="line">    print(<span class="string">"OS error: &#123;0&#125;"</span>.format(err))</span><br><span class="line"><span class="keyword">except</span> ValueError:</span><br><span class="line">    print(<span class="string">"Could not convert data to an integer."</span>)</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    print(<span class="string">"Unexpected error:"</span>, sys.exc_info()[<span class="number">0</span>])</span><br><span class="line">    <span class="keyword">raise</span></span><br><span class="line">    </span><br><span class="line"></span><br><span class="line"> <span class="comment"># 拿到 error 信息</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">  <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">  <span class="keyword">else</span>:</span><br><span class="line">    </span><br><span class="line"> <span class="keyword">try</span>:</span><br><span class="line">  <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">  <span class="keyword">finally</span>:</span><br></pre></td></tr></table></figure>
+
+<h3 id="17-string"><a href="#17-string" class="headerlink" title="17. string"></a>17. string</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">string = <span class="string">'GeeksforGeeks'</span></span><br><span class="line">print(string.lower()) </span><br><span class="line">print(string.upper()) </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># contain</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>str = <span class="string">"Messi is the best soccer player"</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">"soccer"</span> <span class="keyword">in</span> str</span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="18-类"><a href="#18-类" class="headerlink" title="18. 类"></a>18. 类</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">（1）_xxx      "单下划线 " 开始的成员变量叫做保护变量，意思是只有类实例和子类实例能访问到这些变量，</span></span><br><span class="line"><span class="string">需通过类提供的接口进行访问；不能用'from module import *'导入</span></span><br><span class="line"><span class="string">（2）__xxx    类中的私有变量/方法名 （Python的函数也是对象，所以成员方法称为成员变量也行得通。）,</span></span><br><span class="line"><span class="string">" 双下划线 " 开始的是私有成员，意思是只有类对象自己能访问，连子类对象也不能访问到这个数据。</span></span><br><span class="line"><span class="string">（3）__xxx__ 系统定义名字，前后均有一个“双下划线” 代表python里特殊方法专用的标识，如 __init__（）代表类的构造函数。</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="19-打乱list"><a href="#19-打乱list" class="headerlink" title="19. 打乱list"></a>19. 打乱list</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cats = list(range(10, 17))</span><br><span class="line">random.shuffle(cats)</span><br></pre></td></tr></table></figure>
+
+<h3 id="arg-和-args"><a href="#arg-和-args" class="headerlink" title="arg 和*args"></a><em>arg 和*</em>args</h3><p><a href="http://www.wklken.me/posts/2013/12/21/how-to-use-args-and-kwargs-in-python.html" target="_blank" rel="noopener">http://www.wklken.me/posts/2013/12/21/how-to-use-args-and-kwargs-in-python.html</a></p>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作, 一个耿直的笑脸~</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechatpay.jpg" alt="Levon 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="Levon 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/python/" rel="tag"># python</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/p/2450240c.html" rel="next" title="记录一次docker镜像的构建过程">
+                  <i class="fa fa-chevron-left"></i> 记录一次docker镜像的构建过程
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/p/4a761254.html" rel="prev" title="python_requests的使用">
+                  python_requests的使用 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-模块"><span class="nav-number">1.</span> <span class="nav-text">1. 模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-python命名规范"><span class="nav-number">2.</span> <span class="nav-text">2. python命名规范</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-模块"><span class="nav-number">2.0.1.</span> <span class="nav-text">2.1 模块</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-类名"><span class="nav-number">2.0.2.</span> <span class="nav-text">2.2 类名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-3-函数"><span class="nav-number">2.0.3.</span> <span class="nav-text">2.3 函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-4-变量名"><span class="nav-number">2.0.4.</span> <span class="nav-text">2.4 变量名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-5-常量"><span class="nav-number">2.0.5.</span> <span class="nav-text">2.5 常量</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-python-方法返回多个值"><span class="nav-number">3.</span> <span class="nav-text">3. python 方法返回多个值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-sprintf-格式化输出"><span class="nav-number">4.</span> <span class="nav-text">4. sprintf()格式化输出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-for循环"><span class="nav-number">5.</span> <span class="nav-text">5.  for循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-if-name-39-main-39"><span class="nav-number">6.</span> <span class="nav-text">6. if __name__ == &#39;main&#39;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-pycache"><span class="nav-number">7.</span> <span class="nav-text">7. __pycache__</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-打开文件设置编码读取"><span class="nav-number">8.</span> <span class="nav-text">8. 打开文件设置编码读取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-读写-json-文件"><span class="nav-number">9.</span> <span class="nav-text">9. 读写 json 文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-数据结构-操作"><span class="nav-number">10.</span> <span class="nav-text">10. 数据结构 操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-类的特殊函数"><span class="nav-number">11.</span> <span class="nav-text">11. 类的特殊函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-枚举"><span class="nav-number">12.</span> <span class="nav-text">12. 枚举</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-新的线程定时执行函数"><span class="nav-number">13.</span> <span class="nav-text">13. 新的线程定时执行函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-PYTHONPATH"><span class="nav-number">14.</span> <span class="nav-text">14. PYTHONPATH</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-time"><span class="nav-number">15.</span> <span class="nav-text">15. time</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-try-catch"><span class="nav-number">16.</span> <span class="nav-text">16. try catch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-string"><span class="nav-number">17.</span> <span class="nav-text">17. string</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-类"><span class="nav-number">18.</span> <span class="nav-text">18. 类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#19-打乱list"><span class="nav-number">19.</span> <span class="nav-text">19. 打乱list</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#arg-和-args"><span class="nav-number">20.</span> <span class="nav-text">arg 和*args</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="Levon">
+  <p class="site-author-name" itemprop="name">Levon</p>
+  <div class="site-description" itemprop="description">Never Give Up</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">109</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">67</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/unix2dos" title="GitHub &rarr; https://github.com/unix2dos" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:levonfly@gmail.com" title="E-Mail &rarr; mailto:levonfly@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://twitter.com/levonfly" title="Twitter &rarr; https://twitter.com/levonfly" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://weibo.com/l6241425" title="Weibo &rarr; https://weibo.com/l6241425" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+    
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Levon</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">459k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">6:57</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.json',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="1. 证书类型 目前主流的SSL证书主要分为DV SSL(域名型) 、 OV SSL(组织型) 、EV SSL(增强型)。">
+<meta name="keywords" content="linux,acme.sh">
+<meta property="og:type" content="article">
+<meta property="og:title" content="acme.sh自动更新阿里云aliyun获取Let&#39;s Encrypt wildcard通配符SSL证书">
+<meta property="og:url" content="https://levonfly.github.io/p/ee822cec.html">
+<meta property="og:site_name" content="Levon&#39;s Blog">
+<meta property="og:description" content="1. 证书类型 目前主流的SSL证书主要分为DV SSL(域名型) 、 OV SSL(组织型) 、EV SSL(增强型)。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://levonfly.github.io/p/ee822cec.htm/1.png">
+<meta property="og:image" content="https://levonfly.github.io/p/ee822cec.htm/2.png">
+<meta property="og:updated_time" content="2019-09-27T15:36:51.140Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="acme.sh自动更新阿里云aliyun获取Let&#39;s Encrypt wildcard通配符SSL证书">
+<meta name="twitter:description" content="1. 证书类型 目前主流的SSL证书主要分为DV SSL(域名型) 、 OV SSL(组织型) 、EV SSL(增强型)。">
+<meta name="twitter:image" content="https://levonfly.github.io/p/ee822cec.htm/1.png">
+  <link rel="canonical" href="https://levonfly.github.io/p/ee822cec">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>acme.sh自动更新阿里云aliyun获取Let's Encrypt wildcard通配符SSL证书 | Levon's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta custom-logo">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Levon's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">微信:  L6241425</h1>
+      
+      <a>
+        <img class="custom-logo-image" src="[object Object]" alt="Levon's Blog">
+      </a>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://levonfly.github.io/p/ee822cec.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Levon">
+      <meta itemprop="description" content="Never Give Up">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Levon's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">acme.sh自动更新阿里云aliyun获取Let's Encrypt wildcard通配符SSL证书
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-23 20:54:46" itemprop="dateCreated datePublished" datetime="2019-07-23T20:54:46+08:00">2019-07-23</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-27 23:36:51" itemprop="dateModified" datetime="2019-09-27T23:36:51+08:00">2019-09-27</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/2-linux系统/" itemprop="url" rel="index"><span itemprop="name">2-linux系统</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/2-linux系统/https/" itemprop="url" rel="index"><span itemprop="name">https</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span>2k</span>
+            </span>
+          
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span>2 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="1-证书类型"><a href="#1-证书类型" class="headerlink" title="1. 证书类型"></a>1. 证书类型</h3><ul>
+<li>目前主流的SSL证书主要分为DV SSL(域名型) 、 OV SSL(组织型) 、EV SSL(增强型)。</li>
+</ul>
+<p><img src="/p/ee822cec.htm/1.png" alt="1"></p>
+<a id="more"></a>
+
+<ul>
+<li>DV、OV、EV证书在浏览器中显示的区别</li>
+</ul>
+<p>DV类型仅在浏览器显示一个小锁，OV和EV类型证书都包含了企业名称信息，但是，EV证书采用了更加严格的认证标准，浏览器在访问时，会在地址栏显示公司名称，地址栏变成绿色。绿的更加让人信任。</p>
+<p><img src="/p/ee822cec.htm/2.png" alt="1"></p>
+<h3 id="2-ACME协议"><a href="#2-ACME协议" class="headerlink" title="2. ACME协议"></a>2. ACME协议</h3><p>ACME全称The Automatic Certificate Management Environment，而<a href="https://link.jianshu.com/?t=https%3A%2F%2Fgithub.com%2FNeilpang%2Facme.sh" target="_blank" rel="noopener">acme.sh</a>这个库，则能够在Linux上实现如下功能：</p>
+<ol>
+<li>自动向Let’s Encrypt申请证书；</li>
+<li>自动调用各大云平台的api接口实现TXT解析配置；</li>
+<li>证书下发后自动部署到nginx；</li>
+<li>利用定时器，每60天自动更新证书，并完成自动部署。</li>
+</ol>
+<h3 id="3-配置证书"><a href="#3-配置证书" class="headerlink" title="3. 配置证书"></a>3. 配置证书</h3><h5 id="3-1-安装acme-sh"><a href="#3-1-安装acme-sh" class="headerlink" title="3.1 安装acme.sh"></a>3.1 安装acme.sh</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl https://get.acme.sh | sh</span><br></pre></td></tr></table></figure>
+
+<p>这个自动安装过程完成了以下几个步骤：</p>
+<ol>
+<li>拷贝sh脚本到~/.acme.sh/</li>
+<li>创建alias别名acme.sh=~/.acme.sh/acme.sh   (<code>source ~/.bashrc</code>一下)</li>
+<li>启动定时器 . 可以通过<code>crontab -l</code>查看</li>
+</ol>
+<h5 id="3-2-dns验证并安装部署"><a href="#3-2-dns验证并安装部署" class="headerlink" title="3.2 dns验证并安装部署"></a>3.2 dns验证并安装部署</h5><p>acme.sh 实现了 acme 协议支持的所有验证协议. 一般有两种方式验证: http 和 dns 验证. 接下来我们说下 dns的验证.</p>
+<ul>
+<li><p>去阿里的控制台找到Ali_Key, Ali_Secret, 执行下面命名</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> Ali_Key=<span class="string">"xxxxxxxx"</span> </span><br><span class="line"><span class="built_in">export</span> Ali_Secret=<span class="string">"xxxxxxxx"</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>生成泛域名证书</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">acme.sh --issue -d <span class="string">"*.liuvv.com"</span> --dns dns_ali</span><br></pre></td></tr></table></figure>
+
+<p>在<code>~/.acme</code>文件里生成了<code>*.liuvv.com</code> 文件夹</p>
+</li>
+<li><p>配置nginx</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">        <span class="attribute">listen</span> <span class="number">80</span> default_server;</span><br><span class="line">        <span class="attribute">listen</span> [::]:<span class="number">80</span> default_server;</span><br><span class="line">        <span class="attribute">rewrite</span><span class="regexp"> ^</span> https://<span class="variable">$http_host</span><span class="variable">$request_uri</span>? <span class="literal">permanent</span>; <span class="comment">#https跳转到https,永久重定向</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">        <span class="attribute">listen</span> <span class="number">443</span> ssl default_server;</span><br><span class="line">        <span class="attribute">listen</span> [::]:<span class="number">443</span> ssl default_server;</span><br><span class="line"></span><br><span class="line">        <span class="attribute">ssl_certificate</span> <span class="string">"/etc/nginx/ssl/fullchain.cer"</span>;</span><br><span class="line">        <span class="attribute">ssl_certificate_key</span> <span class="string">"/etc/nginx/ssl/*.liuvv.com.key"</span>;</span><br><span class="line"></span><br><span class="line">        <span class="attribute">root</span> /home/levonfly/www;</span><br><span class="line">        <span class="attribute">index</span> index.html;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<ul>
+<li><p>安装证书</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo ./acme.sh  --installcert  -d  *.liuvv.com   \</span><br><span class="line">        --key-file   /etc/nginx/ssl/*.liuvv.com.key \</span><br><span class="line">        --fullchain-file /etc/nginx/ssl/fullchain.cer \</span><br><span class="line">        --reloadcmd  <span class="string">"service nginx force-reload"</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>这里用的是 <code>service nginx force-reload</code>, 不是 <code>service nginx reload</code>, 据测试, <code>reload</code> 并不会重新加载证书, 所以用的 <code>force-reload</code></li>
+<li>nginx 的配置 <code>ssl_certificate</code> 使用 <code>/etc/nginx/ssl/fullchain.cer</code> ，而非 <code>/etc/nginx/ssl/&lt;domain&gt;.cer</code> ，否则 <a href="https://www.ssllabs.com/ssltest/" target="_blank" rel="noopener">SSL Labs</a> 的测试会报 <code>Chain issues Incomplete</code> 错误。</li>
+</ul>
+</li>
+<li><p>重新生成证书</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ./acme.sh --renew -d *.liuvv.com --force</span><br></pre></td></tr></table></figure>
+
+<p>通过这个命令,观看是否自动部署, 并观察证书的到期时间.</p>
+</li>
+</ul>
+<h3 id="4-参考资料"><a href="#4-参考资料" class="headerlink" title="4. 参考资料"></a>4. 参考资料</h3><ul>
+<li><p><a href="https://github.com/Neilpang/acme.sh/wiki/说明" target="_blank" rel="noopener">https://github.com/Neilpang/acme.sh/wiki/%E8%AF%B4%E6%98%8E</a></p>
+</li>
+<li><p><a href="https://www.mustu.cn/acme-shhuo-qu-lets-encrypt-wildcardtong-pei-ssl/" target="_blank" rel="noopener">https://www.mustu.cn/acme-shhuo-qu-lets-encrypt-wildcardtong-pei-ssl/</a></p>
+</li>
+<li><p><a href="https://www.jianshu.com/p/a9f2088e099c" target="_blank" rel="noopener">https://www.jianshu.com/p/a9f2088e099c</a></p>
+</li>
+<li><p><a href="https://deepzz.com/post/acmesh-letsencrypt-cert-auto-renew.html" target="_blank" rel="noopener">https://deepzz.com/post/acmesh-letsencrypt-cert-auto-renew.html</a></p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作, 一个耿直的笑脸~</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechatpay.jpg" alt="Levon 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="Levon 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/linux/" rel="tag"># linux</a>
+            
+              <a href="/tags/acme-sh/" rel="tag"># acme.sh</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/p/1d063ae7.html" rel="next" title="linux常用命令总结">
+                  <i class="fa fa-chevron-left"></i> linux常用命令总结
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/p/18605da6.html" rel="prev" title="ansible实践">
+                  ansible实践 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-证书类型"><span class="nav-number">1.</span> <span class="nav-text">1. 证书类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-ACME协议"><span class="nav-number">2.</span> <span class="nav-text">2. ACME协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-配置证书"><span class="nav-number">3.</span> <span class="nav-text">3. 配置证书</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-安装acme-sh"><span class="nav-number">3.0.1.</span> <span class="nav-text">3.1 安装acme.sh</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2-dns验证并安装部署"><span class="nav-number">3.0.2.</span> <span class="nav-text">3.2 dns验证并安装部署</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-参考资料"><span class="nav-number">4.</span> <span class="nav-text">4. 参考资料</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="Levon">
+  <p class="site-author-name" itemprop="name">Levon</p>
+  <div class="site-description" itemprop="description">Never Give Up</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">109</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">67</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/unix2dos" title="GitHub &rarr; https://github.com/unix2dos" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:levonfly@gmail.com" title="E-Mail &rarr; mailto:levonfly@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://twitter.com/levonfly" title="Twitter &rarr; https://twitter.com/levonfly" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://weibo.com/l6241425" title="Weibo &rarr; https://weibo.com/l6241425" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+    
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Levon</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">459k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">6:57</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

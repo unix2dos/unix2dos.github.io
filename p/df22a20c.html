@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.json',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="我们可能同时在进行2个项目，而2个不同的项目所使用的node版本又是不一样的，或者是要用更新的node版本进行试验和学习。这种情况下，对于维护多个版本的node将会是一件非常麻烦的事情，而nvm就是为解决这个问题而产生的，他可以方便的在同一台设备上进行多个node版本之间切换，而这个正是nvm的价值所在。 1. nodejs，npm，nvm之间的区别 nodejs：在项目开发时的所需要的代码库">
+<meta name="keywords" content="nodejs">
+<meta property="og:type" content="article">
+<meta property="og:title" content="node版本管理nvm的安装和使用">
+<meta property="og:url" content="https://levonfly.github.io/p/df22a20c.html">
+<meta property="og:site_name" content="Levon&#39;s Blog">
+<meta property="og:description" content="我们可能同时在进行2个项目，而2个不同的项目所使用的node版本又是不一样的，或者是要用更新的node版本进行试验和学习。这种情况下，对于维护多个版本的node将会是一件非常麻烦的事情，而nvm就是为解决这个问题而产生的，他可以方便的在同一台设备上进行多个node版本之间切换，而这个正是nvm的价值所在。 1. nodejs，npm，nvm之间的区别 nodejs：在项目开发时的所需要的代码库">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-27T15:36:51.111Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="node版本管理nvm的安装和使用">
+<meta name="twitter:description" content="我们可能同时在进行2个项目，而2个不同的项目所使用的node版本又是不一样的，或者是要用更新的node版本进行试验和学习。这种情况下，对于维护多个版本的node将会是一件非常麻烦的事情，而nvm就是为解决这个问题而产生的，他可以方便的在同一台设备上进行多个node版本之间切换，而这个正是nvm的价值所在。 1. nodejs，npm，nvm之间的区别 nodejs：在项目开发时的所需要的代码库">
+  <link rel="canonical" href="https://levonfly.github.io/p/df22a20c">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>node版本管理nvm的安装和使用 | Levon's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta custom-logo">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Levon's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">微信:  L6241425</h1>
+      
+      <a>
+        <img class="custom-logo-image" src="[object Object]" alt="Levon's Blog">
+      </a>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://levonfly.github.io/p/df22a20c.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Levon">
+      <meta itemprop="description" content="Never Give Up">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Levon's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">node版本管理nvm的安装和使用
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-10 20:02:00" itemprop="dateCreated datePublished" datetime="2019-05-10T20:02:00+08:00">2019-05-10</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-27 23:36:51" itemprop="dateModified" datetime="2019-09-27T23:36:51+08:00">2019-09-27</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/1-编程语言/" itemprop="url" rel="index"><span itemprop="name">1-编程语言</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/1-编程语言/nodejs/" itemprop="url" rel="index"><span itemprop="name">nodejs</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span>2.3k</span>
+            </span>
+          
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span>2 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>我们可能同时在进行2个项目，而2个不同的项目所使用的node版本又是不一样的，或者是要用更新的node版本进行试验和学习。这种情况下，对于维护多个版本的node将会是一件非常麻烦的事情，而nvm就是为解决这个问题而产生的，他可以方便的在同一台设备上进行多个node版本之间切换，而这个正是nvm的价值所在。</p>
+<h3 id="1-nodejs，npm，nvm之间的区别"><a href="#1-nodejs，npm，nvm之间的区别" class="headerlink" title="1. nodejs，npm，nvm之间的区别"></a>1. nodejs，npm，nvm之间的区别</h3><ul>
+<li><p>nodejs：在项目开发时的所需要的代码库</p>
+</li>
+<li><p>npm：nodejs 包管理工具。在安装的 nodejs 的时候，npm 也会跟着一起安装，它是包管理工具。npm 管理 nodejs 中的第三方插件</p>
+</li>
+<li><p>nvm：nodejs 版本管理工具。也就是说：一个 nvm 可以管理很多 node 版本和 npm 版本。</p>
+</li>
+</ul>
+<a id="more"></a>
+
+<h3 id="2-nvm的安装"><a href="#2-nvm的安装" class="headerlink" title="2. nvm的安装:"></a>2. nvm的安装:</h3><p>如果在安装nvm之前就安装了node, 那么最好在安装之前清理下全局的node环境.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">npm ls -g --depth=0 # 查看已经安装在全局的模块，以便删除这些全局模块后再按照不同的 node 版本重新进行全局安装</span><br><span class="line"></span><br><span class="line">sudo rm -rf /usr/local/lib/node_modules # 删除全局 node_modules 目录</span><br><span class="line"></span><br><span class="line">sudo rm -rf ~/.npm/ # 删除模块缓存目录</span><br><span class="line"></span><br><span class="line">sudo rm /usr/local/bin/node # 删除 node</span><br><span class="line"></span><br><span class="line">cd  /usr/local/bin &amp;&amp; ls -l | grep "../lib/node_modules/" | awk '&#123;print $9&#125;'| xargs rm # 删除全局 node 模块注册的软链</span><br></pre></td></tr></table></figure>
+
+<p>安装: <a href="https://github.com/nvm-sh/nvm" target="_blank" rel="noopener">https://github.com/nvm-sh/nvm</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash(zsh)# 注意后面的bash环境</span><br></pre></td></tr></table></figure>
+
+<p>重新打开一个终端输入 <code>nvm</code>即可</p>
+<h3 id="3-nvm常用指令"><a href="#3-nvm常用指令" class="headerlink" title="3. nvm常用指令"></a>3. nvm常用指令</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">nvm version #查看当前的版本</span><br><span class="line"></span><br><span class="line">nvm ls-remote #列出所有可安装的版本</span><br><span class="line"></span><br><span class="line">nvm install &lt;version&gt; #安装指定的版本，如nvm install v8.14.0</span><br><span class="line"></span><br><span class="line">nvm uninstall &lt;version&gt; #卸载指定的版本</span><br><span class="line"></span><br><span class="line">nvm ls #列出所有已经安装的版本</span><br><span class="line"></span><br><span class="line">nvm use &lt;version&gt; #切换使用指定的版本</span><br><span class="line"></span><br><span class="line">nvm current #显示当前使用的版本</span><br><span class="line"></span><br><span class="line">nvm alias default &lt;version&gt; #设置默认node版本</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-1-安装最新稳定版-node"><a href="#3-1-安装最新稳定版-node" class="headerlink" title="3.1 安装最新稳定版 node"></a>3.1 安装最新稳定版 node</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvm install stable</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-2-node被安装在哪里了呢"><a href="#3-2-node被安装在哪里了呢" class="headerlink" title="3.2 node被安装在哪里了呢?"></a>3.2 node被安装在哪里了呢?</h4><p>在终端我们可以使用which node来查看我们的node被安装到了哪里，这里终端打印出来的地址其实是你当前使用的node版本快捷方式的地址。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ which node</span><br><span class="line">/Users/liuwei/.nvm/versions/node/v12.2.0/bin/node</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$ which npm</span><br><span class="line">/Users/liuwei/.nvm/versions/node/v12.2.0/bin/npm</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-nvm-和-n-的区别"><a href="#4-nvm-和-n-的区别" class="headerlink" title="4. nvm 和 n  的区别"></a>4. nvm 和 n  的区别</h3><p>在 node 的版本管理工具中，nvm 自然声名远扬，然而我们也不能忘了来自 TJ 的 n。这两种，是目前最主流的方案。</p>
+<p>关于这两个工具如何安装和使用，这里不再赘言，请见它们各自的主页：</p>
+<ul>
+<li><a href="https://github.com/creationix/nvm" target="_blank" rel="noopener">creationix/nvm</a></li>
+<li><a href="https://github.com/tj/n" target="_blank" rel="noopener">tj/n</a></li>
+</ul>
+<p>接下来我们着重关注一下 nvm 和 n 的运作机制和特性。</p>
+<h4 id="4-1-n"><a href="#4-1-n" class="headerlink" title="4.1 n"></a>4.1 n</h4><p>n 是一个需要全局安装的 npm package。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g n</span><br></pre></td></tr></table></figure>
+
+<p>这意味着，我们在使用 n 管理 node 版本前，首先需要一个 node 环境。我们或者用 Homebrew 来安装一个 node，或者从官网下载 pkg 来安装，总之我们得先自己装一个 node —— n 本身是没法给你装的。</p>
+<p>然后我们可以使用 n 来安装不同版本的 node。</p>
+<p>在安装的时候，n 会先将指定版本的 node 存储下来，然后将其复制到我们熟知的路径/usr/local/bin，非常简单明了。当然由于 n 会操作到非用户目录，所以需要加 sudo 来执行命令。</p>
+<p>所以这样看来，n 在其实现上是一个非常易理解的方案。</p>
+<h4 id="4-2-nvm"><a href="#4-2-nvm" class="headerlink" title="4.2 nvm"></a>4.2 nvm</h4><p>我们再来看 nvm。不同于 n，nvm 不是一个 npm package，而是一个独立软件包。这意味着我们需要单独使用它的安装逻辑：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash(zsh)# 注意后面的bash环境</span><br></pre></td></tr></table></figure>
+
+<p>然后我们可以使用 nvm 来安装不同版本的 node。</p>
+<p>在安装的时候，nvm 将不同的 node 版本存储到 ~/.nvm/<version>/ 下，然后修改$PATH，将指定版本的 node 路径加入，这样我们调用的 node 命令即是使用指定版本的 node。</version></p>
+<p>nvm 显然比 n 要复杂一些，但是另一方面，由于它是一个独立软件包，因此它和 node 之间的关系看上去更合乎逻辑：nvm 不依赖 node 环境，是 node 依赖 nvm；而不像 n 那样产生类似循环依赖的问题。</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作, 一个耿直的笑脸~</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechatpay.jpg" alt="Levon 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="Levon 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/nodejs/" rel="tag"># nodejs</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/p/d100a0c2.html" rel="next" title="nodejs的模块安装和package.json">
+                  <i class="fa fa-chevron-left"></i> nodejs的模块安装和package.json
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/p/6c6632b7.html" rel="prev" title="go-module的使用">
+                  go-module的使用 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-nodejs，npm，nvm之间的区别"><span class="nav-number">1.</span> <span class="nav-text">1. nodejs，npm，nvm之间的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-nvm的安装"><span class="nav-number">2.</span> <span class="nav-text">2. nvm的安装:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-nvm常用指令"><span class="nav-number">3.</span> <span class="nav-text">3. nvm常用指令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-安装最新稳定版-node"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 安装最新稳定版 node</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-node被安装在哪里了呢"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 node被安装在哪里了呢?</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-nvm-和-n-的区别"><span class="nav-number">4.</span> <span class="nav-text">4. nvm 和 n  的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-n"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 n</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-nvm"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 nvm</span></a></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="Levon">
+  <p class="site-author-name" itemprop="name">Levon</p>
+  <div class="site-description" itemprop="description">Never Give Up</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">109</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">67</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/unix2dos" title="GitHub &rarr; https://github.com/unix2dos" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:levonfly@gmail.com" title="E-Mail &rarr; mailto:levonfly@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://twitter.com/levonfly" title="Twitter &rarr; https://twitter.com/levonfly" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://weibo.com/l6241425" title="Weibo &rarr; https://weibo.com/l6241425" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+    
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Levon</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">459k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">6:57</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

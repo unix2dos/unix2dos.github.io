@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.json',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="golang从诞生之初就一直有个被诟病的问题：缺少一个行之有效的“官方”包依赖管理工具。之前golang包管理工具有数十个， 说实话都不是让人非常满意。 go 1.11 有了对模块的实验性支持，大部分的子命令都知道如何处理一个模块，比如 run build install get list mod 子命令。go 1.12 会删除对 GOPATH 的支持，go get 命令也会变成只能获取模块，不能">
+<meta name="keywords" content="golang">
+<meta property="og:type" content="article">
+<meta property="og:title" content="go-module的使用">
+<meta property="og:url" content="https://levonfly.github.io/p/6c6632b7.html">
+<meta property="og:site_name" content="Levon&#39;s Blog">
+<meta property="og:description" content="golang从诞生之初就一直有个被诟病的问题：缺少一个行之有效的“官方”包依赖管理工具。之前golang包管理工具有数十个， 说实话都不是让人非常满意。 go 1.11 有了对模块的实验性支持，大部分的子命令都知道如何处理一个模块，比如 run build install get list mod 子命令。go 1.12 会删除对 GOPATH 的支持，go get 命令也会变成只能获取模块，不能">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-27T15:36:51.094Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="go-module的使用">
+<meta name="twitter:description" content="golang从诞生之初就一直有个被诟病的问题：缺少一个行之有效的“官方”包依赖管理工具。之前golang包管理工具有数十个， 说实话都不是让人非常满意。 go 1.11 有了对模块的实验性支持，大部分的子命令都知道如何处理一个模块，比如 run build install get list mod 子命令。go 1.12 会删除对 GOPATH 的支持，go get 命令也会变成只能获取模块，不能">
+  <link rel="canonical" href="https://levonfly.github.io/p/6c6632b7">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>go-module的使用 | Levon's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta custom-logo">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Levon's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">微信:  L6241425</h1>
+      
+      <a>
+        <img class="custom-logo-image" src="[object Object]" alt="Levon's Blog">
+      </a>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://levonfly.github.io/p/6c6632b7.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Levon">
+      <meta itemprop="description" content="Never Give Up">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Levon's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">go-module的使用
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-06-03 15:56:46" itemprop="dateCreated datePublished" datetime="2019-06-03T15:56:46+08:00">2019-06-03</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-27 23:36:51" itemprop="dateModified" datetime="2019-09-27T23:36:51+08:00">2019-09-27</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/1-编程语言/" itemprop="url" rel="index"><span itemprop="name">1-编程语言</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/1-编程语言/golang/" itemprop="url" rel="index"><span itemprop="name">golang</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span>3.4k</span>
+            </span>
+          
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span>3 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>golang从诞生之初就一直有个被诟病的问题：缺少一个行之有效的“官方”包依赖管理工具。之前golang包管理工具有数十个， 说实话都不是让人非常满意。</p>
+<p>go 1.11 有了对模块的实验性支持，大部分的子命令都知道如何处理一个模块，比如 run build install get list mod 子命令。go 1.12 会删除对 GOPATH 的支持，go get 命令也会变成只能获取模块，不能像现在这样直接获取一个裸包。</p>
+<p>可以用环境变量 GO111MODULE 开启或关闭模块支持，它有三个可选值：off、on、auto，默认值是 auto。</p>
+<ul>
+<li>GO111MODULE=off 无模块支持，go 会从 GOPATH 和 vendor 文件夹寻找包。</li>
+<li>GO111MODULE=on 模块支持，go 会忽略 GOPATH 和 vendor 文件夹，只根据 go.mod 下载依赖。</li>
+<li>GO111MODULE=auto 在 $GOPATH/src 外面且根目录有 go.mod 文件时，开启模块支持。</li>
+</ul>
+<p>在使用模块的时候，GOPATH 是无意义的，不过它还是会把下载的依赖储存在 $GOPATH/pkg/mod 中，也会把 go install 的结果放在 $GOPATH/bin 中。</p>
+<a id="more"></a>
+
+<h3 id="1-go-mod-使用教程"><a href="#1-go-mod-使用教程" class="headerlink" title="1. go mod 使用教程"></a>1. go mod 使用教程</h3><p><a href="https://github.com/golang/go/wiki/Modules" target="_blank" rel="noopener">https://github.com/golang/go/wiki/Modules</a> # 官方wiki, 基本所有的问题都能在这里找到</p>
+<h5 id="1-1-在使用前先确保golang升级到1-11"><a href="#1-1-在使用前先确保golang升级到1-11" class="headerlink" title="1.1 在使用前先确保golang升级到1.11:"></a>1.1 在使用前先确保golang升级到1.11:</h5><p><a href="https://golang.org/dl/" target="_blank" rel="noopener">https://golang.org/dl/</a> #下载golang</p>
+<h3 id="2-使用go-mod-实践"><a href="#2-使用go-mod-实践" class="headerlink" title="2. 使用go mod 实践"></a>2. 使用go mod 实践</h3><h5 id="2-1-快速开始："><a href="#2-1-快速开始：" class="headerlink" title="2.1. 快速开始："></a>2.1. 快速开始：</h5><ol>
+<li><p>把之前的工程拷贝到$GOPATH/src之外</p>
+</li>
+<li><p>在工程目录下执行：go mod init {module name}，该命令会创建一个go.mod文件</p>
+</li>
+<li><p>然后在该目录下执行 go build，就可以了，go.mod中记录了依赖包及其版本号。</p>
+</li>
+</ol>
+<h5 id="2-2-在-go-build-中-遇到了以下几个问题-记录如下"><a href="#2-2-在-go-build-中-遇到了以下几个问题-记录如下" class="headerlink" title="2.2. 在 go build 中 遇到了以下几个问题, 记录如下:"></a>2.2. 在 go build 中 遇到了以下几个问题, 记录如下:</h5><p>2.2.1 golang.org的包竟然下不下来(你懂的)</p>
+<p>可以使用在go.mod里添加replace选项</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">replace (golang.org/x/text =&gt; github.com/golang/text v0<span class="number">.3</span><span class="number">.0</span> )</span><br></pre></td></tr></table></figure>
+
+<p> 也可以用代理的方式, 更加方便</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export GOPROXY=https://athens.azurefd.net</span><br></pre></td></tr></table></figure>
+
+<p>2.2.2 发现找不到包(包层级多的)</p>
+<p>cannot load github.com/aliyun/alibaba-cloud-sdk-go/sdk: cannot find module providing package github.com/aliyun/alibaba-cloud-sdk-go/sdk</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get github.com/aliyun/alibaba-cloud-sdk-go@master  #带@master</span><br></pre></td></tr></table></figure>
+
+<p>2.2.3 在替换的时候还发现这个错误</p>
+<p>cannot call non-function xurls.Strict (type *regexp.Regexp)</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mvdan.cc/xurls  #之前用的是这个版本,换成下面的就可以了</span><br><span class="line">mvdan.cc/xurls/v2</span><br></pre></td></tr></table></figure>
+
+<p>2.2.4  只有直接使用的依赖会被记录在<code>go.mod</code>文件中, 贴出go.mod的内容如下:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">module github.com/unix2dos/goods-notify</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">go</span> <span class="number">1.12</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">require (</span><br><span class="line"></span><br><span class="line">	github.com/PuerkitoBio/goquery v1<span class="number">.5</span><span class="number">.0</span></span><br><span class="line"></span><br><span class="line">	github.com/aliyun/alibaba-cloud-sdk-<span class="keyword">go</span> v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20190528035818</span><span class="number">-94084</span>c920892</span><br><span class="line"></span><br><span class="line">	github.com/gorilla/websocket v1<span class="number">.4</span><span class="number">.0</span> <span class="comment">// indirect</span></span><br><span class="line"></span><br><span class="line">	github.com/joho/godotenv v1<span class="number">.3</span><span class="number">.0</span></span><br><span class="line"></span><br><span class="line">	github.com/pkg/errors v0<span class="number">.8</span><span class="number">.1</span> <span class="comment">// indirect</span></span><br><span class="line"></span><br><span class="line">	github.com/stretchr/testify v1<span class="number">.3</span><span class="number">.0</span></span><br><span class="line"></span><br><span class="line">	github.com/unix2dos/bearychat-<span class="keyword">go</span> v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20190222142113</span>-d09d4a5e73e5</span><br><span class="line"></span><br><span class="line">	github.com/valyala/fasthttp v1<span class="number">.3</span><span class="number">.0</span></span><br><span class="line"></span><br><span class="line">	github.com/yunpian/yunpian-<span class="keyword">go</span>-sdk v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20171206021512</span><span class="number">-2193</span>bf8a7459</span><br><span class="line"></span><br><span class="line">	golang.org/x/text v0<span class="number">.3</span><span class="number">.2</span></span><br><span class="line"></span><br><span class="line">	mvdan.cc/xurls/v2 v2<span class="number">.0</span><span class="number">.0</span></span><br><span class="line"></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p><code>indirect</code> 注释标记了依赖不是被当前模块直接使用的，只是在其他依赖项中被间接引用。</p>
+<p>2.2.5  go.sum文件介绍</p>
+<p>同时，<code>go.mod</code>和<code>go</code>命令维护了一个名叫<code>go.sum</code>的文件包含了指定模块版本的期望的<a href="https://golang.org/cmd/go/#hdr-Module_downloading_and_verification" target="_blank" rel="noopener">加密hash</a>：</p>
+<p><code>go</code>命令使用<code>go.sum</code>文件保证之后的模块下载会下载到跟第一次下载相同的文件内容，保证你的项目依赖不会发生预期外的恶意修改、意外问题和其他问题。<code>go.mod</code> 和 <code>go.sum</code>都需要放进版本管理中。</p>
+<h3 id="3-go-mod-相关操作"><a href="#3-go-mod-相关操作" class="headerlink" title="3. go mod 相关操作"></a>3. go mod 相关操作</h3><p><code>go list -m all</code>  可以查看当前的依赖和版本(当前模块，或者叫做主模块，通常是第一行，接下来是根据依赖路径排序的依赖)。</p>
+<p><code>go mod edit -fmt</code> 格式化 <code>go.mod</code> 文件。</p>
+<p> <code>go mod tidy</code> 从 <code>go.mod</code> 删除不需要的依赖、新增需要的依赖，这个操作不会改变依赖版本。</p>
+<h5 id="3-1-go-get-命令"><a href="#3-1-go-get-命令" class="headerlink" title="3.1 go get 命令"></a>3.1 go get 命令</h5><p>获取依赖的特定版本，用来升级和降级依赖。可以自动修改 <code>go.mod</code> 文件，而且依赖的依赖版本号也可能会变。在 <code>go.mod</code> 中使用 <code>exclude</code> 排除的包，不能 <code>go get</code> 下来。</p>
+<p>与以前不同的是，新版 <code>go get</code> 可以在末尾加 <code>@</code> 符号，用来指定版本。</p>
+<p>它要求仓库必须用 <code>v1.2.0</code> 格式打 tag，像 <code>v1.2</code> 少个零都不行的，必须是<a href="https://semver.org/lang/zh-CN/" target="_blank" rel="noopener">语义化</a>的、带 <code>v</code> 前缀的版本号。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">go get github.com/gorilla/mux           # 匹配最新的一个 tag</span><br><span class="line">go get github.com/gorilla/mux@latest    # 和上面一样</span><br><span class="line">go get github.com/gorilla/mux@v1.6.2    # 匹配 v1.6.2</span><br><span class="line">go get github.com/gorilla/mux@e3702bed2 # 匹配 v1.6.2</span><br><span class="line">go get github.com/gorilla/mux@c856192   # 匹配 c85619274f5d</span><br><span class="line">go get github.com/gorilla/mux@master    # 匹配 master 分支</span><br></pre></td></tr></table></figure>
+
+<p><code>latest</code> 匹配最新的 tag。</p>
+<p><code>v1.2.6</code> 完整版本的写法。</p>
+<p><code>v1</code>、<code>v1.2</code> 匹配带这个前缀的最新版本，如果最新版是 <code>1.2.7</code>，它们会匹配 <code>1.2.7</code>。</p>
+<p><code>c856192</code> 版本 hash 前缀、分支名、无语义化的标签，在 <code>go.mod</code> 里都会会使用约定写法 <code>v0.0.0-20180517173623-c85619274f5d</code>，也被称作伪版本。</p>
+<p><code>go get</code> 可以模糊匹配版本号，但 <code>go.mod</code> 文件只体现完整的版本号，即 <code>v1.2.0</code>、<code>v0.0.0-20180517173623-c85619274f5d</code>，只不过不需要手写这么长的版本号，用 <code>go get</code> 或上文的 <code>go mod edit -require</code> 模糊匹配即可，它会把匹配到的完整版本号写进 <code>go.mod</code>  文件。</p>
+<p>参考资料:</p>
+<p><a href="https://github.com/golang/go/wiki/Modules" target="_blank" rel="noopener">https://github.com/golang/go/wiki/Modules</a></p>
+<p><a href="https://www.jianshu.com/p/c5733da150c6" target="_blank" rel="noopener">https://www.jianshu.com/p/c5733da150c6</a></p>
+<p><a href="https://www.4async.com/2019/03/using-go-modules/" target="_blank" rel="noopener">https://www.4async.com/2019/03/using-go-modules/</a></p>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作, 一个耿直的笑脸~</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechatpay.jpg" alt="Levon 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="Levon 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/golang/" rel="tag"># golang</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/p/df22a20c.html" rel="next" title="node版本管理nvm的安装和使用">
+                  <i class="fa fa-chevron-left"></i> node版本管理nvm的安装和使用
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/p/d2e27e6.html" rel="prev" title="英语语法结构">
+                  英语语法结构 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-go-mod-使用教程"><span class="nav-number">1.</span> <span class="nav-text">1. go mod 使用教程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-在使用前先确保golang升级到1-11"><span class="nav-number">1.0.1.</span> <span class="nav-text">1.1 在使用前先确保golang升级到1.11:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-使用go-mod-实践"><span class="nav-number">2.</span> <span class="nav-text">2. 使用go mod 实践</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-快速开始："><span class="nav-number">2.0.1.</span> <span class="nav-text">2.1. 快速开始：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-在-go-build-中-遇到了以下几个问题-记录如下"><span class="nav-number">2.0.2.</span> <span class="nav-text">2.2. 在 go build 中 遇到了以下几个问题, 记录如下:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-go-mod-相关操作"><span class="nav-number">3.</span> <span class="nav-text">3. go mod 相关操作</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-go-get-命令"><span class="nav-number">3.0.1.</span> <span class="nav-text">3.1 go get 命令</span></a></li></ol></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="Levon">
+  <p class="site-author-name" itemprop="name">Levon</p>
+  <div class="site-description" itemprop="description">Never Give Up</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">109</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">67</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/unix2dos" title="GitHub &rarr; https://github.com/unix2dos" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:levonfly@gmail.com" title="E-Mail &rarr; mailto:levonfly@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://twitter.com/levonfly" title="Twitter &rarr; https://twitter.com/levonfly" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://weibo.com/l6241425" title="Weibo &rarr; https://weibo.com/l6241425" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+    
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Levon</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">459k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">6:57</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

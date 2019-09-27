@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.json',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="0. 前言Viper(毒蛇)是一个方便Go语言应用程序处理配置信息的库。它可以处理多种格式的配置。它支持的特性：  设置默认值 从JSON，TOML，YAML，HCL和Java属性配置文件中读取 实时观看和重新读取配置文件（可选） 从环境变量中读取 从远程配置系统（etcd或Consul）读取，并观察变化 从命令行标志读取 从缓冲区读取 设置显式值">
+<meta name="keywords" content="golang,viper">
+<meta property="og:type" content="article">
+<meta property="og:title" content="golang配置信息库viper的使用">
+<meta property="og:url" content="https://levonfly.github.io/p/e2f28eb4.html">
+<meta property="og:site_name" content="Levon&#39;s Blog">
+<meta property="og:description" content="0. 前言Viper(毒蛇)是一个方便Go语言应用程序处理配置信息的库。它可以处理多种格式的配置。它支持的特性：  设置默认值 从JSON，TOML，YAML，HCL和Java属性配置文件中读取 实时观看和重新读取配置文件（可选） 从环境变量中读取 从远程配置系统（etcd或Consul）读取，并观察变化 从命令行标志读取 从缓冲区读取 设置显式值">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-27T15:36:51.097Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="golang配置信息库viper的使用">
+<meta name="twitter:description" content="0. 前言Viper(毒蛇)是一个方便Go语言应用程序处理配置信息的库。它可以处理多种格式的配置。它支持的特性：  设置默认值 从JSON，TOML，YAML，HCL和Java属性配置文件中读取 实时观看和重新读取配置文件（可选） 从环境变量中读取 从远程配置系统（etcd或Consul）读取，并观察变化 从命令行标志读取 从缓冲区读取 设置显式值">
+  <link rel="canonical" href="https://levonfly.github.io/p/e2f28eb4">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>golang配置信息库viper的使用 | Levon's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta custom-logo">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Levon's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">微信:  L6241425</h1>
+      
+      <a>
+        <img class="custom-logo-image" src="[object Object]" alt="Levon's Blog">
+      </a>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://levonfly.github.io/p/e2f28eb4.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Levon">
+      <meta itemprop="description" content="Never Give Up">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Levon's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">golang配置信息库viper的使用
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-31 22:28:46" itemprop="dateCreated datePublished" datetime="2019-08-31T22:28:46+08:00">2019-08-31</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-27 23:36:51" itemprop="dateModified" datetime="2019-09-27T23:36:51+08:00">2019-09-27</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/1-编程语言/" itemprop="url" rel="index"><span itemprop="name">1-编程语言</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/1-编程语言/golang/" itemprop="url" rel="index"><span itemprop="name">golang</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span>5.6k</span>
+            </span>
+          
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span>5 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h3><p>Viper(毒蛇)是一个方便Go语言应用程序处理配置信息的库。它可以处理多种格式的配置。它支持的特性：</p>
+<ul>
+<li>设置默认值</li>
+<li>从JSON，TOML，YAML，HCL和Java属性配置文件中读取</li>
+<li>实时观看和重新读取配置文件（可选）</li>
+<li>从环境变量中读取</li>
+<li>从远程配置系统（etcd或Consul）读取，并观察变化</li>
+<li>从命令行标志读取</li>
+<li>从缓冲区读取</li>
+<li>设置显式值</li>
+</ul>
+<a id="more"></a>
+
+<p>Viper读取配置信息的优先级顺序，从高到低，如下：</p>
+<ul>
+<li>显式调用Set函数</li>
+<li>命令行参数</li>
+<li>环境变量</li>
+<li>配置文件</li>
+<li>key/value 存储系统</li>
+<li>默认值</li>
+</ul>
+<p>Viper 的配置项的key不区分大小写。</p>
+<h3 id="1-安装使用"><a href="#1-安装使用" class="headerlink" title="1. 安装使用"></a>1. 安装使用</h3><h5 id="1-0-安装"><a href="#1-0-安装" class="headerlink" title="1.0 安装"></a>1.0 安装</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get -u github.com/spf13/viper</span><br></pre></td></tr></table></figure>
+
+<h5 id="1-1-设置默认值"><a href="#1-1-设置默认值" class="headerlink" title="1.1 设置默认值"></a>1.1 设置默认值</h5><p>默认值不是必须的，如果配置文件、环境变量、远程配置系统、命令行参数、Set函数都没有指定时，默认值将起作用。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">viper.SetDefault(<span class="string">"ContentDir"</span>, <span class="string">"content"</span>)</span><br><span class="line">viper.SetDefault(<span class="string">"LayoutDir"</span>, <span class="string">"layouts"</span>)</span><br><span class="line">viper.SetDefault(<span class="string">"Taxonomies"</span>, <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>&#123;<span class="string">"tag"</span>: <span class="string">"tags"</span>, <span class="string">"category"</span>: <span class="string">"categories"</span>&#125;)</span><br></pre></td></tr></table></figure>
+
+<h5 id="1-2-读取配置文件"><a href="#1-2-读取配置文件" class="headerlink" title="1.2 读取配置文件"></a>1.2 读取配置文件</h5><p>Viper支持JSON、TOML、YAML、HCL和Java properties文件。<br>Viper可以搜索多个路径，但目前单个Viper实例仅支持单个配置文件。<br>Viper默认不搜索任何路径。<br>以下是如何使用Viper搜索和读取配置文件的示例。<br>路径不是必需的，但最好至少应提供一个路径，以便找到一个配置文件。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">viper.SetConfigName(<span class="string">"config"</span>) <span class="comment">//  设置配置文件名 (不带后缀)</span></span><br><span class="line">viper.AddConfigPath(<span class="string">"/etc/appname/"</span>)   <span class="comment">// 第一个搜索路径</span></span><br><span class="line">viper.AddConfigPath(<span class="string">"$HOME/.appname"</span>)  <span class="comment">// 可以多次调用添加路径</span></span><br><span class="line">viper.AddConfigPath(<span class="string">"."</span>)               <span class="comment">// 比如添加当前目录</span></span><br><span class="line">err := viper.ReadInConfig() <span class="comment">// 搜索路径，并读取配置数据</span></span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    <span class="built_in">panic</span>(fmt.Errorf(<span class="string">"Fatal error config file: %s \n"</span>, err))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="1-3-监视配置文件，重新读取配置数据"><a href="#1-3-监视配置文件，重新读取配置数据" class="headerlink" title="1.3 监视配置文件，重新读取配置数据"></a>1.3 监视配置文件，重新读取配置数据</h5><p>Viper支持让您的应用程序在运行时拥有读取配置文件的能力。<br>需要重新启动服务器以使配置生效的日子已经一去不复返了，由viper驱动的应用程序可以在运行时读取已更新的配置文件，并且不会错过任何节拍。<br>只需要调用viper实例的WatchConfig函数，你也可以指定一个回调函数来获得变动的通知。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">viper.WatchConfig()</span><br><span class="line">viper.OnConfigChange(<span class="function"><span class="keyword">func</span><span class="params">(e fsnotify.Event)</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">"Config file changed:"</span>, e.Name)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h5 id="1-4-从-io-Reader-中读取配置"><a href="#1-4-从-io-Reader-中读取配置" class="headerlink" title="1.4 从 io.Reader 中读取配置"></a>1.4 从 io.Reader 中读取配置</h5><p>Viper预先定义了许多配置源，例如文件、环境变量、命令行参数和远程K / V存储系统，但您并未受其约束。<br>您也可以实现自己的配置源，并提供给viper。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">viper.SetConfigType(<span class="string">"yaml"</span>) <span class="comment">// or viper.SetConfigType("YAML")</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// any approach to require this configuration into your program.</span></span><br><span class="line"><span class="keyword">var</span> yamlExample = []<span class="keyword">byte</span>(<span class="string">`</span></span><br><span class="line"><span class="string">Hacker: true</span></span><br><span class="line"><span class="string">name: steve</span></span><br><span class="line"><span class="string">hobbies:</span></span><br><span class="line"><span class="string">- skateboarding</span></span><br><span class="line"><span class="string">- snowboarding</span></span><br><span class="line"><span class="string">- go</span></span><br><span class="line"><span class="string">clothing:</span></span><br><span class="line"><span class="string">  jacket: leather</span></span><br><span class="line"><span class="string">  trousers: denim</span></span><br><span class="line"><span class="string">age: 35</span></span><br><span class="line"><span class="string">eyes : brown</span></span><br><span class="line"><span class="string">beard: true</span></span><br><span class="line"><span class="string">`</span>)</span><br><span class="line"></span><br><span class="line">viper.ReadConfig(bytes.NewBuffer(yamlExample))</span><br><span class="line">viper.Get(<span class="string">"name"</span>) <span class="comment">// 返回 "steve"</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="1-5-注册并使用别名"><a href="#1-5-注册并使用别名" class="headerlink" title="1.5 注册并使用别名"></a>1.5 注册并使用别名</h5><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">viper.RegisterAlias(<span class="string">"loud"</span>, <span class="string">"Verbose"</span>)</span><br><span class="line"></span><br><span class="line">viper.Set(<span class="string">"verbose"</span>, <span class="literal">true</span>) </span><br><span class="line">viper.Set(<span class="string">"loud"</span>, <span class="literal">true</span>)   <span class="comment">// 这两句设置的都是同一个值</span></span><br><span class="line"></span><br><span class="line">viper.GetBool(<span class="string">"loud"</span>) <span class="comment">// true</span></span><br><span class="line">viper.GetBool(<span class="string">"verbose"</span>) <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="1-6-从环境变量中读取"><a href="#1-6-从环境变量中读取" class="headerlink" title="1.6 从环境变量中读取"></a>1.6 从环境变量中读取</h5><p>Viper 完全支持环境变量，这是的应用程序可以开箱即用。<br>有四个和环境变量有关的方法：</p>
+<ul>
+<li>AutomaticEnv()</li>
+<li>BindEnv(string…) : error</li>
+<li>SetEnvPrefix(string)</li>
+<li>SetEnvKeyReplacer(string…) *strings.Replacer</li>
+</ul>
+<p>注意，环境变量时区分大小写的。</p>
+<p>Viper提供了一种机制来确保Env变量是唯一的。通过SetEnvPrefix，在从环境变量读取时会添加设置的前缀。BindEnv和AutomaticEnv都会使用到这个前缀。</p>
+<p>BindEnv需要一个或两个参数。第一个参数是键名，第二个参数是环境变量的名称。环境变量的名称区分大小写。如果未提供ENV变量名称，则Viper会自动假定该键名称与ENV变量名称匹配，并且ENV变量为全部大写。当您显式提供ENV变量名称时，它不会自动添加前缀。</p>
+<p>使用ENV变量时要注意，当关联后，每次访问时都会读取该ENV值。Viper在BindEnv调用时不读取ENV值。</p>
+<p>AutomaticEnv与SetEnvPrefix结合将会特别有用。当AutomaticEnv被调用时，任何viper.Get请求都会去获取环境变量。环境变量名为SetEnvPrefix设置的前缀，加上对应名称的大写。</p>
+<p>SetEnvKeyReplacer允许你使用一个strings.Replacer对象来将配置名重写为Env名。如果你想在Get()中使用包含-的配置名 ，但希望对应的环境变量名包含_分隔符，就可以使用该方法。使用它的一个例子可以在项目中viper_test.go文件里找到。<br>例子：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SetEnvPrefix(<span class="string">"spf"</span>) <span class="comment">// 将会自动转为大写</span></span><br><span class="line">BindEnv(<span class="string">"id"</span>)</span><br><span class="line"></span><br><span class="line">os.Setenv(<span class="string">"SPF_ID"</span>, <span class="string">"13"</span>) <span class="comment">// 通常通过系统环境变量来设置</span></span><br><span class="line"></span><br><span class="line">id := Get(<span class="string">"id"</span>) <span class="comment">// 13</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="1-7-绑定命令行参数"><a href="#1-7-绑定命令行参数" class="headerlink" title="1.7 绑定命令行参数"></a>1.7 绑定命令行参数</h5><p>Viper支持绑定pflags参数。<br>和BindEnv一样，当绑定方法被调用时，该值没有被获取，而是在被访问时获取。这意味着应该尽早进行绑定，甚至是在init()函数中绑定。</p>
+<p>利用BindPFlag()方法可以绑定单个flag。例子：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">serverCmd.Flags().Int(<span class="string">"port"</span>, <span class="number">1138</span>, <span class="string">"Port to run Application server on"</span>)</span><br><span class="line">viper.BindPFlag(<span class="string">"port"</span>, serverCmd.Flags().Lookup(<span class="string">"port"</span>))</span><br></pre></td></tr></table></figure>
+
+<p>你也可以绑定已存在的pflag集合 (pflag.FlagSet):</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">pflag.Int(<span class="string">"flagname"</span>, <span class="number">1234</span>, <span class="string">"help message for flagname"</span>)</span><br><span class="line"></span><br><span class="line">pflag.Parse()</span><br><span class="line">viper.BindPFlags(pflag.CommandLine)</span><br><span class="line"></span><br><span class="line">i := viper.GetInt(<span class="string">"flagname"</span>) <span class="comment">// 通过viper从pflag中获取值</span></span><br></pre></td></tr></table></figure>
+
+<p>使用pflag并不影响其他库使用标准库中的flag。通过导入，pflag可以接管通过标准库的flag定义的参数。这是通`过调用pflag包中的AddGoFlagSet()方法实现的。例子：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"flag"</span></span><br><span class="line">    <span class="string">"github.com/spf13/pflag"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// using standard library "flag" package</span></span><br><span class="line">    flag.Int(<span class="string">"flagname"</span>, <span class="number">1234</span>, <span class="string">"help message for flagname"</span>)</span><br><span class="line"></span><br><span class="line">    pflag.CommandLine.AddGoFlagSet(flag.CommandLine)</span><br><span class="line">    pflag.Parse()</span><br><span class="line">    viper.BindPFlags(pflag.CommandLine)</span><br><span class="line"></span><br><span class="line">    i := viper.GetInt(<span class="string">"flagname"</span>) <span class="comment">// retrieve value from viper</span></span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="1-8-获取值"><a href="#1-8-获取值" class="headerlink" title="1.8 获取值"></a>1.8 获取值</h5><p>在Viper中，有一些根据值的类型获取值的方法。存在一下方法：</p>
+<ul>
+<li><p>Get(key string) : interface{}</p>
+</li>
+<li><p>GetBool(key string) : bool</p>
+</li>
+<li><p>GetFloat64(key string) : float64</p>
+</li>
+<li><p>GetInt(key string) : int</p>
+</li>
+<li><p>GetString(key string) : string</p>
+</li>
+<li><p>GetStringMap(key string) : map[string]interface{}</p>
+</li>
+<li><p>GetStringMapString(key string) : map[string]string</p>
+</li>
+<li><p>GetStringSlice(key string) : []string</p>
+</li>
+<li><p>GetTime(key string) : time.Time</p>
+</li>
+<li><p>GetDuration(key string) : time.Duration</p>
+</li>
+<li><p>IsSet(key string) : bool</p>
+</li>
+</ul>
+<p>如果Get函数未找到值，则返回对应类型的一个零值。可以通过 IsSet() 方法来检测一个健是否存在。例子:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">viper.GetString(<span class="string">"logfile"</span>) <span class="comment">// Setting &amp; Getting 不区分大小写</span></span><br><span class="line"><span class="keyword">if</span> viper.GetBool(<span class="string">"verbose"</span>) &#123;</span><br><span class="line">    fmt.Println(<span class="string">"verbose enabled"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="1-9-访问嵌套键"><a href="#1-9-访问嵌套键" class="headerlink" title="1.9 访问嵌套键"></a>1.9 访问嵌套键</h5><p>访问方法也接受嵌套的键。例如，如果加载了以下JSON文件：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"host"</span>: &#123;</span><br><span class="line">        <span class="attr">"address"</span>: <span class="string">"localhost"</span>,</span><br><span class="line">        <span class="attr">"port"</span>: <span class="number">5799</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"datastore"</span>: &#123;</span><br><span class="line">        <span class="attr">"metric"</span>: &#123;</span><br><span class="line">            <span class="attr">"host"</span>: <span class="string">"127.0.0.1"</span>,</span><br><span class="line">            <span class="attr">"port"</span>: <span class="number">3099</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">"warehouse"</span>: &#123;</span><br><span class="line">            <span class="attr">"host"</span>: <span class="string">"198.0.0.1"</span>,</span><br><span class="line">            <span class="attr">"port"</span>: <span class="number">2112</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Viper可以通过.分隔符来访问嵌套的字段：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GetString(<span class="string">"datastore.metric.host"</span>) <span class="comment">// (returns "127.0.0.1")</span></span><br></pre></td></tr></table></figure>
+
+<p>这遵守前面确立的优先规则; 会搜索路径中所有配置，直到找到为止。<br>例如，上面的文件，datastore.metric.host和 datastore.metric.port都已经定义（并且可能被覆盖）。如果另外 datastore.metric.protocol的默认值，Viper也会找到它。</p>
+<p>但是，如果datastore.metric值被覆盖（通过标志，环境变量，Set方法，…），则所有datastore.metric的子键将会未定义，它们被优先级更高的配置值所“遮蔽”。</p>
+<p>最后，如果存在相匹配的嵌套键，则其值将被返回。例如：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"datastore.metric.host"</span>: <span class="string">"0.0.0.0"</span>,</span><br><span class="line">    <span class="attr">"host"</span>: &#123;</span><br><span class="line">        <span class="attr">"address"</span>: <span class="string">"localhost"</span>,</span><br><span class="line">        <span class="attr">"port"</span>: <span class="number">5799</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"datastore"</span>: &#123;</span><br><span class="line">        <span class="attr">"metric"</span>: &#123;</span><br><span class="line">            <span class="attr">"host"</span>: <span class="string">"127.0.0.1"</span>,</span><br><span class="line">            <span class="attr">"port"</span>: <span class="number">3099</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">"warehouse"</span>: &#123;</span><br><span class="line">            <span class="attr">"host"</span>: <span class="string">"198.0.0.1"</span>,</span><br><span class="line">            <span class="attr">"port"</span>: <span class="number">2112</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">GetString("datastore.metric.host") // returns "0.0.0.0"</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-参考资料"><a href="#3-参考资料" class="headerlink" title="3. 参考资料"></a>3. 参考资料</h3><ul>
+<li><a href="https://blog.51cto.com/13599072/2072753" target="_blank" rel="noopener">Golang的配置信息处理框架Viper</a></li>
+<li><a href="https://www.jishuwen.com/d/2vNk" target="_blank" rel="noopener">https://www.jishuwen.com/d/2vNk</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作, 一个耿直的笑脸~</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechatpay.jpg" alt="Levon 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="Levon 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/golang/" rel="tag"># golang</a>
+            
+              <a href="/tags/viper/" rel="tag"># viper</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/p/d50935d7.html" rel="next" title="golang命令行库cobra的使用">
+                  <i class="fa fa-chevron-left"></i> golang命令行库cobra的使用
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/p/545fa06.html" rel="prev" title="爬虫利器selenium的使用">
+                  爬虫利器selenium的使用 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#0-前言"><span class="nav-number">1.</span> <span class="nav-text">0. 前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-安装使用"><span class="nav-number">2.</span> <span class="nav-text">1. 安装使用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-0-安装"><span class="nav-number">2.0.1.</span> <span class="nav-text">1.0 安装</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-设置默认值"><span class="nav-number">2.0.2.</span> <span class="nav-text">1.1 设置默认值</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2-读取配置文件"><span class="nav-number">2.0.3.</span> <span class="nav-text">1.2 读取配置文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3-监视配置文件，重新读取配置数据"><span class="nav-number">2.0.4.</span> <span class="nav-text">1.3 监视配置文件，重新读取配置数据</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-4-从-io-Reader-中读取配置"><span class="nav-number">2.0.5.</span> <span class="nav-text">1.4 从 io.Reader 中读取配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-5-注册并使用别名"><span class="nav-number">2.0.6.</span> <span class="nav-text">1.5 注册并使用别名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-6-从环境变量中读取"><span class="nav-number">2.0.7.</span> <span class="nav-text">1.6 从环境变量中读取</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-7-绑定命令行参数"><span class="nav-number">2.0.8.</span> <span class="nav-text">1.7 绑定命令行参数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-8-获取值"><span class="nav-number">2.0.9.</span> <span class="nav-text">1.8 获取值</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-9-访问嵌套键"><span class="nav-number">2.0.10.</span> <span class="nav-text">1.9 访问嵌套键</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-参考资料"><span class="nav-number">3.</span> <span class="nav-text">3. 参考资料</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="Levon">
+  <p class="site-author-name" itemprop="name">Levon</p>
+  <div class="site-description" itemprop="description">Never Give Up</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">109</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">67</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/unix2dos" title="GitHub &rarr; https://github.com/unix2dos" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:levonfly@gmail.com" title="E-Mail &rarr; mailto:levonfly@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://twitter.com/levonfly" title="Twitter &rarr; https://twitter.com/levonfly" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://weibo.com/l6241425" title="Weibo &rarr; https://weibo.com/l6241425" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+    
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Levon</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">459k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">6:57</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

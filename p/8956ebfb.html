@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.json',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="通过ssh文件上传到服务器1scp -i /Users/liuwei/.ssh/aws.pem -C -r /Users/liuwei/golang/src/web ubuntu@ec2-54-191-9-26.us-west-2.compute.amazonaws.com:/home/ubuntu  aws.pem chmod 400 scp  -C 加一个可能会更快 发行部署Go 语言的应用最">
+<meta name="keywords" content="golang">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux部署golang的方式">
+<meta property="og:url" content="https://levonfly.github.io/p/8956ebfb.html">
+<meta property="og:site_name" content="Levon&#39;s Blog">
+<meta property="og:description" content="通过ssh文件上传到服务器1scp -i /Users/liuwei/.ssh/aws.pem -C -r /Users/liuwei/golang/src/web ubuntu@ec2-54-191-9-26.us-west-2.compute.amazonaws.com:/home/ubuntu  aws.pem chmod 400 scp  -C 加一个可能会更快 发行部署Go 语言的应用最">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-27T15:36:51.102Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="linux部署golang的方式">
+<meta name="twitter:description" content="通过ssh文件上传到服务器1scp -i /Users/liuwei/.ssh/aws.pem -C -r /Users/liuwei/golang/src/web ubuntu@ec2-54-191-9-26.us-west-2.compute.amazonaws.com:/home/ubuntu  aws.pem chmod 400 scp  -C 加一个可能会更快 发行部署Go 语言的应用最">
+  <link rel="canonical" href="https://levonfly.github.io/p/8956ebfb">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>linux部署golang的方式 | Levon's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta custom-logo">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Levon's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">微信:  L6241425</h1>
+      
+      <a>
+        <img class="custom-logo-image" src="[object Object]" alt="Levon's Blog">
+      </a>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://levonfly.github.io/p/8956ebfb.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Levon">
+      <meta itemprop="description" content="Never Give Up">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Levon's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">linux部署golang的方式
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2018-01-29 17:54:46" itemprop="dateCreated datePublished" datetime="2018-01-29T17:54:46+08:00">2018-01-29</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-27 23:36:51" itemprop="dateModified" datetime="2019-09-27T23:36:51+08:00">2019-09-27</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/1-编程语言/" itemprop="url" rel="index"><span itemprop="name">1-编程语言</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/1-编程语言/golang/" itemprop="url" rel="index"><span itemprop="name">golang</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span>5k</span>
+            </span>
+          
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span>5 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="通过ssh文件上传到服务器"><a href="#通过ssh文件上传到服务器" class="headerlink" title="通过ssh文件上传到服务器"></a>通过ssh文件上传到服务器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp -i /Users/liuwei/.ssh/aws.pem -C -r /Users/liuwei/golang/src/web ubuntu@ec2-54-191-9-26.us-west-2.compute.amazonaws.com:/home/ubuntu</span><br></pre></td></tr></table></figure>
+
+<p>aws.pem chmod 400</p>
+<p>scp  -C 加一个可能会更快</p>
+<h3 id="发行部署"><a href="#发行部署" class="headerlink" title="发行部署"></a>发行部署</h3><p>Go 语言的应用最后编译之后是一个二进制文件，你只需要 copy 这个应用到服务器上，运行起来就行。beego 由于带有几个静态文件、配置文件、模板文件三个目录，所以用户部署的时候需要同时 copy 这三个目录到相应的部署应用之下，下面以我实际的应用部署为例：</p>
+<a id="more"></a>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir /opt/app/beepkg</span><br><span class="line">$ cp beepkg /opt/app/beepkg</span><br><span class="line">$ cp -fr views /opt/app/beepkg</span><br><span class="line">$ cp -fr static /opt/app/beepkg</span><br><span class="line">$ cp -fr conf /opt/app/beepkg</span><br></pre></td></tr></table></figure>
+
+<p>这样在 /opt/app/beepkg 目录下面就会显示如下的目录结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── conf</span><br><span class="line">│   ├── app.conf</span><br><span class="line">├── static</span><br><span class="line">│   ├── css</span><br><span class="line">│   ├── img</span><br><span class="line">│   └── js</span><br><span class="line">└── views</span><br><span class="line">    └── index.tpl</span><br><span class="line">├── beepkg</span><br></pre></td></tr></table></figure>
+
+<p>这样我们就已经把我们需要的应用搬到服务器了，那么接下来就可以开始部署了。</p>
+<p>就是一共上传3个文件夹和1个可执行文件</p>
+<h3 id="1-独立部署"><a href="#1-独立部署" class="headerlink" title="1. 独立部署"></a>1. 独立部署</h3><p>在 linux 下面部署，我们可以利用 nohup 命令，把应用部署在后端，如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup ./beepkg &amp;</span><br></pre></td></tr></table></figure>
+
+<p>这样你的应用就跑在了 Linux 系统的守护进程</p>
+<h3 id="2-supervisord-管理"><a href="#2-supervisord-管理" class="headerlink" title="2. supervisord 管理"></a>2. supervisord 管理</h3><p>supervisord 是用 Python 实现的一款非常实用的进程管理工具，supervisord 还要求管理的程序是非 daemon 程序，supervisord 会帮你把它转成 daemon 程序，因此如果用 supervisord 来管理 nginx 的话，必须在 nginx 的配置文件里添加一行设置 daemon off 让 nginx 以非 daemon 方式启动。</p>
+<ol>
+<li>安装 setuptools</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget http://pypi.python.org/packages/2.7/s/setuptools/setuptools-0.6c11-py2.7.egg</span><br><span class="line">sh setuptools-0.6c11-py2.7.egg</span><br><span class="line">easy_install supervisor</span><br><span class="line">echo_supervisord_conf &gt;/etc/supervisord.conf</span><br><span class="line">mkdir /etc/supervisord.conf.d</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>修改配置 /etc/supervisord.conf</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[include]</span><br><span class="line">files = /etc/supervisord.conf.d/*.conf</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>新建管理的应用<br>cd /etc/supervisord.conf.d<br>vim beepkg.conf<br>配置文件：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[program:beepkg]</span><br><span class="line">directory = /opt/app/beepkg</span><br><span class="line">command = /opt/app/beepkg/beepkg</span><br><span class="line">autostart = true</span><br><span class="line">startsecs = 5</span><br><span class="line">user = root</span><br><span class="line">redirect_stderr = true</span><br><span class="line">stdout_logfile = /var/log/supervisord/beepkg.log</span><br></pre></td></tr></table></figure>
+
+<h5 id="supervisord-管理"><a href="#supervisord-管理" class="headerlink" title="supervisord 管理"></a>supervisord 管理</h5><p>supervisord 安装完成后有两个可用的命令行 supervisord 和 supervisorctl，命令使用解释如下：</p>
+<p>  ● supervisord，初始启动 Supervisord，启动、管理配置中设置的进程。</p>
+<p>  ● supervisorctl stop programxxx，停止某一个进程(programxxx)，programxxx 为 [program:beepkg] 里配置的值，这个示例就是 beepkg。</p>
+<p>  ● supervisorctl start programxxx，启动某个进程</p>
+<p>  ● supervisorctl restart programxxx，重启某个进程</p>
+<p>  ● supervisorctl stop groupworker: ，重启所有属于名为 groupworker 这个分组的进程(start,restart 同理)</p>
+<p>  ● supervisorctl stop all，停止全部进程，注：start、restart、stop 都不会载入最新的配置文件。</p>
+<p>  ● supervisorctl reload，载入最新的配置文件，停止原有进程并按新的配置启动、管理所有进程。</p>
+<p>  ● supervisorctl update，根据最新的配置文件，启动新配置或有改动的进程，配置没有改动的进程不会受影响而重启。</p>
+<p>注意：显示用 stop 停止掉的进程，用 reload 或者 update 都不会自动重启。</p>
+<blockquote>
+<p>自己的配置</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">web.conf</span><br><span class="line"></span><br><span class="line">[program:web]</span><br><span class="line">directory = /home/ubuntu/web</span><br><span class="line">command = /home/ubuntu/web/web</span><br><span class="line">autostart = true</span><br><span class="line">startsecs = 5</span><br><span class="line">user = root</span><br><span class="line">redirect_stderr = true</span><br><span class="line">stdout_logfile = /var/log/supervisord/web.log</span><br></pre></td></tr></table></figure>
+
+<p>sudo supervisord //启动<br>sudo supervisorctl stop web //结束</p>
+<h3 id="3-nginx部署"><a href="#3-nginx部署" class="headerlink" title="3. nginx部署"></a>3. nginx部署</h3><p>1 安装nginx </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install nginx</span><br></pre></td></tr></table></figure>
+
+<p>Ubuntu安装之后的文件结构大致为：</p>
+<p>  ● 所有的配置文件都在/etc/nginx下，并且每个虚拟主机已经安排在了/etc/nginx/sites-available下</p>
+<p>  ● 程序文件在/usr/sbin/nginx</p>
+<p>  ● 日志放在了/var/log/nginx中</p>
+<p>  ● 并已经在/etc/init.d/下创建了启动脚本nginx</p>
+<p>  ● 默认的虚拟主机的目录设置在了/var/www/nginx-default (有的版本 默认的虚拟主机的目录设置在了/var/www, 请参考/etc/nginx/sites-available里的配置)</p>
+<p>2 启动nginx</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo /etc/init.d/nginx start</span><br></pre></td></tr></table></figure>
+
+<p>直接访问ip <a href="http://54.191.9.26/" target="_blank" rel="noopener">http://54.191.9.26/</a> 可以看到nginx安装成功</p>
+<p>3 处理golang</p>
+<p>Go 是一个独立的 HTTP 服务器，但是我们有些时候为了 nginx 可以帮我做很多工作，例如访问日志，cc 攻击，静态服务等，nginx 已经做的很成熟了，Go 只要专注于业务逻辑和功能就好，所以通过 nginx 配置代理就可以实现多应用同时部署，如下就是典型的两个应用共享 80 端口，通过不同的域名访问，反向代理到不同的应用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  .a.com;</span><br><span class="line"></span><br><span class="line">    charset utf-8;</span><br><span class="line">    access_log  /home/a.com.access.log;</span><br><span class="line"></span><br><span class="line">    location /(css|js|fonts|img)/ &#123;</span><br><span class="line">        access_log off;</span><br><span class="line">        expires 1d;</span><br><span class="line"></span><br><span class="line">        root &quot;/path/to/app_a/static&quot;;</span><br><span class="line">        try_files $uri @backend;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        try_files /_not_exists_ @backend;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location @backend &#123;</span><br><span class="line">        proxy_set_header X-Forwarded-For $remote_addr;</span><br><span class="line">        proxy_set_header Host            $http_host;</span><br><span class="line"></span><br><span class="line">        proxy_pass http://127.0.0.1:8080;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  .b.com;</span><br><span class="line"></span><br><span class="line">    charset utf-8;</span><br><span class="line">    access_log  /home/b.com.access.log  main;</span><br><span class="line"></span><br><span class="line">    location /(css|js|fonts|img)/ &#123;</span><br><span class="line">        access_log off;</span><br><span class="line">        expires 1d;</span><br><span class="line"></span><br><span class="line">        root &quot;/path/to/app_b/static&quot;;</span><br><span class="line">        try_files $uri @backend;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        try_files /_not_exists_ @backend;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location @backend &#123;</span><br><span class="line">        proxy_set_header X-Forwarded-For $remote_addr;</span><br><span class="line">        proxy_set_header Host            $http_host;</span><br><span class="line"></span><br><span class="line">        proxy_pass http://127.0.0.1:8081;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>自己的配置</p>
+</blockquote>
+<p>sudo vi /etc/nginx/sites-available/default</p>
+<p>把 default 注释掉</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">        listen       80;</span><br><span class="line">        server_name  .xuanyueting.top;</span><br><span class="line"></span><br><span class="line">        charset utf-8;</span><br><span class="line">        access_log  /home/ubuntu/web/xuanyueting.log;</span><br><span class="line"></span><br><span class="line">        location /(css|js|fonts|img)/ &#123;</span><br><span class="line">                access_log off;</span><br><span class="line">                expires 1d;</span><br><span class="line"></span><br><span class="line">                root &quot;/home/ubuntu/web/static&quot;;</span><br><span class="line">                try_files $uri @backend;</span><br><span class="line">        &#125;</span><br><span class="line">        location / &#123;</span><br><span class="line">                try_files /_not_exists_ @backend;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        location @backend &#123;</span><br><span class="line">                proxy_set_header x-forwarded-for $remote_addr;</span><br><span class="line">                proxy_set_header host            $http_host;</span><br><span class="line"></span><br><span class="line">                proxy_pass http://127.0.0.1:8080;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作, 一个耿直的笑脸~</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechatpay.jpg" alt="Levon 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="Levon 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/golang/" rel="tag"># golang</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/p/eb2c6f22.html" rel="next" title="区块链基础">
+                  <i class="fa fa-chevron-left"></i> 区块链基础
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/p/fe0e5995.html" rel="prev" title="ssh_scp免密和服务器建立信任">
+                  ssh_scp免密和服务器建立信任 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#通过ssh文件上传到服务器"><span class="nav-number">1.</span> <span class="nav-text">通过ssh文件上传到服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发行部署"><span class="nav-number">2.</span> <span class="nav-text">发行部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-独立部署"><span class="nav-number">3.</span> <span class="nav-text">1. 独立部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-supervisord-管理"><span class="nav-number">4.</span> <span class="nav-text">2. supervisord 管理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#supervisord-管理"><span class="nav-number">4.0.1.</span> <span class="nav-text">supervisord 管理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-nginx部署"><span class="nav-number">5.</span> <span class="nav-text">3. nginx部署</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="Levon">
+  <p class="site-author-name" itemprop="name">Levon</p>
+  <div class="site-description" itemprop="description">Never Give Up</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">109</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">67</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/unix2dos" title="GitHub &rarr; https://github.com/unix2dos" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:levonfly@gmail.com" title="E-Mail &rarr; mailto:levonfly@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://twitter.com/levonfly" title="Twitter &rarr; https://twitter.com/levonfly" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://weibo.com/l6241425" title="Weibo &rarr; https://weibo.com/l6241425" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+    
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Levon</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">459k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">6:57</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
