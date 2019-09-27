@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.json',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="前两年折腾过亚马逊的免费一年aws并搭建梯子, 后来发现速度很慢就弃用了. 俗话说免费的是最贵的. 但是google注册之后直接给300刀, 货真价实的钱可以用来买服务器, 简直不要太好用!  youtube观看1080p无压力   1. 注册并申请GCPhttps://console.cloud.google.com,  在注册时填写个人资料的时候需要填写visa信用卡验证,可以用自己的visa">
+<meta name="keywords" content="linux,shadowsocks">
+<meta property="og:type" content="article">
+<meta property="og:title" content="谷歌云搭建免费服务器并翻墙">
+<meta property="og:url" content="https://levonfly.github.io/p/b7e5827a.html">
+<meta property="og:site_name" content="Levon&#39;s Blog">
+<meta property="og:description" content="前两年折腾过亚马逊的免费一年aws并搭建梯子, 后来发现速度很慢就弃用了. 俗话说免费的是最贵的. 但是google注册之后直接给300刀, 货真价实的钱可以用来买服务器, 简直不要太好用!  youtube观看1080p无压力   1. 注册并申请GCPhttps://console.cloud.google.com,  在注册时填写个人资料的时候需要填写visa信用卡验证,可以用自己的visa">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://levonfly.github.io/p/b7e5827a.htm/3.png">
+<meta property="og:image" content="https://levonfly.github.io/p/b7e5827a.htm/1.png">
+<meta property="og:image" content="https://levonfly.github.io/p/b7e5827a.htm/2.png">
+<meta property="og:updated_time" content="2019-09-27T15:36:51.195Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="谷歌云搭建免费服务器并翻墙">
+<meta name="twitter:description" content="前两年折腾过亚马逊的免费一年aws并搭建梯子, 后来发现速度很慢就弃用了. 俗话说免费的是最贵的. 但是google注册之后直接给300刀, 货真价实的钱可以用来买服务器, 简直不要太好用!  youtube观看1080p无压力   1. 注册并申请GCPhttps://console.cloud.google.com,  在注册时填写个人资料的时候需要填写visa信用卡验证,可以用自己的visa">
+<meta name="twitter:image" content="https://levonfly.github.io/p/b7e5827a.htm/3.png">
+  <link rel="canonical" href="https://levonfly.github.io/p/b7e5827a">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>谷歌云搭建免费服务器并翻墙 | Levon's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta custom-logo">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Levon's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">微信:  L6241425</h1>
+      
+      <a>
+        <img class="custom-logo-image" src="[object Object]" alt="Levon's Blog">
+      </a>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://levonfly.github.io/p/b7e5827a.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Levon">
+      <meta itemprop="description" content="Never Give Up">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Levon's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">谷歌云搭建免费服务器并翻墙
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-04-29 20:54:46" itemprop="dateCreated datePublished" datetime="2019-04-29T20:54:46+08:00">2019-04-29</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-27 23:36:51" itemprop="dateModified" datetime="2019-09-27T23:36:51+08:00">2019-09-27</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/2-linux系统/" itemprop="url" rel="index"><span itemprop="name">2-linux系统</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/2-linux系统/shadowsocks/" itemprop="url" rel="index"><span itemprop="name">shadowsocks</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span>2.5k</span>
+            </span>
+          
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span>2 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>前两年折腾过<a href="https://unix2dos.github.io/p/934b1a1.html" target="_blank" rel="noopener">亚马逊的免费一年aws并搭建梯子</a>, 后来发现速度很慢就弃用了. 俗话说免费的是最贵的. 但是google注册之后直接给300刀, 货真价实的钱可以用来买服务器, 简直不要太好用!</p>
+<blockquote>
+<p>youtube观看1080p无压力</p>
+</blockquote>
+<p><img src="/p/b7e5827a.htm/3.png" alt="1"></p>
+<h3 id="1-注册并申请GCP"><a href="#1-注册并申请GCP" class="headerlink" title="1. 注册并申请GCP"></a>1. 注册并申请GCP</h3><p><a href="https://console.cloud.google.com" target="_blank" rel="noopener">https://console.cloud.google.com</a>,  在注册时填写个人资料的时候需要填写visa信用卡验证,可以用自己的visa卡(会扣除1美刀但是会返回, 个别银行visa卡不支持), 当然也可以去万能的某宝购买一个虚拟的信用卡, 价值在10元-30元左右.</p>
+<a id="more"></a>
+
+<h3 id="2-创建服务器实例"><a href="#2-创建服务器实例" class="headerlink" title="2. 创建服务器实例"></a>2. 创建服务器实例</h3><p>在GCP控制中心的<code>Compute Engine</code> 的 VM 实例里, 点击创建实例. 这里我选用的是Ubuntu 16.04, 机器类型共享vCPU翻墙足矣.</p>
+<p><img src="/p/b7e5827a.htm/1.png" alt="1"></p>
+<p>创建成功后,  可以通过网页上的ssh连接进去.</p>
+<h3 id="3-安全组放开-固定IP"><a href="#3-安全组放开-固定IP" class="headerlink" title="3. 安全组放开, 固定IP"></a>3. 安全组放开, 固定IP</h3><p>点击VM实例 -&gt; 内部IP -&gt; 下面的链接 进入VPC网络管理</p>
+<p><img src="/p/b7e5827a.htm/2.png" alt="1"></p>
+<p>只在vps内关闭防火墙是无效的, 还需要在consle设置防火墙规则. 在<code>防火墙规则</code>里创建防火墙规则, 增加要放行的端口(例如接下来要设置的shadowsocks的端口)</p>
+<p>另外最好固定下外部ip地址, 否则重启后ip变了, 会非常的麻烦. 在<code>外部IP地址</code>里, 增加固定IP即可. </p>
+<h3 id="4-设置第三方ssh登录"><a href="#4-设置第三方ssh登录" class="headerlink" title="4. 设置第三方ssh登录"></a>4. 设置第三方ssh登录</h3><p>通过网页的ssh操作很麻烦, 我们希望直接通过终端直接连接服务器.</p>
+<p>准备工作:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo passwd root #给root设置个密码</span><br><span class="line"></span><br><span class="line">sudo ufw disable #禁止防火墙, 然并卵, 还需要去控制中心增加防火墙规则</span><br></pre></td></tr></table></figure>
+
+<p>修改sshd_config:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo vi /etc/ssh/sshd_config # 修改sshd_config, 允许密码登录</span><br><span class="line"></span><br><span class="line">PermitRootLogin no					# 允许root登录, 最好保持默认</span><br><span class="line">PasswordAuthentication yes  # 允许密码登录框</span><br><span class="line"></span><br><span class="line">sudo systemctl restart sshd # 最后重启sshd</span><br></pre></td></tr></table></figure>
+
+<p>最好避免用root直接登录,  可以切到<code>root</code>给自己搞个密码然后再把自己加入到sudoer里面.</p>
+<p>然后我们就可以通过终端直接连接到服务器了, 但是发现连接比较卡, 这时候我们需要安装下<code>mosh</code>优化ssh的连接</p>
+<h3 id="4-安装mosh并开机启动"><a href="#4-安装mosh并开机启动" class="headerlink" title="4. 安装mosh并开机启动"></a>4. 安装mosh并开机启动</h3><p>安装mosh:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install mosh</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装后直接把ssh换成mosh, 连接后会发现速度快很多.(需要增加防火墙规则允许mosh的端口)</span></span><br></pre></td></tr></table></figure>
+
+<p>编写<code>mosh-server</code> service文件:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">sudo vi /etc/systemd/system/mosh-server.service</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[Unit]</span><br><span class="line"></span><br><span class="line">Description=Mosh server</span><br><span class="line"></span><br><span class="line">After=network.target</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line"></span><br><span class="line">Environment="LC_ALL=en_US.UTF8"</span><br><span class="line"></span><br><span class="line">ExecStart=/usr/bin/mosh-server</span><br><span class="line"></span><br><span class="line">Type=forking</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line"></span><br><span class="line">WantedBy=default.target</span><br></pre></td></tr></table></figure>
+
+<p>启动并设置开机启动:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl daemon-reload</span><br><span class="line"></span><br><span class="line">sudo systemctl enable mosh-server</span><br><span class="line"></span><br><span class="line">sudo systemctl start mosh-server</span><br></pre></td></tr></table></figure>
+
+<p>客户端直接用mosh连接就可以了, 如果报错 <code>LC_CTYPE=UTF-8</code> 的问题需要在两台电脑上加上环境变量(.zshrc|.bashrc)</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export LC_ALL=en_US.UTF-8 </span><br><span class="line">export LANG=en_US.UTF-8 </span><br><span class="line">export LANGUAGE=en_US.UTF-8</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-安装shadowsocks并开机启动"><a href="#5-安装shadowsocks并开机启动" class="headerlink" title="5. 安装shadowsocks并开机启动"></a>5. 安装shadowsocks并开机启动</h3><p>安装shadowsocks:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line"></span><br><span class="line">sudo apt install python-pip</span><br><span class="line"></span><br><span class="line">wget https://bootstrap.pypa.io/get-pip.py</span><br><span class="line"></span><br><span class="line">sudo python get-pip.py</span><br><span class="line"></span><br><span class="line">sudo pip install shadowsocks</span><br></pre></td></tr></table></figure>
+
+<p>编写配置文件:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir /etc/shadowsocks/</span><br><span class="line">sudo vi /etc/shadowsocks/ss-config.json</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  "server": "0.0.0.0",</span><br><span class="line">  "server_port": 6789, # 服务端端口</span><br><span class="line">  "local_address": "127.0.0.1",</span><br><span class="line">  "local_port": 1080,</span><br><span class="line">  "password": "iampasswd",# 密码</span><br><span class="line">  "timeout": 300,</span><br><span class="line">  "method": "aes-256-cfb",#加密方式</span><br><span class="line">  "fast_open": false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编写<code>shadowsocks-server</code> service文件:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">sudo vi /etc/systemd/system/shadowsocks-server.service</span><br><span class="line"></span><br><span class="line">[Unit]</span><br><span class="line">Description=Shadowsocks Server</span><br><span class="line">After=network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">ExecStart=/usr/local/bin/ssserver -c /etc/shadowsocks/ss-config.json</span><br><span class="line">Restart=on-abort</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+
+<p>启动并设置开机启动:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl enable shadowsocks-server</span><br><span class="line">sudo systemctl start shadowsocks-server</span><br></pre></td></tr></table></figure>
+
+<p>接下来就下载小飞机连接即可, <a href="https://unix2dos.github.io/p/4241e56c.html" target="_blank" rel="noopener">下一篇将写如何为shadowsocks加速.</a></p>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作, 一个耿直的笑脸~</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechatpay.jpg" alt="Levon 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="Levon 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/linux/" rel="tag"># linux</a>
+            
+              <a href="/tags/shadowsocks/" rel="tag"># shadowsocks</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/p/a0594c46.html" rel="next" title="pyqt安装使用打包教程">
+                  <i class="fa fa-chevron-left"></i> pyqt安装使用打包教程
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/p/4241e56c.html" rel="prev" title="shadowsocks加速的几种方案">
+                  shadowsocks加速的几种方案 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-注册并申请GCP"><span class="nav-number">1.</span> <span class="nav-text">1. 注册并申请GCP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-创建服务器实例"><span class="nav-number">2.</span> <span class="nav-text">2. 创建服务器实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-安全组放开-固定IP"><span class="nav-number">3.</span> <span class="nav-text">3. 安全组放开, 固定IP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-设置第三方ssh登录"><span class="nav-number">4.</span> <span class="nav-text">4. 设置第三方ssh登录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-安装mosh并开机启动"><span class="nav-number">5.</span> <span class="nav-text">4. 安装mosh并开机启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-安装shadowsocks并开机启动"><span class="nav-number">6.</span> <span class="nav-text">5. 安装shadowsocks并开机启动</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="Levon">
+  <p class="site-author-name" itemprop="name">Levon</p>
+  <div class="site-description" itemprop="description">Never Give Up</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">109</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">67</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/unix2dos" title="GitHub &rarr; https://github.com/unix2dos" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:levonfly@gmail.com" title="E-Mail &rarr; mailto:levonfly@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://twitter.com/levonfly" title="Twitter &rarr; https://twitter.com/levonfly" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://weibo.com/l6241425" title="Weibo &rarr; https://weibo.com/l6241425" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+    
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Levon</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">459k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">6:57</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
