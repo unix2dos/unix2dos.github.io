@@ -87,31 +87,43 @@ npm install hexo-generator-archive --save //逐一安装缺失的包
 
 
 ### hexo-next 主题
-git clone https://github.com/theme-next/hexo-theme-next themes/next //下载next主题
+cd themes
+git submodule add https://github.com/unix2dos/hexo-theme-next next //下载next主题
 
-cd themes/next
+cd next
 
-git clone https://github.com/theme-next/theme-next-needmoreshare2 source/lib/needsharebutton  //分享按钮
+# 分享按钮
+git clone https://github.com/theme-next/theme-next-needmoreshare2 source/lib/needsharebutton  
 
-git clone https://github.com/theme-next/theme-next-canvas-ribbon source/lib/canvas-ribbon //丝带
+# 丝带
+git clone https://github.com/theme-next/theme-next-canvas-ribbon source/lib/canvas-ribbon
 
-git clone https://github.com/theme-next/theme-next-canvas-nest source/lib/canvas-nest //蜘蛛网
+# 蜘蛛网
+git clone https://github.com/theme-next/theme-next-canvas-nest source/lib/canvas-nest
 
-git clone https://github.com/theme-next/theme-next-three source/lib/three // 三种特效
+# 三种特效
+git clone https://github.com/theme-next/theme-next-three source/lib/three 
 
-git clone https://github.com/theme-next/theme-next-han source/lib/Han //特殊汉字
+# 特殊汉字
+git clone https://github.com/theme-next/theme-next-han source/lib/Han
 
-git clone https://github.com/theme-next/theme-next-fastclick source/lib/fastclick //快速点击
+# 快速点击
+git clone https://github.com/theme-next/theme-next-fastclick source/lib/fastclick
 
-git clone https://github.com/theme-next/theme-next-jquery-lazyload source/lib/jquery_lazyload //懒加载
+# 懒加载
+git clone https://github.com/theme-next/theme-next-jquery-lazyload source/lib/jquery_lazyload
 
-git clone https://github.com/theme-next/theme-next-pace source/lib/pace //顶部的进度
+# 顶部的进度
+git clone https://github.com/theme-next/theme-next-pace source/lib/pace 
 
-git clone https://github.com/theme-next/theme-next-fancybox3 source/lib/fancybox //图片展示
+# 图片展示
+git clone https://github.com/theme-next/theme-next-fancybox3 source/lib/fancybox 
 
-git clone https://github.com/theme-next/theme-next-pangu.git source/lib/pangu //文字显示加空格
+# 文字显示加空格
+git clone https://github.com/theme-next/theme-next-pangu.git source/lib/pangu
 
-git clone https://github.com/theme-next/theme-next-reading-progress source/lib/reading_progress //读取进度
+# 读取进度
+git clone https://github.com/theme-next/theme-next-reading-progress source/lib/reading_progress 
 
 
 ### hexo-next 插件
@@ -159,7 +171,7 @@ local_search:
 	enable: true
   
 
-5.  gittalk评论系统(拒绝使用)
+5.  gittalk评论系统(禁止使用)
 
 https://github.com/theme-next/hexo-theme-next/pull/464
 https://asdfv1929.github.io/2018/01/20/gitalk/
