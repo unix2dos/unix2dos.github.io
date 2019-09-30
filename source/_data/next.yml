@@ -13,7 +13,7 @@ timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: https://unix2dos.github.io
+url: https://levonfly.github.io
 root: /
 permalink: p/:abbrlink.html
 abbrlink:
@@ -83,7 +83,7 @@ theme: next
 deploy:
     - 
      type: git
-     repo: https://github.com/unix2dos/unix2dos.github.io.git
+     repo: https://github.com/levonfly/levonfly.github.io.git
      branch: master
 
 
@@ -779,7 +779,7 @@ gitment:
 # Gitalk
 # Demo: https://gitalk.github.io
 gitalk:
-  enable: true
+  enable: false
   github_id: unix2dos # Github repo owner
   repo: unix2dos.github.io # Repository name to store issues
   client_id: c153ffe64f5fd7d839fa # Github Application Client ID

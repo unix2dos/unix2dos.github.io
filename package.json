@@ -8,6 +8,7 @@
   "dependencies": {
     "babel-runtime": "^6.26.0",
     "eslint": "^6.1.0",
+    "eslint-utils": "^1.4.2",
     "hexo": "^3.9.0",
     "hexo-abbrlink": "^2.0.5",
     "hexo-asset-image": "git+https://github.com/CodeFalling/hexo-asset-image.git",
@@ -21,9 +22,9 @@
     "hexo-generator-tag": "^0.2.0",
     "hexo-leancloud-counter-security": "^1.4.0",
     "hexo-renderer-ejs": "^0.3.1",
-    "hexo-renderer-marked": "^1.0.1",
+    "hexo-renderer-marked": "^2.0.0",
     "hexo-renderer-stylus": "^0.3.3",
     "hexo-server": "^0.2.2",
-    "hexo-symbols-count-time": "^0.6.0"
+    "hexo-symbols-count-time": "^0.6.1"
   }
 }
