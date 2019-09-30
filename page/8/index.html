@@ -169,7 +169,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>时光</a>
 
   </li>
       
@@ -351,7 +351,7 @@
 <p>换句话说，如果sender(发送者)只是唯一的sender或者是channel最后一个活跃的sender，那么你应该在sender的goroutine关闭channel，从而通知receiver(s)(接收者们)已经没有值可以读了。维持这条原则将保证永远不会发生向一个已经关闭的channel发送值或者关闭一个已经关闭的channel。</p>
           <!--noindex-->
           
-            <div class="post-button text-center">
+            <div class="post-button">
               <a class="btn" href="/p/8b210700.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
@@ -492,7 +492,7 @@
 </ul>
           <!--noindex-->
           
-            <div class="post-button text-center">
+            <div class="post-button">
               <a class="btn" href="/p/6196d525.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
@@ -625,7 +625,7 @@
 <p>数据卷的生存周期独立于容器，容器消亡，数据卷不会消亡。因此，使用数据卷后，容器删除或者重新运行之后，数据却不会丢失。</p>
           <!--noindex-->
           
-            <div class="post-button text-center">
+            <div class="post-button">
               <a class="btn" href="/p/3fc66628.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
@@ -762,7 +762,7 @@
 <p><img src="/p/e25fe1fc.htm/1.png" alt="1"></p>
           <!--noindex-->
           
-            <div class="post-button text-center">
+            <div class="post-button">
               <a class="btn" href="/p/e25fe1fc.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
@@ -895,7 +895,7 @@
 <p>context.Background() 返回一个空的Context，这个空的Context一般用于整个Context树的根节点。然后我们使用context.WithCancel(parent)函数，创建一个可取消的子Context，然后当作参数传给goroutine使用，这样就可以使用这个子Context跟踪这个goroutine。</p>
           <!--noindex-->
           
-            <div class="post-button text-center">
+            <div class="post-button">
               <a class="btn" href="/p/63c8f369.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
@@ -1049,7 +1049,7 @@
 </ul>
           <!--noindex-->
           
-            <div class="post-button text-center">
+            <div class="post-button">
               <a class="btn" href="/p/17c769c4.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
@@ -1187,7 +1187,7 @@
 </ol>
           <!--noindex-->
           
-            <div class="post-button text-center">
+            <div class="post-button">
               <a class="btn" href="/p/127812f2.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
@@ -1328,7 +1328,7 @@
 </ol>
           <!--noindex-->
           
-            <div class="post-button text-center">
+            <div class="post-button">
               <a class="btn" href="/p/1b9bff9b.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
@@ -1465,7 +1465,7 @@
 </ul>
           <!--noindex-->
           
-            <div class="post-button text-center">
+            <div class="post-button">
               <a class="btn" href="/p/2c46e603.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
@@ -1597,7 +1597,7 @@
 <h3 id="0x1-Kademlia-DHT-KRPC-BitTorrent之间的关系"><a href="#0x1-Kademlia-DHT-KRPC-BitTorrent之间的关系" class="headerlink" title="0x1: Kademlia/DHT/KRPC/BitTorrent之间的关系"></a>0x1: Kademlia/DHT/KRPC/BitTorrent之间的关系</h3><p>Kademlia是一个最初提出的框架和理论基础，P2P对等资源共享的思想从这里开始衍生，DHT和KRPC是在Kademlia的基础上进行了包装和发展，BitTorrent是在这三者之上的文件共享分发协议。</p>
           <!--noindex-->
           
-            <div class="post-button text-center">
+            <div class="post-button">
               <a class="btn" href="/p/1ea24e2a.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
@@ -1669,7 +1669,8 @@
   <p class="site-author-name" itemprop="name">Levon</p>
   <div class="site-description" itemprop="description">Never Give Up</div>
 </div>
-  <nav class="site-state motion-element">
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
       <div class="site-state-item site-state-posts">
         
           <a href="/archives/">
@@ -1706,6 +1707,7 @@
       </div>
     
   </nav>
+</div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
       
@@ -1803,8 +1805,6 @@
   </div>
 
   
-
-
   <script src="/lib/anime.min.js?v=3.1.0"></script>
   <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>

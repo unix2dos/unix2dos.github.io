@@ -169,7 +169,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>时光</a>
 
   </li>
       
@@ -360,7 +360,7 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a; </span><br><span class="line"><span class="built_in">console</span>.log(a); <span class="comment">// undefined</span></span><br><span class="line">a = <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
           <!--noindex-->
           
-            <div class="post-button text-center">
+            <div class="post-button">
               <a class="btn" href="/p/cfbcfff.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
@@ -504,7 +504,7 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Foo</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.name = <span class="string">"levon"</span>;</span><br><span class="line">  <span class="keyword">this</span>.age = <span class="number">26</span>;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>); <span class="comment">// 直接调用注意此处是 window</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Foo();<span class="comment">// window.Foo();</span></span><br></pre></td></tr></table></figure>
           <!--noindex-->
           
-            <div class="post-button text-center">
+            <div class="post-button">
               <a class="btn" href="/p/d14f4ebd.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
@@ -642,7 +642,7 @@
 <p> 其实原形链的一切江湖恩怨都是围绕着Function和Object两大家族展开的.</p>
           <!--noindex-->
           
-            <div class="post-button text-center">
+            <div class="post-button">
               <a class="btn" href="/p/6d00c950.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
@@ -777,7 +777,7 @@
 </ol>
           <!--noindex-->
           
-            <div class="post-button text-center">
+            <div class="post-button">
               <a class="btn" href="/p/697b4dfa.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
@@ -911,7 +911,7 @@
 <p>对称型NAT( Symmetric NAT)</p>
           <!--noindex-->
           
-            <div class="post-button text-center">
+            <div class="post-button">
               <a class="btn" href="/p/f3e0f5f5.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
@@ -1053,7 +1053,7 @@
 </ul>
           <!--noindex-->
           
-            <div class="post-button text-center">
+            <div class="post-button">
               <a class="btn" href="/p/f2ad59fc.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
@@ -1190,7 +1190,7 @@
 </ol>
           <!--noindex-->
           
-            <div class="post-button text-center">
+            <div class="post-button">
               <a class="btn" href="/p/2a640eb1.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
@@ -1325,7 +1325,7 @@
 <p><strong>LIBS</strong>：告诉链接器要链接哪些库文件，如LIBS = -lpthread -liconv</p>
           <!--noindex-->
           
-            <div class="post-button text-center">
+            <div class="post-button">
               <a class="btn" href="/p/271bdf2a.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
@@ -1469,7 +1469,7 @@
 </ol>
           <!--noindex-->
           
-            <div class="post-button text-center">
+            <div class="post-button">
               <a class="btn" href="/p/73da9612.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
@@ -1601,7 +1601,7 @@
 <p>建立交叉编译工具链是一个相当复杂的过程，如果不想自己经历复杂繁琐的编译过程，网上有一些编译好的可用的交叉编译工具链可以下载，但就以学习为目的来说读者有必要学习自己制作一个交叉编译工具链（目前来看，对于初学者没有太大必要自己交叉编译一个工具链）。</p>
           <!--noindex-->
           
-            <div class="post-button text-center">
+            <div class="post-button">
               <a class="btn" href="/p/a63b0191.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
@@ -1673,7 +1673,8 @@
   <p class="site-author-name" itemprop="name">Levon</p>
   <div class="site-description" itemprop="description">Never Give Up</div>
 </div>
-  <nav class="site-state motion-element">
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
       <div class="site-state-item site-state-posts">
         
           <a href="/archives/">
@@ -1710,6 +1711,7 @@
       </div>
     
   </nav>
+</div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
       
@@ -1807,8 +1809,6 @@
   </div>
 
   
-
-
   <script src="/lib/anime.min.js?v=3.1.0"></script>
   <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
