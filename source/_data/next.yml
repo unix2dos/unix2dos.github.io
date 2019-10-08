@@ -13,7 +13,7 @@ timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: https://levonfly.github.io
+url: https://unix2dos.github.io
 root: /
 permalink: p/:abbrlink.html
 abbrlink:
@@ -83,7 +83,11 @@ theme: next
 deploy:
     - 
      type: git
-     repo: https://github.com/levonfly/levonfly.github.io.git
+     repo: git@unix2dos:unix2dos/unix2dos.github.io.git
+     branch: master
+    - 
+     type: git
+     repo: git@levonfly:levonfly/levonfly.github.io.git
      branch: master
 
 
@@ -713,8 +717,8 @@ calendar:
 
 # Disqus
 disqus:
-  enable: false
-  shortname:
+  enable: true
+  shortname: levonfly
   count: true
   lazyload: false
 
