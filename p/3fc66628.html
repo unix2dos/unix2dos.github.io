@@ -59,7 +59,7 @@
 <meta name="keywords" content="docker">
 <meta property="og:type" content="article">
 <meta property="og:title" content="docker从入门到实践">
-<meta property="og:url" content="https://levonfly.github.io/p/3fc66628.html">
+<meta property="og:url" content="https://unix2dos.github.io/p/3fc66628.html">
 <meta property="og:site_name" content="Levon&#39;s Blog">
 <meta property="og:description" content="0. 基本概念镜像镜像包含操作系统完整的 root 文件系统，其体积往往是庞大的，因此在 Docker 设计时，就充分利用 Union FS 的技术，将其设计为分层存储的架构。所以严格来说，镜像并非是像一个 ISO 那样的打包文件，镜像只是一个虚拟的概念，其实际体现并非由一个文件组成，而是由一组文件系统组成，或者说，由多层文件系统联合组成。 容器每一个容器运行时，是以镜像为基础层，在其上创建一个当">
 <meta property="og:locale" content="zh-CN">
@@ -67,7 +67,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="docker从入门到实践">
 <meta name="twitter:description" content="0. 基本概念镜像镜像包含操作系统完整的 root 文件系统，其体积往往是庞大的，因此在 Docker 设计时，就充分利用 Union FS 的技术，将其设计为分层存储的架构。所以严格来说，镜像并非是像一个 ISO 那样的打包文件，镜像只是一个虚拟的概念，其实际体现并非由一个文件组成，而是由一组文件系统组成，或者说，由多层文件系统联合组成。 容器每一个容器运行时，是以镜像为基础层，在其上创建一个当">
-  <link rel="canonical" href="https://levonfly.github.io/p/3fc66628">
+  <link rel="canonical" href="https://unix2dos.github.io/p/3fc66628">
 
 
 <script id="page-configurations">
@@ -247,7 +247,7 @@
   
   
   <div class="post-block post">
-    <link itemprop="mainEntityOfPage" href="https://levonfly.github.io/p/3fc66628.html">
+    <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/3fc66628.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Levon">
@@ -312,6 +312,20 @@
           
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/p/3fc66628.html#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/3fc66628.html" itemprop="commentCount"></span></a>
+  </span>
+  
+  
           <br>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
@@ -1062,6 +1076,15 @@
 
           </div>
           
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
 
         </div>
           
@@ -1112,7 +1135,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">111</span>
+          <span class="site-state-item-count">113</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1125,7 +1148,7 @@
             <a href="/categories/">
           
         
-        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-count">31</span>
         <span class="site-state-item-name">分类</span>
         </a>
       </div>
@@ -1138,7 +1161,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-count">69</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -1215,12 +1238,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">460k</span>
+    <span title="站点总字数">463k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">6:58</span>
+    <span title="站点阅读时长">7:01</span>
 </div>
 
         
@@ -1290,6 +1313,38 @@
   
 
   
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://levonfly.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function disqus_config() {
+    this.page.url = "https://unix2dos.github.io/p/3fc66628.html";
+    this.page.identifier = "p/3fc66628.html";
+    this.page.title = 'docker从入门到实践';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://levonfly.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    window.addEventListener('load', loadComments, false);
+  
+</script>
 
 </body>
 </html>
