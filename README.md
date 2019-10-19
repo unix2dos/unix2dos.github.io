@@ -76,7 +76,7 @@ tags:
 
 
 
-### 5. 另外一台电脑同步hexo
+### 5. 同步hexo
 
 ```shell
 npm install hexo --save
@@ -87,10 +87,15 @@ npm install hexo-generator-archive --save //逐一安装缺失的包
 
 
 ### hexo-next 主题
-cd themes
-git submodule add https://github.com/unix2dos/hexo-theme-next next //下载next主题
 
+# 第一台电脑
+cd themes
+git submodule add https://github.com/unix2dos/hexo-theme-next next
 cd next
+
+# 第二台电脑
+git submodule update --init
+cd themes/next
 
 # 分享按钮
 git clone https://github.com/theme-next/theme-next-needmoreshare2 source/lib/needsharebutton  
@@ -193,18 +198,10 @@ Homepage URL 和 Authorization callback URL 都填写自己配置的域名
 3. 使用链接持久后图片无法显示(https://github.com/rozbo/hexo-abbrlink/issues/19)
 
    ```javascript
-   # vi node_modules/hexo-asset-image/index.js
+   # vi node_modules/hexo-asset-image/index.js     #24行
    
-   if(/.*\/index\.html$/.test(link)) {
-         // when permalink is end with index.html, for example 2019/02/20/xxtitle/index.html
-         // image in xxtitle/ will go to xxtitle/index/
-         appendLink = 'index/';
-         var endPos = link.lastIndexOf('/');
-       }
-    else {
-         // var endPos = link.length-1; // 换成下面的这句话
-         var endPos = link.length-5; //因为我的permalink: p/:abbrlink.html,  这里要改成-5
-       }
+   // var endPos = link.length-1; // 换成下面的这句话
+   var endPos = link.length-5; //因为我的permalink: p/:abbrlink.html,  这里要改成-5
    ```
    
 
