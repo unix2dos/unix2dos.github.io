@@ -176,7 +176,7 @@ local_search:
 	enable: true
   
 
-5.  gittalk评论系统(禁止使用)
+5.  gittalk评论系统(禁止使用, 建议使用 disqus)
 
 https://github.com/theme-next/hexo-theme-next/pull/464
 https://asdfv1929.github.io/2018/01/20/gitalk/
