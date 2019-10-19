@@ -7,7 +7,7 @@ tags:
 abbrlink: 934b1a1
 categories:
   - 2-linux系统
-  - shadowsocks
+  - 科学上网
 date: 2017-03-28 18:04:22
 ---
 

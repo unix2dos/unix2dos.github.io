@@ -6,6 +6,7 @@ tags:
 categories:
   - 2-linux系统
   - 命令
+abbrlink: da64728
 date: 2019-10-19 11:11:46
 ---
 

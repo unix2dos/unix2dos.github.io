@@ -6,7 +6,7 @@ tags:
 abbrlink: 4241e56c
 categories:
   - 2-linux系统
-  - shadowsocks
+  - 科学上网
 date: 2019-04-29 20:54:47
 ---
 
