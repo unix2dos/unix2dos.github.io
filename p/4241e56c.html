@@ -63,15 +63,15 @@
 <meta property="og:site_name" content="Levon&#39;s Blog">
 <meta property="og:description" content="由于国外VPS服务器与国内用户距离较远，连接线路错综复杂，在数据传输过程中的拥堵和丢包较为严重，从而造成连接速度极速下降，极大影响使用体验。通过加速工具对网络加速处理后，可以明显改善网络传输速度，提升用户体验。 如果你正在使用Shadowsocks/V2ray等科学上网工具，那么经过加速后的网络，速度会有几十倍甚至上百倍的提升，在观看Youtube视频时效果尤其明显。 1. VPS服务器可用的加速">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://unix2dos.github.io/p/4241e56c.htm/1.png">
-<meta property="og:image" content="https://unix2dos.github.io/p/4241e56c.htm/2.png">
-<meta property="og:image" content="https://unix2dos.github.io/p/4241e56c.htm/3.png">
-<meta property="og:image" content="https://unix2dos.github.io/p/4241e56c.htm/4.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/4241e56c/1.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/4241e56c/2.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/4241e56c/3.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/4241e56c/4.png">
 <meta property="og:updated_time" content="2019-09-27T15:36:51.181Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="shadowsocks加速的几种方案">
 <meta name="twitter:description" content="由于国外VPS服务器与国内用户距离较远，连接线路错综复杂，在数据传输过程中的拥堵和丢包较为严重，从而造成连接速度极速下降，极大影响使用体验。通过加速工具对网络加速处理后，可以明显改善网络传输速度，提升用户体验。 如果你正在使用Shadowsocks/V2ray等科学上网工具，那么经过加速后的网络，速度会有几十倍甚至上百倍的提升，在观看Youtube视频时效果尤其明显。 1. VPS服务器可用的加速">
-<meta name="twitter:image" content="https://unix2dos.github.io/p/4241e56c.htm/1.png">
+<meta name="twitter:image" content="https://unix2dos.github.io/p/4241e56c/1.png">
   <link rel="canonical" href="https://unix2dos.github.io/p/4241e56c">
 
 
@@ -415,14 +415,14 @@
 <p>我选用的是网上的一键安装脚本, 可以选择安装某个版本并开启 <a href="https://loukky.com/archives/479" target="_blank" rel="noopener">https://loukky.com/archives/479</a></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget "https://github.com/cx9208/Linux-NetSpeed/raw/master/tcp.sh" </span><br><span class="line">chmod +x tcp.sh </span><br><span class="line">sudo ./tcp.sh</span><br></pre></td></tr></table></figure>
 
-<p><img src="/p/4241e56c.htm/1.png" alt="1"></p>
+<p><img src="/p/4241e56c/1.png" alt="1"></p>
 <p>由于我安装的是BBRPlus, 此处输入2.  等安装完毕, 重启后再次运行这个脚本, 输入7</p>
 <p>在过程中出现下面的弹出框, 选no</p>
-<p><img src="/p/4241e56c.htm/2.png" alt="1"></p>
+<p><img src="/p/4241e56c/2.png" alt="1"></p>
 <p>最后通过 <code>lsmod</code> 看是否安装成功</p>
-<p><img src="/p/4241e56c.htm/3.png" alt="1"></p>
+<p><img src="/p/4241e56c/3.png" alt="1"></p>
 <p>打开youtube 测试, 发现1080P轻松无压力</p>
-<p><img src="/p/4241e56c.htm/4.png" alt="1"></p>
+<p><img src="/p/4241e56c/4.png" alt="1"></p>
 <h3 id="4-KCPTUN-开启"><a href="#4-KCPTUN-开启" class="headerlink" title="4. KCPTUN 开启"></a>4. KCPTUN 开启</h3><p>由于kcptun是用的udp, 而bbr是调整了tcp的发包策略, 两个的加速效果不能叠加</p>
 <p>并且kctun还需要在客户端上支持, 所以我就没有再折腾. 感兴趣的可以参考:</p>
 <p><a href="https://blog.kuoruan.com/110.html" target="_blank" rel="noopener">https://blog.kuoruan.com/110.html</a></p>
@@ -565,7 +565,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-count">115</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -591,7 +591,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-count">70</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -668,12 +668,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">463k</span>
+    <span title="站点总字数">466k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">7:01</span>
+    <span title="站点阅读时长">7:03</span>
 </div>
 
         
