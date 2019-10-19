@@ -63,16 +63,16 @@
 <meta property="og:site_name" content="Levon&#39;s Blog">
 <meta property="og:description" content="1. 域名概念1.1 二级域名二级域名是指顶级域名之下的域名, 见下面的例子:  .com 顶级域名 liuvv.com 一级域名(你花钱申请的) www.liuvv.com 二级域名 blog.liuvv.com 二级域名 依次类推…      有几点需要注意下:  www.liuvv.com是属于二级域名,不过一般我们把这个域名配置指向一级域名访问. www.liuvv.com/news这种形">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://unix2dos.github.io/p/d039.htm/5.png">
-<meta property="og:image" content="https://unix2dos.github.io/p/d039.htm/2.png">
-<meta property="og:image" content="https://unix2dos.github.io/p/d039.htm/3.png">
-<meta property="og:image" content="https://unix2dos.github.io/p/d039.htm/4.png">
-<meta property="og:image" content="https://unix2dos.github.io/p/d039.htm/6.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/d039/5.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/d039/2.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/d039/3.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/d039/4.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/d039/6.png">
 <meta property="og:updated_time" content="2019-09-27T15:36:51.176Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="nginx泛域名解析">
 <meta name="twitter:description" content="1. 域名概念1.1 二级域名二级域名是指顶级域名之下的域名, 见下面的例子:  .com 顶级域名 liuvv.com 一级域名(你花钱申请的) www.liuvv.com 二级域名 blog.liuvv.com 二级域名 依次类推…      有几点需要注意下:  www.liuvv.com是属于二级域名,不过一般我们把这个域名配置指向一级域名访问. www.liuvv.com/news这种形">
-<meta name="twitter:image" content="https://unix2dos.github.io/p/d039.htm/5.png">
+<meta name="twitter:image" content="https://unix2dos.github.io/p/d039/5.png">
   <link rel="canonical" href="https://unix2dos.github.io/p/d039">
 
 
@@ -390,7 +390,7 @@
 </ol>
 <a id="more"></a>
 
-<h5 id="1-3-域名类型"><a href="#1-3-域名类型" class="headerlink" title="1.3 域名类型"></a>1.3 域名类型</h5><p><img src="/p/d039.htm/5.png" alt="1"></p>
+<h5 id="1-3-域名类型"><a href="#1-3-域名类型" class="headerlink" title="1.3 域名类型"></a>1.3 域名类型</h5><p><img src="/p/d039/5.png" alt="1"></p>
 <ul>
 <li><p>无论记录类型为啥, 主机记录都填写 xxxxx.liuvv.com</p>
 </li>
@@ -457,7 +457,7 @@
 </ul>
 <h3 id="2-域名配置"><a href="#2-域名配置" class="headerlink" title="2. 域名配置"></a>2. 域名配置</h3><h5 id="2-1-配置泛解析"><a href="#2-1-配置泛解析" class="headerlink" title="2.1 配置泛解析"></a>2.1 配置泛解析</h5><p>去域名提供商那里先配置一个泛解析地址,记录类型为A.域名指向一个IPv4地址.主机记录设置为*.记录值填写服务器公网Ip地址.</p>
 <p>配置好后稍微等待一下,然后访问这个域名.可以随意输入任何二级域名,访问到的都应该是顶级域名的内容.我这里访问结果总是Nginx的默认页面.</p>
-<p><img src="/p/d039.htm/2.png" alt="1"></p>
+<p><img src="/p/d039/2.png" alt="1"></p>
 <h5 id="2-2-nginx-server-name"><a href="#2-2-nginx-server-name" class="headerlink" title="2.2 nginx server_name"></a>2.2 nginx server_name</h5><p>nginx http模块 server模块的 <code>server_name</code>指令主要用于配置基于名称的虚拟主机.匹配顺序不同结果不同.</p>
 <p>a. 精准的server_name配置,如:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">server_name liuvv.com www.liuvv.com;</span><br></pre></td></tr></table></figure>
@@ -475,9 +475,9 @@
 <h5 id="2-3-绑定子域名到不同目录"><a href="#2-3-绑定子域名到不同目录" class="headerlink" title="2.3 绑定子域名到不同目录"></a>2.3 绑定子域名到不同目录</h5><p>通过匹配subdomain, 在下面的可以通过$subdomain这个变量获取当前子域名称。</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">        <span class="attribute">listen</span> <span class="number">80</span> default_server;</span><br><span class="line">        <span class="attribute">listen</span> [::]:<span class="number">80</span> default_server;</span><br><span class="line"></span><br><span class="line">        <span class="attribute">server_name</span>  ~^(?&lt;subdomain&gt;.+)\.liuvv\.com$;</span><br><span class="line">        <span class="attribute">root</span> /home/levonfly/www/<span class="variable">$subdomain</span>;</span><br><span class="line">        <span class="attribute">index</span> index.html;</span><br><span class="line"></span><br><span class="line">        <span class="attribute">location</span> / &#123;</span><br><span class="line">                <span class="attribute">try_files</span> <span class="variable">$uri</span> <span class="variable">$uri</span>/ =<span class="number">404</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/p/d039.htm/3.png" alt="1"></p>
-<p><img src="/p/d039.htm/4.png" alt="1"></p>
-<h5 id="2-4-绑定子域名到不同目录-多个配置文件"><a href="#2-4-绑定子域名到不同目录-多个配置文件" class="headerlink" title="2.4 绑定子域名到不同目录(多个配置文件)"></a>2.4 绑定子域名到不同目录(多个配置文件)</h5><p><img src="/p/d039.htm/6.png" alt="1"></p>
+<p><img src="/p/d039/3.png" alt="1"></p>
+<p><img src="/p/d039/4.png" alt="1"></p>
+<h5 id="2-4-绑定子域名到不同目录-多个配置文件"><a href="#2-4-绑定子域名到不同目录-多个配置文件" class="headerlink" title="2.4 绑定子域名到不同目录(多个配置文件)"></a>2.4 绑定子域名到不同目录(多个配置文件)</h5><p><img src="/p/d039/6.png" alt="1"></p>
 <h3 id="3-参考资料"><a href="#3-参考资料" class="headerlink" title="3. 参考资料"></a>3. 参考资料</h3><ul>
 <li><a href="https://www.cnblogs.com/summit7ca/p/6974215.html" target="_blank" rel="noopener">Nginx 泛解析配置请求映射到多端口实现二级域名访问</a></li>
 <li><a href="http://www.ruanyifeng.com/blog/2016/06/dns.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2016/06/dns.html</a></li>
@@ -620,7 +620,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-count">115</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -646,7 +646,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-count">70</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -723,12 +723,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">463k</span>
+    <span title="站点总字数">466k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">7:01</span>
+    <span title="站点阅读时长">7:03</span>
 </div>
 
         

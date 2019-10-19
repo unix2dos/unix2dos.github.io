@@ -63,14 +63,14 @@
 <meta property="og:site_name" content="Levon&#39;s Blog">
 <meta property="og:description" content="先上下效果图   1. 配色iterm2123https://github.com/mbadolato/iTerm2-Color-Schemes # 这上面好多, 慢慢挑https://github.com/dracula/dracula-theme/ # 选用的这个https://github.com/MartinSeeler/iterm2-material-design">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://unix2dos.github.io/p/6600d67c.htm/3.png">
-<meta property="og:image" content="https://unix2dos.github.io/p/6600d67c.htm/2.png">
-<meta property="og:image" content="https://unix2dos.github.io/p/6600d67c.htm/1.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/6600d67c/3.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/6600d67c/2.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/6600d67c/1.png">
 <meta property="og:updated_time" content="2019-09-27T15:36:51.156Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iterm2_zsh配置">
 <meta name="twitter:description" content="先上下效果图   1. 配色iterm2123https://github.com/mbadolato/iTerm2-Color-Schemes # 这上面好多, 慢慢挑https://github.com/dracula/dracula-theme/ # 选用的这个https://github.com/MartinSeeler/iterm2-material-design">
-<meta name="twitter:image" content="https://unix2dos.github.io/p/6600d67c.htm/3.png">
+<meta name="twitter:image" content="https://unix2dos.github.io/p/6600d67c/3.png">
   <link rel="canonical" href="https://unix2dos.github.io/p/6600d67c">
 
 
@@ -362,8 +362,8 @@
 
       
         <p>先上下效果图</p>
-<p><img src="/p/6600d67c.htm/3.png" alt="1"></p>
-<p><img src="/p/6600d67c.htm/2.png" alt="1"></p>
+<p><img src="/p/6600d67c/3.png" alt="1"></p>
+<p><img src="/p/6600d67c/2.png" alt="1"></p>
 <h3 id="1-配色iterm2"><a href="#1-配色iterm2" class="headerlink" title="1. 配色iterm2"></a>1. 配色iterm2</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/mbadolato/iTerm2-Color-Schemes <span class="comment"># 这上面好多, 慢慢挑</span></span><br><span class="line">https://github.com/dracula/dracula-theme/ <span class="comment"># 选用的这个</span></span><br><span class="line">https://github.com/MartinSeeler/iterm2-material-design</span><br></pre></td></tr></table></figure>
 
 <a id="more"></a>
@@ -375,7 +375,7 @@
 <h3 id="4-设置字体"><a href="#4-设置字体" class="headerlink" title="4. 设置字体"></a>4. 设置字体</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># powerline</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/powerline/fonts</span><br><span class="line">./install.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># awesome-terminal-font</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/gabrielelana/awesome-terminal-fonts</span><br><span class="line">打开build文件夹双击安装</span><br><span class="line"></span><br><span class="line"><span class="comment"># nerd-fonts, 装这个即可</span></span><br><span class="line">https://github.com/ryanoasis/nerd-fonts/</span><br><span class="line"></span><br><span class="line">brew tap homebrew/cask-fonts</span><br><span class="line">brew cask install font-hack-nerd-font</span><br></pre></td></tr></table></figure>
 
 <p>然后在iterm2里面，把字体改成后缀为powerline的字体就行了</p>
-<p><img src="/p/6600d67c.htm/1.png" alt="1"></p>
+<p><img src="/p/6600d67c/1.png" alt="1"></p>
 <h3 id="5-主题配置"><a href="#5-主题配置" class="headerlink" title="5. 主题配置"></a>5. 主题配置</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">POWERLEVEL9K_MODE=<span class="string">'nerdfont-complete'</span></span><br><span class="line">ZSH_THEME=<span class="string">"powerlevel9k/powerlevel9k"</span></span><br><span class="line">POWERLEVEL9K_CONTEXT_TEMPLATE=<span class="string">'%n'</span></span><br><span class="line">POWERLEVEL9K_CONTEXT_DEFAULT_FOREGROUND=<span class="string">'white'</span></span><br><span class="line">POWERLEVEL9K_PROMPT_ON_NEWLINE=<span class="literal">true</span></span><br><span class="line">POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX=<span class="string">"%F&#123;014&#125;\u2570%F&#123;cyan&#125;\uF460%F&#123;073&#125;\uF460%F&#123;109&#125;\uF460%f "</span></span><br><span class="line">POWERLEVEL9K_SHORTEN_DIR_LENGTH=1</span><br><span class="line">POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon context battery dir vcs)</span><br><span class="line">POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status time dir_writable ip public_ip ram load background_jobs)</span><br></pre></td></tr></table></figure>
 
 <h3 id="6-zsh-安装插件"><a href="#6-zsh-安装插件" class="headerlink" title="6. zsh 安装插件"></a>6. zsh 安装插件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#1. git</span></span><br><span class="line">.zshrc</span><br><span class="line">plugins=(git)</span><br><span class="line"></span><br><span class="line"><span class="comment">#2. autojump</span></span><br><span class="line">brew install autojump <span class="comment">#使用上就是 j xxx_Tab</span></span><br><span class="line"></span><br><span class="line">.zshrc</span><br><span class="line">[[ -s $(brew --prefix)/etc/profile.d/autojump.sh ]] &amp;&amp; . $(brew --prefix)/etc/profile.d/autojump.sh</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#3. 自动补充命令</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/zsh-users/zsh-autosuggestions <span class="variable">$&#123;ZSH_CUSTOM:-~/.oh-my-zsh/custom&#125;</span>/plugins/zsh-autosuggestions</span><br><span class="line"></span><br><span class="line">.zshrc</span><br><span class="line">plugins=(zsh-autosuggestions)</span><br><span class="line"></span><br><span class="line"><span class="comment">#4. 命令语法高亮</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/zsh-users/zsh-syntax-highlighting.git <span class="variable">$&#123;ZSH_CUSTOM:-~/.oh-my-zsh/custom&#125;</span>/plugins/zsh-syntax-highlighting</span><br><span class="line"></span><br><span class="line">.zshrc</span><br><span class="line">plugins=(zsh-syntax-highlighting)</span><br><span class="line"></span><br><span class="line"><span class="comment">#5. colors</span></span><br><span class="line">gem install colorls</span><br><span class="line"></span><br><span class="line">.zshrc</span><br><span class="line"><span class="built_in">source</span> $(dirname $(gem <span class="built_in">which</span> colorls))/tab_complete.sh</span><br></pre></td></tr></table></figure>
@@ -526,7 +526,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-count">115</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -552,7 +552,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-count">70</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -629,12 +629,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">463k</span>
+    <span title="站点总字数">466k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">7:01</span>
+    <span title="站点阅读时长">7:03</span>
 </div>
 
         

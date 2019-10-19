@@ -63,15 +63,15 @@
 <meta property="og:site_name" content="Levon&#39;s Blog">
 <meta property="og:description" content="最近准备开发一个GUI程序, 考察了一些能选用的技术,  在windows下有多门语言可以选择(包括易语言哈哈).  但是最初的想法是不仅要快捷开发而且最好跨平台, 跨平台基本没得选了只能用qt了, 但短时间内用c++开发还是没有勇气的, 于是举棋不定选python. 1. 下载 qt designer因为 Qt Creator实在太大了, 选用Qt Designer.下载链接: https://">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://unix2dos.github.io/p/a0594c46.htm/1.png">
-<meta property="og:image" content="https://unix2dos.github.io/p/a0594c46.htm/4.png">
-<meta property="og:image" content="https://unix2dos.github.io/p/a0594c46.htm/2.png">
-<meta property="og:image" content="https://unix2dos.github.io/p/a0594c46.htm/3.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/a0594c46/1.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/a0594c46/4.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/a0594c46/2.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/a0594c46/3.png">
 <meta property="og:updated_time" content="2019-09-27T15:36:51.113Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="pyqt安装使用打包教程">
 <meta name="twitter:description" content="最近准备开发一个GUI程序, 考察了一些能选用的技术,  在windows下有多门语言可以选择(包括易语言哈哈).  但是最初的想法是不仅要快捷开发而且最好跨平台, 跨平台基本没得选了只能用qt了, 但短时间内用c++开发还是没有勇气的, 于是举棋不定选python. 1. 下载 qt designer因为 Qt Creator实在太大了, 选用Qt Designer.下载链接: https://">
-<meta name="twitter:image" content="https://unix2dos.github.io/p/a0594c46.htm/1.png">
+<meta name="twitter:image" content="https://unix2dos.github.io/p/a0594c46/1.png">
   <link rel="canonical" href="https://unix2dos.github.io/p/a0594c46">
 
 
@@ -368,25 +368,25 @@
 <p>安装成功后, 最好设置<code>Appearance</code>里为 <code>Dockerd Window</code>, 要不然很别扭</p>
 <a id="more"></a>
 
-<p><img src="/p/a0594c46.htm/1.png" alt="1"></p>
+<p><img src="/p/a0594c46/1.png" alt="1"></p>
 <h3 id="2-下载安装pyqt"><a href="#2-下载安装pyqt" class="headerlink" title="2. 下载安装pyqt"></a>2. 下载安装pyqt</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">conda create --name pygui python=3.7   # 强烈建议使用conda, 创建一个新的虚拟环境</span><br><span class="line">conda activate pygui  # 启用虚拟环境</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">conda install pip  # 安装pip</span><br><span class="line">pip install PyQt5</span><br><span class="line">pip install fbs            </span><br><span class="line">pip install PyInstaller</span><br></pre></td></tr></table></figure>
 
 <h3 id="3-pycharm配置QtDesigner和PyUIC"><a href="#3-pycharm配置QtDesigner和PyUIC" class="headerlink" title="3. pycharm配置QtDesigner和PyUIC"></a>3. pycharm配置QtDesigner和PyUIC</h3><ul>
 <li><p>配置conda</p>
 <p>pycharm 设置 <code>Project Interpreter</code> 为 pygui下的python</p>
-<p><img src="/p/a0594c46.htm/4.png" alt="1"></p>
+<p><img src="/p/a0594c46/4.png" alt="1"></p>
 </li>
 </ul>
 <ul>
 <li><p>配置Qt Designer</p>
 <p>Program:  你的Qt Designer的路径</p>
-<p><img src="/p/a0594c46.htm/2.png" alt="1"></p>
+<p><img src="/p/a0594c46/2.png" alt="1"></p>
 </li>
 </ul>
 <ul>
 <li><p>配置PyUIC</p>
 <p>Program:   你的pyuic5路径<br>Arguments:  <code>$FileName$ -o $FileNameWithoutExtension$.py</code><br>Working directory:  <code>$FileDir$</code></p>
-<p><img src="/p/a0594c46.htm/3.png" alt="1"></p>
+<p><img src="/p/a0594c46/3.png" alt="1"></p>
 </li>
 </ul>
 <h3 id="4-使用pyqt"><a href="#4-使用pyqt" class="headerlink" title="4. 使用pyqt"></a>4. 使用pyqt</h3><ul>
@@ -554,7 +554,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-count">115</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -580,7 +580,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-count">70</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -657,12 +657,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">463k</span>
+    <span title="站点总字数">466k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">7:01</span>
+    <span title="站点阅读时长">7:03</span>
 </div>
 
         

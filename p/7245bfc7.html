@@ -63,15 +63,15 @@
 <meta property="og:site_name" content="Levon&#39;s Blog">
 <meta property="og:description" content="Nginx功能丰富，可作为HTTP服务器，也可作为反向代理服务器，邮件服务器。支持FastCGI、SSL、Virtual Host、URL Rewrite、Gzip等功能。并且支持很多第三方的模块扩展。 零. 前言0.1 配置文件在哪安装好nginx我们首先要知道配置文件在哪里?  说明nginx的主配置文件都在 /etc/nginx/nginx.conf里. 打开文件我们还可以看到 12incl">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://unix2dos.github.io/p/7245bfc7.htm/1.png">
-<meta property="og:image" content="https://unix2dos.github.io/p/7245bfc7.htm/1.jpg">
-<meta property="og:image" content="https://unix2dos.github.io/p/7245bfc7.htm/2.jpg">
-<meta property="og:image" content="https://unix2dos.github.io/p/7245bfc7.htm/3.jpg">
+<meta property="og:image" content="https://unix2dos.github.io/p/7245bfc7/1.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/7245bfc7/1.jpg">
+<meta property="og:image" content="https://unix2dos.github.io/p/7245bfc7/2.jpg">
+<meta property="og:image" content="https://unix2dos.github.io/p/7245bfc7/3.jpg">
 <meta property="og:updated_time" content="2019-09-27T15:36:51.166Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="nginx介绍和常用模块配置">
 <meta name="twitter:description" content="Nginx功能丰富，可作为HTTP服务器，也可作为反向代理服务器，邮件服务器。支持FastCGI、SSL、Virtual Host、URL Rewrite、Gzip等功能。并且支持很多第三方的模块扩展。 零. 前言0.1 配置文件在哪安装好nginx我们首先要知道配置文件在哪里?  说明nginx的主配置文件都在 /etc/nginx/nginx.conf里. 打开文件我们还可以看到 12incl">
-<meta name="twitter:image" content="https://unix2dos.github.io/p/7245bfc7.htm/1.png">
+<meta name="twitter:image" content="https://unix2dos.github.io/p/7245bfc7/1.png">
   <link rel="canonical" href="https://unix2dos.github.io/p/7245bfc7">
 
 
@@ -364,7 +364,7 @@
       
         <p>Nginx功能丰富，可作为HTTP服务器，也可作为反向代理服务器，邮件服务器。支持FastCGI、SSL、Virtual Host、URL Rewrite、Gzip等功能。并且支持很多第三方的模块扩展。</p>
 <h1 id="零-前言"><a href="#零-前言" class="headerlink" title="零. 前言"></a>零. 前言</h1><h3 id="0-1-配置文件在哪"><a href="#0-1-配置文件在哪" class="headerlink" title="0.1 配置文件在哪"></a>0.1 配置文件在哪</h3><p>安装好nginx我们首先要知道配置文件在哪里?</p>
-<p><img src="/p/7245bfc7.htm/1.png" alt="1"></p>
+<p><img src="/p/7245bfc7/1.png" alt="1"></p>
 <p>说明nginx的主配置文件都在 <code>/etc/nginx/nginx.conf</code>里. 打开文件我们还可以看到</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">include /etc/nginx/conf.d/*.conf;</span><br><span class="line">include /etc/nginx/sites-enabled/*;</span><br></pre></td></tr></table></figure>
 
@@ -382,14 +382,14 @@
 <p>reload，重新加载的意思，reload会重新加载配置文件，nginx服务不会中断，而且reload时会测试conf语法等，如果出错会rollback用上一次正确配置文件保持正常运行。</p>
 <p>restart，重启，会重启nginx服务。这个重启会造成服务一瞬间的中断，当然如果配置文件出错会导致服务启动失败，那就是更长时间的服务中断了。</p>
 <h1 id="一-nginx-常用功能说明"><a href="#一-nginx-常用功能说明" class="headerlink" title="一. nginx 常用功能说明"></a>一. nginx 常用功能说明</h1><h3 id="1-1-反向代理"><a href="#1-1-反向代理" class="headerlink" title="1.1 反向代理"></a>1.1 反向代理</h3><p>下面一张图是对正向代理与反响代理的对比</p>
-<p><img src="/p/7245bfc7.htm/1.jpg" alt="1"></p>
+<p><img src="/p/7245bfc7/1.jpg" alt="1"></p>
 <p>Nginx在做反向代理时，提供性能稳定，并且能够提供配置灵活的转发功能。Nginx可以根据不同的正则匹配，采取不同的转发策略，比如图片文件结尾的走文件服务器，动态页面走web服务器，只要你正则写的没问题，又有相对应的服务器解决方案，你就可以随心所欲的玩。并且Nginx对返回结果进行错误页跳转，异常判断等。如果被分发的服务器存在异常，他可以将请求重新转发给另外一台服务器，然后自动去除异常服务器。</p>
 <h3 id="1-2-负载均衡"><a href="#1-2-负载均衡" class="headerlink" title="1.2 负载均衡"></a>1.2 负载均衡</h3><p>Nginx提供的负载均衡策略有2种：内置策略和扩展策略。</p>
 <p>内置策略为轮询，加权轮询，Ip hash。扩展策略，就天马行空，只有你想不到的没有他做不到的啦，你可以参照所有的负载均衡算法，给他一一找出来做下实现。</p>
 <p>看下面的图理解三种负载均衡算法的实现</p>
-<p><img src="/p/7245bfc7.htm/2.jpg" alt="1"></p>
+<p><img src="/p/7245bfc7/2.jpg" alt="1"></p>
 <p>Ip hash算法，对客户端请求的ip进行hash操作，然后根据hash结果将同一个客户端ip的请求分发给同一台服务器进行处理，可以解决session不共享的问题。</p>
-<p><img src="/p/7245bfc7.htm/3.jpg" alt="1"></p>
+<p><img src="/p/7245bfc7/3.jpg" alt="1"></p>
 <h3 id="1-3-web缓存"><a href="#1-3-web缓存" class="headerlink" title="1.3 web缓存"></a>1.3 web缓存</h3><p>nginx可以对不同的文件做不同的缓存处理，配置灵活，并且支持FastCGI_Cache，主要用于对FastCGI的动态程序进行缓存。配合着第三方的ngx_cache_purge，对制定的URL缓存内容可以的进行增删管理。</p>
 <h1 id="二-nginx配置文件结构"><a href="#二-nginx配置文件结构" class="headerlink" title="二. nginx配置文件结构"></a>二. nginx配置文件结构</h1><p>先放一个配置demo</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">user</span>  nobody;</span><br><span class="line"><span class="attribute">worker_processes</span>  <span class="number">1</span>;</span><br><span class="line"><span class="attribute">pid</span>        logs/nginx.pid;</span><br><span class="line"></span><br><span class="line"><span class="section">events</span> &#123;</span><br><span class="line">    <span class="attribute">worker_connections</span>  <span class="number">1024</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="attribute">upstream</span> mysvr &#123;   </span><br><span class="line">  <span class="attribute">server</span> <span class="number">127.0.0.1:7878</span>;</span><br><span class="line">  <span class="attribute">server</span> <span class="number">192.168.10.121:3333</span> backup;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">    <span class="attribute">include</span>       mime.types;</span><br><span class="line">    <span class="attribute">default_type</span>  application/octet-stream;</span><br><span class="line">  </span><br><span class="line">    <span class="section">server</span> &#123;</span><br><span class="line">        <span class="attribute">listen</span>       <span class="number">80</span>;</span><br><span class="line">        <span class="attribute">server_name</span>  localhost;</span><br><span class="line">        <span class="attribute">location</span> / &#123;</span><br><span class="line">            <span class="attribute">root</span>   html;</span><br><span class="line">            <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -729,7 +729,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-count">115</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -755,7 +755,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-count">70</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -832,12 +832,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">463k</span>
+    <span title="站点总字数">466k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">7:01</span>
+    <span title="站点阅读时长">7:03</span>
 </div>
 
         

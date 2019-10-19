@@ -63,15 +63,15 @@
 <meta property="og:site_name" content="Levon&#39;s Blog">
 <meta property="og:description" content="在Python中，安装第三方模块，是通过包管理工具pip完成的。用pip一个一个安装费时费力，还需要考虑兼容性。我们推荐直接使用anaconda，这是一个基于Python的数据处理和科学计算平台，它已经内置了许多非常有用的第三方库，我们装上Anaconda，就相当于把数十个第三方模块自动安装好了，非常简单易用。 anaconda 是一个用于科学计算的Python发行版，支持 Linux, Mac,">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://unix2dos.github.io/p/3c2948a5.htm/1.png">
-<meta property="og:image" content="https://unix2dos.github.io/p/3c2948a5.htm/2.png">
-<meta property="og:image" content="https://unix2dos.github.io/p/3c2948a5.htm/4.png">
-<meta property="og:image" content="https://unix2dos.github.io/p/3c2948a5.htm/3.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/3c2948a5/1.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/3c2948a5/2.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/3c2948a5/4.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/3c2948a5/3.png">
 <meta property="og:updated_time" content="2019-09-27T15:36:51.121Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python包管理器anaconda介绍安装和使用">
 <meta name="twitter:description" content="在Python中，安装第三方模块，是通过包管理工具pip完成的。用pip一个一个安装费时费力，还需要考虑兼容性。我们推荐直接使用anaconda，这是一个基于Python的数据处理和科学计算平台，它已经内置了许多非常有用的第三方库，我们装上Anaconda，就相当于把数十个第三方模块自动安装好了，非常简单易用。 anaconda 是一个用于科学计算的Python发行版，支持 Linux, Mac,">
-<meta name="twitter:image" content="https://unix2dos.github.io/p/3c2948a5.htm/1.png">
+<meta name="twitter:image" content="https://unix2dos.github.io/p/3c2948a5/1.png">
   <link rel="canonical" href="https://unix2dos.github.io/p/3c2948a5">
 
 
@@ -434,7 +434,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">which python3</span><br><span class="line">/Users/liuwei/anaconda3/bin/python3</span><br></pre></td></tr></table></figure>
 
 <p>安装成功后在应用程序里打开 <code>Anaconda Navigator</code>，会展示出已经安装好的其他常用应用，如：</p>
-<p><img src="/p/3c2948a5.htm/1.png" alt="1"></p>
+<p><img src="/p/3c2948a5/1.png" alt="1"></p>
 <ul>
 <li><p>Anaconda Navigtor ：用于管理工具包和环境的图形用户界面，后续涉及的众多管理命令也可以在 Navigator 中手工实现。</p>
 </li>
@@ -459,7 +459,7 @@
 <p>然后用 conda info 查看当前配置信息，channel URLs 字段内容变为清华即修改成功。</p>
 <h3 id="5-anaconda-python环境的创建和切换"><a href="#5-anaconda-python环境的创建和切换" class="headerlink" title="5. anaconda python环境的创建和切换"></a>5. anaconda python环境的创建和切换</h3><ul>
 <li><p>可以在<code>anaconda-navigator</code>创建新的环境</p>
-<p><img src="/p/3c2948a5.htm/2.png" alt="1"></p>
+<p><img src="/p/3c2948a5/2.png" alt="1"></p>
 </li>
 </ul>
 <p> 也可以命令行创建:</p>
@@ -490,9 +490,9 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda list</span><br></pre></td></tr></table></figure>
 
 <p> 以后可以通过<code>anaconda-navigator</code>在指定环境下安装包</p>
-<p><img src="/p/3c2948a5.htm/4.png" alt="1"></p>
+<p><img src="/p/3c2948a5/4.png" alt="1"></p>
 <h3 id="6-配置pycharm使用anaconda环境"><a href="#6-配置pycharm使用anaconda环境" class="headerlink" title="6. 配置pycharm使用anaconda环境"></a>6. 配置pycharm使用anaconda环境</h3><p>在<code>Project Interpreter</code> 增加 virtualenvs的特定环境下的执行程序</p>
-<p><img src="/p/3c2948a5.htm/3.png" alt="1"></p>
+<p><img src="/p/3c2948a5/3.png" alt="1"></p>
 <h3 id="7-常用命令总结"><a href="#7-常用命令总结" class="headerlink" title="7. 常用命令总结"></a>7. 常用命令总结</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">conda info -e  <span class="comment"># 查看有哪些环境</span></span><br><span class="line">conda create --name py27 python=2.7 <span class="comment"># 创建一个环境</span></span><br><span class="line">conda env remove --name py37 <span class="comment"># 删除一个环境</span></span><br><span class="line">conda activate py27 <span class="comment"># 激活某个环境</span></span><br><span class="line">conda deactivate  <span class="comment">#退出当前环境</span></span><br><span class="line">conda list <span class="comment"># 查看安装了哪些包</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># conda 里集成 pip, 以防 conda 没有的包, 通过 pip 来安装</span></span><br><span class="line">conda install pip</span><br><span class="line"></span><br><span class="line"><span class="built_in">which</span> pip</span><br><span class="line">/Users/liuwei/anaconda3/bin/pip</span><br><span class="line"></span><br><span class="line">pip install xxx</span><br></pre></td></tr></table></figure>
 
 
@@ -636,7 +636,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-count">115</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -662,7 +662,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-count">70</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -739,12 +739,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">463k</span>
+    <span title="站点总字数">466k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">7:01</span>
+    <span title="站点阅读时长">7:03</span>
 </div>
 
         

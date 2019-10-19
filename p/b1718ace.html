@@ -63,17 +63,17 @@
 <meta property="og:site_name" content="Levon&#39;s Blog">
 <meta property="og:description" content="什么是rebaseRebase对于很多人来说是一个很抽象的概念，也因此它的学习门槛就在于如何了解这个抽象的概念。对于rebase 比较恰当的比喻应该是「移花接木」，简单来讲把你的分支接到别的分支上，稍后我们用几个图来示范merge与rebase 的差异。 了解rebase之前，我们必须了解什么是base。对Git的使用者而言，在分支中进行开发活动是稀松平常的事情，也因此在合并管理分支时，也就需要了">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://unix2dos.github.io/p/b1718ace.htm/1.png">
-<meta property="og:image" content="https://unix2dos.github.io/p/b1718ace.htm/2.png">
-<meta property="og:image" content="https://unix2dos.github.io/p/b1718ace.htm/3.png">
-<meta property="og:image" content="https://unix2dos.github.io/p/b1718ace.htm/4.png">
-<meta property="og:image" content="https://unix2dos.github.io/p/b1718ace.htm/5.png">
-<meta property="og:image" content="https://unix2dos.github.io/p/b1718ace.htm/6.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/b1718ace/1.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/b1718ace/2.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/b1718ace/3.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/b1718ace/4.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/b1718ace/5.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/b1718ace/6.png">
 <meta property="og:updated_time" content="2019-09-27T15:36:51.136Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="不会rebase就等于没学过Git">
 <meta name="twitter:description" content="什么是rebaseRebase对于很多人来说是一个很抽象的概念，也因此它的学习门槛就在于如何了解这个抽象的概念。对于rebase 比较恰当的比喻应该是「移花接木」，简单来讲把你的分支接到别的分支上，稍后我们用几个图来示范merge与rebase 的差异。 了解rebase之前，我们必须了解什么是base。对Git的使用者而言，在分支中进行开发活动是稀松平常的事情，也因此在合并管理分支时，也就需要了">
-<meta name="twitter:image" content="https://unix2dos.github.io/p/b1718ace.htm/1.png">
+<meta name="twitter:image" content="https://unix2dos.github.io/p/b1718ace/1.png">
   <link rel="canonical" href="https://unix2dos.github.io/p/b1718ace">
 
 
@@ -367,11 +367,11 @@
         <h2 id="什么是rebase"><a href="#什么是rebase" class="headerlink" title="什么是rebase"></a>什么是rebase</h2><p>Rebase对于很多人来说是一个很抽象的概念，也因此它的学习门槛就在于如何了解这个抽象的概念。对于rebase 比较恰当的比喻应该是「移花接木」，简单来讲把你的分支接到别的分支上，稍后我们用几个图来示范merge与rebase 的差异。</p>
 <p>了解rebase之前，我们必须了解什么是base。对Git的使用者而言，在分支中进行开发活动是稀松平常的事情，也因此在合并管理分支时，也就需要了解分支是在哪个时间点哪个提交点分出来的旁支，而长出旁支来的提交点，对于旁支来说就是base commit，也就是base。所以简单来说，rebase其实就是改变分支的base的功能。</p>
 <p>下图是在merge的情况会产生的版本演进的示意图，可以看到在新的分支中所做的变更，在合并之后，一并成为一个新的提交(commit 6)。而commit 1就是New Branch的base。</p>
-<p><img src="/p/b1718ace.htm/1.png" alt="1"></p>
+<p><img src="/p/b1718ace/1.png" alt="1"></p>
 <a id="more"></a>
 
 <p>而下图是rebase 的情况下会产生的版本演进的示意图。我们同样是在分支中进行开发的动作，但是在rebase时，与merge不同的是，Git会将分支上所做的变更先暂存起来，接着把newbase (或称新基准点)合并进来，最后直接将刚刚暂存起来的变更在分支上重演，这边用「重演」这个字眼是表示「<strong>rebase不是将提交(commit)复制到分支上，而是将整个变更过程一个一个重新套用到分支上</strong>」 ，也就因为如此commit 2’与commit 3’，才会有另外的’符号表示与原本的commit 2 , commit 3不同，这点可以从commit的SHA1凑值不同看出来，虽然变更的内容相同，但是commit编号是不同的。本文会在稍后利用范例演示一遍。</p>
-<p><img src="/p/b1718ace.htm/2.png" alt="1"></p>
+<p><img src="/p/b1718ace/2.png" alt="1"></p>
 <p>也就因为如此，所以rebase的行为就很像「移花接木」，以上图来说，就是把New Branch的变更整个接到Master上。这样的好处就是 commit 更像一条直线,更优雅.</p>
 <h2 id="Rebase-基础用法"><a href="#Rebase-基础用法" class="headerlink" title="Rebase -基础用法"></a>Rebase -基础用法</h2><p>以下我们用一个情境示范rebase的「基础用法」：</p>
 <blockquote>
@@ -402,9 +402,9 @@
 <p>但是在这过程中，有些人可能产生了几个疑问——「为什么先rebase feature-a再rebase feature-b后，会是feature-a的日志在最上方呢？」</p>
 <p>这是由于rebase会先找出与newbase之间最近的一个共同base，然后先保留HEAD所在分支(也就是当前分支)从共同base开始的所有变更，接着从共同base开始，将newbase的变更重新套用到HEAD的所在分支后，再将方才所保留的当前分支变更一个一个套用进来，也因此feature-a会是最后的一个commit。</p>
 <p>我们一样以图示进行说明。下图<strong>After rebase feature-a</strong>是rebase feature-a之后的样子，可以看到rebase feature-a之后develop与feature-b的共同base是commit 38844b，因此如果要再rebase feature-b的话，commit 15bf9c会先被暂存起来，先进行rebase feature-b之后，再将刚刚暂存的commit 38844b重演一次，所以在图<strong>After rebase feature-b</strong>中feature-a的commit ID就从338844b变成07ef0b，这就是rebase的过程了。</p>
-<p><img src="/p/b1718ace.htm/3.png" alt="1"></p>
+<p><img src="/p/b1718ace/3.png" alt="1"></p>
 <p>After rebase feature-a</p>
-<p><img src="/p/b1718ace.htm/4.png" alt="1"></p>
+<p><img src="/p/b1718ace/4.png" alt="1"></p>
 <p>After rebase feature-b</p>
 <p>问题又来了，刚刚学的rebase会将整个分支都接上去，有时候我们不需要整个分支都接上去，只要接到分支上的某个提交的点即可，这种情况下可以使用rebase – onto进行。</p>
 <p>假设只需要接到feature-b的commit eb6436时，就可以用以下指令进行rebase：</p>
@@ -417,9 +417,9 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git co feature-b #先切换到feature-b</span><br><span class="line">$ git rebase --onto 3908e6 38844b</span><br></pre></td></tr></table></figure>
 
 <p>下面2 张图就是执行上述指令的前后对照。</p>
-<p><img src="/p/b1718ace.htm/5.png" alt="1"></p>
+<p><img src="/p/b1718ace/5.png" alt="1"></p>
 <p>before rebase –onto 3908e6 38844b</p>
-<p><img src="/p/b1718ace.htm/6.png" alt="1"></p>
+<p><img src="/p/b1718ace/6.png" alt="1"></p>
 <p>after rebase –onto 3908e6 38844b</p>
 <h2 id="Rebase-进阶互动模式"><a href="#Rebase-进阶互动模式" class="headerlink" title="Rebase -进阶互动模式"></a>Rebase -进阶互动模式</h2><p>Rebase的互动模式十分强大，可以允许我们交换提交的次序、修改提交内容、合并提交内容，甚至将一个提交拆解成多个提交。</p>
 <p>要进入互动模式的基本指令如下，base commit可以是分支上的任意一点：</p>
@@ -635,7 +635,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-count">115</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -661,7 +661,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-count">70</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -738,12 +738,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">463k</span>
+    <span title="站点总字数">466k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">7:01</span>
+    <span title="站点阅读时长">7:03</span>
 </div>
 
         
