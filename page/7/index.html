@@ -58,14 +58,14 @@
   <meta name="description" content="Never Give Up">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Levon&#39;s Blog">
-<meta property="og:url" content="https://levonfly.github.io/page/7/index.html">
+<meta property="og:url" content="https://unix2dos.github.io/page/7/index.html">
 <meta property="og:site_name" content="Levon&#39;s Blog">
 <meta property="og:description" content="Never Give Up">
 <meta property="og:locale" content="zh-CN">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Levon&#39;s Blog">
 <meta name="twitter:description" content="Never Give Up">
-  <link rel="canonical" href="https://levonfly.github.io/page/7/">
+  <link rel="canonical" href="https://unix2dos.github.io/page/7/">
 
 
 <script id="page-configurations">
@@ -244,7 +244,311 @@
   
   
   <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="https://levonfly.github.io/p/a7ad4d37.html">
+    <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/73da9612.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Levon">
+      <meta itemprop="description" content="Never Give Up">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Levon's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/p/73da9612.html" class="post-title-link" itemprop="url">交叉编译arm-transmission-2.94</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2018-10-08 17:02:00" itemprop="dateCreated datePublished" datetime="2018-10-08T17:02:00+08:00">2018-10-08</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-27 23:36:51" itemprop="dateModified" datetime="2019-09-27T23:36:51+08:00">2019-09-27</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/3-计算机系统/" itemprop="url" rel="index"><span itemprop="name">3-计算机系统</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/3-计算机系统/BitTorrent/" itemprop="url" rel="index"><span itemprop="name">BitTorrent</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/p/73da9612.html#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/73da9612.html" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span>5.1k</span>
+            </span>
+          
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span>5 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="编译平台准备工作"><a href="#编译平台准备工作" class="headerlink" title="编译平台准备工作:"></a>编译平台准备工作:</h3><ol>
+<li><p>下载arm-none-linux-gnueabi-gcc</p>
+</li>
+<li><p>下载transmission-2.94</p>
+</li>
+<li><p>新建ARM文件夹</p>
+</li>
+<li><p>解压arm-none-linux-gnueabi-gcc和transmission-2.94到ARM文件夹</p>
+</li>
+<li><p>设置编译平台环境变量</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export PATH="/root/ARM/external-toolchain/bin:$PATH"</span><br><span class="line">export cross=arm-none-linux-gnueabi-</span><br><span class="line">export CC="$&#123;cross&#125;gcc"</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编译的时候一定要注意看log, 是arm-none-linux-gnueabi-gcc编译的才是正确的</p>
+</li>
+</ol>
+          <!--noindex-->
+          
+            <div class="post-button">
+              <a class="btn" href="/p/73da9612.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/a63b0191.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Levon">
+      <meta itemprop="description" content="Never Give Up">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Levon's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/p/a63b0191.html" class="post-title-link" itemprop="url">arm交叉编译器的区别</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2018-10-08 16:33:11" itemprop="dateCreated datePublished" datetime="2018-10-08T16:33:11+08:00">2018-10-08</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-27 23:36:51" itemprop="dateModified" datetime="2019-09-27T23:36:51+08:00">2019-09-27</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/2-linux系统/" itemprop="url" rel="index"><span itemprop="name">2-linux系统</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/2-linux系统/系统/" itemprop="url" rel="index"><span itemprop="name">系统</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/p/a63b0191.html#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/a63b0191.html" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span>4.8k</span>
+            </span>
+          
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span>4 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="为什么要用交叉编译器？"><a href="#为什么要用交叉编译器？" class="headerlink" title="为什么要用交叉编译器？"></a>为什么要用交叉编译器？</h2><p>交叉编译通俗地讲就是在一种平台上编译出能运行在体系结构不同的另一种平台上的程序，比如在PC平台（X86 CPU）上编译出能运行在以ARM为内核的CPU平台上的程序，编译得到的程序在X86 CPU平台上是不能运行的，必须放到ARM CPU平台上才能运行，虽然两个平台用的都是Linux系统。</p>
+<p>交叉编译工具链是一个由编译器、连接器和解释器组成的综合开发环境，交叉编译工具链主要由binutils、gcc和glibc三个部分组成。有时出于减小 libc 库大小的考虑，也可以用别的 c 库来代替 glibc，例如 uClibc、dietlibc 和 newlib。</p>
+<p>建立交叉编译工具链是一个相当复杂的过程，如果不想自己经历复杂繁琐的编译过程，网上有一些编译好的可用的交叉编译工具链可以下载，但就以学习为目的来说读者有必要学习自己制作一个交叉编译工具链（目前来看，对于初学者没有太大必要自己交叉编译一个工具链）。</p>
+          <!--noindex-->
+          
+            <div class="post-button">
+              <a class="btn" href="/p/a63b0191.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/a7ad4d37.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Levon">
@@ -310,6 +614,20 @@
           
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/p/a7ad4d37.html#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/a7ad4d37.html" itemprop="commentCount"></span></a>
+  </span>
+  
+  
           <br>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
@@ -374,7 +692,7 @@
   
   
   <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="https://levonfly.github.io/p/690c18bd.html">
+    <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/690c18bd.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Levon">
@@ -440,6 +758,20 @@
           
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/p/690c18bd.html#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/690c18bd.html" itemprop="commentCount"></span></a>
+  </span>
+  
+  
           <br>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
@@ -508,7 +840,7 @@
   
   
   <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="https://levonfly.github.io/p/21dd607c.html">
+    <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/21dd607c.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Levon">
@@ -574,6 +906,20 @@
           
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/p/21dd607c.html#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/21dd607c.html" itemprop="commentCount"></span></a>
+  </span>
+  
+  
           <br>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
@@ -647,7 +993,7 @@
   
   
   <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="https://levonfly.github.io/p/bf531b37.html">
+    <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/bf531b37.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Levon">
@@ -713,6 +1059,20 @@
           
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/p/bf531b37.html#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/bf531b37.html" itemprop="commentCount"></span></a>
+  </span>
+  
+  
           <br>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
@@ -787,7 +1147,7 @@
   
   
   <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="https://levonfly.github.io/p/375281af.html">
+    <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/375281af.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Levon">
@@ -853,6 +1213,20 @@
           
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/p/375281af.html#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/375281af.html" itemprop="commentCount"></span></a>
+  </span>
+  
+  
           <br>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
@@ -931,7 +1305,7 @@
   
   
   <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="https://levonfly.github.io/p/4c5612cb.html">
+    <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/4c5612cb.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Levon">
@@ -997,6 +1371,20 @@
           
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/p/4c5612cb.html#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/4c5612cb.html" itemprop="commentCount"></span></a>
+  </span>
+  
+  
           <br>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
@@ -1064,7 +1452,7 @@
   
   
   <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="https://levonfly.github.io/p/b1718ace.html">
+    <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/b1718ace.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Levon">
@@ -1130,6 +1518,20 @@
           
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/p/b1718ace.html#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/b1718ace.html" itemprop="commentCount"></span></a>
+  </span>
+  
+  
           <br>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
@@ -1197,7 +1599,7 @@
   
   
   <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="https://levonfly.github.io/p/df25a0d8.html">
+    <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/df25a0d8.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Levon">
@@ -1263,6 +1665,20 @@
           
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/p/df25a0d8.html#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/df25a0d8.html" itemprop="commentCount"></span></a>
+  </span>
+  
+  
           <br>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
@@ -1303,294 +1719,6 @@
           
             <div class="post-button">
               <a class="btn" href="/p/df25a0d8.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="https://levonfly.github.io/p/d43abcbd.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Levon">
-      <meta itemprop="description" content="Never Give Up">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Levon's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/p/d43abcbd.html" class="post-title-link" itemprop="url">linux开启ftp服务和golang实现ftp_server_client</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2018-05-30 22:42:26" itemprop="dateCreated datePublished" datetime="2018-05-30T22:42:26+08:00">2018-05-30</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-09-27 23:36:51" itemprop="dateModified" datetime="2019-09-27T23:36:51+08:00">2019-09-27</time>
-              </span>
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/1-编程语言/" itemprop="url" rel="index"><span itemprop="name">1-编程语言</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/1-编程语言/golang/" itemprop="url" rel="index"><span itemprop="name">golang</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">本文字数：</span>
-              
-              <span>729</span>
-            </span>
-          
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              
-              <span>1 分钟</span>
-            </span>
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="linux-安装-ftp-服务"><a href="#linux-安装-ftp-服务" class="headerlink" title="linux 安装 ftp 服务"></a>linux 安装 ftp 服务</h3><p>1 . 安装ftp</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install vsftpd</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>修改配置  sudo vi /etc/vsftpd.con</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">local_root=/home/ftpuser</span><br><span class="line">write_enable=YES</span><br><span class="line">anon_mkdir_write_enable=YES</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>添加ftp用户</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir /home/ftpuser</span><br><span class="line">sudo useradd -d /root/workspace -M ftpuser</span><br><span class="line">sudo passwd ftpuser</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>调整文件夹权限</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chown ftpuser:ftpuser  /home/ftpuser/</span><br><span class="line">sudo chmod a-w  /home/ftpuser</span><br></pre></td></tr></table></figure>
-
-<ol start="5">
-<li>修改pam.d/vsftpd</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo vi /etc/pam.d/vsftpd</span><br><span class="line">#auth    required pam_shells.so //注释掉这一行</span><br><span class="line">sudo service vsftpd restart</span><br></pre></td></tr></table></figure>
-
-<ol start="6">
-<li>连接</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ftp://207.246.80.69  //通过浏览器访问</span><br><span class="line"></span><br><span class="line">mac 可以下载 filezilla 客户端进行连接</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-          
-            <div class="post-button">
-              <a class="btn" href="/p/d43abcbd.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="https://levonfly.github.io/p/aca47db0.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Levon">
-      <meta itemprop="description" content="Never Give Up">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Levon's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/p/aca47db0.html" class="post-title-link" itemprop="url">golang优雅的等待或通知goroutine退出</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2018-05-28 00:03:21" itemprop="dateCreated datePublished" datetime="2018-05-28T00:03:21+08:00">2018-05-28</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-09-27 23:36:51" itemprop="dateModified" datetime="2019-09-27T23:36:51+08:00">2019-09-27</time>
-              </span>
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/1-编程语言/" itemprop="url" rel="index"><span itemprop="name">1-编程语言</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/1-编程语言/golang/" itemprop="url" rel="index"><span itemprop="name">golang</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">本文字数：</span>
-              
-              <span>5.2k</span>
-            </span>
-          
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              
-              <span>5 分钟</span>
-            </span>
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="优雅的等待goroutine退出"><a href="#优雅的等待goroutine退出" class="headerlink" title="优雅的等待goroutine退出"></a>优雅的等待goroutine退出</h3><h4 id="通过Channel传递退出信号"><a href="#通过Channel传递退出信号" class="headerlink" title="通过Channel传递退出信号"></a>通过Channel传递退出信号</h4><p>Go的一大设计哲学就是：通过Channel共享数据，而不是通过共享内存共享数据。主流程可以通过channel向任何goroutine发送停止信号，就像下面这样：</p>
-<p>这种方式可以实现优雅地停止goroutine，但是当goroutine特别多的时候，这种方式不管在代码美观上还是管理上都显得笨拙不堪。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">   &quot;fmt&quot;</span><br><span class="line">   &quot;time&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func run(done chan int) &#123;</span><br><span class="line">   for &#123;</span><br><span class="line">      select &#123;</span><br><span class="line">      case &lt;-done:</span><br><span class="line">         fmt.Println(&quot;exiting...&quot;)</span><br><span class="line">         done &lt;- 1</span><br><span class="line">         break</span><br><span class="line">      default:</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      time.Sleep(time.Second * 1)</span><br><span class="line">      fmt.Println(&quot;do something&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">   c := make(chan int)</span><br><span class="line"></span><br><span class="line">   go run(c)</span><br><span class="line"></span><br><span class="line">   fmt.Println(&quot;wait&quot;)</span><br><span class="line">   time.Sleep(time.Second * 5)</span><br><span class="line"></span><br><span class="line">   c &lt;- 1</span><br><span class="line">   &lt;-c</span><br><span class="line"></span><br><span class="line">   fmt.Println(&quot;main exited&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-          
-            <div class="post-button">
-              <a class="btn" href="/p/aca47db0.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1667,7 +1795,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">111</span>
+          <span class="site-state-item-count">113</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1680,7 +1808,7 @@
             <a href="/categories/">
           
         
-        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-count">31</span>
         <span class="site-state-item-name">分类</span>
         </a>
       </div>
@@ -1693,7 +1821,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-count">69</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -1770,12 +1898,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">460k</span>
+    <span title="站点总字数">463k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">6:58</span>
+    <span title="站点阅读时长">7:01</span>
 </div>
 
         
@@ -1845,6 +1973,17 @@
   
 
   
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://levonfly.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
 
 </body>
 </html>

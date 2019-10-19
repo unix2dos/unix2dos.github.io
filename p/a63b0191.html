@@ -59,7 +59,7 @@
 <meta name="keywords" content="linux,arm">
 <meta property="og:type" content="article">
 <meta property="og:title" content="arm交叉编译器的区别">
-<meta property="og:url" content="https://levonfly.github.io/p/a63b0191.html">
+<meta property="og:url" content="https://unix2dos.github.io/p/a63b0191.html">
 <meta property="og:site_name" content="Levon&#39;s Blog">
 <meta property="og:description" content="为什么要用交叉编译器？交叉编译通俗地讲就是在一种平台上编译出能运行在体系结构不同的另一种平台上的程序，比如在PC平台（X86 CPU）上编译出能运行在以ARM为内核的CPU平台上的程序，编译得到的程序在X86 CPU平台上是不能运行的，必须放到ARM CPU平台上才能运行，虽然两个平台用的都是Linux系统。 交叉编译工具链是一个由编译器、连接器和解释器组成的综合开发环境，交叉编译工具链主要由bi">
 <meta property="og:locale" content="zh-CN">
@@ -67,7 +67,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="arm交叉编译器的区别">
 <meta name="twitter:description" content="为什么要用交叉编译器？交叉编译通俗地讲就是在一种平台上编译出能运行在体系结构不同的另一种平台上的程序，比如在PC平台（X86 CPU）上编译出能运行在以ARM为内核的CPU平台上的程序，编译得到的程序在X86 CPU平台上是不能运行的，必须放到ARM CPU平台上才能运行，虽然两个平台用的都是Linux系统。 交叉编译工具链是一个由编译器、连接器和解释器组成的综合开发环境，交叉编译工具链主要由bi">
-  <link rel="canonical" href="https://levonfly.github.io/p/a63b0191">
+  <link rel="canonical" href="https://unix2dos.github.io/p/a63b0191">
 
 
 <script id="page-configurations">
@@ -247,7 +247,7 @@
   
   
   <div class="post-block post">
-    <link itemprop="mainEntityOfPage" href="https://levonfly.github.io/p/a63b0191.html">
+    <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/a63b0191.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Levon">
@@ -312,6 +312,20 @@
           
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/p/a63b0191.html#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/a63b0191.html" itemprop="commentCount"></span></a>
+  </span>
+  
+  
           <br>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
@@ -491,6 +505,15 @@
 
           </div>
           
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
 
         </div>
           
@@ -541,7 +564,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">111</span>
+          <span class="site-state-item-count">113</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -554,7 +577,7 @@
             <a href="/categories/">
           
         
-        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-count">31</span>
         <span class="site-state-item-name">分类</span>
         </a>
       </div>
@@ -567,7 +590,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-count">69</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -644,12 +667,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">460k</span>
+    <span title="站点总字数">463k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">6:58</span>
+    <span title="站点阅读时长">7:01</span>
 </div>
 
         
@@ -719,6 +742,38 @@
   
 
   
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://levonfly.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function disqus_config() {
+    this.page.url = "https://unix2dos.github.io/p/a63b0191.html";
+    this.page.identifier = "p/a63b0191.html";
+    this.page.title = 'arm交叉编译器的区别';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://levonfly.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    window.addEventListener('load', loadComments, false);
+  
+</script>
 
 </body>
 </html>
