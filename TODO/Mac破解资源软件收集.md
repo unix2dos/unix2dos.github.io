@@ -34,6 +34,8 @@ date: 2019-07-18 14:22:40
 
 + Jetbrains破解 https://zhile.io/2018/08/25/jetbrains-license-server-crack.html
 
++ Jetbrains破解 https://pan.baidu.com/s/1FGZ9d5J5amnvf0vMFqSOsQ  mmk6
+
 + Jetbrains破解 http://idea.lanyus.com/  (可能已失效)
 
 + Charles 破解  https://github.com/8enet/Charles-Crack
@@ -43,3 +45,6 @@ date: 2019-07-18 14:22:40
 + ntfsformac破解 https://www.naodai.org/archives/50.html
 
 + 小众软件: https://www.appinn.com/category   里面有比较有意思的软件和chrome插件
+
+
+
