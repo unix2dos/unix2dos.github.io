@@ -85,11 +85,6 @@ deploy:
      type: git
      repo: git@unix2dos:unix2dos/unix2dos.github.io.git
      branch: master
-    - 
-     type: git
-     repo: git@levonfly:levonfly/levonfly.github.io.git
-     branch: master
-
 
 # Generate categories from directory-tree
 # Dependencies: https://github.com/xu-song/hexo-auto-category

@@ -2,6 +2,14 @@
 
 
 
+### 0. 前言
+
+
+
+```bash
+go env -w GOPROXY=https://goproxy.cn,direct
+```
+
 
 
 
@@ -16,7 +24,7 @@ https://github.com/goproxyio/goproxy
 
 ```bash
 wget https://dl.google.com/go/go1.13.4.linux-amd64.tar.gz #下载go
-tar -C /usr/local -xzf go1.13.4.linux-amd64.tar.gz # 解压到/usr/local
+sudo tar -C /usr/local -xzf go1.13.4.linux-amd64.tar.gz # 解压到/usr/local
 export PATH=$PATH:/usr/local/go/bin # 设置环境变量
 go version # go version go1.13.4 linux/amd64
 ```
@@ -188,10 +196,11 @@ curl 127.0.0.1:3000/github.com/athens-artifacts/samplelib/@v/list
 
 
 
+
+
 ### 3. 参考资料
 
 + [Hello，Go module proxy](https://tonybai.com/2018/11/26/hello-go-module-proxy/)
-
 + [Go Module Proxy](https://juejin.im/post/5c8f9f8ef265da612c3a34b9)
-
 + https://docs.gomods.io/
++ https://github.com/goproxy/goproxy.cn/
