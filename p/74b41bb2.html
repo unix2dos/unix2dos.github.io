@@ -55,19 +55,19 @@
   };
 </script>
 
-  <meta name="description" content="iOS使用openAL控制声音的输出设备项目中播放ios录音的时候使用的是AVAudio相关库, 播放音效又是用的openAL.如果同时或交替播放这两类声音, 会造成声音一会从听筒发声,一会从扬声器发声.千辛万苦找到解决方案: 12345678910Interesting enough, it can be done!Basically you add a property listener to">
-<meta name="keywords" content="ios">
+  <meta name="description" content="0. 前言在大陆地区我们无法直接通过 go get 命令获取到一些第三方包，最常见的就是 golang.org/x 下面的各种优秀的包. 解决方案如下: 123456789# go.1.12.xexport GO111MODULE=onexport GOPROXY=https://goproxy.cn# go1.13.xgo env -w GOPROXY=https://goproxy.cn,di">
+<meta name="keywords" content="golang">
 <meta property="og:type" content="article">
-<meta property="og:title" content="iOS录音遇到的问题">
-<meta property="og:url" content="https://unix2dos.github.io/p/9ecea432.html">
+<meta property="og:title" content="goproxy的部署实践">
+<meta property="og:url" content="https://unix2dos.github.io/p/74b41bb2.html">
 <meta property="og:site_name" content="Levon&#39;s Blog">
-<meta property="og:description" content="iOS使用openAL控制声音的输出设备项目中播放ios录音的时候使用的是AVAudio相关库, 播放音效又是用的openAL.如果同时或交替播放这两类声音, 会造成声音一会从听筒发声,一会从扬声器发声.千辛万苦找到解决方案: 12345678910Interesting enough, it can be done!Basically you add a property listener to">
+<meta property="og:description" content="0. 前言在大陆地区我们无法直接通过 go get 命令获取到一些第三方包，最常见的就是 golang.org/x 下面的各种优秀的包. 解决方案如下: 123456789# go.1.12.xexport GO111MODULE=onexport GOPROXY=https://goproxy.cn# go1.13.xgo env -w GOPROXY=https://goproxy.cn,di">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-27T15:36:51.104Z">
+<meta property="og:updated_time" content="2019-11-30T01:35:19.941Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="iOS录音遇到的问题">
-<meta name="twitter:description" content="iOS使用openAL控制声音的输出设备项目中播放ios录音的时候使用的是AVAudio相关库, 播放音效又是用的openAL.如果同时或交替播放这两类声音, 会造成声音一会从听筒发声,一会从扬声器发声.千辛万苦找到解决方案: 12345678910Interesting enough, it can be done!Basically you add a property listener to">
-  <link rel="canonical" href="https://unix2dos.github.io/p/9ecea432">
+<meta name="twitter:title" content="goproxy的部署实践">
+<meta name="twitter:description" content="0. 前言在大陆地区我们无法直接通过 go get 命令获取到一些第三方包，最常见的就是 golang.org/x 下面的各种优秀的包. 解决方案如下: 123456789# go.1.12.xexport GO111MODULE=onexport GOPROXY=https://goproxy.cn# go1.13.xgo env -w GOPROXY=https://goproxy.cn,di">
+  <link rel="canonical" href="https://unix2dos.github.io/p/74b41bb2">
 
 
 <script id="page-configurations">
@@ -81,7 +81,7 @@
   };
 </script>
 
-  <title>iOS录音遇到的问题 | Levon's Blog</title>
+  <title>goproxy的部署实践 | Levon's Blog</title>
   
 
 
@@ -247,7 +247,7 @@
   
   
   <div class="post-block post">
-    <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/9ecea432.html">
+    <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/74b41bb2.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Levon">
@@ -259,7 +259,7 @@
       <meta itemprop="name" content="Levon's Blog">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">iOS录音遇到的问题
+        <h2 class="post-title" itemprop="name headline">goproxy的部署实践
 
           
         </h2>
@@ -275,7 +275,7 @@
                 
               
 
-              <time title="创建时间：2017-02-20 09:54:54" itemprop="dateCreated datePublished" datetime="2017-02-20T09:54:54+08:00">2017-02-20</time>
+              <time title="创建时间：2019-11-29 21:11:46" itemprop="dateCreated datePublished" datetime="2019-11-29T21:11:46+08:00">2019-11-29</time>
             </span>
           
             
@@ -286,7 +286,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-09-27 23:36:51" itemprop="dateModified" datetime="2019-09-27T23:36:51+08:00">2019-09-27</time>
+                <time title="修改时间：2019-11-30 09:35:19" itemprop="dateModified" datetime="2019-11-30T09:35:19+08:00">2019-11-30</time>
               </span>
             
           
@@ -303,7 +303,7 @@
                   ，
                 
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/1-编程语言/ios/" itemprop="url" rel="index"><span itemprop="name">ios</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/1-编程语言/golang/" itemprop="url" rel="index"><span itemprop="name">golang</span></a></span>
 
                 
                 
@@ -322,7 +322,7 @@
       
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/p/9ecea432.html#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/9ecea432.html" itemprop="commentCount"></span></a>
+    <a title="disqus" href="/p/74b41bb2.html#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/74b41bb2.html" itemprop="commentCount"></span></a>
   </span>
   
   
@@ -334,7 +334,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span>924</span>
+              <span>2.4k</span>
             </span>
           
             <span class="post-meta-item" title="阅读时长">
@@ -344,7 +344,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
           
 
@@ -357,15 +357,43 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="iOS使用openAL控制声音的输出设备"><a href="#iOS使用openAL控制声音的输出设备" class="headerlink" title="iOS使用openAL控制声音的输出设备"></a>iOS使用openAL控制声音的输出设备</h3><p>项目中播放ios录音的时候使用的是AVAudio相关库, 播放音效又是用的openAL.<br>如果同时或交替播放这两类声音, 会造成声音一会从听筒发声,一会从扬声器发声.<br>千辛万苦找到解决方案:</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Interesting enough, it can be done!</span><br><span class="line"></span><br><span class="line">Basically you add a property listener to get route change events:</span><br><span class="line">    AudioSessionAddPropertyListener(kAudioSessionProperty_AudioRouteChange, audioRouteChangeListenerCallback,<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">	Then in the callback, determine <span class="keyword">if</span> its a headphone being plugged-in <span class="keyword">and</span> override the audio route:</span><br><span class="line">	        UInt32 audioRouteOverride = kAudioSessionOverrideAudioRoute_Speaker;</span><br><span class="line">			        AudioSessionSetProperty(kAudioSessionProperty_OverrideAudioRoute, <span class="keyword">sizeof</span>(audioRouteOverride), &amp;audioRouteOverride);</span><br><span class="line"></span><br><span class="line">					Too simple...</span><br></pre></td></tr></table></figure>
+        <h3 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h3><p>在大陆地区我们无法直接通过 <code>go get</code> 命令获取到一些第三方包，最常见的就是 <code>golang.org/x</code> 下面的各种优秀的包. 解决方案如下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># go.1.12.x</span></span><br><span class="line"><span class="built_in">export</span> GO111MODULE=on</span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://goproxy.cn</span><br><span class="line"></span><br><span class="line"><span class="comment"># go1.13.x</span></span><br><span class="line">go env -w GOPROXY=https://goproxy.cn,direct</span><br><span class="line">go env -w GOPRIVATE=*.corp.example.com </span><br><span class="line"></span><br><span class="line"><span class="comment">#GOPRIVATE=*.corp.example.com 表示所有模块路径以 corp.example.com 的下一级域名 (如 team1.corp.example.com) 为前缀的模块版本都将不经过 Go module proxy 和 Go checksum database，需要注意的是不包括 corp.example.com 本身。</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="iOS-AVAudioSession-监听静音开关"><a href="#iOS-AVAudioSession-监听静音开关" class="headerlink" title="iOS AVAudioSession 监听静音开关"></a>iOS AVAudioSession 监听静音开关</h3><p>录音使用AVAudioSession播放的时候, 无法识别Iphone手机的物理静音开关,需要修改下模式</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 
-<p>修改成</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategorySoloAmbient error:nil];//监听静音</span><br></pre></td></tr></table></figure>
 
+
+<p>本文将重点介绍 go module 的 proxy 配置实现，包括如下两种的代理配置：</p>
+<ul>
+<li>GOPROXY</li>
+<li>Athens</li>
+</ul>
+<h3 id="1-goproxy"><a href="#1-goproxy" class="headerlink" title="1.  goproxy"></a>1.  goproxy</h3><p><a href="https://github.com/goproxyio/goproxy" target="_blank" rel="noopener">https://github.com/goproxyio/goproxy</a></p>
+<h5 id="1-1-安装go"><a href="#1-1-安装go" class="headerlink" title="1.1 安装go"></a>1.1 安装go</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget https://dl.google.com/go/go1.13.4.linux-amd64.tar.gz <span class="comment">#下载go</span></span><br><span class="line">sudo tar -C /usr/<span class="built_in">local</span> -xzf go1.13.4.linux-amd64.tar.gz <span class="comment"># 解压到/usr/local</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/usr/<span class="built_in">local</span>/go/bin <span class="comment"># 设置环境变量</span></span><br><span class="line">go version <span class="comment"># go version go1.13.4 linux/amd64</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="1-2-安装goproxy"><a href="#1-2-安装goproxy" class="headerlink" title="1.2 安装goproxy"></a>1.2 安装goproxy</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/goproxyio/goproxy.git</span><br><span class="line"><span class="built_in">cd</span> goproxy/</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+
+<h5 id="1-3-代理"><a href="#1-3-代理" class="headerlink" title="1.3 代理"></a>1.3 代理</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 服务端执行</span></span><br><span class="line">./bin/goproxy -cacheDir=/tmp/<span class="built_in">test</span> -listen=0.0.0.0:8082 </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 客户端操作</span></span><br><span class="line">GOPROXY=http://服务端ip:8082 go get -v github.com/spf13/cobra <span class="comment"># 会缓存在服务端/tmp/test目录下</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="1-4-nginx配置"><a href="#1-4-nginx配置" class="headerlink" title="1.4 nginx配置"></a>1.4 nginx配置</h5><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">./bin/goproxy -cacheDir=/tmp/test -listen :8082 -proxy https://goproxy.cn -exclude liuvv.com</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">server_name</span> goproxy.liuvv.com;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span> ;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">443</span> ssl http2 ;</span><br><span class="line">    <span class="attribute">access_log</span> /var/log/nginx/goproxy_access_log;</span><br><span class="line">    <span class="attribute">error_log</span> /var/log/nginx/goproxy_error_log <span class="literal">notice</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span>  / &#123;</span><br><span class="line">        <span class="attribute">proxy_set_header</span>       X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span>       X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span>       Host <span class="variable">$http_host</span>;</span><br><span class="line">        <span class="attribute">proxy_connect_timeout</span> <span class="number">300s</span>;</span><br><span class="line">        <span class="attribute">proxy_send_timeout</span> <span class="number">300s</span>;</span><br><span class="line">        <span class="attribute">proxy_read_timeout</span> <span class="number">300s</span>;</span><br><span class="line"></span><br><span class="line">        <span class="attribute">proxy_pass</span>             http://127.0.0.1:8082;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-Athens"><a href="#2-Athens" class="headerlink" title="2.  Athens"></a>2.  Athens</h3><p><a href="https://github.com/gomods/athens" target="_blank" rel="noopener">https://github.com/gomods/athens</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/gomods/athens </span><br><span class="line"><span class="built_in">cd</span> athens </span><br><span class="line"></span><br><span class="line">make build-ver VERSION=<span class="string">"0.7.0"</span> <span class="comment"># 如果下载不下来, 修改makefile的goproxy</span></span><br><span class="line">./athens -version</span><br></pre></td></tr></table></figure>
+
+<p>服务器启动</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> ATHENS_STORAGE_TYPE=disk  <span class="comment"># 缓存到硬盘</span></span><br><span class="line"><span class="built_in">export</span> ATHENS_DISK_STORAGE_ROOT=~/athens-storage</span><br><span class="line">./athens</span><br></pre></td></tr></table></figure>
+
+<p>客户端测试</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> GO111MODULE=on <span class="built_in">export</span> GOPROXY=http:<span class="comment">#服务器ip:3000</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/athens-artifacts/walkthrough.git </span><br><span class="line"><span class="built_in">cd</span> walkthrough</span><br><span class="line">go run .  <span class="comment"># 会缓存在服务端~/athens-storage目录下</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">curl 服务器ip:3000/github.com/athens-artifacts/samplelib/@v/list</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-参考资料"><a href="#3-参考资料" class="headerlink" title="3. 参考资料"></a>3. 参考资料</h3><ul>
+<li><a href="https://tonybai.com/2018/11/26/hello-go-module-proxy/" target="_blank" rel="noopener">Hello，Go module proxy</a></li>
+<li><a href="https://juejin.im/post/5c8f9f8ef265da612c3a34b9" target="_blank" rel="noopener">Go Module Proxy</a></li>
+<li><a href="https://blog.wolfogre.com/posts/golang-package-history/" target="_blank" rel="noopener">https://blog.wolfogre.com/posts/golang-package-history/</a></li>
+<li><a href="https://juejin.im/post/5d8ee2db6fb9a04e0b0d9c8b" target="_blank" rel="noopener">https://juejin.im/post/5d8ee2db6fb9a04e0b0d9c8b</a></li>
+<li><a href="https://github.com/goproxy/goproxy.cn/" target="_blank" rel="noopener">https://github.com/goproxy/goproxy.cn/</a></li>
+</ul>
 
     </div>
 
@@ -404,7 +432,7 @@
           
           <div class="post-tags">
             
-              <a href="/tags/ios/" rel="tag"># ios</a>
+              <a href="/tags/golang/" rel="tag"># golang</a>
             
           </div>
         
@@ -414,8 +442,8 @@
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
-                <a href="/p/d34774ef.html" rel="next" title="mongodb操作教程">
-                  <i class="fa fa-chevron-left"></i> mongodb操作教程
+                <a href="/p/48fcb916.html" rel="next" title="【转载】如何超过大多数人">
+                  <i class="fa fa-chevron-left"></i> 【转载】如何超过大多数人
                 </a>
               
             </div>
@@ -423,10 +451,6 @@
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-              
-                <a href="/p/934b1a1.html" rel="prev" title="aws搭建shadowsocks梯子翻墙">
-                  aws搭建shadowsocks梯子翻墙 <i class="fa fa-chevron-right"></i>
-                </a>
               
             </div>
           </div>
@@ -484,7 +508,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#iOS使用openAL控制声音的输出设备"><span class="nav-number">1.</span> <span class="nav-text">iOS使用openAL控制声音的输出设备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#iOS-AVAudioSession-监听静音开关"><span class="nav-number">2.</span> <span class="nav-text">iOS AVAudioSession 监听静音开关</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#0-前言"><span class="nav-number">1.</span> <span class="nav-text">0. 前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-goproxy"><span class="nav-number">2.</span> <span class="nav-text">1.  goproxy</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-安装go"><span class="nav-number">2.0.1.</span> <span class="nav-text">1.1 安装go</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2-安装goproxy"><span class="nav-number">2.0.2.</span> <span class="nav-text">1.2 安装goproxy</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3-代理"><span class="nav-number">2.0.3.</span> <span class="nav-text">1.3 代理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-4-nginx配置"><span class="nav-number">2.0.4.</span> <span class="nav-text">1.4 nginx配置</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Athens"><span class="nav-number">3.</span> <span class="nav-text">2.  Athens</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-参考资料"><span class="nav-number">4.</span> <span class="nav-text">3. 参考资料</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -694,9 +718,9 @@
 </script>
 <script>
   function disqus_config() {
-    this.page.url = "https://unix2dos.github.io/p/9ecea432.html";
-    this.page.identifier = "p/9ecea432.html";
-    this.page.title = 'iOS录音遇到的问题';};
+    this.page.url = "https://unix2dos.github.io/p/74b41bb2.html";
+    this.page.identifier = "p/74b41bb2.html";
+    this.page.title = 'goproxy的部署实践';};
   function loadComments() {
     if (window.DISQUS) {
       DISQUS.reset({
