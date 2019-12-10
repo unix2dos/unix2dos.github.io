@@ -63,7 +63,7 @@
 <meta property="og:site_name" content="Levon&#39;s Blog">
 <meta property="og:description" content="1. 函数依赖1.1 函数依赖(有我就能决定你)设X,Y是关系R的两个属性集合，当任何时刻R中的任意两个元组中的X属性值相同时，则它们的Y属性值也相同，则称X函数决定Y，或Y函数依赖于X。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-12-10T14:56:11.882Z">
+<meta property="og:updated_time" content="2019-12-10T16:02:31.089Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数据库范式和函数依赖">
 <meta name="twitter:description" content="1. 函数依赖1.1 函数依赖(有我就能决定你)设X,Y是关系R的两个属性集合，当任何时刻R中的任意两个元组中的X属性值相同时，则它们的Y属性值也相同，则称X函数决定Y，或Y函数依赖于X。">
@@ -275,12 +275,40 @@
                 
               
 
-              <time title="创建时间：2019-12-10 21:11:46 / 修改时间：22:56:11" itemprop="dateCreated datePublished" datetime="2019-12-10T21:11:46+08:00">2019-12-10</time>
+              <time title="创建时间：2019-12-10 21:11:46" itemprop="dateCreated datePublished" datetime="2019-12-10T21:11:46+08:00">2019-12-10</time>
             </span>
           
             
 
             
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-11 00:02:31" itemprop="dateModified" datetime="2019-12-11T00:02:31+08:00">2019-12-11</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/1-编程语言/" itemprop="url" rel="index"><span itemprop="name">1-编程语言</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/1-编程语言/sql/" itemprop="url" rel="index"><span itemprop="name">sql</span></a></span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -306,7 +334,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span>1.7k</span>
+              <span>1.8k</span>
             </span>
           
             <span class="post-meta-item" title="阅读时长">
@@ -342,18 +370,22 @@
 <p>● 如果X和Y之间是1：n关系（一对多关系），如年龄(X)和姓名(Y)之间就是1:n关系，则存在函数依赖Y → X。</p>
 <p>●如果X和Y之间是m：n关系（多对多关系），如学生(X)和课程(Y)之间就是m:n关系，则X和Y之间不存在函数依赖。</p>
 <h3 id="3-范式"><a href="#3-范式" class="headerlink" title="3. 范式"></a>3. 范式</h3><p>关系数据库有六种，一、二、三、四、五和BC。</p>
-<h5 id="3-1-1NF-关系数据库自带1NF"><a href="#3-1-1NF-关系数据库自带1NF" class="headerlink" title="3.1 1NF (关系数据库自带1NF)"></a>3.1 1NF (关系数据库自带1NF)</h5><p>如果关系模式R是第一范式的模式，那么，R的每一个关系r的属性都是原子项，不可分割。</p>
+<h5 id="3-1-1NF-问题-同字段内容重复-要拆表-gt-2NF"><a href="#3-1-1NF-问题-同字段内容重复-要拆表-gt-2NF" class="headerlink" title="3.1 1NF (问题: 同字段内容重复, 要拆表-&gt;2NF)"></a>3.1 1NF (问题: 同字段内容重复, 要拆表-&gt;2NF)</h5><p>如果关系模式R是第一范式的模式，那么，R的每一个关系r的属性都是原子项，不可分割。</p>
 <p>1NF是关系模式应具备的最起码的条件，如果数据库设计不能满足第一范式，就不能称为关系型数据库。</p>
-<h5 id="3-2-2NF-有主键-主键们大家必须一起决定其他的属性-不能有部分依赖"><a href="#3-2-2NF-有主键-主键们大家必须一起决定其他的属性-不能有部分依赖" class="headerlink" title="3.2 2NF (有主键, 主键们大家必须一起决定其他的属性, 不能有部分依赖)"></a>3.2 2NF (有主键, 主键们大家必须一起决定其他的属性, 不能有部分依赖)</h5><p>如果关系模式R是1NF，且每一个非主属性完全依赖于候选建，那么就称R是第二范式。</p>
+<p>关系数据库自带1NF</p>
+<h5 id="3-2-2NF-问题-非主属性不同字段之间关联-要拆表-gt-3NF"><a href="#3-2-2NF-问题-非主属性不同字段之间关联-要拆表-gt-3NF" class="headerlink" title="3.2 2NF (问题: 非主属性不同字段之间关联, 要拆表-&gt;3NF)"></a>3.2 2NF (问题: 非主属性不同字段之间关联, 要拆表-&gt;3NF)</h5><p>如果关系模式R是1NF，且每一个非主属性完全依赖于候选建，那么就称R是第二范式。</p>
 <p>第二范式要满足的条件：首先要满足第一范式，其次每一个非主属性要<strong>完全函数</strong>依赖于候选键，或者是主键。也就是说，每个非主属性是由整个主键函数决定的，而不能有主键的一部分来决定。</p>
-<h5 id="3-3-3NF-其他的属性-非主键-都不能依赖其他的属性"><a href="#3-3-3NF-其他的属性-非主键-都不能依赖其他的属性" class="headerlink" title="3.3 3NF(其他的属性(非主键), 都不能依赖其他的属性)"></a>3.3 3NF(其他的属性(非主键), 都不能依赖其他的属性)</h5><p>如果关系模式R是2NF，且关系模式R（U,F）中的所有非主属性对任何候选关键字都不存在传递依赖，则称关系R是属于第三范式。</p>
+<h5 id="3-3-3NF-问题-主属性不同字段之间关联-要拆表-gt-BCNF"><a href="#3-3-3NF-问题-主属性不同字段之间关联-要拆表-gt-BCNF" class="headerlink" title="3.3 3NF (问题: 主属性不同字段之间关联, 要拆表-&gt;BCNF)"></a>3.3 3NF (问题: 主属性不同字段之间关联, 要拆表-&gt;BCNF)</h5><p>如果关系模式R是2NF，且关系模式R（U,F）中的所有非主属性对任何候选关键字都不存在传递依赖，则称关系R是属于第三范式。</p>
 <p>第三范式（3NF）；符合2NF，并且，消除传递依赖。</p>
 <h5 id="3-4-BCNF"><a href="#3-4-BCNF" class="headerlink" title="3.4 BCNF"></a>3.4 BCNF</h5><p>符合3NF，并且，主属性不依赖于主属性。若关系模式R属于第一范式，且每个属性都不传递依赖于键码，则R属于BC范式。</p>
+<p>在某些特殊情况下，即使关系模式符合 3NF 的要求，仍然存在着插入异常，修改异常与删除异常的问题，仍然不是 ”好“ 的设计。</p>
+<p>造成此问题的原因：存在着主属性对于码的部分函数依赖与传递函数依赖。</p>
 <h5 id="3-5-总结"><a href="#3-5-总结" class="headerlink" title="3.5 总结"></a>3.5 总结</h5><p>应用的范式越高，则表越多。表多会带来很多问题：1 查询时要连接多个表，增加了查询的复杂度. 2 查询时需要连接多个表，降低了数据库查询性能</p>
 <p>所以有的时候需要应用反范式化</p>
 <ul>
-<li>2NF在1NF的基础之上，消除了非主属性对于码的部分函数依赖。</li>
-<li>3NF在2NF的基础之上，消除了非主属性对于码的传递函数依赖。</li>
+<li>2NF在1NF的基础之上，消除了<strong>非主属性</strong>对于码的部分函数依赖。</li>
+<li>3NF在2NF的基础之上，消除了<strong>非主属性</strong>对于码的传递函数依赖。</li>
+<li>BCNF 在3NF的基础上，消除<strong>主属性</strong>对于码的部分与传递函数依赖。</li>
 </ul>
 <h3 id="4-其他概念"><a href="#4-其他概念" class="headerlink" title="4. 其他概念"></a>4. 其他概念</h3><h5 id="4-1-码"><a href="#4-1-码" class="headerlink" title="4.1 码"></a>4.1 码</h5><p>设 K 为某表中的一个属性或属性组，若除 K 之外的所有属性都完全函数依赖于 K（这个“完全”不要漏了），那么我们称 K 为<strong>候选码</strong>，简称为<strong>码</strong>。在实际中我们通常可以理解为：假如当 K 确定的情况下，该表除 K 之外的所有属性的值也就随之确定，那么 K 就是码。一张表中可以有超过一个码。（实际应用中为了方便，通常选择其中的一个码作为主码）</p>
 <h5 id="4-2-主属性"><a href="#4-2-主属性" class="headerlink" title="4.2 主属性"></a>4.2 主属性</h5><p>包含在任何一个码中的属性成为主属性。非主属性反之.</p>
@@ -475,7 +507,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-函数依赖"><span class="nav-number">1.</span> <span class="nav-text">1. 函数依赖</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-函数依赖-有我就能决定你"><span class="nav-number">1.0.1.</span> <span class="nav-text">1.1 函数依赖(有我就能决定你)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2-平凡函数依赖-我决定的值还是我自己内部-走不出自我-于是平凡的我"><span class="nav-number">1.0.2.</span> <span class="nav-text">1.2. 平凡函数依赖(我决定的值还是我自己内部, 走不出自我, 于是平凡的我)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3-非平凡函数依赖-我决定的值大千世界"><span class="nav-number">1.0.3.</span> <span class="nav-text">1.3 非平凡函数依赖(我决定的值大千世界)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-4-完全函数依赖-我要和别人一起决定你"><span class="nav-number">1.0.4.</span> <span class="nav-text">1.4. 完全函数依赖 (我要和别人一起决定你)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-5-部分函数依赖-我的一部分就能决定你"><span class="nav-number">1.0.5.</span> <span class="nav-text">1.5. 部分函数依赖(我的一部分就能决定你)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-6-传递函数依赖-决定的传递关系"><span class="nav-number">1.0.6.</span> <span class="nav-text">1.6. 传递函数依赖 (决定的传递关系)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-属性关系"><span class="nav-number">2.</span> <span class="nav-text">2. 属性关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-范式"><span class="nav-number">3.</span> <span class="nav-text">3. 范式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-1NF-关系数据库自带1NF"><span class="nav-number">3.0.1.</span> <span class="nav-text">3.1 1NF (关系数据库自带1NF)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2-2NF-有主键-主键们大家必须一起决定其他的属性-不能有部分依赖"><span class="nav-number">3.0.2.</span> <span class="nav-text">3.2 2NF (有主键, 主键们大家必须一起决定其他的属性, 不能有部分依赖)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-3-3NF-其他的属性-非主键-都不能依赖其他的属性"><span class="nav-number">3.0.3.</span> <span class="nav-text">3.3 3NF(其他的属性(非主键), 都不能依赖其他的属性)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-4-BCNF"><span class="nav-number">3.0.4.</span> <span class="nav-text">3.4 BCNF</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-5-总结"><span class="nav-number">3.0.5.</span> <span class="nav-text">3.5 总结</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-其他概念"><span class="nav-number">4.</span> <span class="nav-text">4. 其他概念</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#4-1-码"><span class="nav-number">4.0.1.</span> <span class="nav-text">4.1 码</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-主属性"><span class="nav-number">4.0.2.</span> <span class="nav-text">4.2 主属性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-参考资料"><span class="nav-number">5.</span> <span class="nav-text">5. 参考资料</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-函数依赖"><span class="nav-number">1.</span> <span class="nav-text">1. 函数依赖</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-函数依赖-有我就能决定你"><span class="nav-number">1.0.1.</span> <span class="nav-text">1.1 函数依赖(有我就能决定你)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2-平凡函数依赖-我决定的值还是我自己内部-走不出自我-于是平凡的我"><span class="nav-number">1.0.2.</span> <span class="nav-text">1.2. 平凡函数依赖(我决定的值还是我自己内部, 走不出自我, 于是平凡的我)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3-非平凡函数依赖-我决定的值大千世界"><span class="nav-number">1.0.3.</span> <span class="nav-text">1.3 非平凡函数依赖(我决定的值大千世界)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-4-完全函数依赖-我要和别人一起决定你"><span class="nav-number">1.0.4.</span> <span class="nav-text">1.4. 完全函数依赖 (我要和别人一起决定你)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-5-部分函数依赖-我的一部分就能决定你"><span class="nav-number">1.0.5.</span> <span class="nav-text">1.5. 部分函数依赖(我的一部分就能决定你)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-6-传递函数依赖-决定的传递关系"><span class="nav-number">1.0.6.</span> <span class="nav-text">1.6. 传递函数依赖 (决定的传递关系)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-属性关系"><span class="nav-number">2.</span> <span class="nav-text">2. 属性关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-范式"><span class="nav-number">3.</span> <span class="nav-text">3. 范式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-1NF-问题-同字段内容重复-要拆表-gt-2NF"><span class="nav-number">3.0.1.</span> <span class="nav-text">3.1 1NF (问题: 同字段内容重复, 要拆表-&gt;2NF)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2-2NF-问题-非主属性不同字段之间关联-要拆表-gt-3NF"><span class="nav-number">3.0.2.</span> <span class="nav-text">3.2 2NF (问题: 非主属性不同字段之间关联, 要拆表-&gt;3NF)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-3-3NF-问题-主属性不同字段之间关联-要拆表-gt-BCNF"><span class="nav-number">3.0.3.</span> <span class="nav-text">3.3 3NF (问题: 主属性不同字段之间关联, 要拆表-&gt;BCNF)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-4-BCNF"><span class="nav-number">3.0.4.</span> <span class="nav-text">3.4 BCNF</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-5-总结"><span class="nav-number">3.0.5.</span> <span class="nav-text">3.5 总结</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-其他概念"><span class="nav-number">4.</span> <span class="nav-text">4. 其他概念</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#4-1-码"><span class="nav-number">4.0.1.</span> <span class="nav-text">4.1 码</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-主属性"><span class="nav-number">4.0.2.</span> <span class="nav-text">4.2 主属性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-参考资料"><span class="nav-number">5.</span> <span class="nav-text">5. 参考资料</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -602,7 +634,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">7:24</span>
+    <span title="站点阅读时长">7:25</span>
 </div>
 
         
