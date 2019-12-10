@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.json',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="1. 函数依赖1.1 函数依赖(有我就能决定你)设X,Y是关系R的两个属性集合，当任何时刻R中的任意两个元组中的X属性值相同时，则它们的Y属性值也相同，则称X函数决定Y，或Y函数依赖于X。">
+<meta name="keywords" content="sql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库范式和函数依赖">
+<meta property="og:url" content="https://unix2dos.github.io/p/2e33702e.html">
+<meta property="og:site_name" content="Levon&#39;s Blog">
+<meta property="og:description" content="1. 函数依赖1.1 函数依赖(有我就能决定你)设X,Y是关系R的两个属性集合，当任何时刻R中的任意两个元组中的X属性值相同时，则它们的Y属性值也相同，则称X函数决定Y，或Y函数依赖于X。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-12-10T14:56:11.882Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据库范式和函数依赖">
+<meta name="twitter:description" content="1. 函数依赖1.1 函数依赖(有我就能决定你)设X,Y是关系R的两个属性集合，当任何时刻R中的任意两个元组中的X属性值相同时，则它们的Y属性值也相同，则称X函数决定Y，或Y函数依赖于X。">
+  <link rel="canonical" href="https://unix2dos.github.io/p/2e33702e">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>数据库范式和函数依赖 | Levon's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Levon's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">微信:  L6241425</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>时光</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/2e33702e.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Levon">
+      <meta itemprop="description" content="Never Give Up">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Levon's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">数据库范式和函数依赖
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-12-10 21:11:46 / 修改时间：22:56:11" itemprop="dateCreated datePublished" datetime="2019-12-10T21:11:46+08:00">2019-12-10</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/p/2e33702e.html#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/2e33702e.html" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span>1.7k</span>
+            </span>
+          
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span>2 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="1-函数依赖"><a href="#1-函数依赖" class="headerlink" title="1. 函数依赖"></a>1. 函数依赖</h3><h5 id="1-1-函数依赖-有我就能决定你"><a href="#1-1-函数依赖-有我就能决定你" class="headerlink" title="1.1 函数依赖(有我就能决定你)"></a>1.1 函数依赖(有我就能决定你)</h5><p>设X,Y是关系R的两个属性集合，当任何时刻R中的任意两个元组中的X属性值相同时，则它们的Y属性值也相同，则称X函数决定Y，或Y函数依赖于X。</p>
+<a id="more"></a>
+
+<h5 id="1-2-平凡函数依赖-我决定的值还是我自己内部-走不出自我-于是平凡的我"><a href="#1-2-平凡函数依赖-我决定的值还是我自己内部-走不出自我-于是平凡的我" class="headerlink" title="1.2. 平凡函数依赖(我决定的值还是我自己内部, 走不出自我, 于是平凡的我)"></a>1.2. 平凡函数依赖(我决定的值还是我自己内部, 走不出自我, 于是平凡的我)</h5><p>当关系中属性集合Y是属性集合X的子集时(Y⊆X)，存在函数依赖X→Y，即一组属性函数决定它的所有子集，这种函数依赖称为平凡函数依赖。</p>
+<h5 id="1-3-非平凡函数依赖-我决定的值大千世界"><a href="#1-3-非平凡函数依赖-我决定的值大千世界" class="headerlink" title="1.3 非平凡函数依赖(我决定的值大千世界)"></a>1.3 非平凡函数依赖(我决定的值大千世界)</h5><p>当关系中属性集合Y不是属性集合X的子集时，存在函数依赖X→Y，则称这种函数依赖为非平凡函数依赖。</p>
+<h5 id="1-4-完全函数依赖-我要和别人一起决定你"><a href="#1-4-完全函数依赖-我要和别人一起决定你" class="headerlink" title="1.4. 完全函数依赖 (我要和别人一起决定你)"></a>1.4. 完全函数依赖 (我要和别人一起决定你)</h5><p>设X,Y是关系R的两个属性集合，X’是X的真子集，存在X→Y，但对每一个X’都有X’!→Y，则称Y完全函数依赖于X。</p>
+<h5 id="1-5-部分函数依赖-我的一部分就能决定你"><a href="#1-5-部分函数依赖-我的一部分就能决定你" class="headerlink" title="1.5. 部分函数依赖(我的一部分就能决定你)"></a>1.5. 部分函数依赖(我的一部分就能决定你)</h5><p>设X,Y是关系R的两个属性集合，存在X→Y，若X’是X的真子集，存在X’→Y，则称Y部分函数依赖于X。</p>
+<h5 id="1-6-传递函数依赖-决定的传递关系"><a href="#1-6-传递函数依赖-决定的传递关系" class="headerlink" title="1.6. 传递函数依赖 (决定的传递关系)"></a>1.6. 传递函数依赖 (决定的传递关系)</h5><p>设X,Y,Z是关系R中互不相同的属性集合，存在X→Y(Y !→X),Y→Z，则称Z传递函数依赖于X。</p>
+<h3 id="2-属性关系"><a href="#2-属性关系" class="headerlink" title="2. 属性关系"></a>2. 属性关系</h3><p>属性之间有三种关系，但并不是每一种关系都存在函数依赖。设R(U)是属性集U上的关系模式，X、Y是U的子集：</p>
+<p>● 如果X和Y之间是1：1关系（一对一关系），如学校(X)和校长(Y)之间就是1:1关系，则存在函数依赖X → Y和Y →X。</p>
+<p>● 如果X和Y之间是1：n关系（一对多关系），如年龄(X)和姓名(Y)之间就是1:n关系，则存在函数依赖Y → X。</p>
+<p>●如果X和Y之间是m：n关系（多对多关系），如学生(X)和课程(Y)之间就是m:n关系，则X和Y之间不存在函数依赖。</p>
+<h3 id="3-范式"><a href="#3-范式" class="headerlink" title="3. 范式"></a>3. 范式</h3><p>关系数据库有六种，一、二、三、四、五和BC。</p>
+<h5 id="3-1-1NF-关系数据库自带1NF"><a href="#3-1-1NF-关系数据库自带1NF" class="headerlink" title="3.1 1NF (关系数据库自带1NF)"></a>3.1 1NF (关系数据库自带1NF)</h5><p>如果关系模式R是第一范式的模式，那么，R的每一个关系r的属性都是原子项，不可分割。</p>
+<p>1NF是关系模式应具备的最起码的条件，如果数据库设计不能满足第一范式，就不能称为关系型数据库。</p>
+<h5 id="3-2-2NF-有主键-主键们大家必须一起决定其他的属性-不能有部分依赖"><a href="#3-2-2NF-有主键-主键们大家必须一起决定其他的属性-不能有部分依赖" class="headerlink" title="3.2 2NF (有主键, 主键们大家必须一起决定其他的属性, 不能有部分依赖)"></a>3.2 2NF (有主键, 主键们大家必须一起决定其他的属性, 不能有部分依赖)</h5><p>如果关系模式R是1NF，且每一个非主属性完全依赖于候选建，那么就称R是第二范式。</p>
+<p>第二范式要满足的条件：首先要满足第一范式，其次每一个非主属性要<strong>完全函数</strong>依赖于候选键，或者是主键。也就是说，每个非主属性是由整个主键函数决定的，而不能有主键的一部分来决定。</p>
+<h5 id="3-3-3NF-其他的属性-非主键-都不能依赖其他的属性"><a href="#3-3-3NF-其他的属性-非主键-都不能依赖其他的属性" class="headerlink" title="3.3 3NF(其他的属性(非主键), 都不能依赖其他的属性)"></a>3.3 3NF(其他的属性(非主键), 都不能依赖其他的属性)</h5><p>如果关系模式R是2NF，且关系模式R（U,F）中的所有非主属性对任何候选关键字都不存在传递依赖，则称关系R是属于第三范式。</p>
+<p>第三范式（3NF）；符合2NF，并且，消除传递依赖。</p>
+<h5 id="3-4-BCNF"><a href="#3-4-BCNF" class="headerlink" title="3.4 BCNF"></a>3.4 BCNF</h5><p>符合3NF，并且，主属性不依赖于主属性。若关系模式R属于第一范式，且每个属性都不传递依赖于键码，则R属于BC范式。</p>
+<h5 id="3-5-总结"><a href="#3-5-总结" class="headerlink" title="3.5 总结"></a>3.5 总结</h5><p>应用的范式越高，则表越多。表多会带来很多问题：1 查询时要连接多个表，增加了查询的复杂度. 2 查询时需要连接多个表，降低了数据库查询性能</p>
+<p>所以有的时候需要应用反范式化</p>
+<ul>
+<li>2NF在1NF的基础之上，消除了非主属性对于码的部分函数依赖。</li>
+<li>3NF在2NF的基础之上，消除了非主属性对于码的传递函数依赖。</li>
+</ul>
+<h3 id="4-其他概念"><a href="#4-其他概念" class="headerlink" title="4. 其他概念"></a>4. 其他概念</h3><h5 id="4-1-码"><a href="#4-1-码" class="headerlink" title="4.1 码"></a>4.1 码</h5><p>设 K 为某表中的一个属性或属性组，若除 K 之外的所有属性都完全函数依赖于 K（这个“完全”不要漏了），那么我们称 K 为<strong>候选码</strong>，简称为<strong>码</strong>。在实际中我们通常可以理解为：假如当 K 确定的情况下，该表除 K 之外的所有属性的值也就随之确定，那么 K 就是码。一张表中可以有超过一个码。（实际应用中为了方便，通常选择其中的一个码作为主码）</p>
+<h5 id="4-2-主属性"><a href="#4-2-主属性" class="headerlink" title="4.2 主属性"></a>4.2 主属性</h5><p>包含在任何一个码中的属性成为主属性。非主属性反之.</p>
+<h3 id="5-参考资料"><a href="#5-参考资料" class="headerlink" title="5. 参考资料"></a>5. 参考资料</h3><ul>
+<li><a href="https://www.zhihu.com/question/24696366" target="_blank" rel="noopener">https://www.zhihu.com/question/24696366</a></li>
+<li><a href="https://www.cnblogs.com/rosesmall/p/9585655.html" target="_blank" rel="noopener">https://www.cnblogs.com/rosesmall/p/9585655.html</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作, 一个耿直的笑脸~</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechatpay.jpg" alt="Levon 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="Levon 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/sql/" rel="tag"># sql</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/p/3160c079.html" rel="next" title="文件大小和网速的单位">
+                  <i class="fa fa-chevron-left"></i> 文件大小和网速的单位
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-函数依赖"><span class="nav-number">1.</span> <span class="nav-text">1. 函数依赖</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-函数依赖-有我就能决定你"><span class="nav-number">1.0.1.</span> <span class="nav-text">1.1 函数依赖(有我就能决定你)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2-平凡函数依赖-我决定的值还是我自己内部-走不出自我-于是平凡的我"><span class="nav-number">1.0.2.</span> <span class="nav-text">1.2. 平凡函数依赖(我决定的值还是我自己内部, 走不出自我, 于是平凡的我)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3-非平凡函数依赖-我决定的值大千世界"><span class="nav-number">1.0.3.</span> <span class="nav-text">1.3 非平凡函数依赖(我决定的值大千世界)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-4-完全函数依赖-我要和别人一起决定你"><span class="nav-number">1.0.4.</span> <span class="nav-text">1.4. 完全函数依赖 (我要和别人一起决定你)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-5-部分函数依赖-我的一部分就能决定你"><span class="nav-number">1.0.5.</span> <span class="nav-text">1.5. 部分函数依赖(我的一部分就能决定你)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-6-传递函数依赖-决定的传递关系"><span class="nav-number">1.0.6.</span> <span class="nav-text">1.6. 传递函数依赖 (决定的传递关系)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-属性关系"><span class="nav-number">2.</span> <span class="nav-text">2. 属性关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-范式"><span class="nav-number">3.</span> <span class="nav-text">3. 范式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-1NF-关系数据库自带1NF"><span class="nav-number">3.0.1.</span> <span class="nav-text">3.1 1NF (关系数据库自带1NF)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2-2NF-有主键-主键们大家必须一起决定其他的属性-不能有部分依赖"><span class="nav-number">3.0.2.</span> <span class="nav-text">3.2 2NF (有主键, 主键们大家必须一起决定其他的属性, 不能有部分依赖)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-3-3NF-其他的属性-非主键-都不能依赖其他的属性"><span class="nav-number">3.0.3.</span> <span class="nav-text">3.3 3NF(其他的属性(非主键), 都不能依赖其他的属性)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-4-BCNF"><span class="nav-number">3.0.4.</span> <span class="nav-text">3.4 BCNF</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-5-总结"><span class="nav-number">3.0.5.</span> <span class="nav-text">3.5 总结</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-其他概念"><span class="nav-number">4.</span> <span class="nav-text">4. 其他概念</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#4-1-码"><span class="nav-number">4.0.1.</span> <span class="nav-text">4.1 码</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-主属性"><span class="nav-number">4.0.2.</span> <span class="nav-text">4.2 主属性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-参考资料"><span class="nav-number">5.</span> <span class="nav-text">5. 参考资料</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="Levon">
+  <p class="site-author-name" itemprop="name">Levon</p>
+  <div class="site-description" itemprop="description">Never Give Up</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">73</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/unix2dos" title="GitHub &rarr; https://github.com/unix2dos" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:levonfly@gmail.com" title="E-Mail &rarr; mailto:levonfly@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://twitter.com/levonfly" title="Twitter &rarr; https://twitter.com/levonfly" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://weibo.com/l6241425" title="Weibo &rarr; https://weibo.com/l6241425" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+    
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Levon</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">489k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">7:24</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://levonfly.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function disqus_config() {
+    this.page.url = "https://unix2dos.github.io/p/2e33702e.html";
+    this.page.identifier = "p/2e33702e.html";
+    this.page.title = '数据库范式和函数依赖';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://levonfly.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    window.addEventListener('load', loadComments, false);
+  
+</script>
+
+</body>
+</html>
