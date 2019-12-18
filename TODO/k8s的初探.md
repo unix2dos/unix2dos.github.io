@@ -35,10 +35,15 @@ brew cask install minikube
 Minikube 默认的虚拟化引擎是 `VirtualBox`, 我们用`hyperkit` 进行替代
 
 ```bash
+rm -rf ~/.minikube
 minikube start --vm-driver=hyperkit --image-repository=registry.cn-hangzhou.aliyuncs.com/google_containers
 ```
 
 为什么增加后面的image-repository, 因为GFW总是会在无形中增加学习的难度. 请参考: https://github.com/kubernetes/minikube/issues/3860
+
+
+
+如果你在第一次启动 Minikube 时遇到错误或被中断，后面重试仍然失败时，可以尝试运行 `minikube delete` 把集群删除，重新来过。过程如果比较慢, 请耐心等待.
 
 
 
@@ -84,7 +89,57 @@ eval $(minikube docker-env -u)
 
 
 
-### 3. 参考资料
+
+
+
+
+### 3. 遇到的问题
+
+##### 3.1 下载不下来
+
+```bash
+rm -rf ~/.minikube
+minikube start --vm-driver=hyperkit --image-repository=registry.cn-hangzhou.aliyuncs.com/google_containers
+```
+
+
+
+##### 3.2 Get https://registry-1.docker.io/v2/: proxyconnect tcp: dial tcp 127.0.0.1:7890: connect: connection refused
+
+把vpn代理去掉
+
+```bash
+rm -rf ~/.minikube
+minikube start --vm-driver=hyperkit --image-repository=registry.cn-hangzhou.aliyuncs.com/google_containers
+```
+
+
+
+##### 3.3 Get https://registry-1.docker.io/v2/: dial tcp: lookup registry-1.docker.io on 192.168.64.1:53: no such host
+
+Setting the DNS Server for the Docker Daemon via "Preferences > Daemon > Advanced" based upon advice given [here](https://github.com/moby/moby/issues/32270#issuecomment-290829987) by [@thaJeztah](https://github.com/thaJeztah) via putting in the following value worked for me (no reinstall required):
+
+```
+{ "dns" : [ "8.8.8.8", "8.8.4.4" ]}
+```
+
+
+
+##### 3.4 Get https://registry-1.docker.io/v2/: dial tcp: lookup registry-1.docker.io on 192.168.64.1:53: server misbehaving
+
+https://github.com/kubernetes/minikube/issues/3036
+
+https://github.com/kubernetes/minikube/issues/4594
+
+
+
+
+
+### 4. 参考资料
 
 + https://zhuanlan.zhihu.com/p/39937913
 + https://blog.csdn.net/qq_35254726/article/details/54233781
+
+
+
+### 
