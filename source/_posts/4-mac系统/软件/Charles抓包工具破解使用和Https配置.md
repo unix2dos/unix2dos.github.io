@@ -13,15 +13,19 @@ date: 2018-12-18 15:24:01
 
 
 
-## Charles 软件破解
+### 1. Charles 软件破解
 
 https://github.com/8enet/Charles-Crack
 
 https://www.zzzmode.com/mytools/charles/
 
+发现一个更好用的抓包软件, 免费
+
+https://github.com/ProxymanApp/Proxyman
 
 
-## Charles Mac Chrome抓包
+
+### 2. Charles Mac Chrome抓包
 
 需要注意的是，Chrome 和 Firefox 浏览器默认并不使用系统的代理服务器设置，而 Charles 是通过将自己设置成代理服务器来完成封包截取的，所以在默认情况下无法截取 Chrome 和 Firefox 浏览器的网络通讯内容。
 
@@ -31,7 +35,7 @@ https://www.zzzmode.com/mytools/charles/
 
 <!-- more -->
 
-## Charles 手机 Https抓包
+### 3. Charles 手机 Https抓包
 
 ##### 1. 安装电脑端证书  在`Help`菜单下的路径,下载根证书,并且在`钥匙串`里设置信任此证书.
 
@@ -59,7 +63,13 @@ https://www.zzzmode.com/mytools/charles/
 
 
 
-## Charles可以抓取https报文的原理
+最新系统多了一道程序:
+
++ 需要在关于本机->证书信任设置->再次信任一下证书
+
+
+
+### 4. Charles可以抓取https报文的原理
 
 原理就是: **中间人攻击**
 
@@ -90,3 +100,4 @@ https://www.zzzmode.com/mytools/charles/
 
 + https://blog.devtang.com/2015/11/14/charles-introduction/  Charles 从入门到精通
 + https://www.ruanyifeng.com/blog/2014/09/illustration-ssl.html  图解SSL/TLS协议
++ https://www.laoqingcai.com/https-mitm/ 中间人攻击
