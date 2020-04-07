@@ -1,5 +1,5 @@
 ---
-title: 爬虫利器selenium的使用
+title: 爬虫利器selenium和无头浏览器的使用
 tags:
   - 爬虫
   - python
@@ -76,11 +76,21 @@ print(cookies_dict)
 
 + centos 安装 chrome
 
-```bash
-wget https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
-sudo yum localinstall google-chrome-stable_current_x86_64.rpm
-google-chrome --no-sandbox --version # 看到版本后去下载相关的driver
-```
+  ```bash
+  wget https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+  sudo yum localinstall google-chrome-stable_current_x86_64.rpm
+  google-chrome --no-sandbox --version # 看到版本后去下载相关的driver
+  ```
+
++ ubuntu 安装 chrome
+
+  ```
+  wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+  sudo apt install ./google-chrome-stable_current_amd64.deb
+google-chrome --no-sandbox --version
+  ```
+  
+  
 
 
 
