@@ -1,9 +1,13 @@
 ---
-title: "shell读取文件内容遇到的坑"
-date: 2020-04-14 15:54:46
+title: shell读取文件内容遇到的坑
 tags:
-- shell
-- linux
+  - shell
+  - linux
+categories:
+  - 2-linux系统
+  - shell
+abbrlink: '67723314'
+date: 2020-04-14 15:54:46
 ---
 
 文件内容如下, 需要把1234读取赋值给shell内部的变量nodeid
