@@ -1,5 +1,5 @@
 ---
-title: python爬虫在docker中的实践
+title: python爬虫项目在docker中的部署实践
 tags:
   - docker
   - python
@@ -58,8 +58,6 @@ https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors
 将 https://xxxxxxxxx.mirror.aliyuncs.com 加到 "registry-mirrors" 的数组里，点击Apply & Restart 按钮，等待 Docker 重启并应用配置的镜像加速器。
 
 ps: 就是阿里云加速, 在后续的安装软件中也是特别慢, 此处建议在云服务器上(免费的谷歌云)操作.
-
-
 
 ##### 3.2 测试
 
