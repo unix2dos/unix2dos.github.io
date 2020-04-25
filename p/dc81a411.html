@@ -55,19 +55,19 @@
   };
 </script>
 
-  <meta name="description" content="1. NAT网络地址转换:资料: https://zh.wikipedia.org/wiki/%E7%BD%91%E7%BB%9C%E5%9C%B0%E5%9D%80%E8%BD%AC%E6%8D%A2 完全圆锥型NAT( Full Cone NAT ) 地址限制圆锥型NAT( Address Restricted Cone NAT ) 端口限制圆锥型NAT( Port Restricted Co">
-<meta name="keywords" content="nat">
+  <meta name="description" content="1. 选择镜像这里选择基础镜像时是有讲究. 一是应当尽量选择官方镜像库里的基础镜像；二是应当选择轻量级的镜像做底包. 就典型的 Linux 基础镜像来说，大小关系如下：Ubuntu &amp;gt; CentOS &amp;gt; Debian&amp;gt; Alpine Alpine Docker 镜像也继承了 Alpine Linux 发行版的这些优势。相比于其他 Docker 镜像，它的容量非常小，仅仅只有 5">
+<meta name="keywords" content="python,爬虫,docker">
 <meta property="og:type" content="article">
-<meta property="og:title" content="nat穿透,stun,turn,ice介绍">
-<meta property="og:url" content="https://unix2dos.github.io/p/f3e0f5f5.html">
+<meta property="og:title" content="python爬虫在docker中的实践">
+<meta property="og:url" content="https://unix2dos.github.io/p/dc81a411.html">
 <meta property="og:site_name" content="Levon&#39;s Blog">
-<meta property="og:description" content="1. NAT网络地址转换:资料: https://zh.wikipedia.org/wiki/%E7%BD%91%E7%BB%9C%E5%9C%B0%E5%9D%80%E8%BD%AC%E6%8D%A2 完全圆锥型NAT( Full Cone NAT ) 地址限制圆锥型NAT( Address Restricted Cone NAT ) 端口限制圆锥型NAT( Port Restricted Co">
+<meta property="og:description" content="1. 选择镜像这里选择基础镜像时是有讲究. 一是应当尽量选择官方镜像库里的基础镜像；二是应当选择轻量级的镜像做底包. 就典型的 Linux 基础镜像来说，大小关系如下：Ubuntu &amp;gt; CentOS &amp;gt; Debian&amp;gt; Alpine Alpine Docker 镜像也继承了 Alpine Linux 发行版的这些优势。相比于其他 Docker 镜像，它的容量非常小，仅仅只有 5">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-27T15:36:51.205Z">
+<meta property="og:updated_time" content="2020-04-25T05:00:42.283Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="nat穿透,stun,turn,ice介绍">
-<meta name="twitter:description" content="1. NAT网络地址转换:资料: https://zh.wikipedia.org/wiki/%E7%BD%91%E7%BB%9C%E5%9C%B0%E5%9D%80%E8%BD%AC%E6%8D%A2 完全圆锥型NAT( Full Cone NAT ) 地址限制圆锥型NAT( Address Restricted Cone NAT ) 端口限制圆锥型NAT( Port Restricted Co">
-  <link rel="canonical" href="https://unix2dos.github.io/p/f3e0f5f5">
+<meta name="twitter:title" content="python爬虫在docker中的实践">
+<meta name="twitter:description" content="1. 选择镜像这里选择基础镜像时是有讲究. 一是应当尽量选择官方镜像库里的基础镜像；二是应当选择轻量级的镜像做底包. 就典型的 Linux 基础镜像来说，大小关系如下：Ubuntu &amp;gt; CentOS &amp;gt; Debian&amp;gt; Alpine Alpine Docker 镜像也继承了 Alpine Linux 发行版的这些优势。相比于其他 Docker 镜像，它的容量非常小，仅仅只有 5">
+  <link rel="canonical" href="https://unix2dos.github.io/p/dc81a411">
 
 
 <script id="page-configurations">
@@ -81,7 +81,7 @@
   };
 </script>
 
-  <title>nat穿透,stun,turn,ice介绍 | Levon's Blog</title>
+  <title>python爬虫在docker中的实践 | Levon's Blog</title>
   
 
 
@@ -247,7 +247,7 @@
   
   
   <div class="post-block post">
-    <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/f3e0f5f5.html">
+    <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/dc81a411.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Levon">
@@ -259,7 +259,7 @@
       <meta itemprop="name" content="Levon's Blog">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">nat穿透,stun,turn,ice介绍
+        <h2 class="post-title" itemprop="name headline">python爬虫在docker中的实践
 
           
         </h2>
@@ -275,40 +275,12 @@
                 
               
 
-              <time title="创建时间：2019-01-29 15:54:16" itemprop="dateCreated datePublished" datetime="2019-01-29T15:54:16+08:00">2019-01-29</time>
+              <time title="创建时间：2020-04-25 12:00:00 / 修改时间：13:00:42" itemprop="dateCreated datePublished" datetime="2020-04-25T12:00:00+08:00">2020-04-25</time>
             </span>
           
             
 
             
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-09-27 23:36:51" itemprop="dateModified" datetime="2019-09-27T23:36:51+08:00">2019-09-27</time>
-              </span>
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/2-linux系统/" itemprop="url" rel="index"><span itemprop="name">2-linux系统</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/2-linux系统/系统/" itemprop="url" rel="index"><span itemprop="name">系统</span></a></span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -322,7 +294,7 @@
       
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/p/f3e0f5f5.html#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/f3e0f5f5.html" itemprop="commentCount"></span></a>
+    <a title="disqus" href="/p/dc81a411.html#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/dc81a411.html" itemprop="commentCount"></span></a>
   </span>
   
   
@@ -334,7 +306,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span>1.2k</span>
+              <span>2.5k</span>
             </span>
           
             <span class="post-meta-item" title="阅读时长">
@@ -344,7 +316,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
           
 
@@ -357,21 +329,36 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="1-NAT网络地址转换"><a href="#1-NAT网络地址转换" class="headerlink" title="1. NAT网络地址转换:"></a>1. NAT网络地址转换:</h3><p>资料: <a href="https://zh.wikipedia.org/wiki/%E7%BD%91%E7%BB%9C%E5%9C%B0%E5%9D%80%E8%BD%AC%E6%8D%A2" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki/%E7%BD%91%E7%BB%9C%E5%9C%B0%E5%9D%80%E8%BD%AC%E6%8D%A2</a></p>
-<p>完全圆锥型NAT( Full Cone NAT )</p>
-<p>地址限制圆锥型NAT( Address Restricted Cone NAT )</p>
-<p>端口限制圆锥型NAT( Port Restricted Cone NAT ) </p>
-<p>对称型NAT( Symmetric NAT)</p>
+        <h3 id="1-选择镜像"><a href="#1-选择镜像" class="headerlink" title="1. 选择镜像"></a>1. 选择镜像</h3><p>这里选择基础镜像时是有讲究. 一是应当尽量选择官方镜像库里的基础镜像；二是应当选择轻量级的镜像做底包.</p>
+<p>就典型的 Linux 基础镜像来说，大小关系如下：Ubuntu &gt; CentOS &gt; Debian&gt; Alpine</p>
+<p>Alpine Docker 镜像也继承了 Alpine Linux 发行版的这些优势。相比于其他 Docker 镜像，它的容量非常小，仅仅只有 5 MB 左右（对比 Ubuntu 系列镜像接近 200 MB），且拥有非常友好的包管理机制apk。</p>
 <a id="more"></a>
 
-<h3 id="2-STUN-Session-Traversal-Utilities-for-NAT"><a href="#2-STUN-Session-Traversal-Utilities-for-NAT" class="headerlink" title="2. STUN(Session Traversal Utilities for NAT)"></a>2. STUN(Session Traversal Utilities for NAT)</h3><p>资料: <a href="https://zh.wikipedia.org/wiki/STUN" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki/STUN</a></p>
-<p>STUN，NAT会话穿越应用程序 <a href="https://tools.ietf.org/html/rfc5389" target="_blank" rel="noopener">https://tools.ietf.org/html/rfc5389</a>）是一种<a href="https://zh.wikipedia.org/wiki/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE" target="_blank" rel="noopener">网络协议</a>，它允许位于<a href="https://zh.wikipedia.org/wiki/%E7%BD%91%E7%BB%9C%E5%9C%B0%E5%9D%80%E8%BD%AC%E6%8D%A2" target="_blank" rel="noopener">NAT</a>（或多重NAT）后的客户端找出自己的公网地址，查出自己位于哪种类型的NAT之后以及NAT为某一个本地端口所绑定的Internet端端口。这些信息被用来在两个同时处于NAT路由器之后的主机之间创建UDP通信。该协议由RFC 5389定义。</p>
-<p>四种主要类型中有三种是可以使用的：<a href="https://zh.wikipedia.org/w/index.php?title=%E5%AE%8C%E5%85%A8%E5%9C%86%E9%94%A5%E5%9E%8BNAT&action=edit&redlink=1" target="_blank" rel="noopener">完全圆锥型NAT</a>、<a href="https://zh.wikipedia.org/w/index.php?title=%E5%8F%97%E9%99%90%E5%9C%86%E9%94%A5%E5%9E%8BNAT&action=edit&redlink=1" target="_blank" rel="noopener">受限圆锥型NAT</a>和<a href="https://zh.wikipedia.org/w/index.php?title=%E7%AB%AF%E5%8F%A3%E5%8F%97%E9%99%90%E5%9C%86%E9%94%A5%E5%9E%8BNAT&action=edit&redlink=1" target="_blank" rel="noopener">端口受限圆锥型NAT</a>——但大型公司网络中经常采用的对称型NAT（又称为双向NAT）则不能使用。</p>
-<h3 id="3-TURN-Traversal-Using-Relay-NAT"><a href="#3-TURN-Traversal-Using-Relay-NAT" class="headerlink" title="3. TURN(Traversal Using Relay NAT)"></a>3. TURN(Traversal Using Relay NAT)</h3><p>资料:  <a href="https://zh.wikipedia.org/wiki/TURN" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki/TURN</a></p>
-<p>TURN（ <a href="https://tools.ietf.org/html/rfc5766" target="_blank" rel="noopener">https://tools.ietf.org/html/rfc5766</a>），是一种数据传输协议（data-transfer protocol）。允许在TCP或UDP的连在线跨越<a href="https://zh.wikipedia.org/wiki/NAT" target="_blank" rel="noopener">NAT</a>或<a href="https://zh.wikipedia.org/wiki/%E9%98%B2%E7%81%AB%E5%A2%99" target="_blank" rel="noopener">防火墙</a>。</p>
-<h3 id="4-ICE-Interactive-Connectivity-Establishment"><a href="#4-ICE-Interactive-Connectivity-Establishment" class="headerlink" title="4. ICE(Interactive Connectivity Establishment)"></a>4. ICE(Interactive Connectivity Establishment)</h3><p>资料: <a href="https://zh.wikipedia.org/wiki/%E4%BA%92%E5%8B%95%E5%BC%8F%E9%80%A3%E6%8E%A5%E5%BB%BA%E7%AB%8B&gt;" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki/%E4%BA%92%E5%8B%95%E5%BC%8F%E9%80%A3%E6%8E%A5%E5%BB%BA%E7%AB%8B&gt;</a></p>
-<p>ice是一种综合性的<a href="https://zh.wikipedia.org/wiki/NAT%E7%A9%BF%E8%B6%8A" target="_blank" rel="noopener">NAT穿越</a>的技术, 是由<a href="https://zh.wikipedia.org/wiki/IETF" target="_blank" rel="noopener">IETF</a>的MMUSIC工作组开发出来的一种framework，可集成各种<a href="https://zh.wikipedia.org/wiki/NAT%E7%A9%BF%E9%80%8F" target="_blank" rel="noopener">NAT穿透</a>技术，如<a href="https://zh.wikipedia.org/wiki/STUN" target="_blank" rel="noopener">STUN</a>、<a href="https://zh.wikipedia.org/wiki/TURN" target="_blank" rel="noopener">TURN</a>（Traversal Using Relay NAT，中继NAT实现的穿透）、RSIP（Realm Specific IP，特定域IP）等。该framework可以让SIP的客户端利用各种NAT穿透方式打穿远程的<a href="https://zh.wikipedia.org/wiki/%E9%98%B2%E7%81%AB%E5%A2%99" target="_blank" rel="noopener">防火墙</a>。</p>
-<h3 id="5-三个协议介绍"><a href="#5-三个协议介绍" class="headerlink" title="5. 三个协议介绍"></a>5. 三个协议介绍</h3><p>资料:  <a href="https://blog.csdn.net/byxdaz/article/details/52786600" target="_blank" rel="noopener">https://blog.csdn.net/byxdaz/article/details/52786600</a>  </p>
+<h3 id="2-拷贝文件"><a href="#2-拷贝文件" class="headerlink" title="2. 拷贝文件"></a>2. 拷贝文件</h3><p>相对于 ADD,优先使用 COPY指令</p>
+<p>另外发现拷贝文件夹是把文件夹的内容拷贝进去, 而不是把整个目录拷贝进去, 坑爹 最后使用dockerignore解决这个问题.</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">copy</span><span class="bash"> . /zk8/</span></span><br></pre></td></tr></table></figure>
+
+<p>.dockerignore文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">chromedriver</span><br><span class="line">*.sh</span><br><span class="line">.*</span><br><span class="line">**/__pycache__/</span><br><span class="line">Dockerfile</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-测试-dockerfile"><a href="#3-测试-dockerfile" class="headerlink" title="3. 测试 dockerfile"></a>3. 测试 dockerfile</h3><h5 id="3-1-镜像加速"><a href="#3-1-镜像加速" class="headerlink" title="3.1 镜像加速"></a>3.1 镜像加速</h5><p>在本地测试的时候, 发现连Alpine都拉取不下来, 此处感谢伟大的 great wall. 于是选择阿里云加速.</p>
+<p><a href="https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors" target="_blank" rel="noopener">https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors</a></p>
+<p>右键点击桌面顶栏的 docker 图标，选择 Preferences ，在 Daemon 标签（Docker 17.03 之前版本为 Advanced 标签）下的 Registry mirrors 列表中</p>
+<p>将 <a href="https://xxxxxxxxx.mirror.aliyuncs.com" target="_blank" rel="noopener">https://xxxxxxxxx.mirror.aliyuncs.com</a> 加到 “registry-mirrors” 的数组里，点击Apply &amp; Restart 按钮，等待 Docker 重启并应用配置的镜像加速器。</p>
+<p>ps: 就是阿里云加速, 在后续的安装软件中也是特别慢, 此处建议在云服务器上(免费的谷歌云)操作.</p>
+<h5 id="3-2-测试"><a href="#3-2-测试" class="headerlink" title="3.2 测试"></a>3.2 测试</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker build -t zk8:0.1 .   <span class="comment">#  制作 image</span></span><br><span class="line">docker run -ti --rm zk8:0.1 /bin/sh   <span class="comment"># 启动容器结束后删除, 用这种方法可以非常方便测试</span></span><br></pre></td></tr></table></figure>
+
+<p>前期可以通过 shell 进入到容器里面测试, 在里面尝试安装相应的软件包, 然后再写 dockerfile会比较方便</p>
+<h3 id="4-安装软件包"><a href="#4-安装软件包" class="headerlink" title="4. 安装软件包"></a>4. 安装软件包</h3><p>爬虫用 python 写的, 并且使用了 selenium + 无头浏览器. 所以安装包要写在 dockerfile里, 文件如下:</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> alpine</span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> mkdir -p /zk8</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> . /zk8/</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># install python</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> <span class="built_in">echo</span> <span class="string">"**** install python ****"</span> &amp;&amp; \</span></span><br><span class="line"><span class="bash">                apk add --no-cache python3 &amp;&amp; \</span></span><br><span class="line"><span class="bash">                <span class="keyword">if</span> [ ! -e /usr/bin/python ]; <span class="keyword">then</span> ln -sf python3 /usr/bin/python ; <span class="keyword">fi</span> &amp;&amp; \</span></span><br><span class="line"><span class="bash">                <span class="built_in">echo</span> <span class="string">"**** install pip ****"</span> &amp;&amp; \</span></span><br><span class="line"><span class="bash">                python3 -m ensurepip &amp;&amp; \</span></span><br><span class="line"><span class="bash">                rm -r /usr/lib/python*/ensurepip &amp;&amp; \</span></span><br><span class="line"><span class="bash">                pip3 install --no-cache --upgrade pip setuptools wheel &amp;&amp; \</span></span><br><span class="line"><span class="bash">                <span class="keyword">if</span> [ ! -e /usr/bin/pip ]; <span class="keyword">then</span> ln -s pip3 /usr/bin/pip ; <span class="keyword">fi</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment"># install python package</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> apk add --no-cache py-lxml &amp;&amp; \</span></span><br><span class="line"><span class="bash">                apk add --no-cache chromium &amp;&amp; \</span></span><br><span class="line"><span class="bash">                apk add --no-cache chromium-chromedriver &amp;&amp; \</span></span><br><span class="line"><span class="bash">                <span class="keyword">if</span> [ -e /usr/bin/chromedriver ]; <span class="keyword">then</span> ln -s /usr/bin/chromedriver /zk8/chromedriver ; <span class="keyword">fi</span> &amp;&amp; \</span></span><br><span class="line"><span class="bash">                pip install selenium &amp;&amp; \</span></span><br><span class="line"><span class="bash">                pip install bearychat &amp;&amp; \</span></span><br><span class="line"><span class="bash">                pip install pyquery</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /zk8</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> python3 main.py</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="5-发布到-dockerhub"><a href="#5-发布到-dockerhub" class="headerlink" title="5. 发布到 dockerhub"></a>5. 发布到 dockerhub</h3><p>建议建立自己的私有仓库, 因为 dockerhub 可以免费使用一个私有仓库, 此处上传到 dockerhub.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker login <span class="comment"># 登录自己的 dockerhub 帐号</span></span><br><span class="line"></span><br><span class="line">docker tag zk8:0.1 levonfly/zk8:0.1 <span class="comment"># 此处打 tag, 格式要以 用户名/镜像名字:版本号</span></span><br><span class="line"></span><br><span class="line">docker push levonfly/zk8:0.1 <span class="comment"># 推送到 dockerhub</span></span><br></pre></td></tr></table></figure>
+
+<p>dockerhub 上还可以 link 到github, 即 github 一更新代码就重新 build.</p>
+<p>接下来就是激动人心的时刻, 在任何安装 docker 的机器上直接运行自己的爬虫.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker pull levonfly/zk8:0.1</span><br><span class="line">docker run -d --name zk8 levonfly/zk8:0.1</span><br></pre></td></tr></table></figure>
+
 
     </div>
 
@@ -410,7 +397,11 @@
           
           <div class="post-tags">
             
-              <a href="/tags/nat/" rel="tag"># nat</a>
+              <a href="/tags/python/" rel="tag"># python</a>
+            
+              <a href="/tags/爬虫/" rel="tag"># 爬虫</a>
+            
+              <a href="/tags/docker/" rel="tag"># docker</a>
             
           </div>
         
@@ -420,8 +411,8 @@
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
-                <a href="/p/f2ad59fc.html" rel="next" title="YAML语言教程">
-                  <i class="fa fa-chevron-left"></i> YAML语言教程
+                <a href="/p/40c9599.html" rel="next" title="k8s的原理和实践">
+                  <i class="fa fa-chevron-left"></i> k8s的原理和实践
                 </a>
               
             </div>
@@ -429,10 +420,6 @@
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-              
-                <a href="/p/697b4dfa.html" rel="prev" title="搭建webRTC视频聊天">
-                  搭建webRTC视频聊天 <i class="fa fa-chevron-right"></i>
-                </a>
               
             </div>
           </div>
@@ -490,7 +477,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-NAT网络地址转换"><span class="nav-number">1.</span> <span class="nav-text">1. NAT网络地址转换:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-STUN-Session-Traversal-Utilities-for-NAT"><span class="nav-number">2.</span> <span class="nav-text">2. STUN(Session Traversal Utilities for NAT)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-TURN-Traversal-Using-Relay-NAT"><span class="nav-number">3.</span> <span class="nav-text">3. TURN(Traversal Using Relay NAT)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-ICE-Interactive-Connectivity-Establishment"><span class="nav-number">4.</span> <span class="nav-text">4. ICE(Interactive Connectivity Establishment)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-三个协议介绍"><span class="nav-number">5.</span> <span class="nav-text">5. 三个协议介绍</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-选择镜像"><span class="nav-number">1.</span> <span class="nav-text">1. 选择镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-拷贝文件"><span class="nav-number">2.</span> <span class="nav-text">2. 拷贝文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-测试-dockerfile"><span class="nav-number">3.</span> <span class="nav-text">3. 测试 dockerfile</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-镜像加速"><span class="nav-number">3.0.1.</span> <span class="nav-text">3.1 镜像加速</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2-测试"><span class="nav-number">3.0.2.</span> <span class="nav-text">3.2 测试</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-安装软件包"><span class="nav-number">4.</span> <span class="nav-text">4. 安装软件包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-发布到-dockerhub"><span class="nav-number">5.</span> <span class="nav-text">5. 发布到 dockerhub</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -700,9 +687,9 @@
 </script>
 <script>
   function disqus_config() {
-    this.page.url = "https://unix2dos.github.io/p/f3e0f5f5.html";
-    this.page.identifier = "p/f3e0f5f5.html";
-    this.page.title = 'nat穿透,stun,turn,ice介绍';};
+    this.page.url = "https://unix2dos.github.io/p/dc81a411.html";
+    this.page.identifier = "p/dc81a411.html";
+    this.page.title = 'python爬虫在docker中的实践';};
   function loadComments() {
     if (window.DISQUS) {
       DISQUS.reset({
