@@ -1,8 +1,12 @@
 ---
-title: "golang测试单个文件或函数"
-date: 2020-05-13 00:00:00
+title: golang测试单个文件或函数
 tags:
-- golang
+  - golang
+categories:
+  - 1-编程语言
+  - golang
+abbrlink: 401250d7
+date: 2020-05-13 00:00:00
 ---
 
 ### 1. 测试单个文件或函数
