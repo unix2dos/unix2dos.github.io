@@ -132,7 +132,7 @@ source $(dirname $(gem which colorls))/tab_complete.sh
 - 图案不显示
 
 ```bash
-POWERLEVEL9K_MODE='nerdfont-complete' #这句话一定要在下面之前
+POWERLEVEL9K_MODE='nerdfont-complete' #这句话一定要在下面source之前
 source $ZSH/oh-my-zsh.sh
 ```
 
@@ -140,8 +140,8 @@ source $ZSH/oh-my-zsh.sh
 
 ### 8. 参考资料
 
-https://blog.biezhi.me/2018/11/build-a-beautiful-mac-terminal-environment.html #打造 Mac 下高颜值好用的终端环境
++ [打造 Mac 下高颜值好用的终端环境](https://blog.biezhi.me/2018/11/build-a-beautiful-mac-terminal-environment.html)
 
-https://medium.com/@Clovis_app/configuration-of-a-beautiful-efficient-terminal-and-prompt-on-osx-in-7-minutes-827c29391961
++ https://medium.com/@Clovis_app/configuration-of-a-beautiful-efficient-terminal-and-prompt-on-osx-in-7-minutes-827c29391961
 
 
