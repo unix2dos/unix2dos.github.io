@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.json',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="1. 滑动窗口">
+<meta name="keywords" content="linux,tcp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tcp滑动窗口和拥塞控制">
+<meta property="og:url" content="https://unix2dos.github.io/p/7eb83068.html">
+<meta property="og:site_name" content="Levon&#39;s Blog">
+<meta property="og:description" content="1. 滑动窗口">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://unix2dos.github.io/p/7eb83068/1.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/7eb83068/2.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/7eb83068/3.png">
+<meta property="og:updated_time" content="2020-06-05T16:26:32.442Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="tcp滑动窗口和拥塞控制">
+<meta name="twitter:description" content="1. 滑动窗口">
+<meta name="twitter:image" content="https://unix2dos.github.io/p/7eb83068/1.png">
+  <link rel="canonical" href="https://unix2dos.github.io/p/7eb83068">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>tcp滑动窗口和拥塞控制 | Levon's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Levon's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">微信:  L6241425</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>时光</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/7eb83068.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Levon">
+      <meta itemprop="description" content="Never Give Up">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Levon's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">tcp滑动窗口和拥塞控制
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2020-06-06 00:00:01 / 修改时间：00:26:32" itemprop="dateCreated datePublished" datetime="2020-06-06T00:00:01+08:00">2020-06-06</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/p/7eb83068.html#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/7eb83068.html" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span>1.3k</span>
+            </span>
+          
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span>1 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="1-滑动窗口"><a href="#1-滑动窗口" class="headerlink" title="1. 滑动窗口"></a>1. 滑动窗口</h1><p><img src="/p/7eb83068/1.png" alt="1"></p>
+<a id="more"></a>
+
+<h3 id="1-0-前提"><a href="#1-0-前提" class="headerlink" title="1.0 前提"></a>1.0 前提</h3><p>A-&gt;B</p>
+<p>A 是发送方, B 是接收方,  各自有自己的滑动窗口</p>
+<h3 id="1-1-B告诉A的窗口大小"><a href="#1-1-B告诉A的窗口大小" class="headerlink" title="1.1  B告诉A的窗口大小"></a>1.1  B告诉A的窗口大小</h3><p>rwnd=20  我的窗口20个</p>
+<p>ack=31  下一次给老子发31</p>
+<h3 id="1-2-A的窗口移动"><a href="#1-2-A的窗口移动" class="headerlink" title="1.2  A的窗口移动"></a>1.2  A的窗口移动</h3><ul>
+<li><p>尾部</p>
+<ul>
+<li>往前移动</li>
+<li>不动, 因为在等待 ACK </li>
+</ul>
+</li>
+<li><p>头部</p>
+<ul>
+<li>往前移动</li>
+<li>不动, 等待</li>
+<li>向后收缩, B 端的窗口变小了,(不建议这么做)</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-3-A窗口内三个指针"><a href="#1-3-A窗口内三个指针" class="headerlink" title="1.3 A窗口内三个指针"></a>1.3 A窗口内三个指针</h3><ul>
+<li>P1 已经发送的位置, 未收取到 ACK</li>
+<li>P2 准备发送的位置</li>
+<li>P3 尾部</li>
+</ul>
+<h3 id="1-4-B的窗口状态"><a href="#1-4-B的窗口状态" class="headerlink" title="1.4  B的窗口状态"></a>1.4  B的窗口状态</h3><ul>
+<li>B 窗口内,  数据未按序到达, 只能现在缓存中,  因为B 只能按正确顺序发送ACK</li>
+<li>如果 A 一只没有收到 ACK,还有超时重传机制</li>
+</ul>
+<p><img src="/p/7eb83068/2.png" alt="1"></p>
+<h3 id="1-5-总结"><a href="#1-5-总结" class="headerlink" title="1.5 总结"></a>1.5 总结</h3><ul>
+<li><p>A的窗口大小不一定和 B 说的一样</p>
+<ul>
+<li>传说窗口值有时间滞后</li>
+<li>网络拥塞情况</li>
+</ul>
+</li>
+<li><p>B 的不按时序达到的数据如何处理, tcp 没有规定</p>
+<ul>
+<li>直接丢弃, 简单, 效率差</li>
+<li>缓存在窗口内, 等到收到连续了后, 再 ACK</li>
+</ul>
+</li>
+<li><p>为了增加效率,  tcp 要求接收方 B </p>
+<ul>
+<li>累计确认, 多个一起确认</li>
+<li>捎带确认. 发数据顺便确认, 不经常发生</li>
+<li>不能太晚确认, 要不然 A 就超时重传</li>
+</ul>
+</li>
+<li><p>全双工通信</p>
+<ul>
+<li>其实A和B都有发送窗口和接收窗口</li>
+</ul>
+</li>
+</ul>
+<h1 id="2-拥塞机制"><a href="#2-拥塞机制" class="headerlink" title="2. 拥塞机制"></a>2. 拥塞机制</h1><p>出现拥塞不控制,吞吐量下降,  类似堵车</p>
+<h3 id="2-0-前提"><a href="#2-0-前提" class="headerlink" title="2.0 前提"></a>2.0 前提</h3><p>数据发送 A-&gt;B, B 有足够大的窗口, A 的窗口根据拥塞调节 </p>
+<h3 id="2-1-A的窗口大小-cwnd"><a href="#2-1-A的窗口大小-cwnd" class="headerlink" title="2.1 A的窗口大小(cwnd)"></a>2.1 A的窗口大小(cwnd)</h3><ul>
+<li><p>没有拥塞,增大, 有缩小</p>
+</li>
+<li><p>判断拥塞依据, 没有收到 B 的 ACK, 自己会重传</p>
+</li>
+<li><p>将拥塞窗口(swnd) =发送窗口(cwnd)</p>
+</li>
+<li><p>慢开始变量 ssthresh</p>
+<ul>
+<li>cwnd &lt; ssthresh 慢开始算法</li>
+<li>cwnd &gt;  ssthresh 拥塞避免算法</li>
+<li>cwnd =  ssthresh  两个算法都可以</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-2-窗口变量的变化"><a href="#2-2-窗口变量的变化" class="headerlink" title="2.2 窗口变量的变化"></a>2.2 窗口变量的变化</h3><p>cwnd=1</p>
+<p>swnd=cwnd</p>
+<p>ssthresh=16</p>
+<ul>
+<li><p>慢开始算法开始  每次收到 ack, 就+1,  然后 +2,  + 4,  + 8 , 有种指数增长概念</p>
+</li>
+<li><p>到了16, 变成拥塞避免算法, 每次+1, 收到后再+1</p>
+</li>
+<li><p>出现了丢包情况,认为拥塞</p>
+<ul>
+<li>将cwnd=1</li>
+<li>将ssthresh=cwnd/2, 这个时候你开始拥塞了, 我取的一半好了</li>
+</ul>
+</li>
+<li><p>慢开始算法继续开始</p>
+</li>
+</ul>
+<h3 id="2-3-快重传算法"><a href="#2-3-快重传算法" class="headerlink" title="2.3 快重传算法"></a>2.3 快重传算法</h3><p>有时候丢包, 是网络问题,并不是拥塞,但是你认为拥塞,  直接让窗口变1了怎么办?</p>
+<ul>
+<li>启用快重传机制</li>
+<li>B 直接给 A发送3个重复确认</li>
+<li>发送方 A 收到了3个重复确认, 说明不是拥塞, 不用慢开始算法, 执行快恢复算法</li>
+</ul>
+<h3 id="2-4-拥塞控制四个算法"><a href="#2-4-拥塞控制四个算法" class="headerlink" title="2.4 拥塞控制四个算法"></a>2.4 拥塞控制四个算法</h3><ul>
+<li><p>慢开始, 指数增加</p>
+<ul>
+<li>发送的报文少, 不是拥塞窗口增长满</li>
+</ul>
+</li>
+<li><p>拥塞避免, 每次+1</p>
+<ul>
+<li>不是避免拥塞, 是线性增长, 试试啥时候拥塞</li>
+</ul>
+</li>
+<li><p>快重传</p>
+<p>B 数据未按序到达, 就一直发送想要的序号, 一直提醒 A, 让提早重传</p>
+<ul>
+<li>B要求 A 你快重传, 不要等计时器到了</li>
+<li>B立即发送确认, 如果不是正确顺序到达, 就发送之前正确顺序的重复确认(为了提醒 A)</li>
+<li>A 收到了3个连续的重复确认, 就应该立即重传</li>
+</ul>
+</li>
+<li><p>快恢复</p>
+<ul>
+<li>将ssthresh和 cwnd都调整为当前窗口的一半,  他俩相等了再执行拥塞避免算法</li>
+</ul>
+</li>
+</ul>
+<p><img src="/p/7eb83068/3.png" alt="1"></p>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作, 一个耿直的笑脸~</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechatpay.jpg" alt="Levon 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="Levon 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/linux/" rel="tag"># linux</a>
+            
+              <a href="/tags/tcp/" rel="tag"># tcp</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/p/4fd520f9.html" rel="next" title="Powerlevel9k升级到Powerlevel10k">
+                  <i class="fa fa-chevron-left"></i> Powerlevel9k升级到Powerlevel10k
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-滑动窗口"><span class="nav-number">1.</span> <span class="nav-text">1. 滑动窗口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-0-前提"><span class="nav-number">1.0.1.</span> <span class="nav-text">1.0 前提</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-B告诉A的窗口大小"><span class="nav-number">1.0.2.</span> <span class="nav-text">1.1  B告诉A的窗口大小</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-A的窗口移动"><span class="nav-number">1.0.3.</span> <span class="nav-text">1.2  A的窗口移动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-A窗口内三个指针"><span class="nav-number">1.0.4.</span> <span class="nav-text">1.3 A窗口内三个指针</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-B的窗口状态"><span class="nav-number">1.0.5.</span> <span class="nav-text">1.4  B的窗口状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-总结"><span class="nav-number">1.0.6.</span> <span class="nav-text">1.5 总结</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-拥塞机制"><span class="nav-number">2.</span> <span class="nav-text">2. 拥塞机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-0-前提"><span class="nav-number">2.0.1.</span> <span class="nav-text">2.0 前提</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-A的窗口大小-cwnd"><span class="nav-number">2.0.2.</span> <span class="nav-text">2.1 A的窗口大小(cwnd)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-窗口变量的变化"><span class="nav-number">2.0.3.</span> <span class="nav-text">2.2 窗口变量的变化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-快重传算法"><span class="nav-number">2.0.4.</span> <span class="nav-text">2.3 快重传算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-拥塞控制四个算法"><span class="nav-number">2.0.5.</span> <span class="nav-text">2.4 拥塞控制四个算法</span></a></li></ol></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="Levon">
+  <p class="site-author-name" itemprop="name">Levon</p>
+  <div class="site-description" itemprop="description">Never Give Up</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">134</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">81</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/unix2dos" title="GitHub &rarr; https://github.com/unix2dos" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:levonfly@gmail.com" title="E-Mail &rarr; mailto:levonfly@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://twitter.com/levonfly" title="Twitter &rarr; https://twitter.com/levonfly" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://weibo.com/l6241425" title="Weibo &rarr; https://weibo.com/l6241425" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+    
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Levon</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">514k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">7:47</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://levonfly.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function disqus_config() {
+    this.page.url = "https://unix2dos.github.io/p/7eb83068.html";
+    this.page.identifier = "p/7eb83068.html";
+    this.page.title = 'tcp滑动窗口和拥塞控制';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://levonfly.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    window.addEventListener('load', loadComments, false);
+  
+</script>
+
+</body>
+</html>
