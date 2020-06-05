@@ -1,5 +1,5 @@
 ---
-title: Powerlevel9k升级到Powerlevel10k
+title: Zsh主题Powerlevel9k升级到Powerlevel10k
 tags:
   - zsh
   - iterm2

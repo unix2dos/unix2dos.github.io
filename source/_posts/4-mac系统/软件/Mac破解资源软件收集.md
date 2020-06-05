@@ -6,7 +6,7 @@ tags:
 abbrlink: 6765e5a5
 categories:
   - 4-mac系统
-  - 破解
+  - 软件
 date: 2019-07-18 14:22:40
 ---
 
@@ -28,15 +28,11 @@ date: 2019-07-18 14:22:40
 
 + 百度云盘破解 https://github.com/proxyee-down-org/proxyee-down
 
-+ 百度云盘破解 https://www.baiduwp.com/ (需要安装ua switch插件)
++ 百度云盘破解 https://www.baiduwp.com/ (需要安装ua switch插件,已失效)
 
-+ 百度云盘破解 https://github.com/b3log/baidu-netdisk-downloaderx
++ 百度云盘破解 https://github.com/b3log/baidu-netdisk-downloaderx(已失效)
 
-+ Jetbrains破解 https://zhile.io/2018/08/25/jetbrains-license-server-crack.html
-
-+ Jetbrains破解 https://pan.baidu.com/s/1FGZ9d5J5amnvf0vMFqSOsQ  mmk6
-
-+ Jetbrains破解 http://idea.lanyus.com/  (可能已失效)
++ Jetbrains https://zhile.io/2018/08/25/jetbrains-license-server-crack.html
 
 + Charles 破解  https://github.com/8enet/Charles-Crack
 
