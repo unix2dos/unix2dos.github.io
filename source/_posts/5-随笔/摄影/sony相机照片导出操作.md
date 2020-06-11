@@ -1,8 +1,12 @@
 ---
-title: "sony相机照片导出操作"
-date: 2020-06-07 00:00:03
+title: sony相机照片导出操作
 tags:
-- 摄影
+  - 摄影
+categories:
+  - 5-随笔
+  - 摄影
+abbrlink: e672b089
+date: 2020-06-07 00:00:03
 ---
 
 

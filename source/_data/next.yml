@@ -83,7 +83,9 @@ theme: next
 deploy:
     - 
      type: git
-     repo: git@unix2dos:unix2dos/unix2dos.github.io.git
+     repo: 
+        github: git@unix2dos:unix2dos/unix2dos.github.io.git
+        coding: git@e.coding.net:levonfly/levonfly.git
      branch: master
 
 # Generate categories from directory-tree
