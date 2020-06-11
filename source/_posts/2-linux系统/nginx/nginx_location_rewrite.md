@@ -1,5 +1,5 @@
 ---
-title: nginx的location用法和rewrite规则
+title: nginx的location用法和rewrite规则及proxy_pass模块
 tags:
   - nginx
   - linux
@@ -581,17 +581,17 @@ map $http_upgrade $connection_upgrade {
         '' close;
 }
 
-#监听websocket
 upstream websocket {
-    #ip_hash;
+    ip_hash;
     #转发到服务器上相应的ws端口
     server localhost:3344;
-    #server localhost:8011;
+    server localhost:8011;
 }
 server {
     listen 80;
-    server_name schoolsocket.zhuzhida.vip;
+    server_name a.liuvv.com;
     location / {
+    
         #转发到http://websocket
         proxy_pass http://websocket;
         proxy_read_timeout 300s;
@@ -600,6 +600,7 @@ server {
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    
         #升级http1.1到 websocket协议  
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
