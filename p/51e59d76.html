@@ -58,14 +58,14 @@
   <meta name="description" content="1. location指令根据请求的URI来设置具体规则, URI是url中除去协议和域名及参数后, 剩下的部分. 比如请求的url为: http://www.liuvv.com/test/index.php?page=1, 则uri 为 /test/index.php 1.1 location匹配uri的规则:1location [ = | ~ | ~* | ^~ ] uri &amp;#123; .">
 <meta name="keywords" content="linux,nginx">
 <meta property="og:type" content="article">
-<meta property="og:title" content="nginx的location用法和rewrite规则">
+<meta property="og:title" content="nginx的location用法和rewrite规则及proxy_pass模块">
 <meta property="og:url" content="https://unix2dos.github.io/p/51e59d76.html">
 <meta property="og:site_name" content="Levon&#39;s Blog">
 <meta property="og:description" content="1. location指令根据请求的URI来设置具体规则, URI是url中除去协议和域名及参数后, 剩下的部分. 比如请求的url为: http://www.liuvv.com/test/index.php?page=1, 则uri 为 /test/index.php 1.1 location匹配uri的规则:1location [ = | ~ | ~* | ^~ ] uri &amp;#123; .">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-27T15:36:51.176Z">
+<meta property="og:updated_time" content="2020-06-13T03:05:53.813Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="nginx的location用法和rewrite规则">
+<meta name="twitter:title" content="nginx的location用法和rewrite规则及proxy_pass模块">
 <meta name="twitter:description" content="1. location指令根据请求的URI来设置具体规则, URI是url中除去协议和域名及参数后, 剩下的部分. 比如请求的url为: http://www.liuvv.com/test/index.php?page=1, 则uri 为 /test/index.php 1.1 location匹配uri的规则:1location [ = | ~ | ~* | ^~ ] uri &amp;#123; .">
   <link rel="canonical" href="https://unix2dos.github.io/p/51e59d76">
 
@@ -81,7 +81,7 @@
   };
 </script>
 
-  <title>nginx的location用法和rewrite规则 | Levon's Blog</title>
+  <title>nginx的location用法和rewrite规则及proxy_pass模块 | Levon's Blog</title>
   
 
 
@@ -259,7 +259,7 @@
       <meta itemprop="name" content="Levon's Blog">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">nginx的location用法和rewrite规则
+        <h2 class="post-title" itemprop="name headline">nginx的location用法和rewrite规则及proxy_pass模块
 
           
         </h2>
@@ -286,7 +286,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-09-27 23:36:51" itemprop="dateModified" datetime="2019-09-27T23:36:51+08:00">2019-09-27</time>
+                <time title="修改时间：2020-06-13 11:05:53" itemprop="dateModified" datetime="2020-06-13T11:05:53+08:00">2020-06-13</time>
               </span>
             
           
@@ -605,7 +605,7 @@
 <li><p>map指令的作用： 该作用主要是根据客户端请求中$http_upgrade的值，来构造改变$connection_upgrade的值，即根据变量$http_upgrade的值创建新的变量$connection_upgrade， 创建的规则就是{}里面的东西。其中的规则没有做匹配，因此使用默认的，即 $connection_upgrade的值会一直是 upgrade。然后如果 $http_upgrade为空字符串的话， 那值会是 close。</p>
 </li>
 </ul>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#必须添加的</span></span><br><span class="line"><span class="attribute">map</span> <span class="variable">$http_upgrade</span> <span class="variable">$connection_upgrade</span> &#123;</span><br><span class="line">        <span class="attribute">default</span> upgrade;</span><br><span class="line">        '' close;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">#监听websocket</span></span><br><span class="line"><span class="attribute">upstream</span> websocket &#123;</span><br><span class="line">    <span class="comment">#ip_hash;</span></span><br><span class="line">    <span class="comment">#转发到服务器上相应的ws端口</span></span><br><span class="line">    <span class="attribute">server</span> localhost:<span class="number">3344</span>;</span><br><span class="line">    <span class="comment">#server localhost:8011;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> schoolsocket.zhuzhida.vip;</span><br><span class="line">    <span class="attribute">location</span> / &#123;</span><br><span class="line">        <span class="comment">#转发到http://websocket</span></span><br><span class="line">        <span class="attribute">proxy_pass</span> http://websocket;</span><br><span class="line">        <span class="attribute">proxy_read_timeout</span> <span class="number">300s</span>;</span><br><span class="line">        <span class="attribute">proxy_send_timeout</span> <span class="number">300s</span>;</span><br><span class="line"></span><br><span class="line">        <span class="attribute">proxy_set_header</span> Host <span class="variable">$host</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">        <span class="comment">#升级http1.1到 websocket协议  </span></span><br><span class="line">        <span class="attribute">proxy_http_version</span> <span class="number">1</span>.<span class="number">1</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Upgrade <span class="variable">$http_upgrade</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Connection  <span class="variable">$connection_upgrade</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#必须添加的</span></span><br><span class="line"><span class="attribute">map</span> <span class="variable">$http_upgrade</span> <span class="variable">$connection_upgrade</span> &#123;</span><br><span class="line">        <span class="attribute">default</span> upgrade;</span><br><span class="line">        '' close;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="attribute">upstream</span> websocket &#123;</span><br><span class="line">    ip_hash;</span><br><span class="line">    <span class="comment">#转发到服务器上相应的ws端口</span></span><br><span class="line">    <span class="attribute">server</span> localhost:<span class="number">3344</span>;</span><br><span class="line">    <span class="attribute">server</span> localhost:<span class="number">8011</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> a.liuvv.com;</span><br><span class="line">    <span class="attribute">location</span> / &#123;</span><br><span class="line">    </span><br><span class="line">        <span class="comment">#转发到http://websocket</span></span><br><span class="line">        <span class="attribute">proxy_pass</span> http://websocket;</span><br><span class="line">        <span class="attribute">proxy_read_timeout</span> <span class="number">300s</span>;</span><br><span class="line">        <span class="attribute">proxy_send_timeout</span> <span class="number">300s</span>;</span><br><span class="line"></span><br><span class="line">        <span class="attribute">proxy_set_header</span> Host <span class="variable">$host</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">    </span><br><span class="line">        <span class="comment">#升级http1.1到 websocket协议  </span></span><br><span class="line">        <span class="attribute">proxy_http_version</span> <span class="number">1</span>.<span class="number">1</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Upgrade <span class="variable">$http_upgrade</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Connection  <span class="variable">$connection_upgrade</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h3 id="5-参考资料"><a href="#5-参考资料" class="headerlink" title="5. 参考资料:"></a>5. 参考资料:</h3><ul>
 <li><a href="https://nginx.org/en/docs/" target="_blank" rel="noopener">https://nginx.org/en/docs/</a></li>
@@ -753,7 +753,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">135</span>
+          <span class="site-state-item-count">136</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -779,7 +779,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">81</span>
+        <span class="site-state-item-count">82</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -856,12 +856,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">516k</span>
+    <span title="站点总字数">517k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">7:49</span>
+    <span title="站点阅读时长">7:50</span>
 </div>
 
         
@@ -946,7 +946,7 @@
   function disqus_config() {
     this.page.url = "https://unix2dos.github.io/p/51e59d76.html";
     this.page.identifier = "p/51e59d76.html";
-    this.page.title = 'nginx的location用法和rewrite规则';};
+    this.page.title = 'nginx的location用法和rewrite规则及proxy_pass模块';};
   function loadComments() {
     if (window.DISQUS) {
       DISQUS.reset({

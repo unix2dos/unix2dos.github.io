@@ -58,7 +58,7 @@
   <meta name="description" content="1. udp 和 tcp 的区别1.1 数据传输UDP   数据传输  TCP   3报文握手+数据传输+4报文挥手">
 <meta name="keywords" content="tcp">
 <meta property="og:type" content="article">
-<meta property="og:title" content="udp和tcp介绍和建立连接">
+<meta property="og:title" content="udp和tcp介绍和tcp建立连接过程">
 <meta property="og:url" content="https://unix2dos.github.io/p/289c4599.html">
 <meta property="og:site_name" content="Levon&#39;s Blog">
 <meta property="og:description" content="1. udp 和 tcp 的区别1.1 数据传输UDP   数据传输  TCP   3报文握手+数据传输+4报文挥手">
@@ -67,9 +67,9 @@
 <meta property="og:image" content="https://unix2dos.github.io/p/289c4599/2.png">
 <meta property="og:image" content="https://unix2dos.github.io/p/289c4599/3.png">
 <meta property="og:image" content="https://unix2dos.github.io/p/289c4599/4.png">
-<meta property="og:updated_time" content="2020-06-06T16:04:55.758Z">
+<meta property="og:updated_time" content="2020-06-13T03:05:53.817Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="udp和tcp介绍和建立连接">
+<meta name="twitter:title" content="udp和tcp介绍和tcp建立连接过程">
 <meta name="twitter:description" content="1. udp 和 tcp 的区别1.1 数据传输UDP   数据传输  TCP   3报文握手+数据传输+4报文挥手">
 <meta name="twitter:image" content="https://unix2dos.github.io/p/289c4599/1.png">
   <link rel="canonical" href="https://unix2dos.github.io/p/289c4599">
@@ -86,7 +86,7 @@
   };
 </script>
 
-  <title>udp和tcp介绍和建立连接 | Levon's Blog</title>
+  <title>udp和tcp介绍和tcp建立连接过程 | Levon's Blog</title>
   
 
 
@@ -264,7 +264,7 @@
       <meta itemprop="name" content="Levon's Blog">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">udp和tcp介绍和建立连接
+        <h2 class="post-title" itemprop="name headline">udp和tcp介绍和tcp建立连接过程
 
           
         </h2>
@@ -280,11 +280,19 @@
                 
               
 
-              <time title="创建时间：2020-06-07 00:00:01 / 修改时间：00:04:55" itemprop="dateCreated datePublished" datetime="2020-06-07T00:00:01+08:00">2020-06-07</time>
+              <time title="创建时间：2020-06-07 00:00:01" itemprop="dateCreated datePublished" datetime="2020-06-07T00:00:01+08:00">2020-06-07</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-13 11:05:53" itemprop="dateModified" datetime="2020-06-13T11:05:53+08:00">2020-06-13</time>
+              </span>
             
           
             <span class="post-meta-item">
@@ -429,7 +437,7 @@
 <li>收到挥手④后进入 <strong>CLOSED</strong>(关闭状态)</li>
 </ul>
 <h1 id="3-tcp-连接问题"><a href="#3-tcp-连接问题" class="headerlink" title="3. tcp 连接问题"></a>3. tcp 连接问题</h1><h3 id="3-1-为什么不用两次握手"><a href="#3-1-为什么不用两次握手" class="headerlink" title="3.1 为什么不用两次握手"></a>3.1 为什么不用两次握手</h3><ul>
-<li>假如第一个连接发送失败, 重传了以后, 过了好久失败的正确到达了, 就会产生问题</li>
+<li>假如第一个连接发送失败, 重传了以后, 过了好久好久以后, 失败的到达了,  服务器又建立了一次请求, 但客户端处于关闭无法理会, 服务器就无法释放这个连接.</li>
 </ul>
 <h3 id="3-2-CLOSE-WAIT-和-TIME-WAIT"><a href="#3-2-CLOSE-WAIT-和-TIME-WAIT" class="headerlink" title="3.2 CLOSE_WAIT 和 TIME_WAIT"></a>3.2 CLOSE_WAIT 和 TIME_WAIT</h3><ul>
 <li>CLOSE_WAIT <ul>
@@ -602,7 +610,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">135</span>
+          <span class="site-state-item-count">136</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -628,7 +636,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">81</span>
+        <span class="site-state-item-count">82</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -705,12 +713,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">516k</span>
+    <span title="站点总字数">517k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">7:49</span>
+    <span title="站点阅读时长">7:50</span>
 </div>
 
         
@@ -795,7 +803,7 @@
   function disqus_config() {
     this.page.url = "https://unix2dos.github.io/p/289c4599.html";
     this.page.identifier = "p/289c4599.html";
-    this.page.title = 'udp和tcp介绍和建立连接';};
+    this.page.title = 'udp和tcp介绍和tcp建立连接过程';};
   function loadComments() {
     if (window.DISQUS) {
       DISQUS.reset({
