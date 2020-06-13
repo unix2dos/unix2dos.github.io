@@ -1,11 +1,11 @@
 ---
-title: tcp滑动窗口,拥塞控制和超时重传时间选择
+title: 'tcp滑动窗口,拥塞控制和超时重传时间选择'
 tags:
   - tcp
   - linux
 categories:
   - 3-计算机系统
-  - Tcp
+  - 网络
 abbrlink: 7eb83068
 date: 2020-06-06 00:00:01
 ---
