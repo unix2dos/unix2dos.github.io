@@ -63,7 +63,7 @@
 <meta property="og:site_name" content="Levon&#39;s Blog">
 <meta property="og:description" content="1. 哈希还是加密?哈希（Hash）是将目标文本转换成具有相同长度的、不可逆的杂凑字符串（或叫做消息摘要）而加密（Encrypt）是将目标文本转换成具有不同长度的、可逆的密文。 哈希算法往往被设计成生成具有相同长度的文本，而加密算法生成的文本长度与明文本身的长度有关。哈希算法是不可逆的，而加密算法是可逆的。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-06-13T05:44:29.931Z">
+<meta property="og:updated_time" content="2020-06-16T14:16:03.542Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何正确存储密码">
 <meta name="twitter:description" content="1. 哈希还是加密?哈希（Hash）是将目标文本转换成具有相同长度的、不可逆的杂凑字符串（或叫做消息摘要）而加密（Encrypt）是将目标文本转换成具有不同长度的、可逆的密文。 哈希算法往往被设计成生成具有相同长度的文本，而加密算法生成的文本长度与明文本身的长度有关。哈希算法是不可逆的，而加密算法是可逆的。">
@@ -275,11 +275,19 @@
                 
               
 
-              <time title="创建时间：2020-06-13 00:00:01 / 修改时间：13:44:29" itemprop="dateCreated datePublished" datetime="2020-06-13T00:00:01+08:00">2020-06-13</time>
+              <time title="创建时间：2020-06-13 00:00:01" itemprop="dateCreated datePublished" datetime="2020-06-13T00:00:01+08:00">2020-06-13</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-16 22:16:03" itemprop="dateModified" datetime="2020-06-16T22:16:03+08:00">2020-06-16</time>
+              </span>
             
           
             <span class="post-meta-item">
@@ -326,7 +334,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span>4.2k</span>
+              <span>4.3k</span>
             </span>
           
             <span class="post-meta-item" title="阅读时长">
@@ -418,11 +426,11 @@
 <li><p>argon2 推荐</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"encoding/base64"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line">	<span class="string">"golang.org/x/crypto/argon2"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	passwd := <span class="string">"levonfly"</span></span><br><span class="line">	salt := <span class="string">"salt"</span></span><br><span class="line"></span><br><span class="line">	res1 := argon2.IDKey([]<span class="keyword">byte</span>(passwd), []<span class="keyword">byte</span>(salt), <span class="number">3</span>, <span class="number">32</span>, <span class="number">4</span>, <span class="number">32</span>)</span><br><span class="line">	fmt.Println(base64.StdEncoding.EncodeToString(res1)) <span class="comment">//uEZgAbCSfDyd8VAMbcmSSZKpH/TQ9hh9VsblPFGuDjM</span></span><br><span class="line"></span><br><span class="line">	res2 := argon2.IDKey([]<span class="keyword">byte</span>(passwd), []<span class="keyword">byte</span>(salt), <span class="number">3</span>, <span class="number">32</span>, <span class="number">4</span>, <span class="number">32</span>)</span><br><span class="line">	fmt.Println(base64.StdEncoding.EncodeToString(res2)) <span class="comment">//uEZgAbCSfDyd8VAMbcmSSZKpH/TQ9hh9VsblPFGuDjM</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-
-
 </li>
 </ul>
-<h1 id="6-参考资料"><a href="#6-参考资料" class="headerlink" title="6. 参考资料"></a>6. 参考资料</h1><ul>
+<h1 id="6-数据库存储"><a href="#6-数据库存储" class="headerlink" title="6. 数据库存储"></a>6. 数据库存储</h1><p>如果存储慢哈希的密码, 一般都是存储定长的. 如<code>char(60)</code></p>
+<p>参考: <a href="https://stackoverflow.com/questions/247304/what-data-type-to-use-for-hashed-password-field-and-what-length/" target="_blank" rel="noopener">https://stackoverflow.com/questions/247304/what-data-type-to-use-for-hashed-password-field-and-what-length/</a></p>
+<h1 id="7-参考资料"><a href="#7-参考资料" class="headerlink" title="7. 参考资料"></a>7. 参考资料</h1><ul>
 <li><p><a href="https://draveness.me/whys-the-design-password-with-md5/" target="_blank" rel="noopener">https://draveness.me/whys-the-design-password-with-md5/</a></p>
 </li>
 <li><p><a href="https://github.com/luokuning/blogs/issues/9" target="_blank" rel="noopener">https://github.com/luokuning/blogs/issues/9</a></p>
@@ -550,7 +558,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-哈希还是加密"><span class="nav-number">1.</span> <span class="nav-text">1. 哈希还是加密?</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-破解哈希"><span class="nav-number">2.</span> <span class="nav-text">2. 破解哈希</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-Bcrypt加密"><span class="nav-number">3.</span> <span class="nav-text">3. Bcrypt加密</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-PBKDF2，Scrypt，Bcrypt-和-ARGON2对比"><span class="nav-number">4.</span> <span class="nav-text">4. PBKDF2，Scrypt，Bcrypt 和 ARGON2对比</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-代码实现"><span class="nav-number">5.</span> <span class="nav-text">5. 代码实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-参考资料"><span class="nav-number">6.</span> <span class="nav-text">6. 参考资料</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-哈希还是加密"><span class="nav-number">1.</span> <span class="nav-text">1. 哈希还是加密?</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-破解哈希"><span class="nav-number">2.</span> <span class="nav-text">2. 破解哈希</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-Bcrypt加密"><span class="nav-number">3.</span> <span class="nav-text">3. Bcrypt加密</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-PBKDF2，Scrypt，Bcrypt-和-ARGON2对比"><span class="nav-number">4.</span> <span class="nav-text">4. PBKDF2，Scrypt，Bcrypt 和 ARGON2对比</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-代码实现"><span class="nav-number">5.</span> <span class="nav-text">5. 代码实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-数据库存储"><span class="nav-number">6.</span> <span class="nav-text">6. 数据库存储</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-参考资料"><span class="nav-number">7.</span> <span class="nav-text">7. 参考资料</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
