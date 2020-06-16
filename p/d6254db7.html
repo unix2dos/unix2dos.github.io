@@ -55,18 +55,18 @@
   };
 </script>
 
-  <meta name="description" content="1. 使用镜像1.1 获取镜像1docker pull [选项] [Docker Registry 地址[:端口号]/]仓库名[:标签]   Docker 镜像仓库地址：地址的格式一般是 &amp;lt;域名/IP&amp;gt;[:端口号]。默认地址是 Docker Hub。 仓库名：如之前所说，这里的仓库名是两段式名称，即 &amp;lt;用户名&amp;gt;/&amp;lt;软件名&amp;gt;。对于 Docker Hub，如果不给出">
-<meta name="keywords" content="docker,linux">
+  <meta name="description" content="1. 使用镜像">
+<meta name="keywords" content="linux,docker">
 <meta property="og:type" content="article">
 <meta property="og:title" content="docker基础入门">
 <meta property="og:url" content="https://unix2dos.github.io/p/d6254db7.html">
 <meta property="og:site_name" content="Levon&#39;s Blog">
-<meta property="og:description" content="1. 使用镜像1.1 获取镜像1docker pull [选项] [Docker Registry 地址[:端口号]/]仓库名[:标签]   Docker 镜像仓库地址：地址的格式一般是 &amp;lt;域名/IP&amp;gt;[:端口号]。默认地址是 Docker Hub。 仓库名：如之前所说，这里的仓库名是两段式名称，即 &amp;lt;用户名&amp;gt;/&amp;lt;软件名&amp;gt;。对于 Docker Hub，如果不给出">
+<meta property="og:description" content="1. 使用镜像">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-06-16T15:04:05.952Z">
+<meta property="og:updated_time" content="2020-06-16T15:05:54.742Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="docker基础入门">
-<meta name="twitter:description" content="1. 使用镜像1.1 获取镜像1docker pull [选项] [Docker Registry 地址[:端口号]/]仓库名[:标签]   Docker 镜像仓库地址：地址的格式一般是 &amp;lt;域名/IP&amp;gt;[:端口号]。默认地址是 Docker Hub。 仓库名：如之前所说，这里的仓库名是两段式名称，即 &amp;lt;用户名&amp;gt;/&amp;lt;软件名&amp;gt;。对于 Docker Hub，如果不给出">
+<meta name="twitter:description" content="1. 使用镜像">
   <link rel="canonical" href="https://unix2dos.github.io/p/d6254db7">
 
 
@@ -286,7 +286,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-16 23:04:05" itemprop="dateModified" datetime="2020-06-16T23:04:05+08:00">2020-06-16</time>
+                <time title="修改时间：2020-06-16 23:05:54" itemprop="dateModified" datetime="2020-06-16T23:05:54+08:00">2020-06-16</time>
               </span>
             
           
@@ -334,7 +334,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span>1.2k</span>
+              <span>85</span>
             </span>
           
             <span class="post-meta-item" title="阅读时长">
@@ -357,42 +357,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="1-使用镜像"><a href="#1-使用镜像" class="headerlink" title="1. 使用镜像"></a>1. 使用镜像</h1><h3 id="1-1-获取镜像"><a href="#1-1-获取镜像" class="headerlink" title="1.1 获取镜像"></a>1.1 获取镜像</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull [选项] [Docker Registry 地址[:端口号]/]仓库名[:标签]</span><br></pre></td></tr></table></figure>
+        <h1 id="1-使用镜像"><a href="#1-使用镜像" class="headerlink" title="1. 使用镜像"></a>1. 使用镜像</h1><a id="more"></a>
 
-<ul>
-<li>Docker 镜像仓库地址：地址的格式一般是 <code>&lt;域名/IP&gt;[:端口号]</code>。默认地址是 Docker Hub。</li>
-<li>仓库名：如之前所说，这里的仓库名是两段式名称，即 <code>&lt;用户名&gt;/&lt;软件名&gt;</code>。对于 Docker Hub，如果不给出用户名，则默认为 <code>library</code>，也就是官方镜像。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker pull ubuntu:16.04</span><br><span class="line">16.04: Pulling from library/ubuntu</span><br></pre></td></tr></table></figure>
-
-<a id="more"></a>
-
-<h4 id="1-2-运行容器"><a href="#1-2-运行容器" class="headerlink" title="1.2 运行容器"></a>1.2 运行容器</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --rm \</span><br><span class="line">    ubuntu:16.04 \</span><br><span class="line">    bash</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><code>-it</code>：这是两个参数，一个是 <code>-i</code>：交互式操作，一个是 <code>-t</code> 终端。我们这里打算进入 <code>bash</code> 执行一些命令并查看返回结果，因此我们需要交互式终端。</li>
-<li><code>--rm</code>：这个参数是说容器退出后随之将其删除。默认情况下，为了排障需求，退出的容器并不会立即删除，除非手动 <code>docker rm</code>。我们这里只是随便执行个命令，看看结果，不需要排障和保留结果，因此使用 <code>--rm</code> 可以避免浪费空间。</li>
-<li><code>ubuntu:16.04</code>：这是指用 <code>ubuntu:16.04</code> 镜像为基础来启动容器。</li>
-<li><code>bash</code>：放在镜像名后的是<strong>命令</strong>，这里我们希望有个交互式 Shell，因此用的是 <code>bash</code></li>
-</ul>
-<h3 id="1-3-列出镜像"><a href="#1-3-列出镜像" class="headerlink" title="1.3 列出镜像"></a>1.3 列出镜像</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker images</span><br></pre></td></tr></table></figure>
-
-<p>列表包含了 <code>仓库名</code>、<code>标签</code>、<code>镜像 ID</code>、<code>创建时间</code> 以及 <code>所占用的空间</code>。</p>
-<p><strong>镜像 ID</strong> 则是镜像的唯一标识，一个镜像可以对应多个<strong>标签</strong>。</p>
-<h3 id="1-4-虚悬镜像"><a href="#1-4-虚悬镜像" class="headerlink" title="1.4 虚悬镜像"></a>1.4 虚悬镜像</h3><p> <code>docker pull</code> 可能导致这种情况，<code>docker build</code> 也同样可以导致这种现象。由于新旧镜像同名，旧镜像名称被取消，从而出现仓库名、标签均为 <code>&lt;none&gt;</code> 的镜像。这类无标签镜像也被称为 <strong>虚悬镜像(dangling image)</strong></p>
-<p>一般来说，虚悬镜像已经失去了存在的价值，是可以随意删除的，可以用下面的命令删除。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker image prune</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-4-删除本地镜像"><a href="#1-4-删除本地镜像" class="headerlink" title="1.4 删除本地镜像"></a>1.4 删除本地镜像</h3><p>如果要删除本地的镜像，可以使用 <code>docker image rm</code> 命令，其格式为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker image rm [选项] &lt;镜像1&gt; [&lt;镜像2&gt; ...]</span><br></pre></td></tr></table></figure>
-
-<h4 id><a href="#" class="headerlink" title></a></h4><h1 id="2-Dockerfile-定制镜像"><a href="#2-Dockerfile-定制镜像" class="headerlink" title="2. Dockerfile 定制镜像"></a>2. Dockerfile 定制镜像</h1><p>Dockerfile 是一个文本文件，其内包含了一条条的<strong>指令(Instruction)</strong>，每一条指令构建一层，因此每一条指令的内容，就是描述该层应当如何构建。</p>
-<h3 id="2-1-构建镜像"><a href="#2-1-构建镜像" class="headerlink" title="2.1 构建镜像"></a>2.1 构建镜像</h3><p>在 <code>Dockerfile</code> 文件所在目录执行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker build -t nginx:v3 .</span><br></pre></td></tr></table></figure>
-
-<p>这里我们使用了 <code>docker build</code> 命令进行镜像构建。其格式为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build [选项] &lt;上下文路径/URL/-&gt;</span><br></pre></td></tr></table></figure>
-
+<h1 id><a href="#" class="headerlink" title></a></h1><p>Dockerfile 是一个文本文件，其内包含了一条条的<strong>指令(Instruction)</strong>，每一条指令构建一层，因此每一条指令的内容，就是描述该层应当如何构建。</p>
 
     </div>
 
@@ -431,9 +398,9 @@
           
           <div class="post-tags">
             
-              <a href="/tags/docker/" rel="tag"># docker</a>
-            
               <a href="/tags/linux/" rel="tag"># linux</a>
+            
+              <a href="/tags/docker/" rel="tag"># docker</a>
             
           </div>
         
@@ -513,7 +480,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-使用镜像"><span class="nav-number">1.</span> <span class="nav-text">1. 使用镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-获取镜像"><span class="nav-number">1.0.1.</span> <span class="nav-text">1.1 获取镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-运行容器"><span class="nav-number">1.0.1.1.</span> <span class="nav-text">1.2 运行容器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-列出镜像"><span class="nav-number">1.0.2.</span> <span class="nav-text">1.3 列出镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-虚悬镜像"><span class="nav-number">1.0.3.</span> <span class="nav-text">1.4 虚悬镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-删除本地镜像"><span class="nav-number">1.0.4.</span> <span class="nav-text">1.4 删除本地镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#null"><span class="nav-number">1.0.4.1.</span> <span class="nav-text"></span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Dockerfile-定制镜像"><span class="nav-number">2.</span> <span class="nav-text">2. Dockerfile 定制镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-构建镜像"><span class="nav-number">2.0.1.</span> <span class="nav-text">2.1 构建镜像</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-使用镜像"><span class="nav-number">1.</span> <span class="nav-text">1. 使用镜像</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#null"><span class="nav-number">2.</span> <span class="nav-text"></span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -635,12 +602,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">491k</span>
+    <span title="站点总字数">490k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">7:27</span>
+    <span title="站点阅读时长">7:26</span>
 </div>
 
         
