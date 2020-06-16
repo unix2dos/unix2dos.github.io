@@ -1,24 +1,26 @@
 ---
-title: docker从入门到实践
+title: docker基础入门
 tags:
   - docker
-abbrlink: 3fc66628
+  - linux
 categories:
   - 2-linux系统
   - docker
-date: 2018-05-26 22:01:19
+abbrlink: d6254db7
+date: 2018-05-26 00:00:01
 ---
+
 
 
 # 0. 基本概念
 
-#### 镜像
++ 镜像
 
 镜像包含操作系统完整的 `root` 文件系统，其体积往往是庞大的，因此在 Docker 设计时，就充分利用 [Union FS](https://en.wikipedia.org/wiki/Union_mount) 的技术，将其设计为分层存储的架构。所以严格来说，镜像并非是像一个 ISO 那样的打包文件，镜像只是一个虚拟的概念，其实际体现并非由一个文件组成，而是由一组文件系统组成，或者说，由多层文件系统联合组成。
 
-#### 容器
++ 容器
 
-每一个容器运行时，是以镜像为基础层，在其上创建一个当前容器的存储层，我们可以称这个为容器运行时读写而准备的存储层为**容器存储层**。
+每一个容器运行时，是以镜像为基础层，在其上创建一个当前容器的存储层，我们可以称这个为容器运行时读写而准备的存储层为容器存储层。
 
 
 
@@ -28,7 +30,7 @@ date: 2018-05-26 22:01:19
 
 <!-- more -->
 
-#### 仓库
++ 仓库
 
 一个仓库会包含同一个软件不同版本的镜像，而标签就常用于对应该软件的各个版本。我们可以通过 `<仓库名>:<标签>` 的格式来指定具体是这个软件哪个版本的镜像。如果不给出标签，将以 `latest` 作为默认标签。
 
@@ -44,7 +46,7 @@ date: 2018-05-26 22:01:19
 
 # 1. 使用镜像
 
-#### 获取镜像
+### 1.1 获取镜像
 
 ```
 docker pull [选项] [Docker Registry 地址[:端口号]/]仓库名[:标签]
@@ -60,7 +62,7 @@ docker pull ubuntu:16.04
 
 
 
-#### 运行容器
+#### 1.2 运行容器
 
 ```
 docker run -it --rm \
@@ -75,7 +77,7 @@ docker run -it --rm \
 
 
 
-#### 列出镜像
+### 1.3 列出镜像
 
 ```
 docker images
@@ -87,7 +89,7 @@ docker images
 
 
 
-#### 虚悬镜像
+### 1.4 虚悬镜像
 
  `docker pull` 可能导致这种情况，`docker build` 也同样可以导致这种现象。由于新旧镜像同名，旧镜像名称被取消，从而出现仓库名、标签均为 `<none>` 的镜像。这类无标签镜像也被称为 **虚悬镜像(dangling image)**
 
@@ -101,58 +103,13 @@ docker image prune
 
 
 
-#### 删除本地镜像
+### 1.4 删除本地镜像
 
 如果要删除本地的镜像，可以使用 `docker image rm` 命令，其格式为：
 
 ```
 $ docker image rm [选项] <镜像1> [<镜像2> ...]
 ```
-
-
-
-#### 利用 commit 理解镜像构成
-
-我们修改了容器的文件，也就是改动了容器的存储层。我们可以通过 `docker diff` 命令看到具体的改动。
-
- 现在我们定制好了变化，我们希望能将其保存下来形成镜像。
-
-
-
-要知道，当我们运行一个容器的时候（如果不使用卷的话），我们做的任何文件修改都会被记录于容器存储层里。而 Docker 提供了一个 `docker commit` 命令，可以将容器的存储层保存下来成为镜像。换句话说，就是在原有镜像的基础上，再叠加上容器的存储层，并构成新的镜像。以后我们运行这个新镜像的时候，就会拥有原有容器最后的文件变化。
-
- 
-
-`docker commit` 的语法格式为：
-
-```
-docker commit [选项] <容器ID或容器名> [<仓库名>[:<标签>]]
-```
-
-
-
-我们可以用下面的命令将容器保存为镜像：
-
-```
-$ docker commit \
-    --author "Tao Wang <twang2218@gmail.com>" \
-    --message "修改了默认网页" \
-    webserver \
-    nginx:v2
-sha256:07e33465974800ce65751acc279adc6ed2dc5ed4e0838f8b86f0c87aa1795214
-```
-
- 
-
-#### 慎用 `docker commit` 
-
-
-
-使用 `docker commit` 意味着所有对镜像的操作都是黑箱操作，生成的镜像也被称为**黑箱镜像**，换句话说，就是除了制作镜像的人知道执行过什么命令、怎么生成的镜像，别人根本无从得知。而且，即使是这个制作镜像的人，过一段时间后也无法记清具体在操作的。虽然 `docker diff` 或许可以告诉得到一些线索，但是远远不到可以确保生成一致镜像的地步。这种黑箱镜像的维护工作是非常痛苦的。
-
-
-
-而且，回顾之前提及的镜像所使用的分层存储的概念，除当前层外，之前的每一层都是不会发生改变的，换句话说，任何修改的结果仅仅是在当前层进行标记、添加、修改，而不会改动上一层。如果使用 `docker commit` 制作镜像，以及后期修改的话，每一次修改都会让镜像更加臃肿一次，所删除的上一层的东西并不会丢失，会一直如影随形的跟着这个镜像，即使根本无法访问到。这会让镜像更加臃肿。
 
 ####  
 
@@ -162,11 +119,7 @@ Dockerfile 是一个文本文件，其内包含了一条条的**指令(Instructi
 
 
 
-### 2.A 构建镜像
-
----
-
-
+### 2.1 构建镜像
 
 在 `Dockerfile` 文件所在目录执行：
 
@@ -184,7 +137,7 @@ docker build [选项] <上下文路径/URL/->
 
 
 
-#### 2.1 镜像构建上下文（Context） 上下文路径就是 docker build 指定的
+### 2.2 镜像构建上下文（Context） 上下文路径就是 docker build 指定的
 
 如果注意，会看到 `docker build` 命令最后有一个 `.`。`.` 表示当前目录，而 `Dockerfile` 就在当前目录，因此不少初学者以为这个路径是在指定 `Dockerfile` 所在路径，这么理解其实是不准确的。如果对应上面的命令格式，你可能会发现，这是在指定**上下文路径**。那么什么是上下文呢？
 
@@ -240,49 +193,13 @@ COPY ./package.json /app/
 
 
 
-#### 2.2 其它 `docker build` 的用法 
+
+
+### 2.3 dockerfile 指令
 
 
 
-##### 1. 直接用 Git repo 进行构建
-
-```
-$ docker build https://github.com/twang2218/gitlab-ce-zh.git#:8.14
-```
-
-##### 2. 用给定的 tar 压缩包构建 
-
-```
-$ docker build http://server/context.tar.gz
-```
-
-如果所给出的 URL 不是个 Git repo，而是个 `tar` 压缩包，那么 Docker 引擎会下载这个包，并自动解压缩，以其作为上下文，开始构建。
-
-##### 3. 从标准输入中读取 Dockerfile 进行构建
-
-```
-docker build - < Dockerfile
-```
-
-或
-
-```
-cat Dockerfile | docker build -
-```
-
-##### 4. 从标准输入中读取上下文压缩包进行构建
-
-```
-$ docker build - < context.tar.gz
-```
-
-
-
-### 2.B dockerfile 指令
-
----
-
-#### 2.1 FROM 指定基础镜像
++ FROM 指定基础镜像
 
 所谓定制镜像，那一定是以一个镜像为基础，在其上进行定制。就像我们之前运行了一个 `nginx` 镜像的容器，再进行修改一样，基础镜像是必须指定的。而 `FROM` 就是指定**基础镜像**，因此一个 `Dockerfile` 中 `FROM` 是必备的指令，并且必须是第一条指令。
 
@@ -296,19 +213,18 @@ $ docker build - < context.tar.gz
 
 
 
-#### 2.2 RUN 执行命令
++ RUN 执行命令
 
 `RUN` 指令是用来执行命令行命令的。由于命令行的强大能力，`RUN` 指令在定制镜像时是最常用的指令之一。其格式有两种：
 
- 
 
-- *shell* 格式：`RUN <命令>`，就像直接在命令行中输入的命令一样。刚才写的 Dockerfile 中的 `RUN` 指令就是这种格式。
++ shell 格式：`RUN <命令>`，就像直接在命令行中输入的命令一样。刚才写的 Dockerfile 中的 `RUN` 指令就是这种格式。
 
 ```
 RUN echo '<h1>Hello, Docker!</h1>' > /usr/share/nginx/html/index.html
 ```
 
-- *exec* 格式：`RUN ["可执行文件", "参数1", "参数2"]`，这更像是函数调用中的格式。
+- exec 格式：`RUN ["可执行文件", "参数1", "参数2"]`，这更像是函数调用中的格式。
 
  
 
@@ -347,7 +263,7 @@ RUN buildDeps='gcc libc6-dev make' \
 
 
 
-#### 2.3 COPY 复制文件
++ COPY 复制文件
 
 格式：
 
@@ -377,7 +293,7 @@ COPY hom?.txt /mydir/
 
 
 
-#### 2.4 ADD 更高级的复制文件
++ ADD 更高级的复制文件
 
 `ADD` 指令和 `COPY` 的格式和性质基本一致。但是在 `COPY` 基础上增加了一些功能。
 
@@ -387,7 +303,7 @@ COPY hom?.txt /mydir/
 
 
 
-#### 2.5 CMD 容器启动命令 
++ CMD 容器启动命令 
 
 `CMD` 指令的格式和 `RUN` 相似，也是两种格式：
 
@@ -453,7 +369,7 @@ CMD ["nginx", "-g", "daemon off;"]
 
 
 
-#### 2.6 ENTRYPOINT 入口点
++ ENTRYPOINT 入口点
 
 `ENTRYPOINT` 的目的和 `CMD` 一样，都是在指定容器启动程序及参数。`ENTRYPOINT` 在运行时也可以替代，不过比 `CMD` 要略显繁琐，需要通过 `docker run` 的参数 `--entrypoint` 来指定。
 
@@ -559,7 +475,7 @@ CMD [ "redis-server" ]
 
 
 
-#### 2.7 ENV 设置环境变量
++ ENV 设置环境变量
 
 格式有两种：
 
@@ -585,7 +501,7 @@ RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-
 
 
 
-#### 2.8 ARG 构建参数(构建环境的环境变量)
++ ARG 构建参数(构建环境的环境变量)
 
 格式：`ARG <参数名>[=<默认值>]`
 
@@ -595,7 +511,7 @@ RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-
 
 
 
-#### 2.9 VOLUME 定义匿名卷
++ VOLUME 定义匿名卷
 
 格式为：
 
@@ -620,7 +536,7 @@ docker run -d -v mydata:/data xxxx
 
 
 
-#### 2.10 EXPOSE 声明端口
++ EXPOSE 声明端口
 
 格式为 `EXPOSE <端口1> [<端口2>...]`。
 
@@ -632,7 +548,7 @@ docker run -d -v mydata:/data xxxx
 
 
 
-#### 2.11 WORKDIR 指定工作目录
++ WORKDIR 指定工作目录
 
 格式为 `WORKDIR <工作目录路径>`。
 
@@ -657,7 +573,7 @@ RUN echo "hello" > world.txt
 
  
 
-#### 2.12 USER 指定当前用户
++ USER 指定当前用户
 
 格式：`USER <用户名>`
 
@@ -690,7 +606,7 @@ CMD [ "exec", "gosu", "redis", "redis-server" ]
 
 
 
-#### 2.13 HEALTHCHECK 健康检查
++ HEALTHCHECK 健康检查
 
 格式：
 
@@ -724,7 +640,7 @@ HEALTHCHECK --interval=5s --timeout=3s \
 
  
 
-#### 2.14 ONBUILD 为他人做嫁衣裳
++ ONBUILD 为他人做嫁衣裳
 
 格式：`ONBUILD <其它指令>`。
 
@@ -734,9 +650,7 @@ HEALTHCHECK --interval=5s --timeout=3s \
 
  
 
-### 2.C docker多阶段构建 (多个 FROM as)
-
----
+### 2.4 docker多阶段构建 (多个 FROM as)
 
 我们构建 Docker 镜像时，一种方式是将所有的构建过程编包含在一个 `Dockerfile` 中，包括项目及其依赖库的编译、测试、打包等流程，这里可能会带来的一些问题：
 
@@ -784,7 +698,7 @@ $ docker build -t go/helloworld:3 .
 
 
 
-#### 只构建某一阶段的镜像
++ 只构建某一阶段的镜像
 
 我们可以使用 `as` 来为某一阶段命名，例如
 
@@ -800,7 +714,7 @@ $ docker build --target builder -t username/imagename:tag .
 
 
 
-#### 构建时从其他镜像复制文件
++ 构建时从其他镜像复制文件
 
 上面例子中我们使用 `COPY --from=0 /go/src/github.com/go/helloworld/app .` 从上一阶段的镜像中复制文件，我们也可以复制任意镜像中的文件。
 
@@ -810,47 +724,17 @@ $ COPY --from=nginx:latest /etc/nginx/nginx.conf /nginx.conf
 
 
 
-### 2.D 其它制作镜像的方式
-
----
-
-#### 2.1 从 rootfs 压缩包导入
-
-格式：`docker import [选项] <文件>|<URL>|- [<仓库名>[:<标签>]]`
-
-压缩包可以是本地文件、远程 Web 文件，甚至是从标准输入中得到。压缩包将会在镜像 `/` 目录展开，并直接作为镜像第一层提交。
+### 2.5 其它制作镜像的方式
 
 
 
-比如我们想要创建一个 [OpenVZ](https://openvz.org/Main_Page) 的 Ubuntu 14.04 [模板](https://openvz.org/Download/template/precreated)的镜像：
-
-```
-$ docker import \
-    http://download.openvz.org/template/precreated/ubuntu-14.04-x86_64-minimal.tar.gz \
-    openvz/ubuntu:14.04
-Downloading from http://download.openvz.org/template/precreated/ubuntu-14.04-x86_64-minimal.tar.gz
-sha256:f477a6e18e989839d25223f301ef738b69621c4877600ae6467c4e5289822a79B/78.42 MB
-```
-
-这条命令自动下载了 `ubuntu-14.04-x86_64-minimal.tar.gz` 文件，并且作为根文件系统展开导入，并保存为镜像 `openvz/ubuntu:14.04`。
-
-导入成功后，我们可以用 `docker image ls` 看到这个导入的镜像：
-
-```
-$ docker image ls openvz/ubuntu
-REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
-openvz/ubuntu       14.04               f477a6e18e98        55 seconds ago      214.9 MB
-```
-
-
-
-#### 2.2 `docker save` 和 `docker load`
++  `docker save` 和 `docker load`
 
 Docker 还提供了 `docker load` 和 `docker save` 命令，用以将镜像保存为一个 `tar` 文件，然后传输到另一个位置上，再加载进来。这是在没有 Docker Registry 时的做法，现在已经不推荐，镜像迁移应该直接使用 Docker Registry，无论是直接使用 Docker Hub 还是使用内网私有 Registry 都可以。
 
 
 
-##### 保存镜像
++ 保存镜像
 
 使用 `docker save` 命令可以将镜像保存为归档文件。
 
@@ -885,7 +769,7 @@ docker save <镜像名> | bzip2 | pv | ssh <用户名>@<主机名> 'cat | docker
 
 
 
-#### 2.3 docker export save 区别
++ docker export save 区别
 
 - docker save是将一个镜像导出成一个tarball文件，对应的导入命令是docker load，将该文件导入成一个镜像。 
 - docker export是将一个容器导出成一个tarball文件，对应的导入命令时docker import，将该文件导入成一个镜像（注意不是容器）。  容器快照将会丢弃所有的历史记录和元数据信息
@@ -894,7 +778,7 @@ docker save <镜像名> | bzip2 | pv | ssh <用户名>@<主机名> 'cat | docker
 
 # 3. 操作容器
 
-#### 新建并启动 
+### 3.1 新建并启动 
 
 所需要的命令主要为 `docker run`。
 
@@ -917,13 +801,15 @@ root@af8bae53bdd3:/#
 - 执行用户指定的应用程序
 - 执行完毕后容器被终止
 
-#### 启动已终止容器
+
+
+### 3.2 启动已终止容器
 
 可以利用 `docker container start` 命令，直接将一个已经终止的容器启动运行。
 
 
 
-#### 后台运行
+### 3.3 后台运行
 
 更多的时候，需要让 Docker 在后台运行而不是直接把执行命令的结果输出在当前宿主机下。此时，可以通过添加 `-d` 参数来实现。
 
@@ -948,13 +834,13 @@ hello world
 
 
 
-#### 终止容器
+### 3.4 终止容器
 
 可以使用 `docker container stop` 来终止一个运行中的容器。
 
  
 
-#### 进入容器
+### 3.5 进入容器
 
 `docker exec` 后边可以跟多个参数，这里主要说明 `-i` `-t` 参数。
 
@@ -971,7 +857,7 @@ root@69d137adef7a:/#
 
 
 
-#### 导出容器
+### 3.6 导出容器
 
 如果要导出本地某个容器，可以使用 `docker export` 命令。
 
@@ -983,7 +869,7 @@ docker export 7691a814370e > ubuntu.tar
 
 
 
-#### 导入容器快照
+### 3.7 导入容器快照
 
 ```
 $ cat ubuntu.tar | docker import - test/ubuntu:v1.0
@@ -1006,7 +892,7 @@ $ docker import http://example.com/exampleimage.tgz example/imagerepo
 
 
 
-#### 删除容器
+### 3.8 删除容器
 
 可以使用 `docker container rm` 来删除一个处于终止状态的容器。例如
 
@@ -1017,7 +903,7 @@ trusting_newton
 
 
 
-#### 清理所有处于终止状态的容器
+### 3.9 清理所有处于终止状态的容器
 
 ```
 $ docker container prune
@@ -1541,7 +1427,7 @@ tmpfs on /etc/resolv.conf type tmpfs ...
 
 
 
-### 8.A Compose 简介
+### 8.1 Compose 简介
 
 `Compose` 项目是 Docker 官方的开源项目，负责实现对 Docker 容器集群的快速编排。
 
@@ -1566,7 +1452,7 @@ tmpfs on /etc/resolv.conf type tmpfs ...
 
 
 
-### 8.B 安装与卸载
+### 8.2 安装与卸载
 
 - `Compose` 可以通过 Python 的包管理工具 `pip` 进行安装
 
@@ -1582,7 +1468,7 @@ docker-compose version 1.21.0, build 5920eb0
 
 
 
-### 8.C Compose 命令说明使用
+### 8.3 Compose 命令说明使用
 
 对于 Compose 来说，大部分命令的对象既可以是项目本身，也可以指定为项目中的服务或者容器。如果没有特别的说明，命令对象将是项目，这意味着项目中所有的服务都会受到命令影响。
 
@@ -1611,7 +1497,7 @@ docker-compose [-f=<arg>...] [options] [COMMAND] [ARGS...]
 
 
 
-##### 8.1 `build` 构建（重新构建）项目中的服务容器
+8.1 `build` 构建（重新构建）项目中的服务容器
 
 格式为 `docker-compose build [options] [SERVICE...]`。
 
@@ -1627,27 +1513,27 @@ docker-compose [-f=<arg>...] [options] [COMMAND] [ARGS...]
 
 
 
-##### 8.2 `config` 验证 Compose 文件格式是否正确，若正确则显示配置，若格式错误显示错误原因
+8.2 `config` 验证 Compose 文件格式是否正确，若正确则显示配置，若格式错误显示错误原因
 
 
 
-##### 8.3 `down` 此命令将会停止 `up` 命令所启动的容器，并移除网络
+8.3 `down` 此命令将会停止 `up` 命令所启动的容器，并移除网络
 
 
 
-##### 8.4 `exec` 进入指定的容器
+8.4 `exec` 进入指定的容器
 
 
 
-##### 8.5 `help` 获得一个命令的帮助
+8.5 `help` 获得一个命令的帮助
 
 
 
-##### 8.6 `images` 列出 Compose 文件中包含的镜像
+8.6 `images` 列出 Compose 文件中包含的镜像
 
 
 
-##### 8.7 `kill` 通过发送 `SIGKILL` 信号来强制停止服务容器
+8.7 `kill` 通过发送 `SIGKILL` 信号来强制停止服务容器
 
 格式为 `docker-compose kill [options] [SERVICE...]`。
 
@@ -1659,7 +1545,7 @@ $ docker-compose kill -s SIGINT
 
 
 
-##### 8.8 `logs` 查看服务容器的输出
+8.8 `logs` 查看服务容器的输出
 
 格式为 `docker-compose logs [options] [SERVICE...]`。
 
@@ -1669,13 +1555,13 @@ $ docker-compose kill -s SIGINT
 
 
 
-##### 8.9 `pause` 暂停一个服务容器
+8.9 `pause` 暂停一个服务容器
 
 格式为 `docker-compose pause [SERVICE...]`。
 
 
 
-##### 8.10 `port` 打印某个容器端口所映射的公共端口
+8.10 `port` 打印某个容器端口所映射的公共端口
 
 格式为 `docker-compose port [options] SERVICE PRIVATE_PORT`。
 
@@ -1686,7 +1572,7 @@ $ docker-compose kill -s SIGINT
 
   
 
-##### 8.11 `ps` 列出项目中目前的所有容器
+8.11 `ps` 列出项目中目前的所有容器
 
 格式为 `docker-compose ps [options] [SERVICE...]`。
 
@@ -1696,7 +1582,7 @@ $ docker-compose kill -s SIGINT
 
 
 
-##### 8.12 `pull` 拉取服务依赖的镜像
+8.12 `pull` 拉取服务依赖的镜像
 
 格式为 `docker-compose pull [options] [SERVICE...]`。
 
@@ -1706,11 +1592,11 @@ $ docker-compose kill -s SIGINT
 
 
 
-##### 8.13 `push` 推送服务依赖的镜像到 Docker 镜像仓库
+8.13 `push` 推送服务依赖的镜像到 Docker 镜像仓库
 
 
 
-##### 8.14 `restart` 重启项目中的服务
+8.14 `restart` 重启项目中的服务
 
 格式为 `docker-compose restart [options] [SERVICE...]`。
 
@@ -1720,7 +1606,7 @@ $ docker-compose kill -s SIGINT
 
 
 
-##### 8.15 `rm` 删除所有（停止状态的）服务容器
+8.15 `rm` 删除所有（停止状态的）服务容器
 
 推荐先执行 `docker-compose stop` 命令来停止容器。
 
@@ -1733,7 +1619,7 @@ $ docker-compose kill -s SIGINT
 
  
 
-##### 8.16 `run` 在指定服务上执行一个命令
+8.16 `run` 在指定服务上执行一个命令
 
 格式为 `docker-compose run [options] [-p PORT...] [-e KEY=VAL...] SERVICE [COMMAND] [ARGS...]`。
 
@@ -1779,7 +1665,7 @@ $ docker-compose run --no-deps web python manage.py shell
 
  
 
-##### 8.17 `scale` 设置指定服务运行的容器个数
+8.17 `scale` 设置指定服务运行的容器个数
 
 格式为 `docker-compose scale [options] [SERVICE=NUM...]`。
 
@@ -1799,13 +1685,13 @@ $ docker-compose scale web=3 db=2
 
 
 
-##### 8.18 `start` 启动已经存在的服务容器
+8.18 `start` 启动已经存在的服务容器
 
 格式为 `docker-compose start [SERVICE...]`。
 
 
 
-##### 8.19 `stop` 停止已经处于运行状态的容器，但不删除它
+8.19 `stop` 停止已经处于运行状态的容器，但不删除它
 
 通过 `docker-compose start` 可以再次启动这些容器。
 
@@ -1817,17 +1703,17 @@ $ docker-compose scale web=3 db=2
 
 
 
-##### 8.20 `top` 查看各个服务容器内运行的进程
+8.20 `top` 查看各个服务容器内运行的进程
 
  
 
-##### 8.21 `unpause` 恢复处于暂停状态中的服务
+8.21 `unpause` 恢复处于暂停状态中的服务
 
 格式为 `docker-compose unpause [SERVICE...]`。
 
 
 
-##### 8.22 `up` 启动一个项目
+8.22 `up` 启动一个项目
 
 格式为 `docker-compose up [options] [SERVICE...]`。
 
@@ -1865,7 +1751,7 @@ $ docker-compose scale web=3 db=2
 
 
 
-### 8.D Compose 模板文件
+### 8.4 Compose 模板文件
 
 模板文件是使用 `Compose` 的核心，涉及到的指令关键字也比较多。大部分指令跟 `docker run` 相关参数的含义都是类似的。
 
@@ -1890,30 +1776,4 @@ services:
 注意每个服务都必须通过 `image` 指令指定镜像或 `build` 指令（需要 Dockerfile）等来自动构建生成镜像。
 
 如果使用 `build` 指令，在 `Dockerfile` 中设置的选项(例如：`CMD`, `EXPOSE`, `VOLUME`, `ENV` 等) 将会自动被获取，无需在 `docker-compose.yml` 中再次设置。
-
-
-
-### 模板文件指令 TODO:
-
-
-
-##### `build`
-
-指定 `Dockerfile` 所在文件夹的路径（可以是绝对路径，或者相对 docker-compose.yml 文件的路径）。 `Compose` 将会利用它自动构建这个镜像，然后使用这个镜像。
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
