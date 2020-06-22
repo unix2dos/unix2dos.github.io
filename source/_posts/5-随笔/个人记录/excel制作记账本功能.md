@@ -50,6 +50,4 @@ date: 2020-01-01 00:00:00
 
    =IF(ISBLANK(C4),"",SUM(INDIRECT("C4:C"&ROW())))   // C4是第一个数据, 对下面的列应用样式
 
-+ 日期
 
-  =IF(ISBLANK(C4),"",TODAY())
