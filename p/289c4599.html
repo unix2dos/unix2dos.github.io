@@ -67,7 +67,7 @@
 <meta property="og:image" content="https://unix2dos.github.io/p/289c4599/2.png">
 <meta property="og:image" content="https://unix2dos.github.io/p/289c4599/3.png">
 <meta property="og:image" content="https://unix2dos.github.io/p/289c4599/4.png">
-<meta property="og:updated_time" content="2020-06-22T05:29:29.630Z">
+<meta property="og:updated_time" content="2020-06-23T10:51:31.176Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="tcp介绍和tcp建立连接过程">
 <meta name="twitter:description" content="1. tcp 介绍和 udp 区别    TCP UDP    数据传输 3报文握手+数据传输+4报文挥手 数据传输   连接方式 单播(一对一) 单播(一对一), 多播(一对多), 广播 (一对全)   应用报文 一系列字节流放到缓存中, 通过滑动窗口策略发送发送方加个 TCP 头部接收方取出字节流,组合送给接收方进程 每个报文添加个UDP首部   首部 最小20字节, 最大60字节 8字节">
@@ -291,7 +291,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-22 13:29:29" itemprop="dateModified" datetime="2020-06-22T13:29:29+08:00">2020-06-22</time>
+                <time title="修改时间：2020-06-23 18:51:31" itemprop="dateModified" datetime="2020-06-23T18:51:31+08:00">2020-06-23</time>
               </span>
             
           
@@ -396,58 +396,61 @@
 <p><img src="/p/289c4599/1.png" alt="1"></p>
 <h1 id="2-tcp连接"><a href="#2-tcp连接" class="headerlink" title="2. tcp连接"></a>2. tcp连接</h1><p><img src="/p/289c4599/2.png" alt="1"></p>
 <p><img src="/p/289c4599/3.png" alt="1"></p>
-<h3 id="2-1-tcp客户端"><a href="#2-1-tcp客户端" class="headerlink" title="2.1 tcp客户端"></a>2.1 tcp客户端</h3><h5 id="建立"><a href="#建立" class="headerlink" title="建立"></a>建立</h5><ul>
-<li>closed 关闭</li>
+<h3 id="2-1-建立连接"><a href="#2-1-建立连接" class="headerlink" title="2.1 建立连接"></a>2.1 建立连接</h3><h5 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h5><ul>
+<li>首先处于 closed 状态</li>
 <li>创建传输控制快</li>
-<li>握手①SYN=1 seq=x  进入<strong>SYN-SENT</strong>(同步已发送状态)</li>
-<li>握手③ACK=1 seq=x+1 ack=y+1 进入 <strong>ESTABLISHED</strong>(连接已建立状态)</li>
-<li>数据传输</li>
+<li></li>
+<li>发送握手①SYN=1 seq=x  进入<strong>SYN-SENT</strong>(同步已发送状态)</li>
+<li>发送握手③ACK=1 seq=x+1 ack=y+1 进入 <strong>ESTABLISHED</strong>(连接已建立状态)</li>
+<li>开始数据传输</li>
 </ul>
-<h5 id="释放"><a href="#释放" class="headerlink" title="释放"></a>释放</h5><ul>
-<li>挥手① FIN=1 ACK=1 seq=u  ack=v 进入 <strong>FIN_WAIT_1</strong>(终止等待1状态)</li>
-<li>收到挥手②进入 <strong>FIN_WAIT_2</strong>(终止等待2状态)</li>
-<li>接受数据</li>
-<li>挥手④ ACK=1 seq=u+1 ack=w+1 进入 <strong>TIME_WAIT</strong>(时间等待状态)</li>
-<li>经过2MSL后, 进入 <strong>CLOSED</strong>(关闭状态)</li>
-</ul>
-<h3 id="2-2-TCP服务器"><a href="#2-2-TCP服务器" class="headerlink" title="2.2 TCP服务器"></a>2.2 TCP服务器</h3><h5 id="建立-1"><a href="#建立-1" class="headerlink" title="建立"></a>建立</h5><ul>
-<li>closed 关闭</li>
-<li>创建传输控制快<ul>
+<h5 id="服务端"><a href="#服务端" class="headerlink" title="服务端"></a>服务端</h5><ul>
+<li><p>首先处于 closed 状态</p>
+</li>
+<li><p>创建传输控制快</p>
+<ul>
 <li>tcp 连接表</li>
 <li>指向发送和接收缓存的指针</li>
 <li>指向重传队列的指针</li>
 <li>当前的发送和接收序号</li>
 </ul>
 </li>
-<li>listen 监听</li>
-<li>握手② SYN=1 ACK=1 seq=y ack=x+1  进入<strong>SYN-REVD</strong>(同步已接收状态)</li>
-<li>进入<strong>ESTABLISHED</strong>(连接已建立状态)</li>
-<li>数据传输</li>
+<li><p>listen 监听</p>
+</li>
+<li></li>
+<li><p>发送握手② SYN=1 ACK=1 seq=y ack=x+1  进入<strong>SYN-REVD</strong>(同步已接收状态)</p>
+</li>
+<li><p>进入<strong>ESTABLISHED</strong>(连接已建立状态)</p>
+</li>
+<li><p>开始数据传输</p>
+</li>
 </ul>
-<h5 id="释放-1"><a href="#释放-1" class="headerlink" title="释放"></a>释放</h5><ul>
-<li>挥手② ACK=1 seq=v ack=u+1 并进入<strong>CLOSE_WAIT</strong>(关闭等待状态)</li>
+<h3 id="2-2-释放连接"><a href="#2-2-释放连接" class="headerlink" title="2.2 释放连接"></a>2.2 释放连接</h3><h5 id="客户端-1"><a href="#客户端-1" class="headerlink" title="客户端"></a>客户端</h5><ul>
+<li>发送挥手① FIN=1 ACK=1 seq=u  ack=v 进入 <strong>FIN_WAIT_1</strong>(终止等待1状态)</li>
+<li>收到挥手②进入 <strong>FIN_WAIT_2</strong>(终止等待2状态)</li>
+<li>接受数据</li>
+<li>发送挥手④ ACK=1 seq=u+1 ack=w+1 进入 <strong>TIME_WAIT</strong>(时间等待状态)</li>
+<li>经过2MSL后, 进入 <strong>CLOSED</strong>(关闭状态)</li>
+</ul>
+<h5 id="服务端-1"><a href="#服务端-1" class="headerlink" title="服务端"></a>服务端</h5><ul>
+<li>发送挥手② ACK=1 seq=v ack=u+1 并进入<strong>CLOSE_WAIT</strong>(关闭等待状态)</li>
 <li>通知应用进程断开连接, 客户端到服务器方向连接关闭, 属于半关闭状态</li>
-<li>发送数据</li>
-<li>挥手③ FIN=1 ACK=1 seq=w ack=u+1 进入 <strong>LAST-ACK</strong>(最后确认状态)</li>
+<li>发送未发完的数据</li>
+<li>发送挥手③ FIN=1 ACK=1 seq=w ack=u+1 进入 <strong>LAST-ACK</strong>(最后确认状态)</li>
 <li>收到挥手④后进入 <strong>CLOSED</strong>(关闭状态)</li>
 </ul>
-<h1 id="3-tcp-连接问题"><a href="#3-tcp-连接问题" class="headerlink" title="3. tcp 连接问题"></a>3. tcp 连接问题</h1><h3 id="3-1-为什么不用两次握手"><a href="#3-1-为什么不用两次握手" class="headerlink" title="3.1 为什么不用两次握手"></a>3.1 为什么不用两次握手</h3><ul>
-<li>假如第一个连接发送失败, 重传了以后, 过了好久好久以后, 失败的到达了,  服务器又建立了一次请求, 但客户端处于关闭无法理会, 服务器就无法释放这个连接.</li>
-</ul>
-<h3 id="3-2-CLOSE-WAIT-和-TIME-WAIT"><a href="#3-2-CLOSE-WAIT-和-TIME-WAIT" class="headerlink" title="3.2 CLOSE_WAIT 和 TIME_WAIT"></a>3.2 CLOSE_WAIT 和 TIME_WAIT</h3><ul>
-<li>CLOSE_WAIT <ul>
-<li>服务器状态(关闭等待状态 )</li>
-<li>发送确认挥手②以后</li>
-</ul>
+<h1 id="3-tcp-连接问题"><a href="#3-tcp-连接问题" class="headerlink" title="3. tcp 连接问题"></a>3. tcp 连接问题</h1><h3 id="3-1-为什么不用两次握手"><a href="#3-1-为什么不用两次握手" class="headerlink" title="3.1 为什么不用两次握手"></a>3.1 为什么不用两次握手</h3><p>假如第一个连接发送失败, 重传后过了好久好久, 到达了。 </p>
+<p>服务器对失败后的连接又建立了一次请求, 但客户端可能处于关闭了都无法理会, 服务器就无法释放这个连接。</p>
+<h3 id="3-2-为什么进入-TIME-WAIT-而不是直接关闭"><a href="#3-2-为什么进入-TIME-WAIT-而不是直接关闭" class="headerlink" title="3.2 为什么进入 TIME_WAIT 而不是直接关闭"></a>3.2 为什么进入 TIME_WAIT 而不是直接关闭</h3><p>因为客户端发送挥手④的时候，有可能失败。</p>
+<p>如果客户端直接关闭, 服务器重发挥手③, 客户端处于关闭不响应, 服务器无法释放资源。</p>
+<h3 id="3-3-CLOSE-WAIT-和-TIME-WAIT"><a href="#3-3-CLOSE-WAIT-和-TIME-WAIT" class="headerlink" title="3.3 CLOSE_WAIT 和 TIME_WAIT"></a>3.3 CLOSE_WAIT 和 TIME_WAIT</h3><ul>
+<li><p>CLOSE_WAIT  服务器状态(关闭等待状态 )</p>
+<p>服务器发送确认挥手②以后</p>
 </li>
-<li>TIME_WAIT <ul>
-<li>客户端状态(时间等待状态)</li>
-<li>发送确认挥手④以后, 再等待2个2MSL</li>
-</ul>
+<li><p>TIME_WAIT 客户端状态(时间等待状态)</p>
+<p>客户端发送确认挥手④以后, 再等待2个2MSL</p>
 </li>
 </ul>
-<h3 id="3-3-为什么进入-TIME-WAIT-而不是直接关闭"><a href="#3-3-为什么进入-TIME-WAIT-而不是直接关闭" class="headerlink" title="3.3 为什么进入 TIME_WAIT 而不是直接关闭"></a>3.3 为什么进入 TIME_WAIT 而不是直接关闭</h3><p>因为发送挥手④的时候, 有可能失败</p>
-<p>如果客户端直接关闭, 服务器重发挥手③, 客户端处于关闭不响应, 服务器无法释放资源</p>
 <h3 id="3-4-保活计时器的作用"><a href="#3-4-保活计时器的作用" class="headerlink" title="3.4 保活计时器的作用"></a>3.4 保活计时器的作用</h3><p>假如建立连接后, 客户端出现了故障</p>
 <ul>
 <li>服务器每次收到请求后, 重新启动定时器(2小时)</li>
@@ -586,7 +589,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-tcp-介绍和-udp-区别"><span class="nav-number">1.</span> <span class="nav-text">1. tcp 介绍和 udp 区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-tcp连接"><span class="nav-number">2.</span> <span class="nav-text">2. tcp连接</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-tcp客户端"><span class="nav-number">2.0.1.</span> <span class="nav-text">2.1 tcp客户端</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#建立"><span class="nav-number">2.0.1.0.1.</span> <span class="nav-text">建立</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#释放"><span class="nav-number">2.0.1.0.2.</span> <span class="nav-text">释放</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-TCP服务器"><span class="nav-number">2.0.2.</span> <span class="nav-text">2.2 TCP服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#建立-1"><span class="nav-number">2.0.2.0.1.</span> <span class="nav-text">建立</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#释放-1"><span class="nav-number">2.0.2.0.2.</span> <span class="nav-text">释放</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-tcp-连接问题"><span class="nav-number">3.</span> <span class="nav-text">3. tcp 连接问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-为什么不用两次握手"><span class="nav-number">3.0.1.</span> <span class="nav-text">3.1 为什么不用两次握手</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-CLOSE-WAIT-和-TIME-WAIT"><span class="nav-number">3.0.2.</span> <span class="nav-text">3.2 CLOSE_WAIT 和 TIME_WAIT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-为什么进入-TIME-WAIT-而不是直接关闭"><span class="nav-number">3.0.3.</span> <span class="nav-text">3.3 为什么进入 TIME_WAIT 而不是直接关闭</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-保活计时器的作用"><span class="nav-number">3.0.4.</span> <span class="nav-text">3.4 保活计时器的作用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-tcp-头部字段"><span class="nav-number">4.</span> <span class="nav-text">4. tcp 头部字段</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-头部格式"><span class="nav-number">4.0.1.</span> <span class="nav-text">4.1 头部格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-固定20字节详情"><span class="nav-number">4.0.2.</span> <span class="nav-text">4.2 固定20字节详情</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-扩展字段"><span class="nav-number">4.0.3.</span> <span class="nav-text">4.3 扩展字段</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-tcp-介绍和-udp-区别"><span class="nav-number">1.</span> <span class="nav-text">1. tcp 介绍和 udp 区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-tcp连接"><span class="nav-number">2.</span> <span class="nav-text">2. tcp连接</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-建立连接"><span class="nav-number">2.0.1.</span> <span class="nav-text">2.1 建立连接</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端"><span class="nav-number">2.0.1.0.1.</span> <span class="nav-text">客户端</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端"><span class="nav-number">2.0.1.0.2.</span> <span class="nav-text">服务端</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-释放连接"><span class="nav-number">2.0.2.</span> <span class="nav-text">2.2 释放连接</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端-1"><span class="nav-number">2.0.2.0.1.</span> <span class="nav-text">客户端</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端-1"><span class="nav-number">2.0.2.0.2.</span> <span class="nav-text">服务端</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-tcp-连接问题"><span class="nav-number">3.</span> <span class="nav-text">3. tcp 连接问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-为什么不用两次握手"><span class="nav-number">3.0.1.</span> <span class="nav-text">3.1 为什么不用两次握手</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-为什么进入-TIME-WAIT-而不是直接关闭"><span class="nav-number">3.0.2.</span> <span class="nav-text">3.2 为什么进入 TIME_WAIT 而不是直接关闭</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-CLOSE-WAIT-和-TIME-WAIT"><span class="nav-number">3.0.3.</span> <span class="nav-text">3.3 CLOSE_WAIT 和 TIME_WAIT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-保活计时器的作用"><span class="nav-number">3.0.4.</span> <span class="nav-text">3.4 保活计时器的作用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-tcp-头部字段"><span class="nav-number">4.</span> <span class="nav-text">4. tcp 头部字段</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-头部格式"><span class="nav-number">4.0.1.</span> <span class="nav-text">4.1 头部格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-固定20字节详情"><span class="nav-number">4.0.2.</span> <span class="nav-text">4.2 固定20字节详情</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-扩展字段"><span class="nav-number">4.0.3.</span> <span class="nav-text">4.3 扩展字段</span></a></li></ol></li></ol></li></ol></div>
         
       </div>
       <!--/noindex-->
