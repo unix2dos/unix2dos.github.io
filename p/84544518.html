@@ -63,7 +63,7 @@
 <meta property="og:site_name" content="Levon&#39;s Blog">
 <meta property="og:description" content="1. 索引1.1 索引是什么？有什么作用以及优缺点？ （1）是一种快速查询表中内容的机制，类似于新华字典的目录 （2）运用在表中某个些字段上，但存储时，独立于表之外，有一张专门的索引表">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-06-25T15:00:55.205Z">
+<meta property="og:updated_time" content="2020-06-25T15:33:39.099Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysql索引介绍">
 <meta name="twitter:description" content="1. 索引1.1 索引是什么？有什么作用以及优缺点？ （1）是一种快速查询表中内容的机制，类似于新华字典的目录 （2）运用在表中某个些字段上，但存储时，独立于表之外，有一张专门的索引表">
@@ -286,9 +286,29 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-25 23:00:55" itemprop="dateModified" datetime="2020-06-25T23:00:55+08:00">2020-06-25</time>
+                <time title="修改时间：2020-06-25 23:33:39" itemprop="dateModified" datetime="2020-06-25T23:33:39+08:00">2020-06-25</time>
               </span>
             
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/1-编程语言/" itemprop="url" rel="index"><span itemprop="name">1-编程语言</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/1-编程语言/sql/" itemprop="url" rel="index"><span itemprop="name">sql</span></a></span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -314,7 +334,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span>2.8k</span>
+              <span>3.1k</span>
             </span>
           
             <span class="post-meta-item" title="阅读时长">
@@ -380,15 +400,23 @@
 <li>左边的必须在才走索引!!!!!!!!!!!!!!!!</li>
 </ul>
 <h3 id="2-3-从表记录的排列顺序和索引的排列顺序是否一致来划分"><a href="#2-3-从表记录的排列顺序和索引的排列顺序是否一致来划分" class="headerlink" title="2.3 从表记录的排列顺序和索引的排列顺序是否一致来划分"></a>2.3 从表记录的排列顺序和索引的排列顺序是否一致来划分</h3><ul>
-<li>聚集索引：表记录的排列顺序和索引的排列顺序一致。(根据拼音查字)</li>
+<li><p>聚集索引：表记录的排列顺序和索引的排列顺序一致。(类似拼音查字)</p>
+<ul>
+<li>一个表中只能拥有一个聚集索引。</li>
+<li>SQL SERVER默认是在主键上建立聚集索引的。</li>
+</ul>
+</li>
 </ul>
 <p>  聚集索引表记录的排列顺序和索引的排列顺序一致，所以查询效率快，因为只要找到第一个索引值记录，其余的连续性的记录在物理表中也会连续存放，一起就可以查询到。</p>
 <p>  缺点：新增比较慢，因为为了保证表中记录的物理顺序和索引顺序一致，在记录插入的时候，会对数据页重新排序。</p>
 <ul>
-<li><p>非聚集索引：表记录的排列顺序和索引的排列顺序不一致。(根据偏旁部首查字)</p>
-<p>索引的逻辑顺序与磁盘上行的物理存储顺序不同，非聚集索引在叶子节点存储的是主键和索引列，当我们使用非聚集索引查询数据时，需要拿到叶子上的主键再去表中查到想要查找的数据。这个过程就是我们所说的回表。</p>
+<li><p>非聚集索引：表记录的排列顺序和索引的排列顺序不一致。(类似偏旁部首查字)</p>
+<ul>
+<li>一个表中可以拥有多个非聚集索引。</li>
+</ul>
 </li>
 </ul>
+<p>  索引的逻辑顺序与磁盘上行的物理存储顺序不同，非聚集索引在叶子节点存储的是主键和索引列，当我们使用非聚集索引查询数据时，需要拿到叶子上的主键再去表中查到想要查找的数据。这个过程就是我们所说的回表。</p>
 <h1 id="3-建索引的几大原则"><a href="#3-建索引的几大原则" class="headerlink" title="3. 建索引的几大原则"></a>3. 建索引的几大原则</h1><ul>
 <li><p>最左前缀匹配原则</p>
 <p>非常重要的原则. mysql会一直向右匹配直到遇到范围查询(&gt;、&lt;、between、like) 就停止匹配</p>
@@ -435,11 +463,31 @@
 <li><strong>B+ 树只需要去遍历叶子节点就可以实现整棵树的遍历</strong></li>
 </ul>
 <h3 id="4-4-MongoDB-的索引为什么选择-B-树，而-MySQL-的索引是-B-树？"><a href="#4-4-MongoDB-的索引为什么选择-B-树，而-MySQL-的索引是-B-树？" class="headerlink" title="4.4 MongoDB 的索引为什么选择 B 树，而 MySQL 的索引是 B+ 树？"></a>4.4 MongoDB 的索引为什么选择 B 树，而 MySQL 的索引是 B+ 树？</h3><p>因为 MongoDB 不是传统的关系型数据库，而是以 Json 格式作为存储的 NoSQL 非关系型数据库，目的就是高性能、高可用、易扩展。摆脱了关系模型，所以 <strong>范围查询和遍历查询的需求就没那么强烈了</strong>。</p>
-<h3 id="4-5-MyISAM-和-InnoDB-的索引有什么区别"><a href="#4-5-MyISAM-和-InnoDB-的索引有什么区别" class="headerlink" title="4.5 MyISAM 和 InnoDB 的索引有什么区别"></a>4.5 MyISAM 和 InnoDB 的索引有什么区别</h3><ul>
-<li><p>MyISAM 的索引文件（.MYI）和数据文件（.MYD）文件是分离的，索引文件仅保存记录所在页的指针（物理位置），通过这些指针来读取页，进而读取被索引的行。</p>
-<p>树中的叶子节点保存的是对应行的物理位置。通过该值，存储引擎能顺利地进行回表查询，得到一行完整记录。</p>
+<h3 id="4-5-MyISAM-和-InnoDB-的索引有什么区别"><a href="#4-5-MyISAM-和-InnoDB-的索引有什么区别" class="headerlink" title="4.5 MyISAM 和 InnoDB 的索引有什么区别"></a>4.5 MyISAM 和 InnoDB 的索引有什么区别</h3><p>都是用 B+树实现的</p>
+<ul>
+<li><p>MyISAM 非聚集索引</p>
+<ul>
+<li><p>索引文件（.MYI）和数据文件（.MYD）文件是分离的,  索引文件仅保存数据记录的地址。</p>
 </li>
-<li><p>InnoDB 主键索引中既存储了主健值，又存储了行数据。</p>
+<li><p>MyISAM的索引方式也叫做“非聚集”的，之所以这么称呼是为了与InnoDB的聚集索引区分。</p>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>InnoDB 聚集索引 </p>
+<ul>
+<li><p>InnoDB的数据文件本身就是索引文件。</p>
+</li>
+<li><p>如果一个主键被定义了，那么这个主键就是作为聚集索引。</p>
+</li>
+<li><p>如果没有主键被定义，那么该表的第一个唯一非空索引被作为聚集索引。</p>
+</li>
+<li><p>如果没有主键也没有合适的唯一索引，那么innodb内部会生成一个隐藏的主键作为聚集索引，这个隐藏的主键是一个6个字节的列，改列的值会随着数据的插入自增。</p>
+</li>
+<li><p>因此建议是给每个表都定一个主键。如果该表没有逻辑主键，则创建一个自增的列作为主键。</p>
+</li>
+</ul>
 </li>
 </ul>
 <h1 id="5-参考资料"><a href="#5-参考资料" class="headerlink" title="5. 参考资料"></a>5. 参考资料</h1><ul>
