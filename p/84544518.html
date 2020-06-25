@@ -63,7 +63,7 @@
 <meta property="og:site_name" content="Levon&#39;s Blog">
 <meta property="og:description" content="1. 索引1.1 索引是什么？有什么作用以及优缺点？ （1）是一种快速查询表中内容的机制，类似于新华字典的目录 （2）运用在表中某个些字段上，但存储时，独立于表之外，有一张专门的索引表">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-06-25T15:33:39.099Z">
+<meta property="og:updated_time" content="2020-06-25T15:50:03.288Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysql索引介绍">
 <meta name="twitter:description" content="1. 索引1.1 索引是什么？有什么作用以及优缺点？ （1）是一种快速查询表中内容的机制，类似于新华字典的目录 （2）运用在表中某个些字段上，但存储时，独立于表之外，有一张专门的索引表">
@@ -286,7 +286,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-25 23:33:39" itemprop="dateModified" datetime="2020-06-25T23:33:39+08:00">2020-06-25</time>
+                <time title="修改时间：2020-06-25 23:50:03" itemprop="dateModified" datetime="2020-06-25T23:50:03+08:00">2020-06-25</time>
               </span>
             
           
@@ -402,8 +402,10 @@
 <h3 id="2-3-从表记录的排列顺序和索引的排列顺序是否一致来划分"><a href="#2-3-从表记录的排列顺序和索引的排列顺序是否一致来划分" class="headerlink" title="2.3 从表记录的排列顺序和索引的排列顺序是否一致来划分"></a>2.3 从表记录的排列顺序和索引的排列顺序是否一致来划分</h3><ul>
 <li><p>聚集索引：表记录的排列顺序和索引的排列顺序一致。(类似拼音查字)</p>
 <ul>
-<li>一个表中只能拥有一个聚集索引。</li>
-<li>SQL SERVER默认是在主键上建立聚集索引的。</li>
+<li><p>一个表中只能拥有一个聚集索引。</p>
+</li>
+<li><p>SQL SERVER默认是在主键上建立聚集索引的。</p>
+</li>
 </ul>
 </li>
 </ul>
@@ -445,7 +447,7 @@
 <p>例如，有一个CHAR(200)列，如果在前10个或20个字符内，多数值是唯一的，那么就不要对整个列进行索引。对前10个或者20个字符进行索引能够节省大量索引空间，也可能会使查询更快。</p>
 </li>
 </ul>
-<h1 id="4-B-Tree"><a href="#4-B-Tree" class="headerlink" title="4. B-Tree"></a>4. B-Tree</h1><h3 id="4-1-B-树（也就是-B-树）"><a href="#4-1-B-树（也就是-B-树）" class="headerlink" title="4.1 B 树（也就是 B- 树）"></a>4.1 B 树（也就是 B- 树）</h3><ul>
+<h1 id="4-BTree和-B-Tree"><a href="#4-BTree和-B-Tree" class="headerlink" title="4. BTree和 B+Tree"></a>4. BTree和 B+Tree</h1><h3 id="4-1-B-树（也就是-B-树）"><a href="#4-1-B-树（也就是-B-树）" class="headerlink" title="4.1 B 树（也就是 B- 树）"></a>4.1 B 树（也就是 B- 树）</h3><ul>
 <li>关键字分布在整棵树的所有节点。</li>
 <li>任何一个关键字 <strong>出现且只出现在一个节点中</strong>。</li>
 <li>搜索有可能在 <strong>非叶子节点</strong> 结束。</li>
@@ -463,7 +465,7 @@
 <li><strong>B+ 树只需要去遍历叶子节点就可以实现整棵树的遍历</strong></li>
 </ul>
 <h3 id="4-4-MongoDB-的索引为什么选择-B-树，而-MySQL-的索引是-B-树？"><a href="#4-4-MongoDB-的索引为什么选择-B-树，而-MySQL-的索引是-B-树？" class="headerlink" title="4.4 MongoDB 的索引为什么选择 B 树，而 MySQL 的索引是 B+ 树？"></a>4.4 MongoDB 的索引为什么选择 B 树，而 MySQL 的索引是 B+ 树？</h3><p>因为 MongoDB 不是传统的关系型数据库，而是以 Json 格式作为存储的 NoSQL 非关系型数据库，目的就是高性能、高可用、易扩展。摆脱了关系模型，所以 <strong>范围查询和遍历查询的需求就没那么强烈了</strong>。</p>
-<h3 id="4-5-MyISAM-和-InnoDB-的索引有什么区别"><a href="#4-5-MyISAM-和-InnoDB-的索引有什么区别" class="headerlink" title="4.5 MyISAM 和 InnoDB 的索引有什么区别"></a>4.5 MyISAM 和 InnoDB 的索引有什么区别</h3><p>都是用 B+树实现的</p>
+<h1 id="5-MyISAM-和-InnoDB-的索引有什么区别"><a href="#5-MyISAM-和-InnoDB-的索引有什么区别" class="headerlink" title="5. MyISAM 和 InnoDB 的索引有什么区别"></a>5. MyISAM 和 InnoDB 的索引有什么区别</h1><p>都是用 B+树实现的</p>
 <ul>
 <li><p>MyISAM 非聚集索引</p>
 <ul>
@@ -490,7 +492,7 @@
 </ul>
 </li>
 </ul>
-<h1 id="5-参考资料"><a href="#5-参考资料" class="headerlink" title="5. 参考资料"></a>5. 参考资料</h1><ul>
+<h1 id="6-参考资料"><a href="#6-参考资料" class="headerlink" title="6. 参考资料"></a>6. 参考资料</h1><ul>
 <li><p><a href="https://tech.meituan.com/2014/06/30/mysql-index.html" target="_blank" rel="noopener">https://tech.meituan.com/2014/06/30/mysql-index.html</a></p>
 </li>
 <li><p><a href="https://www.infoq.cn/article/OJKWYykjoyc2YGB0Sj2c" target="_blank" rel="noopener">https://www.infoq.cn/article/OJKWYykjoyc2YGB0Sj2c</a></p>
@@ -614,7 +616,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-索引"><span class="nav-number">1.</span> <span class="nav-text">1. 索引</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-索引是什么？有什么作用以及优缺点？"><span class="nav-number">1.0.1.</span> <span class="nav-text">1.1 索引是什么？有什么作用以及优缺点？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-什么时候要创建索引"><span class="nav-number">1.0.2.</span> <span class="nav-text">1.2 什么时候要创建索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-什么时候不要创建索引"><span class="nav-number">1.0.3.</span> <span class="nav-text">1.3 什么时候不要创建索引</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-索引分类"><span class="nav-number">2.</span> <span class="nav-text">2. 索引分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-从存储结构上来划分"><span class="nav-number">2.0.1.</span> <span class="nav-text">2.1 从存储结构上来划分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-从应用层次上来划分"><span class="nav-number">2.0.2.</span> <span class="nav-text">2.2 从应用层次上来划分</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-1-唯一索引和主键索引区别"><span class="nav-number">2.0.2.0.1.</span> <span class="nav-text">2.2.1 唯一索引和主键索引区别</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-2-复合索引最左前缀匹配"><span class="nav-number">2.0.2.0.2.</span> <span class="nav-text">2.2.2 复合索引最左前缀匹配</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-从表记录的排列顺序和索引的排列顺序是否一致来划分"><span class="nav-number">2.0.3.</span> <span class="nav-text">2.3 从表记录的排列顺序和索引的排列顺序是否一致来划分</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-建索引的几大原则"><span class="nav-number">3.</span> <span class="nav-text">3. 建索引的几大原则</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-B-Tree"><span class="nav-number">4.</span> <span class="nav-text">4. B-Tree</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-B-树（也就是-B-树）"><span class="nav-number">4.0.1.</span> <span class="nav-text">4.1 B 树（也就是 B- 树）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-B-树"><span class="nav-number">4.0.2.</span> <span class="nav-text">4.2 B+ 树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-相对-B-树，B-树做索引的优势"><span class="nav-number">4.0.3.</span> <span class="nav-text">4.3 相对 B 树，B+ 树做索引的优势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-MongoDB-的索引为什么选择-B-树，而-MySQL-的索引是-B-树？"><span class="nav-number">4.0.4.</span> <span class="nav-text">4.4 MongoDB 的索引为什么选择 B 树，而 MySQL 的索引是 B+ 树？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-5-MyISAM-和-InnoDB-的索引有什么区别"><span class="nav-number">4.0.5.</span> <span class="nav-text">4.5 MyISAM 和 InnoDB 的索引有什么区别</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-参考资料"><span class="nav-number">5.</span> <span class="nav-text">5. 参考资料</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-索引"><span class="nav-number">1.</span> <span class="nav-text">1. 索引</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-索引是什么？有什么作用以及优缺点？"><span class="nav-number">1.0.1.</span> <span class="nav-text">1.1 索引是什么？有什么作用以及优缺点？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-什么时候要创建索引"><span class="nav-number">1.0.2.</span> <span class="nav-text">1.2 什么时候要创建索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-什么时候不要创建索引"><span class="nav-number">1.0.3.</span> <span class="nav-text">1.3 什么时候不要创建索引</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-索引分类"><span class="nav-number">2.</span> <span class="nav-text">2. 索引分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-从存储结构上来划分"><span class="nav-number">2.0.1.</span> <span class="nav-text">2.1 从存储结构上来划分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-从应用层次上来划分"><span class="nav-number">2.0.2.</span> <span class="nav-text">2.2 从应用层次上来划分</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-1-唯一索引和主键索引区别"><span class="nav-number">2.0.2.0.1.</span> <span class="nav-text">2.2.1 唯一索引和主键索引区别</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-2-复合索引最左前缀匹配"><span class="nav-number">2.0.2.0.2.</span> <span class="nav-text">2.2.2 复合索引最左前缀匹配</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-从表记录的排列顺序和索引的排列顺序是否一致来划分"><span class="nav-number">2.0.3.</span> <span class="nav-text">2.3 从表记录的排列顺序和索引的排列顺序是否一致来划分</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-建索引的几大原则"><span class="nav-number">3.</span> <span class="nav-text">3. 建索引的几大原则</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-BTree和-B-Tree"><span class="nav-number">4.</span> <span class="nav-text">4. BTree和 B+Tree</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-B-树（也就是-B-树）"><span class="nav-number">4.0.1.</span> <span class="nav-text">4.1 B 树（也就是 B- 树）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-B-树"><span class="nav-number">4.0.2.</span> <span class="nav-text">4.2 B+ 树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-相对-B-树，B-树做索引的优势"><span class="nav-number">4.0.3.</span> <span class="nav-text">4.3 相对 B 树，B+ 树做索引的优势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-MongoDB-的索引为什么选择-B-树，而-MySQL-的索引是-B-树？"><span class="nav-number">4.0.4.</span> <span class="nav-text">4.4 MongoDB 的索引为什么选择 B 树，而 MySQL 的索引是 B+ 树？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-MyISAM-和-InnoDB-的索引有什么区别"><span class="nav-number">5.</span> <span class="nav-text">5. MyISAM 和 InnoDB 的索引有什么区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-参考资料"><span class="nav-number">6.</span> <span class="nav-text">6. 参考资料</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
