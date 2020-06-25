@@ -67,7 +67,7 @@
 <meta property="og:image" content="https://unix2dos.github.io/p/289c4599/2.png">
 <meta property="og:image" content="https://unix2dos.github.io/p/289c4599/3.png">
 <meta property="og:image" content="https://unix2dos.github.io/p/289c4599/4.png">
-<meta property="og:updated_time" content="2020-06-23T10:51:31.176Z">
+<meta property="og:updated_time" content="2020-06-25T13:23:48.028Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="tcp介绍和tcp建立连接过程">
 <meta name="twitter:description" content="1. tcp 介绍和 udp 区别    TCP UDP    数据传输 3报文握手+数据传输+4报文挥手 数据传输   连接方式 单播(一对一) 单播(一对一), 多播(一对多), 广播 (一对全)   应用报文 一系列字节流放到缓存中, 通过滑动窗口策略发送发送方加个 TCP 头部接收方取出字节流,组合送给接收方进程 每个报文添加个UDP首部   首部 最小20字节, 最大60字节 8字节">
@@ -291,7 +291,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-23 18:51:31" itemprop="dateModified" datetime="2020-06-23T18:51:31+08:00">2020-06-23</time>
+                <time title="修改时间：2020-06-25 21:23:48" itemprop="dateModified" datetime="2020-06-25T21:23:48+08:00">2020-06-25</time>
               </span>
             
           
@@ -339,7 +339,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span>1.5k</span>
+              <span>2.3k</span>
             </span>
           
             <span class="post-meta-item" title="阅读时长">
@@ -349,7 +349,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
           
 
@@ -471,6 +471,30 @@
 </li>
 </ul>
 <h3 id="4-3-扩展字段"><a href="#4-3-扩展字段" class="headerlink" title="4.3 扩展字段"></a>4.3 扩展字段</h3><p><img src="/p/289c4599/4.png" alt="1"></p>
+<h1 id="5-tcp-其他"><a href="#5-tcp-其他" class="headerlink" title="5. tcp 其他"></a>5. tcp 其他</h1><h3 id="5-1-Nagle-內勾-算法"><a href="#5-1-Nagle-內勾-算法" class="headerlink" title="5.1 Nagle(內勾)算法"></a>5.1 Nagle(內勾)算法</h3><p>（1）如果包长度达到MSS，则允许发送；</p>
+<p>（2）如果该包含有FIN，则允许发送；</p>
+<p>（3）设置了TCP_NODELAY选项，则允许发送；</p>
+<p>（4）未设置TCP_CORK选项时，<strong><em>若所有发出去的小数据包（包长度小于MSS）均被确认，则允许发送；</em></strong></p>
+<p>（5）上述条件都未满足，但发生了超时（一般为200ms），则立即发送。</p>
+<ul>
+<li><p>优点：避免网络中充斥着许多小数据块，降低网络负载，减少网络拥塞，提高网络吞吐</p>
+</li>
+<li><p>缺点：客户端的延迟会增加，实时性降低，不适合延时要求尽量小的场景；且对于大文件传输这种场景，会降低传输速度。</p>
+</li>
+</ul>
+<p>用TCP_NODELAY选项可以禁止Negale 算法。此时，应用程序向内核递交的每个数据包都会立即发送出去。需要注意的是，虽然禁止了Negale 算法，但网络的传输仍然受到TCP确认延迟机制的影响。</p>
+<h3 id="5-2-延迟确认"><a href="#5-2-延迟确认" class="headerlink" title="5.2 延迟确认"></a>5.2 延迟确认</h3><p>接收方在收到数据后，并不会立即回复ACK, 而是延迟一定时间 或者 达到2x最大段数据长度为止 (不同操作系统实现并不一样)</p>
+<ol>
+<li>这样做的目的是ACK是可以合并的，也就是指如果连续收到两个TCP包，并不一定需要ACK两次，只要回复最终的ACK就可以了，可以降低网络流量。</li>
+<li>如果接收方有数据要发送，那么就会在发送数据的TCP数据包里，带上ACK信息。这样做，可以避免大量的ACK以一个单独的TCP包发送，减少了网络流量。</li>
+</ol>
+<h3 id="5-3-Nagle和延迟确认一起使用产生的问题"><a href="#5-3-Nagle和延迟确认一起使用产生的问题" class="headerlink" title="5.3 Nagle和延迟确认一起使用产生的问题"></a>5.3 Nagle和延迟确认一起使用产生的问题</h3><p>两种算法优点都有减小网络数据包的优点，但是都增加了网络通信的延时. 结合在一起就会有问题</p>
+<p>例如客户端发送一个数据报, 由于延时确认，服务端不是马上确认；</p>
+<p>若客户端启用nagle算法，要等到收到上一个数据报的确认在发送下一个数据报；</p>
+<p>如此以来，客户端和服务端相互等待，直到超时或者其他情况.</p>
+<h1 id="6-参考资料"><a href="#6-参考资料" class="headerlink" title="6. 参考资料"></a>6. 参考资料</h1><ul>
+<li><a href="https://my.oschina.net/xinxingegeya/blog/485643" target="_blank" rel="noopener">https://my.oschina.net/xinxingegeya/blog/485643</a></li>
+</ul>
 
     </div>
 
@@ -589,7 +613,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-tcp-介绍和-udp-区别"><span class="nav-number">1.</span> <span class="nav-text">1. tcp 介绍和 udp 区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-tcp连接"><span class="nav-number">2.</span> <span class="nav-text">2. tcp连接</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-建立连接"><span class="nav-number">2.0.1.</span> <span class="nav-text">2.1 建立连接</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端"><span class="nav-number">2.0.1.0.1.</span> <span class="nav-text">客户端</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端"><span class="nav-number">2.0.1.0.2.</span> <span class="nav-text">服务端</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-释放连接"><span class="nav-number">2.0.2.</span> <span class="nav-text">2.2 释放连接</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端-1"><span class="nav-number">2.0.2.0.1.</span> <span class="nav-text">客户端</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端-1"><span class="nav-number">2.0.2.0.2.</span> <span class="nav-text">服务端</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-tcp-连接问题"><span class="nav-number">3.</span> <span class="nav-text">3. tcp 连接问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-为什么不用两次握手"><span class="nav-number">3.0.1.</span> <span class="nav-text">3.1 为什么不用两次握手</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-为什么进入-TIME-WAIT-而不是直接关闭"><span class="nav-number">3.0.2.</span> <span class="nav-text">3.2 为什么进入 TIME_WAIT 而不是直接关闭</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-CLOSE-WAIT-和-TIME-WAIT"><span class="nav-number">3.0.3.</span> <span class="nav-text">3.3 CLOSE_WAIT 和 TIME_WAIT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-保活计时器的作用"><span class="nav-number">3.0.4.</span> <span class="nav-text">3.4 保活计时器的作用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-tcp-头部字段"><span class="nav-number">4.</span> <span class="nav-text">4. tcp 头部字段</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-头部格式"><span class="nav-number">4.0.1.</span> <span class="nav-text">4.1 头部格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-固定20字节详情"><span class="nav-number">4.0.2.</span> <span class="nav-text">4.2 固定20字节详情</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-扩展字段"><span class="nav-number">4.0.3.</span> <span class="nav-text">4.3 扩展字段</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-tcp-介绍和-udp-区别"><span class="nav-number">1.</span> <span class="nav-text">1. tcp 介绍和 udp 区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-tcp连接"><span class="nav-number">2.</span> <span class="nav-text">2. tcp连接</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-建立连接"><span class="nav-number">2.0.1.</span> <span class="nav-text">2.1 建立连接</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端"><span class="nav-number">2.0.1.0.1.</span> <span class="nav-text">客户端</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端"><span class="nav-number">2.0.1.0.2.</span> <span class="nav-text">服务端</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-释放连接"><span class="nav-number">2.0.2.</span> <span class="nav-text">2.2 释放连接</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端-1"><span class="nav-number">2.0.2.0.1.</span> <span class="nav-text">客户端</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端-1"><span class="nav-number">2.0.2.0.2.</span> <span class="nav-text">服务端</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-tcp-连接问题"><span class="nav-number">3.</span> <span class="nav-text">3. tcp 连接问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-为什么不用两次握手"><span class="nav-number">3.0.1.</span> <span class="nav-text">3.1 为什么不用两次握手</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-为什么进入-TIME-WAIT-而不是直接关闭"><span class="nav-number">3.0.2.</span> <span class="nav-text">3.2 为什么进入 TIME_WAIT 而不是直接关闭</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-CLOSE-WAIT-和-TIME-WAIT"><span class="nav-number">3.0.3.</span> <span class="nav-text">3.3 CLOSE_WAIT 和 TIME_WAIT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-保活计时器的作用"><span class="nav-number">3.0.4.</span> <span class="nav-text">3.4 保活计时器的作用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-tcp-头部字段"><span class="nav-number">4.</span> <span class="nav-text">4. tcp 头部字段</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-头部格式"><span class="nav-number">4.0.1.</span> <span class="nav-text">4.1 头部格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-固定20字节详情"><span class="nav-number">4.0.2.</span> <span class="nav-text">4.2 固定20字节详情</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-扩展字段"><span class="nav-number">4.0.3.</span> <span class="nav-text">4.3 扩展字段</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-tcp-其他"><span class="nav-number">5.</span> <span class="nav-text">5. tcp 其他</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-Nagle-內勾-算法"><span class="nav-number">5.0.1.</span> <span class="nav-text">5.1 Nagle(內勾)算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-延迟确认"><span class="nav-number">5.0.2.</span> <span class="nav-text">5.2 延迟确认</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-Nagle和延迟确认一起使用产生的问题"><span class="nav-number">5.0.3.</span> <span class="nav-text">5.3 Nagle和延迟确认一起使用产生的问题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-参考资料"><span class="nav-number">6.</span> <span class="nav-text">6. 参考资料</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -608,7 +632,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">141</span>
+          <span class="site-state-item-count">142</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -634,7 +658,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">86</span>
+        <span class="site-state-item-count">87</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -711,12 +735,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">536k</span>
+    <span title="站点总字数">539k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:07</span>
+    <span title="站点阅读时长">8:10</span>
 </div>
 
         

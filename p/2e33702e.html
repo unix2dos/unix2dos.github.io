@@ -72,7 +72,7 @@
 <meta property="og:image" content="https://unix2dos.github.io/p/2e33702e/7.png">
 <meta property="og:image" content="https://unix2dos.github.io/p/2e33702e/8.png">
 <meta property="og:image" content="https://unix2dos.github.io/p/2e33702e/9.png">
-<meta property="og:updated_time" content="2020-06-25T12:37:47.975Z">
+<meta property="og:updated_time" content="2020-06-25T12:46:33.578Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数据库范式和函数依赖">
 <meta name="twitter:description" content="1. 函数依赖1.1 函数依赖(有我就能决定你)设X,Y是关系R的两个属性集合，当任何时刻R中的任意两个元组中的X属性值相同时，则它们的Y属性值也相同，则称X函数决定Y，或Y函数依赖于X。  在一个表中,  X的值确定的情况下，必定能确定属性Y的值,  这就是函数依赖名字的由来，类似于函数关系 y = f(x) 姓名函数依赖于学号，写作 学号 → 姓名。 不能说学号函数依赖于姓名。姓名 不能决定学">
@@ -296,7 +296,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-25 20:37:47" itemprop="dateModified" datetime="2020-06-25T20:37:47+08:00">2020-06-25</time>
+                <time title="修改时间：2020-06-25 20:46:33" itemprop="dateModified" datetime="2020-06-25T20:46:33+08:00">2020-06-25</time>
               </span>
             
           
@@ -344,7 +344,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span>5.3k</span>
+              <span>5.2k</span>
             </span>
           
             <span class="post-meta-item" title="阅读时长">
@@ -397,10 +397,6 @@
 </ul>
 <h2 id="2-2-主属性"><a href="#2-2-主属性" class="headerlink" title="2.2 主属性"></a>2.2 主属性</h2><p>包含在任何一个码中的属性成为主属性。</p>
 <p>2NF的图主属性就有两个，<strong>学号</strong> 与 <strong>课名</strong>。</p>
-<h2 id="2-3-属性关系"><a href="#2-3-属性关系" class="headerlink" title="2.3 属性关系"></a>2.3 属性关系</h2><p>属性之间有三种关系，但并不是每一种关系都存在函数依赖。设R(U)是属性集U上的关系模式，X、Y是U的子集：</p>
-<p>● 如果X和Y之间是1：1关系（一对一关系），如学校(X)和校长(Y)之间就是1:1关系，则存在函数依赖X → Y和Y →X。</p>
-<p>● 如果X和Y之间是1：n关系（一对多关系），如年龄(X)和姓名(Y)之间就是1:n关系，则存在函数依赖Y → X。</p>
-<p>●如果X和Y之间是m：n关系（多对多关系），如学生(X)和课程(Y)之间就是m:n关系，则X和Y之间不存在函数依赖。</p>
 <h1 id="3-范式"><a href="#3-范式" class="headerlink" title="3. 范式"></a>3. 范式</h1><p>关系数据库有六种，1NF，2NF，3NF，BCNF，4NF，5NF。</p>
 <h2 id="3-1-1NF-问题-同字段内容重复-要拆表-gt-2NF"><a href="#3-1-1NF-问题-同字段内容重复-要拆表-gt-2NF" class="headerlink" title="3.1 1NF (问题: 同字段内容重复, 要拆表-&gt;2NF)"></a>3.1 1NF (问题: 同字段内容重复, 要拆表-&gt;2NF)</h2><p>符合1NF的关系中的每个属性都不可再分。下图就不符合1NF的要求.</p>
 <p><img src="/p/2e33702e/1.png" alt="1"></p>
@@ -524,13 +520,13 @@
 <li>3NF在2NF的基础之上，消除了<strong>非主属性</strong>对于码的传递函数依赖。</li>
 <li>BCNF 在3NF的基础上，消除<strong>主属性</strong>对于码的部分与传递函数依赖。</li>
 </ul>
-<h1 id="5-头脑风暴"><a href="#5-头脑风暴" class="headerlink" title="5. 头脑风暴"></a>5. 头脑风暴</h1><ul>
+<h1 id="4-头脑风暴"><a href="#4-头脑风暴" class="headerlink" title="4. 头脑风暴"></a>4. 头脑风暴</h1><ul>
 <li>1NF, 数据库默认就是, 不用考虑</li>
-<li>2NF  码可以决定一切, 但是不能一部分就决定.</li>
-<li>3NF  码可以决定一切, 但是不能间接决定.</li>
-<li>BCNF 码自己的主属性相互依赖,先解决自己的依赖成为 BCNF</li>
+<li>2NF  码可以决定一切, 但是不能一部分就决定.  (AB-&gt;CD) 但是 (A-&gt;C)    不能这样, 要改</li>
+<li>3NF  码可以决定一切, 但是不能间接决定.          (A-&gt;B-&gt;C)  不能这样, 要改</li>
+<li>BCNF 码自己的主属性相互依赖,先解决自己的依赖成为 BCNF       (AB-&gt;CD)   但是 (A-&gt;B) , 要改</li>
 </ul>
-<h1 id="6-参考资料"><a href="#6-参考资料" class="headerlink" title="6. 参考资料"></a>6. 参考资料</h1><ul>
+<h1 id="5-参考资料"><a href="#5-参考资料" class="headerlink" title="5. 参考资料"></a>5. 参考资料</h1><ul>
 <li><a href="https://www.zhihu.com/question/24696366/answer/29189700" target="_blank" rel="noopener">https://www.zhihu.com/question/24696366/answer/29189700</a></li>
 <li><a href="https://www.cnblogs.com/rosesmall/p/9585655.html" target="_blank" rel="noopener">https://www.cnblogs.com/rosesmall/p/9585655.html</a></li>
 </ul>
@@ -652,7 +648,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-函数依赖"><span class="nav-number">1.</span> <span class="nav-text">1. 函数依赖</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-函数依赖-有我就能决定你"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 函数依赖(有我就能决定你)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-平凡函数依赖-我决定的值还是我自己内部-走不出自我-于是平凡的我"><span class="nav-number">1.2.</span> <span class="nav-text">1.2. 平凡函数依赖(我决定的值还是我自己内部, 走不出自我, 于是平凡的我)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-非平凡函数依赖-我决定的值大千世界"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 非平凡函数依赖(我决定的值大千世界)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-完全函数依赖-我要和别人一起决定你"><span class="nav-number">1.4.</span> <span class="nav-text">1.4. 完全函数依赖 (我要和别人一起决定你)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-部分函数依赖-我的一部分就能决定你"><span class="nav-number">1.5.</span> <span class="nav-text">1.5. 部分函数依赖(我的一部分就能决定你)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-传递函数依赖-我可以间接决定你"><span class="nav-number">1.6.</span> <span class="nav-text">1.6. 传递函数依赖 (我可以间接决定你)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-码和主属性"><span class="nav-number">2.</span> <span class="nav-text">2. 码和主属性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-码"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-主属性"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 主属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-属性关系"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 属性关系</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-范式"><span class="nav-number">3.</span> <span class="nav-text">3. 范式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-1NF-问题-同字段内容重复-要拆表-gt-2NF"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 1NF (问题: 同字段内容重复, 要拆表-&gt;2NF)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-2NF-问题-非主属性不同字段之间关联-要拆表-gt-3NF"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 2NF (问题: 非主属性不同字段之间关联, 要拆表-&gt;3NF)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-1-判断是否符合2NF"><span class="nav-number">3.2.0.1.</span> <span class="nav-text">3.2.1  判断是否符合2NF</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-2-拆表符合2NF"><span class="nav-number">3.2.0.2.</span> <span class="nav-text">3.2.2  拆表符合2NF</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-3-定义"><span class="nav-number">3.2.0.3.</span> <span class="nav-text">3.2.3 定义</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-3NF-问题-主属性不同字段之间关联-要拆表-gt-BCNF"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 3NF (问题: 主属性不同字段之间关联, 要拆表-&gt;BCNF)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-1-判断是否符合3NF"><span class="nav-number">3.3.0.1.</span> <span class="nav-text">3.3.1 判断是否符合3NF</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-2-拆表符合3NF"><span class="nav-number">3.3.0.2.</span> <span class="nav-text">3.3.2  拆表符合3NF</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-3-定义"><span class="nav-number">3.3.0.3.</span> <span class="nav-text">3.3.3 定义</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-BCNF"><span class="nav-number">3.4.</span> <span class="nav-text">3.4 BCNF</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-1-3NF-也会有一些问题"><span class="nav-number">3.4.0.1.</span> <span class="nav-text">3.4.1 3NF 也会有一些问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-2-拆表符合BCNF"><span class="nav-number">3.4.0.2.</span> <span class="nav-text">3.3.2  拆表符合BCNF</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-3-定义"><span class="nav-number">3.4.0.3.</span> <span class="nav-text">3.4.3 定义</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-总结"><span class="nav-number">3.5.</span> <span class="nav-text">3.5 总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-头脑风暴"><span class="nav-number">4.</span> <span class="nav-text">5. 头脑风暴</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-参考资料"><span class="nav-number">5.</span> <span class="nav-text">6. 参考资料</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-函数依赖"><span class="nav-number">1.</span> <span class="nav-text">1. 函数依赖</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-函数依赖-有我就能决定你"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 函数依赖(有我就能决定你)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-平凡函数依赖-我决定的值还是我自己内部-走不出自我-于是平凡的我"><span class="nav-number">1.2.</span> <span class="nav-text">1.2. 平凡函数依赖(我决定的值还是我自己内部, 走不出自我, 于是平凡的我)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-非平凡函数依赖-我决定的值大千世界"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 非平凡函数依赖(我决定的值大千世界)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-完全函数依赖-我要和别人一起决定你"><span class="nav-number">1.4.</span> <span class="nav-text">1.4. 完全函数依赖 (我要和别人一起决定你)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-部分函数依赖-我的一部分就能决定你"><span class="nav-number">1.5.</span> <span class="nav-text">1.5. 部分函数依赖(我的一部分就能决定你)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-传递函数依赖-我可以间接决定你"><span class="nav-number">1.6.</span> <span class="nav-text">1.6. 传递函数依赖 (我可以间接决定你)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-码和主属性"><span class="nav-number">2.</span> <span class="nav-text">2. 码和主属性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-码"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-主属性"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 主属性</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-范式"><span class="nav-number">3.</span> <span class="nav-text">3. 范式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-1NF-问题-同字段内容重复-要拆表-gt-2NF"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 1NF (问题: 同字段内容重复, 要拆表-&gt;2NF)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-2NF-问题-非主属性不同字段之间关联-要拆表-gt-3NF"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 2NF (问题: 非主属性不同字段之间关联, 要拆表-&gt;3NF)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-1-判断是否符合2NF"><span class="nav-number">3.2.0.1.</span> <span class="nav-text">3.2.1  判断是否符合2NF</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-2-拆表符合2NF"><span class="nav-number">3.2.0.2.</span> <span class="nav-text">3.2.2  拆表符合2NF</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-3-定义"><span class="nav-number">3.2.0.3.</span> <span class="nav-text">3.2.3 定义</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-3NF-问题-主属性不同字段之间关联-要拆表-gt-BCNF"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 3NF (问题: 主属性不同字段之间关联, 要拆表-&gt;BCNF)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-1-判断是否符合3NF"><span class="nav-number">3.3.0.1.</span> <span class="nav-text">3.3.1 判断是否符合3NF</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-2-拆表符合3NF"><span class="nav-number">3.3.0.2.</span> <span class="nav-text">3.3.2  拆表符合3NF</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-3-定义"><span class="nav-number">3.3.0.3.</span> <span class="nav-text">3.3.3 定义</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-BCNF"><span class="nav-number">3.4.</span> <span class="nav-text">3.4 BCNF</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-1-3NF-也会有一些问题"><span class="nav-number">3.4.0.1.</span> <span class="nav-text">3.4.1 3NF 也会有一些问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-2-拆表符合BCNF"><span class="nav-number">3.4.0.2.</span> <span class="nav-text">3.3.2  拆表符合BCNF</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-3-定义"><span class="nav-number">3.4.0.3.</span> <span class="nav-text">3.4.3 定义</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-总结"><span class="nav-number">3.5.</span> <span class="nav-text">3.5 总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-头脑风暴"><span class="nav-number">4.</span> <span class="nav-text">4. 头脑风暴</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-参考资料"><span class="nav-number">5.</span> <span class="nav-text">5. 参考资料</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -671,7 +667,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">141</span>
+          <span class="site-state-item-count">142</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -697,7 +693,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">86</span>
+        <span class="site-state-item-count">87</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -774,12 +770,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">536k</span>
+    <span title="站点总字数">539k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:07</span>
+    <span title="站点阅读时长">8:10</span>
 </div>
 
         

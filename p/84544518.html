@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.json',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="1. 索引1.1 索引是什么？有什么作用以及优缺点？ （1）是一种快速查询表中内容的机制，类似于新华字典的目录 （2）运用在表中某个些字段上，但存储时，独立于表之外，有一张专门的索引表">
+<meta name="keywords" content="mysql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql索引介绍">
+<meta property="og:url" content="https://unix2dos.github.io/p/84544518.html">
+<meta property="og:site_name" content="Levon&#39;s Blog">
+<meta property="og:description" content="1. 索引1.1 索引是什么？有什么作用以及优缺点？ （1）是一种快速查询表中内容的机制，类似于新华字典的目录 （2）运用在表中某个些字段上，但存储时，独立于表之外，有一张专门的索引表">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-06-25T15:00:55.205Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mysql索引介绍">
+<meta name="twitter:description" content="1. 索引1.1 索引是什么？有什么作用以及优缺点？ （1）是一种快速查询表中内容的机制，类似于新华字典的目录 （2）运用在表中某个些字段上，但存储时，独立于表之外，有一张专门的索引表">
+  <link rel="canonical" href="https://unix2dos.github.io/p/84544518">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>mysql索引介绍 | Levon's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Levon's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">微信:  L6241425</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>时光</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/84544518.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Levon">
+      <meta itemprop="description" content="Never Give Up">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Levon's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">mysql索引介绍
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2020-01-01 00:00:06" itemprop="dateCreated datePublished" datetime="2020-01-01T00:00:06+08:00">2020-01-01</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-25 23:00:55" itemprop="dateModified" datetime="2020-06-25T23:00:55+08:00">2020-06-25</time>
+              </span>
+            
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/p/84544518.html#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/84544518.html" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span>2.8k</span>
+            </span>
+          
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span>3 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="1-索引"><a href="#1-索引" class="headerlink" title="1. 索引"></a>1. 索引</h1><h3 id="1-1-索引是什么？有什么作用以及优缺点？"><a href="#1-1-索引是什么？有什么作用以及优缺点？" class="headerlink" title="1.1 索引是什么？有什么作用以及优缺点？"></a>1.1 索引是什么？有什么作用以及优缺点？</h3><ul>
+<li>（1）是一种快速查询表中内容的机制，类似于新华字典的目录</li>
+<li>（2）运用在表中某个些字段上，但存储时，独立于表之外，有一张专门的索引表</li>
+</ul>
+<a id="more"></a>
+
+<h3 id="1-2-什么时候要创建索引"><a href="#1-2-什么时候要创建索引" class="headerlink" title="1.2 什么时候要创建索引"></a>1.2 什么时候要创建索引</h3><ul>
+<li>表经常进行 SELECT 操作</li>
+<li>表很大(记录超多)，记录内容分布范围很广</li>
+<li>列名经常在 WHERE 子句或连接条件中出现</li>
+</ul>
+<h3 id="1-3-什么时候不要创建索引"><a href="#1-3-什么时候不要创建索引" class="headerlink" title="1.3 什么时候不要创建索引"></a>1.3 什么时候不要创建索引</h3><ul>
+<li>表经常进行 INSERT/UPDATE/DELETE 操作</li>
+<li>表很小(记录超少)</li>
+<li>列名不经常作为连接条件或出现在 WHERE 子句中</li>
+<li>字段内容重复很多</li>
+</ul>
+<h1 id="2-索引分类"><a href="#2-索引分类" class="headerlink" title="2. 索引分类"></a>2. 索引分类</h1><h3 id="2-1-从存储结构上来划分"><a href="#2-1-从存储结构上来划分" class="headerlink" title="2.1 从存储结构上来划分"></a>2.1 从存储结构上来划分</h3><ul>
+<li>Btree 索引（B+tree，B-tree)</li>
+<li>哈希索引</li>
+<li>full-index 全文索引</li>
+<li>RTree</li>
+</ul>
+<h3 id="2-2-从应用层次上来划分"><a href="#2-2-从应用层次上来划分" class="headerlink" title="2.2 从应用层次上来划分"></a>2.2 从应用层次上来划分</h3><ul>
+<li>普通索引：即一个索引只包含单个列，一个表可以有多个单列索引。</li>
+<li>唯一索引：索引列的值必须唯一，但允许有空值。<ul>
+<li>普通唯一索引：单个字段上建立唯一索引，需要此字段所在的列上不能有重复的值，属于二级索引。</li>
+<li>复合唯一索引：多个字段上联合建立唯一索引，属于二级索引。</li>
+</ul>
+</li>
+<li>复合索引：一个索引包含多个列。</li>
+</ul>
+<h5 id="2-2-1-唯一索引和主键索引区别"><a href="#2-2-1-唯一索引和主键索引区别" class="headerlink" title="2.2.1 唯一索引和主键索引区别"></a>2.2.1 唯一索引和主键索引区别</h5><ul>
+<li><p>主键就是唯一索引，但是唯一索引不一定是主键</p>
+</li>
+<li><p>唯一索引可以为空，但是空值只能有一个，主键不能为空。</p>
+</li>
+</ul>
+<h5 id="2-2-2-复合索引最左前缀匹配"><a href="#2-2-2-复合索引最左前缀匹配" class="headerlink" title="2.2.2 复合索引最左前缀匹配"></a>2.2.2 复合索引最左前缀匹配</h5><p>最左前缀匹配原则。这是非常重要、非常重要、非常重要（重要的事情说三遍）</p>
+<ul>
+<li>左边的必须在才走索引!!!!!!!!!!!!!!!!</li>
+</ul>
+<h3 id="2-3-从表记录的排列顺序和索引的排列顺序是否一致来划分"><a href="#2-3-从表记录的排列顺序和索引的排列顺序是否一致来划分" class="headerlink" title="2.3 从表记录的排列顺序和索引的排列顺序是否一致来划分"></a>2.3 从表记录的排列顺序和索引的排列顺序是否一致来划分</h3><ul>
+<li>聚集索引：表记录的排列顺序和索引的排列顺序一致。(根据拼音查字)</li>
+</ul>
+<p>  聚集索引表记录的排列顺序和索引的排列顺序一致，所以查询效率快，因为只要找到第一个索引值记录，其余的连续性的记录在物理表中也会连续存放，一起就可以查询到。</p>
+<p>  缺点：新增比较慢，因为为了保证表中记录的物理顺序和索引顺序一致，在记录插入的时候，会对数据页重新排序。</p>
+<ul>
+<li><p>非聚集索引：表记录的排列顺序和索引的排列顺序不一致。(根据偏旁部首查字)</p>
+<p>索引的逻辑顺序与磁盘上行的物理存储顺序不同，非聚集索引在叶子节点存储的是主键和索引列，当我们使用非聚集索引查询数据时，需要拿到叶子上的主键再去表中查到想要查找的数据。这个过程就是我们所说的回表。</p>
+</li>
+</ul>
+<h1 id="3-建索引的几大原则"><a href="#3-建索引的几大原则" class="headerlink" title="3. 建索引的几大原则"></a>3. 建索引的几大原则</h1><ul>
+<li><p>最左前缀匹配原则</p>
+<p>非常重要的原则. mysql会一直向右匹配直到遇到范围查询(&gt;、&lt;、between、like) 就停止匹配</p>
+<p>比如a = 1 and b = 2 and c &gt; 3 and d = 4 如果建立(a,b,c,d)顺序的索引，d是用不到索引的，如果建立(a,b,d,c)的索引则都可以用到，a,b,d的顺序可以任意调整。</p>
+</li>
+<li><p>= 和 in 可以乱序</p>
+<p>比如a = 1 and b = 2 and c = 3 建立(a,b,c)索引可以任意顺序，mysql的查询优化器会帮你优化成索引可以识别的形式。</p>
+</li>
+<li><p>尽量选择区分度高的列作为索引</p>
+<p>区分度的公式是count(distinct col)/count(*)，表示字段不重复的比例，比例越大我们扫描的记录数越少，唯一键的区分度是1。（越大越好）</p>
+<p>而一些状态、性别字段可能在大数据面前区分度就是0，那可能有人会问，这个比例有什么经验值吗？使用场景不同，这个值也很难确定，一般需要join的字段我们都要求是0.1以上，即平均1条扫描10条记录。</p>
+</li>
+</ul>
+<p>  索引列的基数越大，索引的效果越好。例如，存放出生日期的列具有不同的值，很容易区分行，而用来记录性别的列，只有”M”和”F”,则对此进行索引没有多大用处，因此不管搜索哪个值，都会得出大约一半的行。</p>
+<ul>
+<li><p>索引列不能参与计算，保持列“干净”，</p>
+<p>比如from_unixtime(create_time) = ’2014-05-29’就不能使用到索引，原因很简单，b+树中存的都是数据表中的字段值，但进行检索时，需要把所有元素都应用函数才能比较，显然成本太大。所以语句应该写成create_time = unix_timestamp(’2014-05-29’)。</p>
+</li>
+<li><p>尽量的扩展索引，不要新建索引。</p>
+<p>比如表中已经有a的索引，现在要加(a,b)的索引，那么只需要修改原来的索引即可。</p>
+</li>
+<li><p>在合适的列上创建索引</p>
+<p>可以考虑使用索引的主要有 两种类型的列：在where子句中出现的列<strong>，</strong>在join子句中出现的列，而不是在SELECT关键字后选择列表的列</p>
+</li>
+<li><p>使用短索引，如果对字符串列进行索引，应该指定一个前缀长度，可节省大量索引空间，提升查询速度；</p>
+<p>例如，有一个CHAR(200)列，如果在前10个或20个字符内，多数值是唯一的，那么就不要对整个列进行索引。对前10个或者20个字符进行索引能够节省大量索引空间，也可能会使查询更快。</p>
+</li>
+</ul>
+<h1 id="4-B-Tree"><a href="#4-B-Tree" class="headerlink" title="4. B-Tree"></a>4. B-Tree</h1><h3 id="4-1-B-树（也就是-B-树）"><a href="#4-1-B-树（也就是-B-树）" class="headerlink" title="4.1 B 树（也就是 B- 树）"></a>4.1 B 树（也就是 B- 树）</h3><ul>
+<li>关键字分布在整棵树的所有节点。</li>
+<li>任何一个关键字 <strong>出现且只出现在一个节点中</strong>。</li>
+<li>搜索有可能在 <strong>非叶子节点</strong> 结束。</li>
+<li>其搜索性能等价于在关键字全集内做一次二分查找。如下图所示：</li>
+</ul>
+<h3 id="4-2-B-树"><a href="#4-2-B-树" class="headerlink" title="4.2 B+ 树"></a>4.2 B+ 树</h3><ul>
+<li>非叶子节点的子树指针与关键字个数相同。</li>
+<li>非叶子节点的子树指针 P[i]，指向关键字属于 <strong>[k[i],K[i+1])</strong> 的子树（<strong>注意：区间是前闭后开</strong>)。</li>
+<li><strong>为所有叶子节点增加一个链指针</strong>。</li>
+<li><strong>所有关键字都在叶子节点出现</strong>。</li>
+</ul>
+<h3 id="4-3-相对-B-树，B-树做索引的优势"><a href="#4-3-相对-B-树，B-树做索引的优势" class="headerlink" title="4.3 相对 B 树，B+ 树做索引的优势"></a>4.3 相对 B 树，B+ 树做索引的优势</h3><ul>
+<li>B+ 树的磁盘读写代价更低。<strong>B+ 树的内部没有指向关键字具体信息的指针</strong>，所以其内部节点相对 B 树更小，如果把所有关键字存放在同一块盘中，那么盘中所能容纳的关键字数量也越多，一次性读入内存的需要查找的关键字也就越多，<strong>相应的，IO 读写次数就降低了</strong>。</li>
+<li><strong>树的查询效率更加稳定</strong>。B+ 树所有数据都存在于叶子节点，所有关键字查询的路径长度相同，每次数据的查询效率相当。而 B 树可能在非叶子节点就停止查找了，所以查询效率不够稳定。</li>
+<li><strong>B+ 树只需要去遍历叶子节点就可以实现整棵树的遍历</strong></li>
+</ul>
+<h3 id="4-4-MongoDB-的索引为什么选择-B-树，而-MySQL-的索引是-B-树？"><a href="#4-4-MongoDB-的索引为什么选择-B-树，而-MySQL-的索引是-B-树？" class="headerlink" title="4.4 MongoDB 的索引为什么选择 B 树，而 MySQL 的索引是 B+ 树？"></a>4.4 MongoDB 的索引为什么选择 B 树，而 MySQL 的索引是 B+ 树？</h3><p>因为 MongoDB 不是传统的关系型数据库，而是以 Json 格式作为存储的 NoSQL 非关系型数据库，目的就是高性能、高可用、易扩展。摆脱了关系模型，所以 <strong>范围查询和遍历查询的需求就没那么强烈了</strong>。</p>
+<h3 id="4-5-MyISAM-和-InnoDB-的索引有什么区别"><a href="#4-5-MyISAM-和-InnoDB-的索引有什么区别" class="headerlink" title="4.5 MyISAM 和 InnoDB 的索引有什么区别"></a>4.5 MyISAM 和 InnoDB 的索引有什么区别</h3><ul>
+<li><p>MyISAM 的索引文件（.MYI）和数据文件（.MYD）文件是分离的，索引文件仅保存记录所在页的指针（物理位置），通过这些指针来读取页，进而读取被索引的行。</p>
+<p>树中的叶子节点保存的是对应行的物理位置。通过该值，存储引擎能顺利地进行回表查询，得到一行完整记录。</p>
+</li>
+<li><p>InnoDB 主键索引中既存储了主健值，又存储了行数据。</p>
+</li>
+</ul>
+<h1 id="5-参考资料"><a href="#5-参考资料" class="headerlink" title="5. 参考资料"></a>5. 参考资料</h1><ul>
+<li><p><a href="https://tech.meituan.com/2014/06/30/mysql-index.html" target="_blank" rel="noopener">https://tech.meituan.com/2014/06/30/mysql-index.html</a></p>
+</li>
+<li><p><a href="https://www.infoq.cn/article/OJKWYykjoyc2YGB0Sj2c" target="_blank" rel="noopener">https://www.infoq.cn/article/OJKWYykjoyc2YGB0Sj2c</a></p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作, 一个耿直的笑脸~</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechatpay.jpg" alt="Levon 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="Levon 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/mysql/" rel="tag"># mysql</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/p/19ae52d4.html" rel="next" title="golang常见问题">
+                  <i class="fa fa-chevron-left"></i> golang常见问题
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/p/67723314.html" rel="prev" title="shell读取文件内容遇到的坑">
+                  shell读取文件内容遇到的坑 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-索引"><span class="nav-number">1.</span> <span class="nav-text">1. 索引</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-索引是什么？有什么作用以及优缺点？"><span class="nav-number">1.0.1.</span> <span class="nav-text">1.1 索引是什么？有什么作用以及优缺点？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-什么时候要创建索引"><span class="nav-number">1.0.2.</span> <span class="nav-text">1.2 什么时候要创建索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-什么时候不要创建索引"><span class="nav-number">1.0.3.</span> <span class="nav-text">1.3 什么时候不要创建索引</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-索引分类"><span class="nav-number">2.</span> <span class="nav-text">2. 索引分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-从存储结构上来划分"><span class="nav-number">2.0.1.</span> <span class="nav-text">2.1 从存储结构上来划分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-从应用层次上来划分"><span class="nav-number">2.0.2.</span> <span class="nav-text">2.2 从应用层次上来划分</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-1-唯一索引和主键索引区别"><span class="nav-number">2.0.2.0.1.</span> <span class="nav-text">2.2.1 唯一索引和主键索引区别</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-2-复合索引最左前缀匹配"><span class="nav-number">2.0.2.0.2.</span> <span class="nav-text">2.2.2 复合索引最左前缀匹配</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-从表记录的排列顺序和索引的排列顺序是否一致来划分"><span class="nav-number">2.0.3.</span> <span class="nav-text">2.3 从表记录的排列顺序和索引的排列顺序是否一致来划分</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-建索引的几大原则"><span class="nav-number">3.</span> <span class="nav-text">3. 建索引的几大原则</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-B-Tree"><span class="nav-number">4.</span> <span class="nav-text">4. B-Tree</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-B-树（也就是-B-树）"><span class="nav-number">4.0.1.</span> <span class="nav-text">4.1 B 树（也就是 B- 树）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-B-树"><span class="nav-number">4.0.2.</span> <span class="nav-text">4.2 B+ 树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-相对-B-树，B-树做索引的优势"><span class="nav-number">4.0.3.</span> <span class="nav-text">4.3 相对 B 树，B+ 树做索引的优势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-MongoDB-的索引为什么选择-B-树，而-MySQL-的索引是-B-树？"><span class="nav-number">4.0.4.</span> <span class="nav-text">4.4 MongoDB 的索引为什么选择 B 树，而 MySQL 的索引是 B+ 树？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-5-MyISAM-和-InnoDB-的索引有什么区别"><span class="nav-number">4.0.5.</span> <span class="nav-text">4.5 MyISAM 和 InnoDB 的索引有什么区别</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-参考资料"><span class="nav-number">5.</span> <span class="nav-text">5. 参考资料</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="Levon">
+  <p class="site-author-name" itemprop="name">Levon</p>
+  <div class="site-description" itemprop="description">Never Give Up</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">142</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">87</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/unix2dos" title="GitHub &rarr; https://github.com/unix2dos" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:levonfly@gmail.com" title="E-Mail &rarr; mailto:levonfly@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://twitter.com/levonfly" title="Twitter &rarr; https://twitter.com/levonfly" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://weibo.com/l6241425" title="Weibo &rarr; https://weibo.com/l6241425" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+    
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Levon</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">539k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:10</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://levonfly.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function disqus_config() {
+    this.page.url = "https://unix2dos.github.io/p/84544518.html";
+    this.page.identifier = "p/84544518.html";
+    this.page.title = 'mysql索引介绍';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://levonfly.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    window.addEventListener('load', loadComments, false);
+  
+</script>
+
+</body>
+</html>
