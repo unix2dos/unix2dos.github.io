@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.json',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="1. 关闭有缓冲数据的 channel发生什么只有当channel无数据，且channel被close了，才会返回ok=false。 只要有堆积数据，即使 close() 也不会返回关闭状态。 关闭后有数据也能从里面得到数据，除非消耗空了。">
+<meta name="keywords" content="golang">
+<meta property="og:type" content="article">
+<meta property="og:title" content="golang常见问题">
+<meta property="og:url" content="https://unix2dos.github.io/p/19ae52d4.html">
+<meta property="og:site_name" content="Levon&#39;s Blog">
+<meta property="og:description" content="1. 关闭有缓冲数据的 channel发生什么只有当channel无数据，且channel被close了，才会返回ok=false。 只要有堆积数据，即使 close() 也不会返回关闭状态。 关闭后有数据也能从里面得到数据，除非消耗空了。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-06-25T07:36:54.326Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="golang常见问题">
+<meta name="twitter:description" content="1. 关闭有缓冲数据的 channel发生什么只有当channel无数据，且channel被close了，才会返回ok=false。 只要有堆积数据，即使 close() 也不会返回关闭状态。 关闭后有数据也能从里面得到数据，除非消耗空了。">
+  <link rel="canonical" href="https://unix2dos.github.io/p/19ae52d4">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>golang常见问题 | Levon's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Levon's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">微信:  L6241425</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>时光</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/19ae52d4.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Levon">
+      <meta itemprop="description" content="Never Give Up">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Levon's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">golang常见问题
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2020-01-01 00:00:05" itemprop="dateCreated datePublished" datetime="2020-01-01T00:00:05+08:00">2020-01-01</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-25 15:36:54" itemprop="dateModified" datetime="2020-06-25T15:36:54+08:00">2020-06-25</time>
+              </span>
+            
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/p/19ae52d4.html#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/19ae52d4.html" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span>5.6k</span>
+            </span>
+          
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span>5 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="1-关闭有缓冲数据的-channel发生什么"><a href="#1-关闭有缓冲数据的-channel发生什么" class="headerlink" title="1. 关闭有缓冲数据的 channel发生什么"></a>1. 关闭有缓冲数据的 channel发生什么</h3><p>只有当channel无数据，且channel被close了，才会返回ok=false。 只要有堆积数据，即使 close() 也不会返回关闭状态。</p>
+<p>关闭后有数据也能从里面得到数据，除非消耗空了。</p>
+<a id="more"></a>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">10</span>)</span><br><span class="line">	c &lt;- <span class="number">1</span></span><br><span class="line">	c &lt;- <span class="number">2</span></span><br><span class="line">	c &lt;- <span class="number">3</span></span><br><span class="line">	<span class="built_in">close</span>(c)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		data, ok := &lt;-c</span><br><span class="line">		<span class="keyword">if</span> !ok &#123;</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		fmt.Println(data, ok)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">1 true</span></span><br><span class="line"><span class="comment">2 true</span></span><br><span class="line"><span class="comment">3 true</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>那么如何在channel堆积的情况下，得知channel已经关闭了 ？</p>
+</blockquote>
+<p>可以直接读取channel结构hchan的closed字段，但问题chan.go没有开放这样的api，可以用黑科技,但是他不安全.</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"unsafe"</span></span><br><span class="line">    <span class="string">"reflect"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">isChanClosed</span><span class="params">(ch <span class="keyword">interface</span>&#123;&#125;)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> reflect.TypeOf(ch).Kind() != reflect.Chan &#123;</span><br><span class="line">        <span class="built_in">panic</span>(<span class="string">"only channels!"</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// get interface value pointer, from cgo_export </span></span><br><span class="line">    <span class="comment">// typedef struct &#123; void *t; void *v; &#125; GoInterface;</span></span><br><span class="line">    <span class="comment">// then get channel real pointer</span></span><br><span class="line">    cptr := *(*<span class="keyword">uintptr</span>)(unsafe.Pointer(</span><br><span class="line">        unsafe.Pointer(<span class="keyword">uintptr</span>(unsafe.Pointer(&amp;ch)) + unsafe.Sizeof(<span class="keyword">uint</span>(<span class="number">0</span>))),</span><br><span class="line">    ))</span><br><span class="line"></span><br><span class="line">    <span class="comment">// this function will return true if chan.closed &gt; 0</span></span><br><span class="line">    <span class="comment">// see hchan on https://github.com/golang/go/blob/master/src/runtime/chan.go </span></span><br><span class="line">    <span class="comment">// type hchan struct &#123;</span></span><br><span class="line">    <span class="comment">// qcount   uint           // total data in the queue</span></span><br><span class="line">    <span class="comment">// dataqsiz uint           // size of the circular queue</span></span><br><span class="line">    <span class="comment">// buf      unsafe.Pointer // points to an array of dataqsiz elements</span></span><br><span class="line">    <span class="comment">// elemsize uint16</span></span><br><span class="line">    <span class="comment">// closed   uint32</span></span><br><span class="line">    <span class="comment">// **</span></span><br><span class="line"></span><br><span class="line">    cptr += unsafe.Sizeof(<span class="keyword">uint</span>(<span class="number">0</span>))*<span class="number">2</span></span><br><span class="line">    cptr += unsafe.Sizeof(unsafe.Pointer(<span class="keyword">uintptr</span>(<span class="number">0</span>)))</span><br><span class="line">    cptr += unsafe.Sizeof(<span class="keyword">uint16</span>(<span class="number">0</span>))</span><br><span class="line">    <span class="keyword">return</span> *(*<span class="keyword">uint32</span>)(unsafe.Pointer(cptr)) &gt; <span class="number">0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-如何判断-channel-close-状态"><a href="#2-如何判断-channel-close-状态" class="headerlink" title="2. 如何判断 channel close 状态"></a>2. 如何判断 channel close 状态</h3><p>关闭一个已经关闭的管道会触发 panic，所以，关闭者不知道管道是否关闭仍去关闭它，这是一个危险的行为。</p>
+<p>发送数据到一个关闭的管道会触发 panic, 所以，发送者不知道管道是否关闭仍去发送消息给它，这是一个危险的行为。</p>
+<p>Go 中没有一个內建函数去检测管道是否已经被关闭（没有办法）。如果您不知道通道是否关闭并且盲目地写入该通道，则说明您的程序设计不良。 重新设计它，使其在关闭后无法写入。</p>
+<ul>
+<li><p>可用 bool值，但是会多读一个值</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">value, ok := &lt;- channel </span><br><span class="line"><span class="keyword">if</span> !ok &#123;    </span><br><span class="line">  <span class="comment">// channel was closed and drained </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>可用上面的黑科技</p>
+</li>
+</ul>
+<h3 id="3-channel-被close后，还能被接收或-select-到吗"><a href="#3-channel-被close后，还能被接收或-select-到吗" class="headerlink" title="3. channel 被close后，还能被接收或 select 到吗"></a>3. channel 被close后，还能被接收或 select 到吗</h3><p>如果有缓存，值能被收到，ok 是 true</p>
+<p>如果无缓存，值是0，ok 是 false，但不会 panic</p>
+<h3 id="4-channel-的零值"><a href="#4-channel-的零值" class="headerlink" title="4. channel 的零值"></a>4. channel 的零值</h3><p>channel的零值是nil。也许会让你觉得比较奇怪，nil的channel有时候也是有一些用处的。</p>
+<ul>
+<li>因为对一个nil的channel发送和接收操作会永远阻塞</li>
+<li>在select语句中操作nil的channel永远都不会被select到。这使得我们可以用nil来激活或者禁用case。</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> c <span class="keyword">chan</span> <span class="keyword">int</span></span><br><span class="line">	fmt.Println(c)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">select</span> &#123;</span><br><span class="line">		<span class="keyword">case</span> &lt;-c:</span><br><span class="line">			fmt.Println(<span class="string">"nerver"</span>)</span><br><span class="line">		<span class="keyword">default</span>:</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出 nil 之后无线循环，不会输出 nerver</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="5-优雅的关闭-channel"><a href="#5-优雅的关闭-channel" class="headerlink" title="5. 优雅的关闭 channel"></a>5. 优雅的关闭 channel</h3><p><a href="https://www.liuvv.com/p/8b210700.html" target="_blank" rel="noopener">https://www.liuvv.com/p/8b210700.html</a></p>
+<h3 id="6-如何检测-goroutine泄露"><a href="#6-如何检测-goroutine泄露" class="headerlink" title="6. 如何检测 goroutine泄露"></a>6. 如何检测 goroutine泄露</h3><ul>
+<li><p>golang/gops </p>
+</li>
+<li><p>pprof</p>
+<p>使用Go提供的pprof工具分析是否发生内存泄露。使用 pprof 的 heap 能够获取程序运行时的内存信息，通过对运行的程序多次采样对比，分析出内存的使用情况。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"flag"</span></span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line">	<span class="string">"net/http"</span></span><br><span class="line">	_ <span class="string">"net/http/pprof"</span></span><br><span class="line">	<span class="string">"sync"</span></span><br><span class="line">	<span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	flag.Parse()</span><br><span class="line"></span><br><span class="line">	<span class="comment">//这里实现了远程获取pprof数据的接口</span></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		log.Println(http.ListenAndServe(<span class="string">"localhost:6060"</span>, <span class="literal">nil</span>))</span><br><span class="line">	&#125;()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> wg sync.WaitGroup</span><br><span class="line">	wg.Add(<span class="number">10</span>)</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">		<span class="keyword">go</span> work(&amp;wg)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	wg.Wait()</span><br><span class="line">	<span class="comment">// Wait to see the global run queue deplete.</span></span><br><span class="line">	time.Sleep(<span class="number">3</span> * time.Second)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">work</span><span class="params">(wg *sync.WaitGroup)</span></span> &#123;</span><br><span class="line">	time.Sleep(time.Second)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> counter <span class="keyword">int</span></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">1e10</span>; i++ &#123;</span><br><span class="line">		time.Sleep(time.Millisecond * <span class="number">100</span>)</span><br><span class="line">		counter++</span><br><span class="line">	&#125;</span><br><span class="line">	wg.Done()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<p>  打开浏览器,访问如下:</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 访问 http://localhost:6060/debug/pprof/</span></span><br><span class="line"></span><br><span class="line">/debug/pprof/</span><br><span class="line"></span><br><span class="line">Types of profiles available:</span><br><span class="line">Count	Profile</span><br><span class="line">2	allocs</span><br><span class="line">0	block</span><br><span class="line">0	cmdline</span><br><span class="line">15	goroutine</span><br><span class="line">2	heap</span><br><span class="line">0	mutex</span><br><span class="line">0	profile</span><br><span class="line">10	threadcreate</span><br><span class="line">0	trace</span><br></pre></td></tr></table></figure>
+
+<h5 id="6-1-goroutine-泄露的防范"><a href="#6-1-goroutine-泄露的防范" class="headerlink" title="6.1 goroutine 泄露的防范"></a>6.1 goroutine 泄露的防范</h5><ul>
+<li>创建goroutine时就要想好该goroutine该如何结束</li>
+<li>使用channel时，要考虑到 channel 阻塞时协程可能的行为</li>
+<li>实现循环语句时注意循环的退出条件，避免死循环</li>
+</ul>
+<h3 id="7-什么时候用-channel，-什么时候用Mutex"><a href="#7-什么时候用-channel，-什么时候用Mutex" class="headerlink" title="7. 什么时候用 channel， 什么时候用Mutex"></a>7. 什么时候用 channel， 什么时候用Mutex</h3><p><a href="https://github.com/golang/go/wiki/MutexOrChannel" target="_blank" rel="noopener">https://github.com/golang/go/wiki/MutexOrChannel</a></p>
+<p>channel的能力是让数据流动起来，擅长的是数据流动的场景</p>
+<ul>
+<li><p>传递数据的所有权，即把某个数据发送给其他协程</p>
+</li>
+<li><p>分发任务，每个任务都是一个数据</p>
+</li>
+<li><p>交流异步结果，结果是一个数据</p>
+</li>
+</ul>
+<p>mutex的能力是数据不动，某段时间只给一个协程访问数据的权限擅长数据位置固定的场景</p>
+<ul>
+<li><p>缓存</p>
+</li>
+<li><p>状态</p>
+</li>
+</ul>
+<h3 id="8-函数参数传递，是值还是引用"><a href="#8-函数参数传递，是值还是引用" class="headerlink" title="8. 函数参数传递，是值还是引用"></a>8. 函数参数传递，是值还是引用</h3><ol>
+<li><p>为什么说 <strong>slice</strong>、<strong>map</strong>、<strong>channel</strong> 是引用类型？</p>
+</li>
+<li><p>Go中 <strong>slice</strong> 在传入函数时到底是不是引用传递？如果不是，在函数内为什么能修改其值？</p>
+</li>
+</ol>
+<ul>
+<li><p>其实传递的就是值,但是为什么能改内容呢?</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ChangeMap</span><span class="params">(value <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">  fmt.Printf(<span class="string">"map内部 %p\n"</span>, &amp;value)</span><br><span class="line">  value[<span class="string">"age"</span>] = <span class="string">"30"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ChangeSlice</span><span class="params">(value []<span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">  fmt.Printf(<span class="string">"slice内部 %p\n"</span>, &amp;value)</span><br><span class="line">  value[<span class="number">0</span>] = <span class="string">"haha"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  map1 := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>)</span><br><span class="line">  map1[<span class="string">"age"</span>] = <span class="string">"21"</span></span><br><span class="line">  fmt.Printf(<span class="string">"map外部 %p\n"</span>, &amp;map1)</span><br><span class="line">  fmt.Println(map1[<span class="string">"age"</span>])</span><br><span class="line">  ChangeMap(map1)</span><br><span class="line">  fmt.Println(map1[<span class="string">"age"</span>])</span><br><span class="line"></span><br><span class="line">  slice1 := <span class="built_in">make</span>([]<span class="keyword">string</span>, <span class="number">0</span>)</span><br><span class="line">  slice1 = <span class="built_in">append</span>(slice1, <span class="string">"hehe"</span>)</span><br><span class="line">  fmt.Println(slice1)</span><br><span class="line">  fmt.Printf(<span class="string">"slice外部 %p\n"</span>, &amp;slice1)</span><br><span class="line">  ChangeSlice(slice1)</span><br><span class="line">  fmt.Println(slice1)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">map外部 0xc000092018</span></span><br><span class="line"><span class="comment">21</span></span><br><span class="line"><span class="comment">map内部 0xc000092028</span></span><br><span class="line"><span class="comment">30</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">[hehe]</span></span><br><span class="line"><span class="comment">slice外部 0xc00008a040</span></span><br><span class="line"><span class="comment">slice内部 0xc00008a080</span></span><br><span class="line"><span class="comment">[haha]</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>普通的类型就是值传递</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a := <span class="number">10</span></span><br><span class="line">	fmt.Printf(<span class="string">"%#v\n"</span>, &amp;a) <span class="comment">// (*int)(0xc420018080)</span></span><br><span class="line">	vFoo(a)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">vFoo</span><span class="params">(b <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	fmt.Printf(<span class="string">"%#v\n"</span>, &amp;b) <span class="comment">// (*int)(0xc420018090)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<ul>
+<li><p>总结</p>
+<ul>
+<li>Go 中函数传参仅有值传递一种方式.</li>
+<li>因为使用了 make, 为我们省去了指针的操作，让我们可以更容易的使用<strong>slice</strong>、<strong>map</strong>、<strong>channel</strong>。</li>
+<li>查看make slice的源码：func makeslice(et *_type, len, cap int) unsafe.Pointer可以看到slice返回的就是一个指针值，可以在不同指针类型之间做转换。</li>
+<li>这里的<strong>slice</strong>、<strong>map</strong>、<strong>channel</strong>可以理解为引用类型(跟c++的不同)，但是记住引用类型不是传引用。</li>
+</ul>
+</li>
+</ul>
+<h3 id="9-slice-底层原理"><a href="#9-slice-底层原理" class="headerlink" title="9. slice 底层原理"></a>9. slice 底层原理</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> slice <span class="keyword">struct</span> &#123;</span><br><span class="line">	array unsafe.Pointer</span><br><span class="line">	<span class="built_in">len</span>   <span class="keyword">int</span></span><br><span class="line">	<span class="built_in">cap</span>   <span class="keyword">int</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>切片的结构体由3部分构成，Pointer 是指向一个数组的指针，len 代表当前切片的长度，cap 是当前切片的容量。cap 总是大于等于 len 的。</p>
+<ul>
+<li>如果切片的容量小于1024个元素，那么扩容的时候slice的cap就翻番，乘以2；一旦元素个数超过1024个元素，增长因子就变成1.25，即每次增加原来容量的四分之一。</li>
+<li>如果扩容之后，还没有触及原数组的容量，那么，切片中的指针指向的位置，就还是原数组，如果扩容之后，超过了原数组的容量，那么，Go就会开辟一块新的内存，把原来的值拷贝过来，这种情况丝毫不会影响到原数组。</li>
+</ul>
+<h3 id="10-map-无序还是有序，如何有序遍历"><a href="#10-map-无序还是有序，如何有序遍历" class="headerlink" title="10. map 无序还是有序，如何有序遍历"></a>10. map 无序还是有序，如何有序遍历</h3><ul>
+<li><p>map 默认是无序的，不管是按照 key 还是按照 value 默认都不排序。</p>
+</li>
+<li><p>有序遍历</p>
+<p>如果你想为 map 排序，需要将 key（或者 value）拷贝到一个切片，再对切片排序（使用 sort 包），然后可以使用切片的 for-range 方法打印出所有的 key 和 value。</p>
+</li>
+</ul>
+<h3 id="11-并发安全-map"><a href="#11-并发安全-map" class="headerlink" title="11. 并发安全 map"></a>11. 并发安全 map</h3><ul>
+<li><p>不安全,需要加锁 </p>
+</li>
+<li><p>Go 1.9后使用 sync.Map</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a := sync.Map&#123;&#125;</span><br><span class="line">	a.Store(<span class="string">"name"</span>, <span class="string">"levon"</span>)</span><br><span class="line">	fmt.Println(a.Load(<span class="string">"name"</span>)) <span class="comment">//levon true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作, 一个耿直的笑脸~</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechatpay.jpg" alt="Levon 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="Levon 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/golang/" rel="tag"># golang</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/p/ff8068c0.html" rel="next" title="快速排序">
+                  <i class="fa fa-chevron-left"></i> 快速排序
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/p/67723314.html" rel="prev" title="shell读取文件内容遇到的坑">
+                  shell读取文件内容遇到的坑 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-关闭有缓冲数据的-channel发生什么"><span class="nav-number">1.</span> <span class="nav-text">1. 关闭有缓冲数据的 channel发生什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-如何判断-channel-close-状态"><span class="nav-number">2.</span> <span class="nav-text">2. 如何判断 channel close 状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-channel-被close后，还能被接收或-select-到吗"><span class="nav-number">3.</span> <span class="nav-text">3. channel 被close后，还能被接收或 select 到吗</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-channel-的零值"><span class="nav-number">4.</span> <span class="nav-text">4. channel 的零值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-优雅的关闭-channel"><span class="nav-number">5.</span> <span class="nav-text">5. 优雅的关闭 channel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-如何检测-goroutine泄露"><span class="nav-number">6.</span> <span class="nav-text">6. 如何检测 goroutine泄露</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#6-1-goroutine-泄露的防范"><span class="nav-number">6.0.1.</span> <span class="nav-text">6.1 goroutine 泄露的防范</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-什么时候用-channel，-什么时候用Mutex"><span class="nav-number">7.</span> <span class="nav-text">7. 什么时候用 channel， 什么时候用Mutex</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-函数参数传递，是值还是引用"><span class="nav-number">8.</span> <span class="nav-text">8. 函数参数传递，是值还是引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-slice-底层原理"><span class="nav-number">9.</span> <span class="nav-text">9. slice 底层原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-map-无序还是有序，如何有序遍历"><span class="nav-number">10.</span> <span class="nav-text">10. map 无序还是有序，如何有序遍历</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-并发安全-map"><span class="nav-number">11.</span> <span class="nav-text">11. 并发安全 map</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="Levon">
+  <p class="site-author-name" itemprop="name">Levon</p>
+  <div class="site-description" itemprop="description">Never Give Up</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">141</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">86</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/unix2dos" title="GitHub &rarr; https://github.com/unix2dos" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:levonfly@gmail.com" title="E-Mail &rarr; mailto:levonfly@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://twitter.com/levonfly" title="Twitter &rarr; https://twitter.com/levonfly" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://weibo.com/l6241425" title="Weibo &rarr; https://weibo.com/l6241425" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+    
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Levon</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">532k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:03</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://levonfly.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function disqus_config() {
+    this.page.url = "https://unix2dos.github.io/p/19ae52d4.html";
+    this.page.identifier = "p/19ae52d4.html";
+    this.page.title = 'golang常见问题';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://levonfly.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    window.addEventListener('load', loadComments, false);
+  
+</script>
+
+</body>
+</html>
