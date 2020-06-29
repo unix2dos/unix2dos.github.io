@@ -380,3 +380,80 @@ type slice struct {
 
   
 
+### 12. 字节和字节对齐
+
++ 字节数
+
+  int 默认 int64 ,  8个字节, float 64,  8个字节
+
+```go
+package main
+
+import (
+	"fmt"
+	"unsafe"
+)
+
+func main() {
+	var a int
+	fmt.Println(unsafe.Sizeof(a)) //8
+
+	var b int32
+	fmt.Println(unsafe.Sizeof(b)) //4
+
+	var c int64
+	fmt.Println(unsafe.Sizeof(c)) //8
+
+	var d float64
+	fmt.Println(unsafe.Sizeof(d)) //8
+
+	var e float32
+	fmt.Println(unsafe.Sizeof(e)) //4
+}
+```
+
++ 字节对齐
+
+```go
+package main
+
+import (
+	"fmt"
+	"unsafe"
+)
+
+type Info1 struct {
+	sex    bool //1
+	status int8 //1
+}
+
+type Info2 struct {
+	sex bool //1
+	age int  //8
+}
+
+type Info3 struct {
+	sex bool  //1
+	age int32 //4
+}
+
+type Info4 struct {
+	sex    bool //1
+	age    int  //8
+	status int8 //1
+}
+
+type Info5 struct {
+	sex    bool //1
+	status int8 //1
+	age    int  //8
+}
+
+func main() {
+	fmt.Println(unsafe.Sizeof(Info1{})) //2
+	fmt.Println(unsafe.Sizeof(Info2{})) //16(8+8)
+	fmt.Println(unsafe.Sizeof(Info3{})) //8(4+4)
+	fmt.Println(unsafe.Sizeof(Info4{})) //24(8+8+8)
+	fmt.Println(unsafe.Sizeof(Info5{})) //16(1+1+8 = 8+8)
+}
+```
