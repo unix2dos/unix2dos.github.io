@@ -457,3 +457,187 @@ func main() {
 	fmt.Println(unsafe.Sizeof(Info5{})) //16(1+1+8 = 8+8)
 }
 ```
+
+
+
+### 13. 非运行多态
+
+go 语言中，当子类调用父类方法时，“作用域”将进入父类的作用域，看不见子类的方法存在
+
+```go
+package main
+
+import "fmt"
+
+type A struct {
+}
+
+func (a *A) ShowA() {
+	fmt.Println("showA")
+	a.ShowB()
+}
+func (a *A) ShowB() {
+	fmt.Println("showB")
+}
+
+type B struct {
+	A
+}
+
+func (b *B) ShowB() {
+	fmt.Println("b showB")
+}
+
+func main() {
+	b := B{}
+	b.ShowA()
+}
+
+// showA
+// showB,  not b showB
+```
+
+
+
+### 14. make时传递的数字参数
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	s := make([]int, 0)
+	fmt.Println(s) //[]
+	s = append(s, 1, 2, 3)
+	fmt.Println(s) //[1 2 3]
+}
+
+```
+
+如果传递了个数, 就是有默认值了
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	s := make([]int, 5)
+	fmt.Println(s) //[0 0 0 0 0]
+
+  s = append(s, 1, 2, 3)
+	fmt.Println(s) //[0 0 0 0 0 1 2 3]
+}
+```
+
+
+
+### 15. interface 当参数时的坑, 传递 nil 也不是 nil
+
+如果需要判断, 请用反射 `reflect.ValueOf(i).IsNil()`
+
+```go
+package main
+
+import "fmt"
+
+type I interface {
+	A() error
+}
+
+type T struct {
+}
+
+func (t *T) A() error {
+	return nil
+}
+
+func testInterface(i I) {
+	if i == nil {
+		fmt.Println("i is nil")
+	} else {
+		fmt.Println("i is not nil")
+	}
+}
+func main() {
+	t := new(T)
+	t = nil
+	testInterface(t) //i is not nil
+}
+
+```
+
+
+
+### 16. panic
+
+##### 16.1 主协程奔溃就直接崩溃了
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func testPanic() {
+	fmt.Println("1111111")
+	panic("testPanic panic")
+	fmt.Println("2222222222")
+}
+
+func main() {
+	fmt.Println("begin")
+	testPanic()
+	fmt.Println("end")
+}
+
+/*
+begin
+1111111
+panic: testPanic panic
+*/
+
+```
+
+##### 16.2 其他 goruting 奔溃也会导致主 gorouting 奔溃
+
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+	"time"
+)
+
+func testPanic(wg *sync.WaitGroup) {
+	defer wg.Done()
+	fmt.Println("1111111")
+	panic("testPanic panic")
+	fmt.Println("2222222222")
+}
+
+func main() {
+	fmt.Println("begin")
+	wg := new(sync.WaitGroup)
+
+	wg.Add(1)
+	go testPanic(wg)
+	wg.Wait()
+
+	fmt.Println("end")
+	for {
+		time.Sleep(time.Second)
+	}
+}
+
+/*
+begin
+1111111
+panic: testPanic panic
+*/
+
+```
+
