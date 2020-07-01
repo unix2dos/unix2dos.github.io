@@ -56,7 +56,7 @@
 </script>
 
   <meta name="description" content="在制作 Docker Images 之前, 我们先看一下Docker 官方提供了一些建议和准则，在大多数情况下建议遵守。  容器是短暂的，也就是说，你需要可以容易的创建、销毁、配置你的容器。  多数情况，构建镜像的时候是将 Dockerfile 和所需文件放在同一文件夹下。但为了构建性能，我们可以采用 .dockerignore 文件来排除文件和目录。  避免安装不必要的包，构建镜像应该尽可能减少">
-<meta name="keywords" content="linux,docker">
+<meta name="keywords" content="docker,linux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="记录一次docker镜像的构建过程">
 <meta property="og:url" content="https://unix2dos.github.io/p/2450240c.html">
@@ -370,7 +370,7 @@
 <li><p>排序多行参数，通过字母将参数排序来缓解以后的变化，这将帮你避免重复的包、使列表更容易更新，如：</p>
 </li>
 </ul>
-<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">RUN</span><span class="bash"> apt-get update &amp;&amp; apt-get install -y \</span></span><br><span class="line"><span class="bash">  bzr \</span></span><br><span class="line"><span class="bash">  cvs \</span></span><br><span class="line"><span class="bash">  git \</span></span><br><span class="line"><span class="bash">  mercurial \</span></span><br><span class="line"><span class="bash">  subversion</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">RUN</span> apt-get update &amp;&amp; apt-get install -y \</span><br><span class="line">  bzr \</span><br><span class="line">  cvs \</span><br><span class="line">  git \</span><br><span class="line">  mercurial \</span><br><span class="line">  subversion</span><br></pre></td></tr></table></figure>
 
 <a id="more"></a>
 
@@ -472,9 +472,9 @@
           
           <div class="post-tags">
             
-              <a href="/tags/linux/" rel="tag"># linux</a>
-            
               <a href="/tags/docker/" rel="tag"># docker</a>
+            
+              <a href="/tags/linux/" rel="tag"># linux</a>
             
           </div>
         
@@ -676,12 +676,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">571k</span>
+    <span title="站点总字数">572k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:39</span>
+    <span title="站点阅读时长">8:40</span>
 </div>
 
         

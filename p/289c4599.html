@@ -67,7 +67,7 @@
 <meta property="og:image" content="https://unix2dos.github.io/p/289c4599/2.png">
 <meta property="og:image" content="https://unix2dos.github.io/p/289c4599/3.png">
 <meta property="og:image" content="https://unix2dos.github.io/p/289c4599/4.png">
-<meta property="og:updated_time" content="2020-06-25T13:23:48.028Z">
+<meta property="og:updated_time" content="2020-07-01T04:16:09.383Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="tcp介绍和tcp建立连接过程">
 <meta name="twitter:description" content="1. tcp 介绍和 udp 区别    TCP UDP    数据传输 3报文握手+数据传输+4报文挥手 数据传输   连接方式 单播(一对一) 单播(一对一), 多播(一对多), 广播 (一对全)   应用报文 一系列字节流放到缓存中, 通过滑动窗口策略发送发送方加个 TCP 头部接收方取出字节流,组合送给接收方进程 每个报文添加个UDP首部   首部 最小20字节, 最大60字节 8字节">
@@ -291,7 +291,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-25 21:23:48" itemprop="dateModified" datetime="2020-06-25T21:23:48+08:00">2020-06-25</time>
+                <time title="修改时间：2020-07-01 12:16:09" itemprop="dateModified" datetime="2020-07-01T12:16:09+08:00">2020-07-01</time>
               </span>
             
           
@@ -339,7 +339,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span>2.3k</span>
+              <span>2.9k</span>
             </span>
           
             <span class="post-meta-item" title="阅读时长">
@@ -349,7 +349,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span>2 分钟</span>
+              <span>3 分钟</span>
             </span>
           
 
@@ -425,14 +425,14 @@
 <li><p>开始数据传输</p>
 </li>
 </ul>
-<h3 id="2-2-释放连接"><a href="#2-2-释放连接" class="headerlink" title="2.2 释放连接"></a>2.2 释放连接</h3><h5 id="客户端-1"><a href="#客户端-1" class="headerlink" title="客户端"></a>客户端</h5><ul>
+<h3 id="2-2-释放连接"><a href="#2-2-释放连接" class="headerlink" title="2.2 释放连接"></a>2.2 释放连接</h3><h5 id="主动端-可以是客户端-也可以是服务端"><a href="#主动端-可以是客户端-也可以是服务端" class="headerlink" title="主动端(可以是客户端,也可以是服务端)"></a>主动端(可以是客户端,也可以是服务端)</h5><ul>
 <li>发送挥手① FIN=1 ACK=1 seq=u  ack=v 进入 <strong>FIN_WAIT_1</strong>(终止等待1状态)</li>
 <li>收到挥手②进入 <strong>FIN_WAIT_2</strong>(终止等待2状态)</li>
 <li>接受数据</li>
 <li>发送挥手④ ACK=1 seq=u+1 ack=w+1 进入 <strong>TIME_WAIT</strong>(时间等待状态)</li>
 <li>经过2MSL后, 进入 <strong>CLOSED</strong>(关闭状态)</li>
 </ul>
-<h5 id="服务端-1"><a href="#服务端-1" class="headerlink" title="服务端"></a>服务端</h5><ul>
+<h5 id="被动端-可以是客户端-也可以是服务端"><a href="#被动端-可以是客户端-也可以是服务端" class="headerlink" title="被动端(可以是客户端,也可以是服务端)"></a>被动端(可以是客户端,也可以是服务端)</h5><ul>
 <li>发送挥手② ACK=1 seq=v ack=u+1 并进入<strong>CLOSE_WAIT</strong>(关闭等待状态)</li>
 <li>通知应用进程断开连接, 客户端到服务器方向连接关闭, 属于半关闭状态</li>
 <li>发送未发完的数据</li>
@@ -444,11 +444,11 @@
 <h3 id="3-2-为什么进入-TIME-WAIT-而不是直接关闭"><a href="#3-2-为什么进入-TIME-WAIT-而不是直接关闭" class="headerlink" title="3.2 为什么进入 TIME_WAIT 而不是直接关闭"></a>3.2 为什么进入 TIME_WAIT 而不是直接关闭</h3><p>因为客户端发送挥手④的时候，有可能失败。</p>
 <p>如果客户端直接关闭, 服务器重发挥手③, 客户端处于关闭不响应, 服务器无法释放资源。</p>
 <h3 id="3-3-CLOSE-WAIT-和-TIME-WAIT"><a href="#3-3-CLOSE-WAIT-和-TIME-WAIT" class="headerlink" title="3.3 CLOSE_WAIT 和 TIME_WAIT"></a>3.3 CLOSE_WAIT 和 TIME_WAIT</h3><ul>
-<li><p>CLOSE_WAIT  服务器状态(关闭等待状态 )</p>
-<p>服务器发送确认挥手②以后</p>
+<li><p>CLOSE_WAIT  被动关闭一方状态(关闭等待状态 )</p>
+<p>被动端发送确认挥手②以后</p>
 </li>
-<li><p>TIME_WAIT 客户端状态(时间等待状态)</p>
-<p>客户端发送确认挥手④以后, 再等待2个2MSL</p>
+<li><p>TIME_WAIT   主动关闭一方状态(时间等待状态)</p>
+<p>主动端发送确认挥手④以后, 再等待2个2MSL</p>
 </li>
 </ul>
 <h3 id="3-4-保活计时器的作用"><a href="#3-4-保活计时器的作用" class="headerlink" title="3.4 保活计时器的作用"></a>3.4 保活计时器的作用</h3><p>假如建立连接后, 客户端出现了故障</p>
@@ -456,6 +456,18 @@
 <li>服务器每次收到请求后, 重新启动定时器(2小时)</li>
 <li>服务器2小时后没收到客户端请求, 发送探测报文段</li>
 <li>服务器75秒间隔发送一个, 达到10个无响应,关闭连接</li>
+</ul>
+<h3 id="3-5-TIME-WAIT-过多"><a href="#3-5-TIME-WAIT-过多" class="headerlink" title="3.5 TIME_WAIT 过多"></a>3.5 TIME_WAIT 过多</h3><p>一般情况服务器端不会出现TIME_WAIT状态，因为大多数情况都是客户端主动发起连接并主动关闭连接。</p>
+<p>但是某些服务如pop/smtp、ftp却是服务端收到客户端的QUIT命令后主动关闭连接，这就造成这类服务器上容易出现大量的TIME_WAIT状态的连接，而且并发量越大处于此种状态的连接越多。</p>
+<p>服务在主动关闭客户端非法请求或清理长时间不活动的连接时（这种情况很可能是客户端程序忘记关闭连接）也会出现TIME_WAIT的状态。TIME_WAIT 对于web服务器来说，占用了一个socket 60秒，socket的数量是有限的，最多65535。</p>
+<p>解决方案</p>
+<blockquote>
+<p>打开 sysctl.conf 文件，修改以下几个参数：</p>
+</blockquote>
+<ul>
+<li>net.ipv4.tcp_tw_recycle = 1    表示开启TCP连接中TIME-WAIT sockets的快速回收，默认为0，表示关闭</li>
+<li>net.ipv4.tcp_tw_reuse = 1      重新使用TIME_WAIT状态的连接。</li>
+<li>net.ipv4.tcp_timestamps = 1  两个4字节的时间戳字段，其中第一个4字节字段用来保存发送该数据包的时间，第二个4字节字段用来保存最近一次接收对方发送到数据的时间。有了这两个时间字段，也就有了后续优化的余地。</li>
 </ul>
 <h1 id="4-tcp-头部字段"><a href="#4-tcp-头部字段" class="headerlink" title="4. tcp 头部字段"></a>4. tcp 头部字段</h1><h3 id="4-1-头部格式"><a href="#4-1-头部格式" class="headerlink" title="4.1 头部格式"></a>4.1 头部格式</h3><p>20字节固定  + 最大40字节扩展</p>
 <h3 id="4-2-固定20字节详情"><a href="#4-2-固定20字节详情" class="headerlink" title="4.2 固定20字节详情"></a>4.2 固定20字节详情</h3><ul>
@@ -494,6 +506,7 @@
 <p>如此以来，客户端和服务端相互等待，直到超时或者其他情况.</p>
 <h1 id="6-参考资料"><a href="#6-参考资料" class="headerlink" title="6. 参考资料"></a>6. 参考资料</h1><ul>
 <li><a href="https://my.oschina.net/xinxingegeya/blog/485643" target="_blank" rel="noopener">https://my.oschina.net/xinxingegeya/blog/485643</a></li>
+<li><a href="https://blog.oldboyedu.com/tcp-wait/" target="_blank" rel="noopener">https://blog.oldboyedu.com/tcp-wait/</a></li>
 </ul>
 
     </div>
@@ -613,7 +626,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-tcp-介绍和-udp-区别"><span class="nav-number">1.</span> <span class="nav-text">1. tcp 介绍和 udp 区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-tcp连接"><span class="nav-number">2.</span> <span class="nav-text">2. tcp连接</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-建立连接"><span class="nav-number">2.0.1.</span> <span class="nav-text">2.1 建立连接</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端"><span class="nav-number">2.0.1.0.1.</span> <span class="nav-text">客户端</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端"><span class="nav-number">2.0.1.0.2.</span> <span class="nav-text">服务端</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-释放连接"><span class="nav-number">2.0.2.</span> <span class="nav-text">2.2 释放连接</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端-1"><span class="nav-number">2.0.2.0.1.</span> <span class="nav-text">客户端</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端-1"><span class="nav-number">2.0.2.0.2.</span> <span class="nav-text">服务端</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-tcp-连接问题"><span class="nav-number">3.</span> <span class="nav-text">3. tcp 连接问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-为什么不用两次握手"><span class="nav-number">3.0.1.</span> <span class="nav-text">3.1 为什么不用两次握手</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-为什么进入-TIME-WAIT-而不是直接关闭"><span class="nav-number">3.0.2.</span> <span class="nav-text">3.2 为什么进入 TIME_WAIT 而不是直接关闭</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-CLOSE-WAIT-和-TIME-WAIT"><span class="nav-number">3.0.3.</span> <span class="nav-text">3.3 CLOSE_WAIT 和 TIME_WAIT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-保活计时器的作用"><span class="nav-number">3.0.4.</span> <span class="nav-text">3.4 保活计时器的作用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-tcp-头部字段"><span class="nav-number">4.</span> <span class="nav-text">4. tcp 头部字段</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-头部格式"><span class="nav-number">4.0.1.</span> <span class="nav-text">4.1 头部格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-固定20字节详情"><span class="nav-number">4.0.2.</span> <span class="nav-text">4.2 固定20字节详情</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-扩展字段"><span class="nav-number">4.0.3.</span> <span class="nav-text">4.3 扩展字段</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-tcp-其他"><span class="nav-number">5.</span> <span class="nav-text">5. tcp 其他</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-Nagle-內勾-算法"><span class="nav-number">5.0.1.</span> <span class="nav-text">5.1 Nagle(內勾)算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-延迟确认"><span class="nav-number">5.0.2.</span> <span class="nav-text">5.2 延迟确认</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-Nagle和延迟确认一起使用产生的问题"><span class="nav-number">5.0.3.</span> <span class="nav-text">5.3 Nagle和延迟确认一起使用产生的问题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-参考资料"><span class="nav-number">6.</span> <span class="nav-text">6. 参考资料</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-tcp-介绍和-udp-区别"><span class="nav-number">1.</span> <span class="nav-text">1. tcp 介绍和 udp 区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-tcp连接"><span class="nav-number">2.</span> <span class="nav-text">2. tcp连接</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-建立连接"><span class="nav-number">2.0.1.</span> <span class="nav-text">2.1 建立连接</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端"><span class="nav-number">2.0.1.0.1.</span> <span class="nav-text">客户端</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端"><span class="nav-number">2.0.1.0.2.</span> <span class="nav-text">服务端</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-释放连接"><span class="nav-number">2.0.2.</span> <span class="nav-text">2.2 释放连接</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#主动端-可以是客户端-也可以是服务端"><span class="nav-number">2.0.2.0.1.</span> <span class="nav-text">主动端(可以是客户端,也可以是服务端)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#被动端-可以是客户端-也可以是服务端"><span class="nav-number">2.0.2.0.2.</span> <span class="nav-text">被动端(可以是客户端,也可以是服务端)</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-tcp-连接问题"><span class="nav-number">3.</span> <span class="nav-text">3. tcp 连接问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-为什么不用两次握手"><span class="nav-number">3.0.1.</span> <span class="nav-text">3.1 为什么不用两次握手</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-为什么进入-TIME-WAIT-而不是直接关闭"><span class="nav-number">3.0.2.</span> <span class="nav-text">3.2 为什么进入 TIME_WAIT 而不是直接关闭</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-CLOSE-WAIT-和-TIME-WAIT"><span class="nav-number">3.0.3.</span> <span class="nav-text">3.3 CLOSE_WAIT 和 TIME_WAIT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-保活计时器的作用"><span class="nav-number">3.0.4.</span> <span class="nav-text">3.4 保活计时器的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-TIME-WAIT-过多"><span class="nav-number">3.0.5.</span> <span class="nav-text">3.5 TIME_WAIT 过多</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-tcp-头部字段"><span class="nav-number">4.</span> <span class="nav-text">4. tcp 头部字段</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-头部格式"><span class="nav-number">4.0.1.</span> <span class="nav-text">4.1 头部格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-固定20字节详情"><span class="nav-number">4.0.2.</span> <span class="nav-text">4.2 固定20字节详情</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-扩展字段"><span class="nav-number">4.0.3.</span> <span class="nav-text">4.3 扩展字段</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-tcp-其他"><span class="nav-number">5.</span> <span class="nav-text">5. tcp 其他</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-Nagle-內勾-算法"><span class="nav-number">5.0.1.</span> <span class="nav-text">5.1 Nagle(內勾)算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-延迟确认"><span class="nav-number">5.0.2.</span> <span class="nav-text">5.2 延迟确认</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-Nagle和延迟确认一起使用产生的问题"><span class="nav-number">5.0.3.</span> <span class="nav-text">5.3 Nagle和延迟确认一起使用产生的问题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-参考资料"><span class="nav-number">6.</span> <span class="nav-text">6. 参考资料</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -735,12 +748,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">571k</span>
+    <span title="站点总字数">572k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:39</span>
+    <span title="站点阅读时长">8:40</span>
 </div>
 
         
