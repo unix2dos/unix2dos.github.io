@@ -641,3 +641,39 @@ panic: testPanic panic
 
 ```
 
+
+
+### 16. interface 实现
+
+Go的interface是由两种类型来实现的：`iface`和`eface`。
+
+其中，`iface`表示的是包含方法的interface，而`eface`代表的是不包含方法的interface，
+
+##### 16.1 eface
+
+一共有两个属性构成，一个是类型信息`_type`，一个是数据信息`data`。
+
+其中，`_type`可以认为是Go语言中所有类型的公共描述，Go语言中几乎所有的数据结构都可以抽象成`_type`，是所有类型的表现，可以说是万能类型。
+
+`data`是指向具体数据的指针。
+
+##### 16.2 iface
+
+```go
+type iface struct {
+	tab  *itab
+	data unsafe.Pointer
+}
+
+type itab struct {
+	inter *interfacetype //此属性用于定位到具体interface
+	_type *_type //此属性用于定位到具体interface
+	hash  uint32 // copy of _type.hash. Used for type switches.
+	_     [4]byte
+	fun   [1]uintptr // variable sized. fun[0]==0 means _type does not implement inter.
+}
+```
+
+
+
+### 
