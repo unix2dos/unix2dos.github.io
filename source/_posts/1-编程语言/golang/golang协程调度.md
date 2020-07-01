@@ -1,8 +1,12 @@
 ---
-title: "golang协程调度"
-date: 2020-01-02 00:00:00
+title: golang协程调度
 tags:
-- golang
+  - golang
+categories:
+  - 1-编程语言
+  - golang
+abbrlink: c8d0853c
+date: 2020-01-02 00:00:00
 ---
 
 
@@ -77,37 +81,77 @@ P所分配的任务G很快就执行完了（分配不均），这就导致了这
 
 
 
-# 3. 使用
+# 3. 调度过程
+
+### 3.1 术语
+
+1. **全局队列**（Global Queue）：存放等待运行的G。
+2. **P的本地队列**：同全局队列类似，存放的也是等待运行的G，存的数量有限，不超过256个。新建G'时，G'优先加入到P的本地队列，如果队列满了，则会把本地队列中一半的G移动到全局队列。
+3. **P列表**：所有的P都在程序启动时创建，并保存在数组中，最多有`GOMAXPROCS`(可配置)个。
+4. **M**：线程想运行任务就得获取P，从P的本地队列获取G，P队列为空时，M也会尝试从全局队列**拿**一批G放到P的本地队列，或从其他P的本地队列**偷**一半放到自己P的本地队列。M运行G，G执行之后，M会从P获取下一个G，不断重复下去。
+
+Goroutine调度器和OS调度器是通过M结合起来的，每个M都代表了1个内核线程，OS调度器负责把内核线程分配到CPU的核上执行。
 
 
 
+### 3.2 有关P和M的个数问题
 
+1、P的数量：
+
+- 由启动时环境变量`$GOMAXPROCS`或者是由`runtime`的方法`GOMAXPROCS()`决定。这意味着在程序执行的任意时刻都只有`$GOMAXPROCS`个goroutine在同时运行。
+
+2、M的数量:
+
+- go语言本身的限制：go程序启动时，会设置M的最大数量，默认10000.但是内核很难支持这么多的线程数，所以这个限制可以忽略。
+- runtime/debug中的SetMaxThreads函数，设置M的最大数量
+- 一个M阻塞了，会创建新的M。
+
+M与P的数量没有绝对关系，一个M阻塞，P就会去创建或者切换另一个M，所以，即使P的默认数量是1，也有可能会创建很多个M出来。
+
+
+
+### 3.3 P和M何时会被创建
+
+1、P何时创建：在确定了P的最大数量n后，运行时系统会根据这个数量创建n个P。
+
+2、M何时创建：没有足够的M来关联P并运行其中的可运行的G。比如所有的M此时都阻塞住了，而P中还有很多就绪任务，就会去寻找空闲的M，而没有空闲的，就会去创建新的M。
+
+
+
+### 3.4 调度器的设计策略
+
+**复用线程**：避免频繁的创建、销毁线程，而是对线程的复用。
+
++ work stealing机制 当本线程无可运行的G时，尝试从其他线程绑定的P偷取G，而不是销毁线程。
+
++ hand off机制 当本线程因为G进行系统调用阻塞时，线程释放绑定的P，把P转移给其他空闲的线程执行。
+
++ 利用并行：`GOMAXPROCS`设置P的数量，最多有`GOMAXPROCS`个线程分布在多个CPU上同时运行。`GOMAXPROCS`也限制了并发的程度，比如`GOMAXPROCS = 核数/2`，则最多利用了一半的CPU核进行并行。
+
++ 抢占：在coroutine中要等待一个协程主动让出CPU才执行下一个协程，在Go中，一个goroutine最多占用CPU 10ms，防止其他goroutine被饿死，这就是goroutine不同于coroutine的一个地方。
+
++ 全局G队列：在新的调度器中依然有全局G队列，但功能已经被弱化了，当M执行work stealing从其他P偷不到G时，它可以从全局G队列获取G。
+
+
+
+# 4. 其他问题
+
+### 4.1 io密集型增大 GOMAXPROCS有效吗
+
+> 有效
+
+并发一般都是被内核通过时间片或者中断来控制的，一旦遇到IO阻塞或者时间片用完，就会转移线程的使用权。单核不可能有并行，同一时间只能有一个任务在调度。
+
+Go中runtime.GOMAXPROCS可以设置多核执行任务。并行比较适合cpu计算密集型。如果IO密集型使用多核反而会增加cpu切换的成本。
+
+P值设置太小的话，会影响 M 的数量，然后 M 被 IO 阻塞，效率会下降很多。应该配置到硬件线程数目的5倍以上, 最大不要超过1024。
 
 
 
 # 5. 参考资料
 
++ https://studygolang.com/articles/26795
++ https://www.cnblogs.com/sunsky303/p/9705727.html
++ [一道问题引发的golang调度](https://txiner.top/post/一道问题引发的golang调度/)
++ https://my.oschina.net/90design/blog/1837570
 
-
-+ https://studygolang.com/articles/26795 //TODO:
-+ https://www.pengrl.com/p/29953/ //TODO:
-
-+ https://my.oschina.net/linker/blog/1504199  //TODO:
-
-
-
-[https://txiner.top/post/%E4%B8%80%E9%81%93%E9%97%AE%E9%A2%98%E5%BC%95%E5%8F%91%E7%9A%84golang%E8%B0%83%E5%BA%A6/](https://txiner.top/post/一道问题引发的golang调度/)
-
-https://www.cnblogs.com/sunsky303/p/9705727.html
-
-https://blog.csdn.net/weixin_34191845/article/details/91818888
-
-
-
-https://www.cnblogs.com/zkweb/p/7815600.html
-
-https://segmentfault.com/a/1190000015464889
-
-
-
-https://www.cnblogs.com/secondtonone1/p/11803961.html
