@@ -570,9 +570,9 @@ func main() {
 
 
 
-### 16. panic
+### 16. panic 和 recover
 
-##### 16.1 主协程奔溃就直接崩溃了
+##### 16.0 defer 和 recover 配合, 并且先声明defer
 
 ```go
 package main
@@ -581,75 +581,107 @@ import (
 	"fmt"
 )
 
-func testPanic() {
-	fmt.Println("1111111")
-	panic("testPanic panic")
-	fmt.Println("2222222222")
-}
-
 func main() {
-	fmt.Println("begin")
-	testPanic()
-	fmt.Println("end")
-}
+	defer func() { // 必须要先声明defer，否则不能捕获到panic异常
+		fmt.Println("a")
+		if err := recover(); err != nil {
+			fmt.Println(err)
+		}
+		fmt.Println("b")
+	}()
 
-/*
-begin
-1111111
-panic: testPanic panic
-*/
+	panic("异常信息")
+
+	fmt.Println("c")
+}
 
 ```
 
-##### 16.2 其他 goruting 奔溃也会导致主 gorouting 奔溃
+
+
+##### 16.1 panic 会一直传递, 导致主 gorouting 奔溃
 
 ```go
 package main
 
 import (
 	"fmt"
-	"sync"
 	"time"
 )
 
-func testPanic(wg *sync.WaitGroup) {
-	defer wg.Done()
-	fmt.Println("1111111")
-	panic("testPanic panic")
-	fmt.Println("2222222222")
+func testPanic2() {
+	panic("testPanic panic2")
+}
+
+func testPanic1() {
+	go testPanic2()
 }
 
 func main() {
 	fmt.Println("begin")
-	wg := new(sync.WaitGroup)
-
-	wg.Add(1)
-	go testPanic(wg)
-	wg.Wait()
-
-	fmt.Println("end")
+	go testPanic1()
 	for {
 		time.Sleep(time.Second)
 	}
 }
 
+
 /*
 begin
-1111111
-panic: testPanic panic
-*/
+panic: testPanic panic2
 
+goroutine 5 [running]:
+main.testPanic2()
+*/
+```
+
+##### 16.2 外层的 recover 能捕捉里层的 panic吗
+
+不能
+
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func main() {
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println(err)
+		}
+	}()
+
+	go func() {
+		panic("falut1")
+	}()
+
+	time.Sleep(time.Second)
+}
+
+/*
+panic: falut1
+
+goroutine 18 [running]:
+main.main.func2()
+        /Users/liuwei/golang/src/golangTest/suanfa/main.go:16 +0x39
+created by main.main
+        /Users/liuwei/golang/src/golangTest/suanfa/main.go:15 +0x71
+exit status 2
+*/
 ```
 
 
 
-### 16. interface 实现
+### 17. interface 实现
 
 Go的interface是由两种类型来实现的：`iface`和`eface`。
 
 其中，`iface`表示的是包含方法的interface，而`eface`代表的是不包含方法的interface，
 
-##### 16.1 eface
+##### 17.1 eface
 
 一共有两个属性构成，一个是类型信息`_type`，一个是数据信息`data`。
 
@@ -657,7 +689,7 @@ Go的interface是由两种类型来实现的：`iface`和`eface`。
 
 `data`是指向具体数据的指针。
 
-##### 16.2 iface
+##### 17.2 iface
 
 ```go
 type iface struct {
@@ -676,4 +708,13 @@ type itab struct {
 
 
 
-### 
+### 18. slice 和 map 都不是并发安全
+
+并发安全也叫线程安全，在并发中出现了数据的丢失，称为并发不安全。map和slice都是并发不安全的
+
+> 解决方案:
+
++ 加锁
++ 使用 channel 串行化
++ sync.Map
+
