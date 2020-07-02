@@ -1,6 +1,6 @@
 
 
-### 1. TODO:
+### 1. 参考资料:
 
 + http://www.ruanyifeng.com/blog/2016/03/systemd-tutorial-commands.html
 
@@ -9,15 +9,4 @@
 + [如何使用Journalctl查看并操作Systemd日志](https://blog.csdn.net/zstack_org/article/details/56274966)
 + https://www.cnblogs.com/itxdm/p/Systemd_log_system_journalctl.html
 
-
-
-### 英语:
-
-+ [英语非谓语动词](https://baijiahao.baidu.com/s?id=1609858016315731302&wfr=spider&for=pc)
-
-
-
-### 分享:
-
-+ [不死鸟](https://hao.su/)
 
