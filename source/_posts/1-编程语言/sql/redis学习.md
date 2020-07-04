@@ -395,11 +395,89 @@ Redis服务器将时间事件放在一个链表中，当时间事件执行器运
 
 # 8. 问题总结
 
-+ zest 相同 value 怎么办?
+### 8.1 string用法
 
-+ 怎么原子操作
++ 数据库表转换成 redis 结构, id 是主键
 
+  MSET user::{ID}::name liuwei
+
+  MGET user::{ID}::age 18
+
++ 做阅读计数器
+
+  + incr readcount::{帖子 ID}
+  + get readcount::{帖子 ID} 
+
++ 分布式锁的思路
+
+  + setnx+expire命令 (错误的做法)
+
+    setnx和expire是分开的两步操作，不具有原子性，如果执行完第一条指令应用异常或者重启了，锁将无法过期。
+
+  ```shell
+  SETNX("lock", 1) == 1 #成功获得锁
+  SETNX("lock", 1) == 0 #有人占用资源获取失败
   
+  DEL("lock") #释放锁
+  PEXPIRE("lock",1000)#设置个过期时间,防止无法释放锁
+  ```
+
+  + 使用 set key value [EX seconds][PX milliseconds][NX|XX] 命令 (正确做法)
+
+    ```
+    SET key value[EX seconds][PX milliseconds][NX|XX]
+    ```
+
+    - EX seconds: 设定过期时间，单位为秒
+    - PX milliseconds: 设定过期时间，单位为毫秒
+    - NX: 仅当key不存在时设置值
+    - XX: 仅当key存在时设置值
+
+    set命令的nx选项，就等同于setnx命令，代码过程如下：
+
+    ```
+    public boolean tryLock_with_set(String key, String UniqueId, int seconds) {
+        return "OK".equals(jedis.set(key, UniqueId, "NX", "EX", seconds));
+    }
+    ```
+
+    value必须要具有唯一性，我们可以用UUID来做，所以通常来说，在释放锁时，我们需要对value进行验证
+
+
+
+
+### 8.2 hash 用法
+
++ 数据库表转换成 redis 结构, id 是主键
+
+  HMSET teacher 1::name levon 1::age 18
+
+  HMGET teacher 1::name 1::age
+
+
+
+### 8.3 list 用法
+
++ 实现阻塞消息队列
+
+  LPUSH <=> BPROP
+
+
+
+### 8.4 set 用法
+
++ 无序, 去重
++ 微博关注关系
+
+
+
+### 8.5 zset 用法
+
++ 排行榜
+
++ zest 相同 score 怎么办?
+
+  默认字典排序
 
 # 9. 参考资料
 
