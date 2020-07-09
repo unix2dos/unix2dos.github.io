@@ -65,7 +65,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://unix2dos.github.io/p/2a86dce/1.png">
 <meta property="og:image" content="https://unix2dos.github.io/p/2a86dce/2.png">
-<meta property="og:updated_time" content="2020-07-04T04:43:58.213Z">
+<meta property="og:updated_time" content="2020-07-04T08:55:31.709Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis学习">
 <meta name="twitter:description" content="0. 前言Redis是一个开源的，基于内存的数据结构存储，可用作于数据库、缓存、消息中间件。  从官方的解释上，我们可以知道：Redis是基于内存，支持多种数据结构。 从经验的角度上，我们可以知道：Redis常用作于缓存。">
@@ -289,7 +289,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-04 12:43:58" itemprop="dateModified" datetime="2020-07-04T12:43:58+08:00">2020-07-04</time>
+                <time title="修改时间：2020-07-04 16:55:31" itemprop="dateModified" datetime="2020-07-04T16:55:31+08:00">2020-07-04</time>
               </span>
             
           
@@ -337,7 +337,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span>5.9k</span>
+              <span>7.1k</span>
             </span>
           
             <span class="post-meta-item" title="阅读时长">
@@ -347,7 +347,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span>5 分钟</span>
+              <span>6 分钟</span>
             </span>
           
 
@@ -393,7 +393,7 @@
 <tbody><tr>
 <td>string</td>
 <td>简单的key-value</td>
-<td>int, embstr, raw</td>
+<td>int, embstr(sds), raw</td>
 </tr>
 <tr>
 <td>list</td>
@@ -591,8 +591,16 @@
 <h3 id="7-2-缓存穿透"><a href="#7-2-缓存穿透" class="headerlink" title="7.2 缓存穿透"></a>7.2 缓存穿透</h3><p>缓存穿透是指查询一个一定不存在的数据。由于缓存不命中，并且出于容错考虑，如果从数据库查不到数据则不写入缓存，这将导致这个不存在的数据每次请求都要到数据库去查询，失去了缓存的意义。</p>
 <p>解决缓存穿透也有两种方案：</p>
 <ul>
-<li>由于请求的参数是不合法的(每次都请求不存在的参数)，于是我们可以使用布隆过滤器(BloomFilter)或者压缩filter提前拦截，不合法就不让这个请求到数据库层！</li>
-<li>当我们从数据库找不到的时候，我们也将这个空对象设置到缓存里边去。下次再请求的时候，就可以从缓存里边获取了。<br>这种情况我们一般会将空对象设置一个较短的过期时间。</li>
+<li><p>由于请求的参数是不合法的(每次都请求不存在的参数)，于是我们可以使用布隆过滤器(BloomFilter)或者压缩filter提前拦截，不合法就不让这个请求到数据库层！</p>
+<ul>
+<li><p>如何在海量元素中(10亿,不定长,不重复) 快速判断一个元素是否存在?</p>
+<p>布隆: 多个 hash 函数, 对应多个 bit</p>
+<p>布隆判断存在, 有可能是错的(别人的 hash 碰撞), 告诉我不存在, 就一定不存在, 先去布隆过滤器查询, 再去 redis</p>
+</li>
+</ul>
+</li>
+<li><p>当我们从数据库找不到的时候，我们也将这个空对象设置到缓存里边去。下次再请求的时候，就可以从缓存里边获取了。<br>这种情况我们一般会将空对象设置一个较短的过期时间。</p>
+</li>
 </ul>
 <h3 id="7-3-缓存与数据库双写一致"><a href="#7-3-缓存与数据库双写一致" class="headerlink" title="7.3 缓存与数据库双写一致"></a>7.3 缓存与数据库双写一致</h3><h5 id="7-3-1-一般来说，执行更新操作时，我们会有两种选择："><a href="#7-3-1-一般来说，执行更新操作时，我们会有两种选择：" class="headerlink" title="7.3.1 一般来说，执行更新操作时，我们会有两种选择："></a>7.3.1 一般来说，执行更新操作时，我们会有两种选择：</h5><ul>
 <li>先操作数据库，再操作缓存</li>
@@ -616,10 +624,63 @@
 <li>第一步成功(删除缓存)，第二步失败(更新数据库)，数据库和缓存的数据还是一致的。</li>
 <li>如果第一步(删除缓存)就失败了，我们可以直接返回错误(Exception)，数据库和缓存的数据还是一致的。</li>
 </ul>
-<h1 id="8-问题总结"><a href="#8-问题总结" class="headerlink" title="8. 问题总结"></a>8. 问题总结</h1><ul>
-<li><p>zest 相同 value 怎么办?</p>
+<h1 id="8-问题总结"><a href="#8-问题总结" class="headerlink" title="8. 问题总结"></a>8. 问题总结</h1><h3 id="8-1-string用法"><a href="#8-1-string用法" class="headerlink" title="8.1 string用法"></a>8.1 string用法</h3><ul>
+<li><p>数据库表转换成 redis 结构, id 是主键</p>
+<p>MSET user::{ID}::name liuwei</p>
+<p>MGET user::{ID}::age 18</p>
 </li>
-<li><p>怎么原子操作</p>
+<li><p>做阅读计数器</p>
+<ul>
+<li>incr readcount::{帖子 ID}</li>
+<li>get readcount::{帖子 ID} </li>
+</ul>
+</li>
+<li><p>分布式锁的思路</p>
+<ul>
+<li><p>setnx+expire命令 (错误的做法)</p>
+<p>setnx和expire是分开的两步操作，不具有原子性，如果执行完第一条指令应用异常或者重启了，锁将无法过期。</p>
+</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SETNX("lock", 1) == 1 #成功获得锁</span><br><span class="line">SETNX("lock", 1) == 0 #有人占用资源获取失败</span><br><span class="line"></span><br><span class="line">DEL("lock") #释放锁</span><br><span class="line">PEXPIRE("lock",1000)#设置个过期时间,防止无法释放锁</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>使用 set key value [EX seconds][PX milliseconds][NX|XX] 命令 (正确做法)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SET key value[EX seconds][PX milliseconds][NX|XX]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>EX seconds: 设定过期时间，单位为秒</li>
+<li>PX milliseconds: 设定过期时间，单位为毫秒</li>
+<li>NX: 仅当key不存在时设置值</li>
+<li>XX: 仅当key存在时设置值</li>
+</ul>
+<p>set命令的nx选项，就等同于setnx命令，代码过程如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public boolean tryLock_with_set(String key, String UniqueId, int seconds) &#123;</span><br><span class="line">    return &quot;OK&quot;.equals(jedis.set(key, UniqueId, &quot;NX&quot;, &quot;EX&quot;, seconds));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>value必须要具有唯一性，我们可以用UUID来做，所以通常来说，在释放锁时，我们需要对value进行验证</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="8-2-hash-用法"><a href="#8-2-hash-用法" class="headerlink" title="8.2 hash 用法"></a>8.2 hash 用法</h3><ul>
+<li><p>数据库表转换成 redis 结构, id 是主键</p>
+<p>HMSET teacher 1::name levon 1::age 18</p>
+<p>HMGET teacher 1::name 1::age</p>
+</li>
+</ul>
+<h3 id="8-3-list-用法"><a href="#8-3-list-用法" class="headerlink" title="8.3 list 用法"></a>8.3 list 用法</h3><ul>
+<li><p>实现阻塞消息队列</p>
+<p>LPUSH &lt;=&gt; BPROP</p>
+</li>
+</ul>
+<h3 id="8-4-set-用法"><a href="#8-4-set-用法" class="headerlink" title="8.4 set 用法"></a>8.4 set 用法</h3><ul>
+<li>无序, 去重</li>
+<li>微博关注关系</li>
+</ul>
+<h3 id="8-5-zset-用法"><a href="#8-5-zset-用法" class="headerlink" title="8.5 zset 用法"></a>8.5 zset 用法</h3><ul>
+<li><p>排行榜</p>
+</li>
+<li><p>zest 相同 score 怎么办?</p>
+<p>默认字典排序</p>
 </li>
 </ul>
 <h1 id="9-参考资料"><a href="#9-参考资料" class="headerlink" title="9. 参考资料"></a>9. 参考资料</h1><ul>
@@ -673,8 +734,8 @@
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
-                <a href="/p/9762ea3e.html" rel="next" title="mysql事务隔离级别和表锁行锁">
-                  <i class="fa fa-chevron-left"></i> mysql事务隔离级别和表锁行锁
+                <a href="/p/8a4c23bd.html" rel="next" title="mysql用explain分析查询语句">
+                  <i class="fa fa-chevron-left"></i> mysql用explain分析查询语句
                 </a>
               
             </div>
@@ -743,7 +804,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-number">1.</span> <span class="nav-text">0. 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Redis-底层数据结构"><span class="nav-number">2.</span> <span class="nav-text">1. Redis 底层数据结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Redis-数据对象"><span class="nav-number">3.</span> <span class="nav-text">2. Redis 数据对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-字符串-stirng-对象"><span class="nav-number">3.0.1.</span> <span class="nav-text">2.1 字符串(stirng)对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-列表-list-对象"><span class="nav-number">3.0.2.</span> <span class="nav-text">2.2 列表(list)对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-哈希-hash-对象"><span class="nav-number">3.0.3.</span> <span class="nav-text">2.3 哈希(hash)对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-集合-set-对象"><span class="nav-number">3.0.4.</span> <span class="nav-text">1.4 集合(set)对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-有序集合-sortset-对象"><span class="nav-number">3.0.5.</span> <span class="nav-text">2.5 有序集合(sortset)对象</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-Redis-过期策略"><span class="nav-number">4.</span> <span class="nav-text">3. Redis 过期策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-过期时间"><span class="nav-number">4.0.1.</span> <span class="nav-text">3.1 过期时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-过期策略-3种"><span class="nav-number">4.0.2.</span> <span class="nav-text">3.2 过期策略(3种)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-内存淘汰机制-6种"><span class="nav-number">4.0.3.</span> <span class="nav-text">3.3 内存淘汰机制(6种)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-Redis-持久化"><span class="nav-number">5.</span> <span class="nav-text">4. Redis 持久化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-RDB-快照持久化"><span class="nav-number">5.0.1.</span> <span class="nav-text">4.1 RDB(快照持久化)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-AOF-文件追加"><span class="nav-number">5.0.2.</span> <span class="nav-text">4.2 AOF(文件追加)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-RDB和AOF对过期键的策略"><span class="nav-number">5.0.3.</span> <span class="nav-text">4.3 RDB和AOF对过期键的策略</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-Redis事件"><span class="nav-number">6.</span> <span class="nav-text">5. Redis事件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-文件事件"><span class="nav-number">6.0.1.</span> <span class="nav-text">5.1 文件事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-时间事件"><span class="nav-number">6.0.2.</span> <span class="nav-text">5.2 时间事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-Redis单线程为什么快？"><span class="nav-number">6.0.3.</span> <span class="nav-text">5.3 Redis单线程为什么快？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-Redis主从"><span class="nav-number">7.</span> <span class="nav-text">6. Redis主从</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#完整重同步"><span class="nav-number">7.0.0.0.1.</span> <span class="nav-text">完整重同步</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#部分重同步"><span class="nav-number">7.0.0.0.2.</span> <span class="nav-text">部分重同步</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-Redis-其他问题"><span class="nav-number">8.</span> <span class="nav-text">7. Redis 其他问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-缓存雪崩"><span class="nav-number">8.0.1.</span> <span class="nav-text">7.1 缓存雪崩</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-缓存穿透"><span class="nav-number">8.0.2.</span> <span class="nav-text">7.2 缓存穿透</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-3-缓存与数据库双写一致"><span class="nav-number">8.0.3.</span> <span class="nav-text">7.3 缓存与数据库双写一致</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#7-3-1-一般来说，执行更新操作时，我们会有两种选择："><span class="nav-number">8.0.3.0.1.</span> <span class="nav-text">7.3.1 一般来说，执行更新操作时，我们会有两种选择：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7-3-2-操作缓存也有两种方案："><span class="nav-number">8.0.3.0.2.</span> <span class="nav-text">7.3.2 操作缓存也有两种方案：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7-3-3-先更新数据库，再删除缓存"><span class="nav-number">8.0.3.0.3.</span> <span class="nav-text">7.3.3 先更新数据库，再删除缓存</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7-3-4-先删除缓存，再更新数据库"><span class="nav-number">8.0.3.0.4.</span> <span class="nav-text">7.3.4 先删除缓存，再更新数据库</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-问题总结"><span class="nav-number">9.</span> <span class="nav-text">8. 问题总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#9-参考资料"><span class="nav-number">10.</span> <span class="nav-text">9. 参考资料</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-number">1.</span> <span class="nav-text">0. 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Redis-底层数据结构"><span class="nav-number">2.</span> <span class="nav-text">1. Redis 底层数据结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Redis-数据对象"><span class="nav-number">3.</span> <span class="nav-text">2. Redis 数据对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-字符串-stirng-对象"><span class="nav-number">3.0.1.</span> <span class="nav-text">2.1 字符串(stirng)对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-列表-list-对象"><span class="nav-number">3.0.2.</span> <span class="nav-text">2.2 列表(list)对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-哈希-hash-对象"><span class="nav-number">3.0.3.</span> <span class="nav-text">2.3 哈希(hash)对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-集合-set-对象"><span class="nav-number">3.0.4.</span> <span class="nav-text">1.4 集合(set)对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-有序集合-sortset-对象"><span class="nav-number">3.0.5.</span> <span class="nav-text">2.5 有序集合(sortset)对象</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-Redis-过期策略"><span class="nav-number">4.</span> <span class="nav-text">3. Redis 过期策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-过期时间"><span class="nav-number">4.0.1.</span> <span class="nav-text">3.1 过期时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-过期策略-3种"><span class="nav-number">4.0.2.</span> <span class="nav-text">3.2 过期策略(3种)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-内存淘汰机制-6种"><span class="nav-number">4.0.3.</span> <span class="nav-text">3.3 内存淘汰机制(6种)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-Redis-持久化"><span class="nav-number">5.</span> <span class="nav-text">4. Redis 持久化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-RDB-快照持久化"><span class="nav-number">5.0.1.</span> <span class="nav-text">4.1 RDB(快照持久化)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-AOF-文件追加"><span class="nav-number">5.0.2.</span> <span class="nav-text">4.2 AOF(文件追加)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-RDB和AOF对过期键的策略"><span class="nav-number">5.0.3.</span> <span class="nav-text">4.3 RDB和AOF对过期键的策略</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-Redis事件"><span class="nav-number">6.</span> <span class="nav-text">5. Redis事件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-文件事件"><span class="nav-number">6.0.1.</span> <span class="nav-text">5.1 文件事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-时间事件"><span class="nav-number">6.0.2.</span> <span class="nav-text">5.2 时间事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-Redis单线程为什么快？"><span class="nav-number">6.0.3.</span> <span class="nav-text">5.3 Redis单线程为什么快？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-Redis主从"><span class="nav-number">7.</span> <span class="nav-text">6. Redis主从</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#完整重同步"><span class="nav-number">7.0.0.0.1.</span> <span class="nav-text">完整重同步</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#部分重同步"><span class="nav-number">7.0.0.0.2.</span> <span class="nav-text">部分重同步</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-Redis-其他问题"><span class="nav-number">8.</span> <span class="nav-text">7. Redis 其他问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-缓存雪崩"><span class="nav-number">8.0.1.</span> <span class="nav-text">7.1 缓存雪崩</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-缓存穿透"><span class="nav-number">8.0.2.</span> <span class="nav-text">7.2 缓存穿透</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-3-缓存与数据库双写一致"><span class="nav-number">8.0.3.</span> <span class="nav-text">7.3 缓存与数据库双写一致</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#7-3-1-一般来说，执行更新操作时，我们会有两种选择："><span class="nav-number">8.0.3.0.1.</span> <span class="nav-text">7.3.1 一般来说，执行更新操作时，我们会有两种选择：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7-3-2-操作缓存也有两种方案："><span class="nav-number">8.0.3.0.2.</span> <span class="nav-text">7.3.2 操作缓存也有两种方案：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7-3-3-先更新数据库，再删除缓存"><span class="nav-number">8.0.3.0.3.</span> <span class="nav-text">7.3.3 先更新数据库，再删除缓存</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7-3-4-先删除缓存，再更新数据库"><span class="nav-number">8.0.3.0.4.</span> <span class="nav-text">7.3.4 先删除缓存，再更新数据库</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-问题总结"><span class="nav-number">9.</span> <span class="nav-text">8. 问题总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-1-string用法"><span class="nav-number">9.0.1.</span> <span class="nav-text">8.1 string用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-2-hash-用法"><span class="nav-number">9.0.2.</span> <span class="nav-text">8.2 hash 用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-3-list-用法"><span class="nav-number">9.0.3.</span> <span class="nav-text">8.3 list 用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-4-set-用法"><span class="nav-number">9.0.4.</span> <span class="nav-text">8.4 set 用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-5-zset-用法"><span class="nav-number">9.0.5.</span> <span class="nav-text">8.5 zset 用法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#9-参考资料"><span class="nav-number">10.</span> <span class="nav-text">9. 参考资料</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -762,7 +823,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">152</span>
+          <span class="site-state-item-count">153</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -865,12 +926,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">586k</span>
+    <span title="站点总字数">595k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:53</span>
+    <span title="站点阅读时长">9:01</span>
 </div>
 
         
