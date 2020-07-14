@@ -55,18 +55,18 @@
   };
 </script>
 
-  <meta name="description" content="nsq 介绍nsq是一个基于Go语言的分布式实时消息平台，nsq可用于大规模系统中的实时消息服务，并且每天能够处理数亿级别的消息，其设计目标是为在分布式环境下运行的去中心化服务提供一个强大的基础架构。 nsq具有分布式、去中心化的拓扑结构，该结构具有无单点故障、故障容错、高可用性以及能够保证消息的可靠传递的特征。NSQ非常容易配置和部署，且具有最大的灵活性，支持众多消息协议。另外，官方还提供了拆箱">
+  <meta name="description" content="1. nsq 介绍nsq是一个基于Go语言的分布式实时消息平台，nsq可用于大规模系统中的实时消息服务，并且每天能够处理数亿级别的消息，其设计目标是为在分布式环境下运行的去中心化服务提供一个强大的基础架构。">
 <meta name="keywords" content="golang,nsq">
 <meta property="og:type" content="article">
-<meta property="og:title" content="nsq介绍和go-nsq使用">
+<meta property="og:title" content="nsq的介绍和使用">
 <meta property="og:url" content="https://unix2dos.github.io/p/17c769c4.html">
 <meta property="og:site_name" content="Levon&#39;s Blog">
-<meta property="og:description" content="nsq 介绍nsq是一个基于Go语言的分布式实时消息平台，nsq可用于大规模系统中的实时消息服务，并且每天能够处理数亿级别的消息，其设计目标是为在分布式环境下运行的去中心化服务提供一个强大的基础架构。 nsq具有分布式、去中心化的拓扑结构，该结构具有无单点故障、故障容错、高可用性以及能够保证消息的可靠传递的特征。NSQ非常容易配置和部署，且具有最大的灵活性，支持众多消息协议。另外，官方还提供了拆箱">
+<meta property="og:description" content="1. nsq 介绍nsq是一个基于Go语言的分布式实时消息平台，nsq可用于大规模系统中的实时消息服务，并且每天能够处理数亿级别的消息，其设计目标是为在分布式环境下运行的去中心化服务提供一个强大的基础架构。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-27T15:36:51.102Z">
+<meta property="og:updated_time" content="2020-07-14T05:36:12.950Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="nsq介绍和go-nsq使用">
-<meta name="twitter:description" content="nsq 介绍nsq是一个基于Go语言的分布式实时消息平台，nsq可用于大规模系统中的实时消息服务，并且每天能够处理数亿级别的消息，其设计目标是为在分布式环境下运行的去中心化服务提供一个强大的基础架构。 nsq具有分布式、去中心化的拓扑结构，该结构具有无单点故障、故障容错、高可用性以及能够保证消息的可靠传递的特征。NSQ非常容易配置和部署，且具有最大的灵活性，支持众多消息协议。另外，官方还提供了拆箱">
+<meta name="twitter:title" content="nsq的介绍和使用">
+<meta name="twitter:description" content="1. nsq 介绍nsq是一个基于Go语言的分布式实时消息平台，nsq可用于大规模系统中的实时消息服务，并且每天能够处理数亿级别的消息，其设计目标是为在分布式环境下运行的去中心化服务提供一个强大的基础架构。">
   <link rel="canonical" href="https://unix2dos.github.io/p/17c769c4">
 
 
@@ -81,7 +81,7 @@
   };
 </script>
 
-  <title>nsq介绍和go-nsq使用 | Levon's Blog</title>
+  <title>nsq的介绍和使用 | Levon's Blog</title>
   
 
 
@@ -259,7 +259,7 @@
       <meta itemprop="name" content="Levon's Blog">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">nsq介绍和go-nsq使用
+        <h2 class="post-title" itemprop="name headline">nsq的介绍和使用
 
           
         </h2>
@@ -275,7 +275,7 @@
                 
               
 
-              <time title="创建时间：2018-05-19 11:01:13" itemprop="dateCreated datePublished" datetime="2018-05-19T11:01:13+08:00">2018-05-19</time>
+              <time title="创建时间：2019-06-18 11:01:13" itemprop="dateCreated datePublished" datetime="2019-06-18T11:01:13+08:00">2019-06-18</time>
             </span>
           
             
@@ -286,7 +286,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-09-27 23:36:51" itemprop="dateModified" datetime="2019-09-27T23:36:51+08:00">2019-09-27</time>
+                <time title="修改时间：2020-07-14 13:36:12" itemprop="dateModified" datetime="2020-07-14T13:36:12+08:00">2020-07-14</time>
               </span>
             
           
@@ -334,7 +334,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span>5.2k</span>
+              <span>4.5k</span>
             </span>
           
             <span class="post-meta-item" title="阅读时长">
@@ -344,7 +344,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span>5 分钟</span>
+              <span>4 分钟</span>
             </span>
           
 
@@ -357,17 +357,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="nsq-介绍"><a href="#nsq-介绍" class="headerlink" title="nsq 介绍"></a>nsq 介绍</h3><p><a href="https://github.com/bitly/nsq" target="_blank" rel="noopener">nsq</a>是一个基于Go语言的分布式实时消息平台，nsq可用于大规模系统中的实时消息服务，并且每天能够处理数亿级别的消息，其设计目标是为在分布式环境下运行的去中心化服务提供一个强大的基础架构。</p>
-<p>nsq具有分布式、去中心化的拓扑结构，该结构具有无单点故障、故障容错、高可用性以及能够保证消息的可靠传递的特征。NSQ非常容易配置和部署，且具有最大的灵活性，支持众多消息协议。另外，官方还提供了拆箱即用Go和Python库。如果读者兴趣构建自己的客户端的话，还可以参考官方提供的<a href="http://nsq.io/clients/tcp_protocol_spec.html" target="_blank" rel="noopener">协议规范</a>。</p>
-<p>nsq是由四个重要组件构成：</p>
+        <h1 id="1-nsq-介绍"><a href="#1-nsq-介绍" class="headerlink" title="1. nsq 介绍"></a>1. nsq 介绍</h1><p><a href="https://github.com/bitly/nsq" target="_blank" rel="noopener">nsq</a>是一个基于Go语言的分布式实时消息平台，nsq可用于大规模系统中的实时消息服务，并且每天能够处理数亿级别的消息，其设计目标是为在分布式环境下运行的去中心化服务提供一个强大的基础架构。</p>
+<a id="more"></a>
+
+<h3 id="1-1-nsq-的组成"><a href="#1-1-nsq-的组成" class="headerlink" title="1.1 nsq 的组成"></a>1.1 nsq 的组成</h3><p>nsq是由四个重要组件构成：</p>
 <ul>
 <li><a href="http://bitly.github.io/nsq/components/nsqd.html" target="_blank" rel="noopener">nsqd</a>：一个负责接收、排队、转发消息到客户端的守护进程</li>
 <li><a href="http://bitly.github.io/nsq/components/nsqlookupd.html" target="_blank" rel="noopener">nsqlookupd</a>：管理拓扑信息并提供最终一致性的发现服务的守护进程</li>
 <li><a href="http://bitly.github.io/nsq/components/nsqadmin.html" target="_blank" rel="noopener">nsqadmin</a>：一套Web用户界面，可实时查看集群的统计数据和执行各种各样的管理任务</li>
 <li><a href="http://nsq.io/components/utilities.html" target="_blank" rel="noopener">utilities</a>：常见基础功能、数据流处理工具，如nsq_stat、nsq_tail、nsq_to_file、nsq_to_http、nsq_to_nsq、to_nsq</li>
 </ul>
-<p>nsq的主要特点如下:</p>
-<ul>
+<h3 id="1-2-nsq的主要特点"><a href="#1-2-nsq的主要特点" class="headerlink" title="1.2 nsq的主要特点"></a>1.2 nsq的主要特点</h3><ul>
 <li>具有分布式且无单点故障的拓扑结构 支持水平扩展，在无中断情况下能够无缝地添加集群节点</li>
 <li>低延迟的消息推送，参见官方提供的<a href="http://nsq.io/overview/performance.html" target="_blank" rel="noopener">性能说明文档</a></li>
 <li>具有组合式的负载均衡和多播形式的消息路由</li>
@@ -382,9 +382,19 @@
 <li>为实时检测集成了统计数据收集器<a href="https://github.com/etsy/statsd/" target="_blank" rel="noopener">StatsD</a></li>
 <li>具有强大的集群管理界面，参见nsqadmin</li>
 </ul>
-<a id="more"></a>
-
-<h3 id="nsqlookupd-中心管理服务-4160-4161"><a href="#nsqlookupd-中心管理服务-4160-4161" class="headerlink" title="nsqlookupd(中心管理服务)  4160 4161"></a>nsqlookupd(中心管理服务)  4160 4161</h3><ol start="0">
+<h1 id="2-nsq-组件"><a href="#2-nsq-组件" class="headerlink" title="2. nsq 组件"></a>2. nsq 组件</h1><h3 id="2-1-nsqd-真正干活的"><a href="#2-1-nsqd-真正干活的" class="headerlink" title="2.1 nsqd (真正干活的)"></a>2.1 nsqd (真正干活的)</h3><ol>
+<li>nsqd 是一个守护进程，负责接收，排队，投递消息给客户端</li>
+<li>简单的说，真正干活的就是这个服务，它主要负责message的收发，队列的维护。nsqd会默认监听一个tcp端口(4150)和一个http端口(4151)以及一个可选的https端口</li>
+<li>nsqd 具有以下功能或特性</li>
+</ol>
+<ul>
+<li>对订阅了同一个topic，同一个channel的消费者使用负载均衡策略（不是轮询）</li>
+<li>只要channel存在，即使没有该channel的消费者，也会将生产者的message缓存到队列中（注意消息的过期处理）</li>
+<li>保证队列中的message至少会被消费一次，即使nsqd退出，也会将队列中的消息暂存磁盘上(结束进程等意外情况除外)</li>
+<li>限定内存占用，能够配置nsqd中每个channel队列在内存中缓存的message数量，一旦超出，message将被缓存到磁盘中</li>
+<li>topic，channel一旦建立，将会一直存在，要及时在管理台或者用代码清除无效的topic和channel，避免资源的浪费</li>
+</ul>
+<h3 id="2-2-nsqlookupd-中心管理服务"><a href="#2-2-nsqlookupd-中心管理服务" class="headerlink" title="2.2 nsqlookupd(中心管理服务)"></a>2.2 nsqlookupd(中心管理服务)</h3><ol start="0">
 <li><p>nsqlookupd是守护进程负责管理拓扑信息。客户端通过查询 nsqlookupd 来发现指定话题（topic）的生产者，并且 nsqd 节点广播话题（topic）和通道（channel）信息</p>
 </li>
 <li><p>简单的说nsqlookupd就是中心管理服务，它使用tcp(默认端口4160)管理nsqd服务，使用http(默认端口4161)管理nsqadmin服务。同时为客户端提供查询功能</p>
@@ -398,7 +408,7 @@
 <li>充当nsqd和naqadmin信息交互的中间件</li>
 <li>提供一个http查询服务，给客户端定时更新nsqd的地址目录 </li>
 </ul>
-<h3 id="nsqadmin-展示数据"><a href="#nsqadmin-展示数据" class="headerlink" title="nsqadmin(展示数据)"></a>nsqadmin(展示数据)</h3><ol start="0">
+<h3 id="2-3-nsqadmin-展示数据"><a href="#2-3-nsqadmin-展示数据" class="headerlink" title="2.3 nsqadmin(展示数据)"></a>2.3 nsqadmin(展示数据)</h3><ol start="0">
 <li>是一套 WEB UI，用来汇集集群的实时统计，并执行不同的管理任务</li>
 <li>nsqadmin具有以下功能或特性<ul>
 <li>提供一个对topic和channel统一管理的操作界面以及各种实时监控数据的展示，界面设计的很简洁，操作也很简单</li>
@@ -408,54 +418,39 @@
 </ul>
 </li>
 </ol>
-<h3 id="nsqd-真正干活的-4150-4151"><a href="#nsqd-真正干活的-4150-4151" class="headerlink" title="nsqd (真正干活的)  4150 4151"></a>nsqd (真正干活的)  4150 4151</h3><ol>
-<li>nsqd 是一个守护进程，负责接收，排队，投递消息给客户端</li>
-<li>简单的说，真正干活的就是这个服务，它主要负责message的收发，队列的维护。nsqd会默认监听一个tcp端口(4150)和一个http端口(4151)以及一个可选的https端口</li>
-<li>nsqd 具有以下功能或特性</li>
-</ol>
-<ul>
-<li>对订阅了同一个topic，同一个channel的消费者使用负载均衡策略（不是轮询）</li>
-<li>只要channel存在，即使没有该channel的消费者，也会将生产者的message缓存到队列中（注意消息的过期处理）</li>
-<li>保证队列中的message至少会被消费一次，即使nsqd退出，也会将队列中的消息暂存磁盘上(结束进程等意外情况除外)</li>
-<li>限定内存占用，能够配置nsqd中每个channel队列在内存中缓存的message数量，一旦超出，message将被缓存到磁盘中</li>
-<li>topic，channel一旦建立，将会一直存在，要及时在管理台或者用代码清除无效的topic和channel，避免资源的浪费</li>
-</ul>
-<h4 id="消费者"><a href="#消费者" class="headerlink" title="消费者"></a>消费者</h4><p>消费者有两种方式与nsqd建立连接</p>
-<ul>
-<li>消费者直连nsqd，这是最简单的方式，缺点是nsqd服务无法实现动态伸缩了(当然，自己去实现一个也是可以的)  </li>
-<li>消费者通过http查询nsqlookupd获取该nsqlookupd上所有nsqd的连接地址，然后再分别和这些nsqd建立连接(官方推荐的做法)，但是客户端会不停的向nsqlookupd查询最新的nsqd地址目录(不喜欢用http轮询这种方式…)</li>
-</ul>
-<h4 id="生产者"><a href="#生产者" class="headerlink" title="生产者"></a>生产者</h4><p>生产者必须直连nsqd去投递message(网上说，可以连接到nsqlookupd，让nsqlookupd自动选择一个nsqd去完成投递，但是我用Producer的tcp是连不上nsqlookupd的，不知道http可不可以…)，</p>
-<p>这里有一个问题就是如果生产者所连接的nsqd炸了，那么message就会投递失败，所以在客户端必须自己实现相应的备用方案</p>
-<ul>
-<li><p>Producer断线后不会重连，需要自己手动重连，Consumer断线后会自动重连</p>
+<h1 id="3-nsq-操作"><a href="#3-nsq-操作" class="headerlink" title="3. nsq 操作"></a>3. nsq 操作</h1><h3 id="3-1-安装和启动"><a href="#3-1-安装和启动" class="headerlink" title="3.1 安装和启动"></a>3.1 安装和启动</h3><p>安装 nsq</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install nsq</span><br></pre></td></tr></table></figure>
+
+<p>启动 nsqlookupd</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">nsqlookupd</span><br><span class="line"></span><br><span class="line">[nsqlookupd] 2020/07/14 13:10:26.005144 INFO: nsqlookupd v1.2.0 (built w/go1.13.5)</span><br><span class="line">[nsqlookupd] 2020/07/14 13:10:26.006620 INFO: HTTP: listening on [::]:4161 <span class="comment"># 管理 nsqd</span></span><br><span class="line">[nsqlookupd] 2020/07/14 13:10:26.006620 INFO: TCP: listening on [::]:4160 <span class="comment"># 管理 nsqadmin</span></span><br></pre></td></tr></table></figure>
+
+<p>启动 nsqd</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">nsqd --lookupd-tcp-address=127.0.0.1:4160 -broadcast-address=127.0.0.1</span><br><span class="line"></span><br><span class="line">[nsqd] 2020/07/14 13:11:55.889343 INFO: nsqd v1.2.0 (built w/go1.13.5)</span><br><span class="line">[nsqd] 2020/07/14 13:11:55.889519 INFO: ID: 24</span><br><span class="line">[nsqd] 2020/07/14 13:11:55.889954 INFO: NSQ: persisting topic/channel metadata to nsqd.dat</span><br><span class="line">[nsqd] 2020/07/14 13:11:55.909569 INFO: TCP: listening on [::]:4150 <span class="comment"># tcp监听4150</span></span><br><span class="line">[nsqd] 2020/07/14 13:11:55.909673 INFO: HTTP: listening on [::]:4151 <span class="comment"># http监听4151</span></span><br><span class="line">[nsqd] 2020/07/14 13:11:55.909858 INFO: LOOKUP(127.0.0.1:4160): adding peer</span><br><span class="line">[nsqd] 2020/07/14 13:11:55.909872 INFO: LOOKUP connecting to 127.0.0.1:4160</span><br><span class="line">[nsqd] 2020/07/14 13:11:55.914186 INFO: LOOKUPD(127.0.0.1:4160): peer info &#123;TCPPort:4160 HTTPPort:4161 Version:1.2.0 BroadcastAddress:liuweideMacBook-Air.local&#125;</span><br></pre></td></tr></table></figure>
+
+<p>启动 nsqadmin</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">nsqadmin --lookupd-http-address=127.0.0.1:4161</span><br><span class="line"></span><br><span class="line">[nsqadmin] 2020/07/14 13:13:39.580161 INFO: nsqadmin v1.2.0 (built w/go1.13.5)</span><br><span class="line">[nsqadmin] 2020/07/14 13:13:39.581124 INFO: HTTP: listening on [::]:4171 <span class="comment"># 监听4171</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-操作"><a href="#3-2-操作" class="headerlink" title="3.2 操作"></a>3.2 操作</h3><ul>
+<li><p>浏览器访问 <a href="http://127.0.0.1:4171/" target="_blank" rel="noopener">http://127.0.0.1:4171/</a> 观察数据</p>
 </li>
-<li><p>Consumer的重连时间配置项有两个功能(这个设计必须吐槽一下，分开配置更好一点)</p>
-<ul>
-<li>Consumer检测到与nsqd的连接断开后，每隔x秒向nsqd请求重连</li>
-<li>Consumer每隔x秒，向nsqlookud进行http轮询，用来更新自己的nsqd地址目录</li>
-<li>Consumer的重连时间默认是60s(…菜都凉了)，我改成了1s</li>
-</ul>
+<li><p>发布一个消息 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -d <span class="string">'levonfly1'</span> <span class="string">'http://127.0.0.1:4151/pub?topic=test'</span></span><br></pre></td></tr></table></figure>
 </li>
-<li><p>Consumer可以同时接收不同nsqd node的同名topic数据，为了避免混淆，就必须在客户端进行处理</p>
-</li>
-<li><p>在AddConurrentHandlers和 AddHandler中设置的接口回调是在另外的goroutine中执行的</p>
-</li>
-<li><p>Producer不能发布(Publish)空message，否则会导致panic</p>
+<li><p>创建一个消费者</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nsq_to_file --topic=<span class="built_in">test</span> --output-dir=/tmp --lookupd-http-address=127.0.0.1:4161</span><br></pre></td></tr></table></figure>
+
+<p>可以在/tmp/文件夹内看到输入的消息log</p>
 </li>
 </ul>
-<h3 id="nsq-操作"><a href="#nsq-操作" class="headerlink" title="nsq 操作"></a>nsq 操作</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">brew install nsq</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">nsqlookupd</span><br><span class="line"></span><br><span class="line">[nsqlookupd] 2018/01/24 10:33:31.710309 nsqlookupd v1.0.0-compat (built w/go1.9.1)</span><br><span class="line">[nsqlookupd] 2018/01/24 10:33:31.710772 TCP:</span><br><span class="line">listening on [::]:4160  --nsqd</span><br><span class="line">[nsqlookupd] 2018/01/24 10:33:31.710772 HTTP: </span><br><span class="line">listening on [::]:4161 --nsqadmin</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">nsqd --lookupd-tcp-address=127.0.0.1:4160 -broadcast-address=127.0.0.1</span><br><span class="line"></span><br><span class="line">[nsqd] 2018/01/24 10:35:01.975420 nsqd v1.0.0-compat (built w/go1.9.1)</span><br><span class="line">[nsqd] 2018/01/24 10:35:01.975521 ID: 660</span><br><span class="line">[nsqd] 2018/01/24 10:35:01.975567 NSQ: persisting topic/channel metadata to nsqd.dat</span><br><span class="line">[nsqd] 2018/01/24 10:35:01.976544 TCP: </span><br><span class="line">listening on [::]:4150  --tcp监听4150</span><br><span class="line">[nsqd] 2018/01/24 10:35:01.976597 HTTP: </span><br><span class="line">listening on [::]:4151  --http监听4151</span><br><span class="line">[nsqd] 2018/01/24 10:35:01.976785 LOOKUP(127.0.0.1:4160): adding peer</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">nsqadmin --lookupd-http-address=127.0.0.1:4161</span><br><span class="line"></span><br><span class="line">[nsqadmin] 2018/01/24 10:35:40.562980 nsqadmin v1.0.0-compat (built w/go1.9.1)</span><br><span class="line">[nsqadmin] 2018/01/24 10:35:40.563388 HTTP: </span><br><span class="line">listening on [::]:4171 --监听4171</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>再发布几个消息</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -d <span class="string">'levonfly2'</span> <span class="string">'http://127.0.0.1:4151/pub?topic=test'</span></span><br><span class="line">curl -d <span class="string">'levonfly3'</span> <span class="string">'http://127.0.0.1:4151/pub?topic=test'</span></span><br></pre></td></tr></table></figure>
 
-<h4 id="use"><a href="#use" class="headerlink" title="use"></a>use</h4><p>可以用浏览器访问 <a href="http://127.0.0.1:4171/" target="_blank" rel="noopener">http://127.0.0.1:4171/</a> 观察数据<br>也可尝试下 watch -n 0.5 “curl -s <a href="http://127.0.0.1:4151/stats&quot;" target="_blank" rel="noopener">http://127.0.0.1:4151/stats&quot;</a> 监控统计数据(4151是nsqd的http)</p>
-<p>发布一个消息<br>curl -d ‘hello world 1’ ‘<a href="http://127.0.0.1:4151/pub?topic=test&#39;" target="_blank" rel="noopener">http://127.0.0.1:4151/pub?topic=test&#39;</a></p>
-<p>创建一个消费者:<br>nsq_to_file –topic=test –output-dir=/tmp –lookupd-http-address=127.0.0.1:4161</p>
-<p>再发布几个消息</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -d &apos;hello world 2&apos; &apos;http://127.0.0.1:4151/pub?topic=test&apos;</span><br><span class="line">curl -d &apos;hello world 3&apos; &apos;http://127.0.0.1:4151/pub?topic=test&apos;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="4-golang-使用-nsq"><a href="#4-golang-使用-nsq" class="headerlink" title="4. golang 使用 nsq"></a>4. golang 使用 nsq</h1><h3 id="4-1-生产者"><a href="#4-1-生产者" class="headerlink" title="4.1 生产者"></a>4.1 生产者</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line">	<span class="string">"time"</span></span><br><span class="line"></span><br><span class="line">	nsq <span class="string">"github.com/nsqio/go-nsq"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	cfg := nsq.NewConfig()</span><br><span class="line">	<span class="comment">// 连接 nsqd 的 tcp 连接</span></span><br><span class="line">	producer, err := nsq.NewProducer(<span class="string">"127.0.0.1:4150"</span>, cfg)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 发布消息</span></span><br><span class="line">	<span class="keyword">var</span> count <span class="keyword">int</span></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		count++</span><br><span class="line">		body := fmt.Sprintf(<span class="string">"test %d"</span>, count)</span><br><span class="line">		<span class="keyword">if</span> err := producer.Publish(<span class="string">"test"</span>, []<span class="keyword">byte</span>(body)); err != <span class="literal">nil</span> &#123;</span><br><span class="line">			log.Fatal(<span class="string">"publish error: "</span> + err.Error())</span><br><span class="line">		&#125;</span><br><span class="line">		time.Sleep(<span class="number">1</span> * time.Second)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h3 id="go-nsq-使用"><a href="#go-nsq-使用" class="headerlink" title="go-nsq 使用"></a>go-nsq 使用</h3><p>运行之前, 保证 nsqd 在运行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;log&quot;</span><br><span class="line">	&quot;time&quot;</span><br><span class="line"></span><br><span class="line">	nsq &quot;github.com/bitly/go-nsq&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	go startConsumer()</span><br><span class="line">	startProducer()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 生产者</span><br><span class="line">func startProducer() &#123;</span><br><span class="line">	cfg := nsq.NewConfig()</span><br><span class="line">	producer, err := nsq.NewProducer(&quot;127.0.0.1:4150&quot;, cfg)</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">	// 发布消息</span><br><span class="line">	for &#123;</span><br><span class="line">		if err := producer.Publish(&quot;test&quot;, []byte(&quot;test message&quot;)); err != nil &#123;</span><br><span class="line">			log.Fatal(&quot;publish error: &quot; + err.Error())</span><br><span class="line">		&#125;</span><br><span class="line">		time.Sleep(1 * time.Second)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 消费者</span><br><span class="line">func startConsumer() &#123;</span><br><span class="line">	cfg := nsq.NewConfig()</span><br><span class="line">	consumer, err := nsq.NewConsumer(&quot;test&quot;, &quot;sensor01&quot;, cfg)</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">	// 设置消息处理函数</span><br><span class="line">	consumer.AddHandler(nsq.HandlerFunc(func(message *nsq.Message) error &#123;</span><br><span class="line">		log.Println(string(message.Body))</span><br><span class="line">		return nil</span><br><span class="line">	&#125;))</span><br><span class="line">	// 连接到单例nsqd</span><br><span class="line">	if err := consumer.ConnectToNSQD(&quot;127.0.0.1:4150&quot;); err != nil &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">	&lt;-consumer.StopChan</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
+<h3 id="4-2-消费者"><a href="#4-2-消费者" class="headerlink" title="4.2 消费者"></a>4.2 消费者</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line"></span><br><span class="line">	<span class="string">"github.com/nsqio/go-nsq"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	cfg := nsq.NewConfig()</span><br><span class="line">	consumer, err := nsq.NewConsumer(<span class="string">"test"</span>, <span class="string">"levonfly"</span>, cfg)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 处理信息</span></span><br><span class="line">	consumer.AddHandler(nsq.HandlerFunc(<span class="function"><span class="keyword">func</span><span class="params">(message *nsq.Message)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">		log.Println(<span class="keyword">string</span>(message.Body))</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">	&#125;))</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 连接 nsqd 的 tcp 连接</span></span><br><span class="line">	<span class="keyword">if</span> err := consumer.ConnectToNSQD(<span class="string">"127.0.0.1:4150"</span>); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">	&lt;-consumer.StopChan</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -505,8 +500,8 @@
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
-                <a href="/p/127812f2.html" rel="next" title="golang_ide_vscode的使用调试和问题解决">
-                  <i class="fa fa-chevron-left"></i> golang_ide_vscode的使用调试和问题解决
+                <a href="/p/d2e27e6.html" rel="next" title="英语语法结构">
+                  <i class="fa fa-chevron-left"></i> 英语语法结构
                 </a>
               
             </div>
@@ -515,8 +510,8 @@
 
             <div class="post-nav-prev post-nav-item">
               
-                <a href="/p/63c8f369.html" rel="prev" title="golang_context包的介绍和使用">
-                  golang_context包的介绍和使用 <i class="fa fa-chevron-right"></i>
+                <a href="/p/e24658ca.html" rel="prev" title="pr入门教程笔记">
+                  pr入门教程笔记 <i class="fa fa-chevron-right"></i>
                 </a>
               
             </div>
@@ -575,7 +570,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#nsq-介绍"><span class="nav-number">1.</span> <span class="nav-text">nsq 介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nsqlookupd-中心管理服务-4160-4161"><span class="nav-number">2.</span> <span class="nav-text">nsqlookupd(中心管理服务)  4160 4161</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nsqadmin-展示数据"><span class="nav-number">3.</span> <span class="nav-text">nsqadmin(展示数据)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nsqd-真正干活的-4150-4151"><span class="nav-number">4.</span> <span class="nav-text">nsqd (真正干活的)  4150 4151</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#消费者"><span class="nav-number">4.1.</span> <span class="nav-text">消费者</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生产者"><span class="nav-number">4.2.</span> <span class="nav-text">生产者</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nsq-操作"><span class="nav-number">5.</span> <span class="nav-text">nsq 操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#use"><span class="nav-number">5.1.</span> <span class="nav-text">use</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#go-nsq-使用"><span class="nav-number">6.</span> <span class="nav-text">go-nsq 使用</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-nsq-介绍"><span class="nav-number">1.</span> <span class="nav-text">1. nsq 介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-nsq-的组成"><span class="nav-number">1.0.1.</span> <span class="nav-text">1.1 nsq 的组成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-nsq的主要特点"><span class="nav-number">1.0.2.</span> <span class="nav-text">1.2 nsq的主要特点</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-nsq-组件"><span class="nav-number">2.</span> <span class="nav-text">2. nsq 组件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-nsqd-真正干活的"><span class="nav-number">2.0.1.</span> <span class="nav-text">2.1 nsqd (真正干活的)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-nsqlookupd-中心管理服务"><span class="nav-number">2.0.2.</span> <span class="nav-text">2.2 nsqlookupd(中心管理服务)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-nsqadmin-展示数据"><span class="nav-number">2.0.3.</span> <span class="nav-text">2.3 nsqadmin(展示数据)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-nsq-操作"><span class="nav-number">3.</span> <span class="nav-text">3. nsq 操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-安装和启动"><span class="nav-number">3.0.1.</span> <span class="nav-text">3.1 安装和启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-操作"><span class="nav-number">3.0.2.</span> <span class="nav-text">3.2 操作</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-golang-使用-nsq"><span class="nav-number">4.</span> <span class="nav-text">4. golang 使用 nsq</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-生产者"><span class="nav-number">4.0.1.</span> <span class="nav-text">4.1 生产者</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-消费者"><span class="nav-number">4.0.2.</span> <span class="nav-text">4.2 消费者</span></a></li></ol></li></ol></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -594,7 +589,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">153</span>
+          <span class="site-state-item-count">154</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -620,7 +615,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">90</span>
+        <span class="site-state-item-count">91</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -697,12 +692,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">596k</span>
+    <span title="站点总字数">598k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">9:01</span>
+    <span title="站点阅读时长">9:04</span>
 </div>
 
         
@@ -787,7 +782,7 @@
   function disqus_config() {
     this.page.url = "https://unix2dos.github.io/p/17c769c4.html";
     this.page.identifier = "p/17c769c4.html";
-    this.page.title = 'nsq介绍和go-nsq使用';};
+    this.page.title = 'nsq的介绍和使用';};
   function loadComments() {
     if (window.DISQUS) {
       DISQUS.reset({
