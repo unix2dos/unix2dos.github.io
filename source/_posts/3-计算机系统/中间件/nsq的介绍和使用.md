@@ -6,7 +6,7 @@ tags:
 abbrlink: 17c769c4
 categories:
   - 3-计算机系统
-  - 消息队列
+  - 中间件
 date: 2019-06-18 11:01:13
 ---
 

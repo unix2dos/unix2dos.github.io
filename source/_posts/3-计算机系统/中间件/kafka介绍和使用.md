@@ -5,7 +5,7 @@ tags:
   - kafka
 categories:
   - 3-计算机系统
-  - 消息队列
+  - 中间件
 abbrlink: f03714cc
 date: 2019-06-07 00:00:00
 ---
