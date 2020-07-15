@@ -409,10 +409,22 @@ func main() {
 
 	var e float32
 	fmt.Println(unsafe.Sizeof(e)) //4
+
+	var f string
+	fmt.Println(unsafe.Sizeof(f)) //16
+
+	var g chan int
+	fmt.Println(unsafe.Sizeof(g)) //8
+
+	var h []int
+	fmt.Println(unsafe.Sizeof(h)) //24
+
+	var i map[int]int
+	fmt.Println(unsafe.Sizeof(i)) //8
 }
 ```
 
-+ 字节对齐
++ 字节对齐(根据操作系统的位数对齐的)
 
 ```go
 package main
@@ -449,12 +461,26 @@ type Info5 struct {
 	age    int  //8
 }
 
+type Info6 struct {
+	a bool   //1
+	b string //16
+	c bool   //1
+}
+
+type Info7 struct {
+	a bool   //1
+	c bool   //1
+	b string //16
+}
+
 func main() {
 	fmt.Println(unsafe.Sizeof(Info1{})) //2
 	fmt.Println(unsafe.Sizeof(Info2{})) //16(8+8)
 	fmt.Println(unsafe.Sizeof(Info3{})) //8(4+4)
 	fmt.Println(unsafe.Sizeof(Info4{})) //24(8+8+8)
 	fmt.Println(unsafe.Sizeof(Info5{})) //16(1+1+8 = 8+8)
+	fmt.Println(unsafe.Sizeof(Info6{})) //32(1+16+1 = 8+16+8)
+	fmt.Println(unsafe.Sizeof(Info7{})) //16(1+1+16 = 8+16)
 }
 ```
 
@@ -717,4 +743,3 @@ type itab struct {
 + 加锁
 + 使用 channel 串行化
 + sync.Map
-
