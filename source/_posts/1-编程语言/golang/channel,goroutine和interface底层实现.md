@@ -5,6 +5,7 @@ tags:
 categories:
   - 1-编程语言
   - golang
+abbrlink: 94554c31
 date: 2019-01-07 00:00:00
 ---
 
