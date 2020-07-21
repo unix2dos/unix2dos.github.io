@@ -58,18 +58,18 @@
   <meta name="description" content="1. Mysql主从复制1.1 MySQL 主从复制原理MySQL主从复制涉及到三个线程  一个运行在主节点（log dump thread）  其余两个(I/O thread, SQL thread)运行在从节点">
 <meta name="keywords" content="sql">
 <meta property="og:type" content="article">
-<meta property="og:title" content="数据库的主从复制实践">
-<meta property="og:url" content="https://unix2dos.github.io/p/ac2d8d18.html">
+<meta property="og:title" content="数据库的主从复制">
+<meta property="og:url" content="https://unix2dos.github.io/p/2aa5fdb4.html">
 <meta property="og:site_name" content="Levon&#39;s Blog">
 <meta property="og:description" content="1. Mysql主从复制1.1 MySQL 主从复制原理MySQL主从复制涉及到三个线程  一个运行在主节点（log dump thread）  其余两个(I/O thread, SQL thread)运行在从节点">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://unix2dos.github.io/p/ac2d8d18/1.jpg">
-<meta property="og:updated_time" content="2020-07-21T16:47:38.186Z">
+<meta property="og:image" content="https://unix2dos.github.io/p/2aa5fdb4/1.jpg">
+<meta property="og:updated_time" content="2020-07-21T16:50:34.742Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="数据库的主从复制实践">
+<meta name="twitter:title" content="数据库的主从复制">
 <meta name="twitter:description" content="1. Mysql主从复制1.1 MySQL 主从复制原理MySQL主从复制涉及到三个线程  一个运行在主节点（log dump thread）  其余两个(I/O thread, SQL thread)运行在从节点">
-<meta name="twitter:image" content="https://unix2dos.github.io/p/ac2d8d18/1.jpg">
-  <link rel="canonical" href="https://unix2dos.github.io/p/ac2d8d18">
+<meta name="twitter:image" content="https://unix2dos.github.io/p/2aa5fdb4/1.jpg">
+  <link rel="canonical" href="https://unix2dos.github.io/p/2aa5fdb4">
 
 
 <script id="page-configurations">
@@ -83,7 +83,7 @@
   };
 </script>
 
-  <title>数据库的主从复制实践 | Levon's Blog</title>
+  <title>数据库的主从复制 | Levon's Blog</title>
   
 
 
@@ -249,7 +249,7 @@
   
   
   <div class="post-block post">
-    <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/ac2d8d18.html">
+    <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/2aa5fdb4.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Levon">
@@ -261,7 +261,7 @@
       <meta itemprop="name" content="Levon's Blog">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">数据库的主从复制实践
+        <h2 class="post-title" itemprop="name headline">数据库的主从复制
 
           
         </h2>
@@ -288,9 +288,29 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-22 00:47:38" itemprop="dateModified" datetime="2020-07-22T00:47:38+08:00">2020-07-22</time>
+                <time title="修改时间：2020-07-22 00:50:34" itemprop="dateModified" datetime="2020-07-22T00:50:34+08:00">2020-07-22</time>
               </span>
             
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/1-编程语言/" itemprop="url" rel="index"><span itemprop="name">1-编程语言</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/1-编程语言/sql/" itemprop="url" rel="index"><span itemprop="name">sql</span></a></span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -304,7 +324,7 @@
       
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/p/ac2d8d18.html#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/ac2d8d18.html" itemprop="commentCount"></span></a>
+    <a title="disqus" href="/p/2aa5fdb4.html#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/2aa5fdb4.html" itemprop="commentCount"></span></a>
   </span>
   
   
@@ -346,7 +366,7 @@
 <li><p>其余两个(I/O thread, SQL thread)运行在从节点</p>
 </li>
 </ul>
-<p><img src="/p/ac2d8d18/1.jpg" alt="1"></p>
+<p><img src="/p/2aa5fdb4/1.jpg" alt="1"></p>
 <a id="more"></a>
 
 <h3 id="1-2-MySQL-复制过程"><a href="#1-2-MySQL-复制过程" class="headerlink" title="1.2 MySQL 复制过程"></a>1.2 MySQL 复制过程</h3><p>要实施复制，首先必须打开Master 端的binary log（bin-log）功能，否则无法实现。</p>
@@ -662,7 +682,7 @@
 </ul>
 <h1 id="6-参考资料"><a href="#6-参考资料" class="headerlink" title="6. 参考资料"></a>6. 参考资料</h1><ul>
 <li><a href="https://zhuanlan.zhihu.com/p/50597960" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/50597960</a></li>
-<li><a href="https://www.cnblogs.com/kevingrace/p/5685486.html" target="_blank" rel="noopener">https://www.cnblogs.com/kevingrace/p/5685486.html</a></li>
+<li><a href="https://outmanzzq.github.io/2019/01/30/docker-mongo-replica/" target="_blank" rel="noopener">https://outmanzzq.github.io/2019/01/30/docker-mongo-replica/</a></li>
 </ul>
 
     </div>
@@ -988,9 +1008,9 @@
 </script>
 <script>
   function disqus_config() {
-    this.page.url = "https://unix2dos.github.io/p/ac2d8d18.html";
-    this.page.identifier = "p/ac2d8d18.html";
-    this.page.title = '数据库的主从复制实践';};
+    this.page.url = "https://unix2dos.github.io/p/2aa5fdb4.html";
+    this.page.identifier = "p/2aa5fdb4.html";
+    this.page.title = '数据库的主从复制';};
   function loadComments() {
     if (window.DISQUS) {
       DISQUS.reset({
