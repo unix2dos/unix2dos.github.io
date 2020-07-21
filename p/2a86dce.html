@@ -65,7 +65,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://unix2dos.github.io/p/2a86dce/1.png">
 <meta property="og:image" content="https://unix2dos.github.io/p/2a86dce/2.png">
-<meta property="og:updated_time" content="2020-07-04T08:55:31.709Z">
+<meta property="og:updated_time" content="2020-07-21T07:34:09.696Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis学习">
 <meta name="twitter:description" content="0. 前言Redis是一个开源的，基于内存的数据结构存储，可用作于数据库、缓存、消息中间件。  从官方的解释上，我们可以知道：Redis是基于内存，支持多种数据结构。 从经验的角度上，我们可以知道：Redis常用作于缓存。">
@@ -289,7 +289,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-04 16:55:31" itemprop="dateModified" datetime="2020-07-04T16:55:31+08:00">2020-07-04</time>
+                <time title="修改时间：2020-07-21 15:34:09" itemprop="dateModified" datetime="2020-07-21T15:34:09+08:00">2020-07-21</time>
               </span>
             
           
@@ -487,22 +487,13 @@
 <h3 id="3-2-过期策略-3种"><a href="#3-2-过期策略-3种" class="headerlink" title="3.2 过期策略(3种)"></a>3.2 过期策略(3种)</h3><p>上面我们已经能够了解到：过期键是保存在哈希表中了。那这些过期键到了过期的时间，就会立马被删除掉吗？？</p>
 <ul>
 <li><p>定时删除(对内存友好，对CPU不友好)</p>
-</li>
-<li><ul>
-<li>到时间点上就把所有过期的键删除了。</li>
-</ul>
+<p>到时间点上就把所有过期的键删除了。</p>
 </li>
 <li><p>惰性删除(对CPU极度友好，对内存极度不友好)</p>
-</li>
-<li><ul>
-<li>每次从键空间取键的时候，判断一下该键是否过期了，如果过期了就删除。</li>
-</ul>
+<p>每次从键空间取键的时候，判断一下该键是否过期了，如果过期了就删除。</p>
 </li>
 <li><p>定期删除(折中)</p>
-</li>
-<li><ul>
-<li><strong>每隔</strong>一段时间去删除过期键，<strong>限制</strong>删除的执行时长和频率。</li>
-</ul>
+<p>每隔一段时间去删除过期键，限制删除的执行时长和频率。</p>
 </li>
 </ul>
 <p>Redis采用的是<strong>惰性删除+定期删除</strong>两种策略，所以说，在Redis里边如果过期键到了过期的时间了，未必被立马删除的！</p>
@@ -734,8 +725,8 @@
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
-                <a href="/p/9762ea3e.html" rel="next" title="mysql事务隔离级别和表锁行锁">
-                  <i class="fa fa-chevron-left"></i> mysql事务隔离级别和表锁行锁
+                <a href="/p/95e70f76.html" rel="next" title="linux源码安装python3">
+                  <i class="fa fa-chevron-left"></i> linux源码安装python3
                 </a>
               
             </div>
@@ -744,8 +735,8 @@
 
             <div class="post-nav-prev post-nav-item">
               
-                <a href="/p/7c519e18.html" rel="prev" title="zookeeper介绍和使用">
-                  zookeeper介绍和使用 <i class="fa fa-chevron-right"></i>
+                <a href="/p/8a4c23bd.html" rel="prev" title="mysql用explain分析查询语句">
+                  mysql用explain分析查询语句 <i class="fa fa-chevron-right"></i>
                 </a>
               
             </div>
@@ -926,12 +917,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">625k</span>
+    <span title="站点总字数">624k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">9:28</span>
+    <span title="站点阅读时长">9:27</span>
 </div>
 
         
