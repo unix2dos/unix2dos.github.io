@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.json',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="1. quick start1234567891011package mainimport (	&quot;log&quot;	&quot;net/http&quot;	_ &quot;net/http/pprof&quot;)func main() &amp;#123;	log.Println(http.ListenAndServe(&quot;localhost:6060&quot;, nil))&amp;#125;">
+<meta name="keywords" content="golang">
+<meta property="og:type" content="article">
+<meta property="og:title" content="golang的pprof使用">
+<meta property="og:url" content="https://unix2dos.github.io/p/771638a0.html">
+<meta property="og:site_name" content="Levon&#39;s Blog">
+<meta property="og:description" content="1. quick start1234567891011package mainimport (	&quot;log&quot;	&quot;net/http&quot;	_ &quot;net/http/pprof&quot;)func main() &amp;#123;	log.Println(http.ListenAndServe(&quot;localhost:6060&quot;, nil))&amp;#125;">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://unix2dos.github.io/p/771638a0/1.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/771638a0/2.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/771638a0/3.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/771638a0/4.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/771638a0/5.png">
+<meta property="og:image" content="https://unix2dos.github.io/p/771638a0/6.png">
+<meta property="og:updated_time" content="2020-07-22T12:24:25.118Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="golang的pprof使用">
+<meta name="twitter:description" content="1. quick start1234567891011package mainimport (	&quot;log&quot;	&quot;net/http&quot;	_ &quot;net/http/pprof&quot;)func main() &amp;#123;	log.Println(http.ListenAndServe(&quot;localhost:6060&quot;, nil))&amp;#125;">
+<meta name="twitter:image" content="https://unix2dos.github.io/p/771638a0/1.png">
+  <link rel="canonical" href="https://unix2dos.github.io/p/771638a0">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>golang的pprof使用 | Levon's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Levon's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">微信:  L6241425</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>时光</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/771638a0.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Levon">
+      <meta itemprop="description" content="Never Give Up">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Levon's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">golang的pprof使用
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2020-03-07 00:00:00" itemprop="dateCreated datePublished" datetime="2020-03-07T00:00:00+08:00">2020-03-07</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-22 20:24:25" itemprop="dateModified" datetime="2020-07-22T20:24:25+08:00">2020-07-22</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/1-编程语言/" itemprop="url" rel="index"><span itemprop="name">1-编程语言</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/1-编程语言/golang/" itemprop="url" rel="index"><span itemprop="name">golang</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/p/771638a0.html#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/771638a0.html" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span>13k</span>
+            </span>
+          
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span>12 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="1-quick-start"><a href="#1-quick-start" class="headerlink" title="1. quick start"></a>1. quick start</h1><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line">	<span class="string">"net/http"</span></span><br><span class="line">	_ <span class="string">"net/http/pprof"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	log.Println(http.ListenAndServe(<span class="string">"localhost:6060"</span>, <span class="literal">nil</span>))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<p>打开浏览器, 输入 <code>http://localhost:6060/debug/pprof/</code>, 内容显示如下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">/debug/pprof/</span><br><span class="line"></span><br><span class="line">Types of profiles available:</span><br><span class="line">Count	Profile</span><br><span class="line">1	allocs <span class="comment"># 内存分配情况的采样信息</span></span><br><span class="line">0	block	 <span class="comment"># 阻塞操作情况的采样信息</span></span><br><span class="line">0	cmdline <span class="comment">#	显示程序启动命令及参数</span></span><br><span class="line">4	goroutine <span class="comment"># 当前所有协程的堆栈信息</span></span><br><span class="line">1	heap <span class="comment"># 堆上内存使用情况的采样信息</span></span><br><span class="line">0	mutex <span class="comment"># 锁争用情况的采样信息</span></span><br><span class="line">0	profile <span class="comment"># CPU 占用情况的采样信息</span></span><br><span class="line">5	threadcreate <span class="comment"># 系统线程创建情况的采样信息</span></span><br><span class="line">0	trace <span class="comment"># 程序运行跟踪信息</span></span><br><span class="line">full goroutine stack dump</span><br></pre></td></tr></table></figure>
+
+<p>上面每一个都是一个超链接, 可以点进去, 看到堆栈信息</p>
+<h1 id="2-命令查看"><a href="#2-命令查看" class="headerlink" title="2. 命令查看"></a>2. 命令查看</h1><ul>
+<li><p>mac需要安装graphviz</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">brew install graphviz</span><br><span class="line"><span class="comment"># 如果一直下载不成功, 修改brew源</span></span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<ul>
+<li><p>查看内存使用情况</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">go tool pprof http://localhost:6060/debug/pprof/heap</span><br><span class="line"><span class="comment"># 进入如下gdb交互模式:</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># top 查看前10个的内存分配情况</span></span><br><span class="line">(pprof) top</span><br><span class="line">Showing nodes accounting <span class="keyword">for</span> 1.16MB, 100% of 1.16MB total</span><br><span class="line">      flat  flat%   sum%        cum   cum%</span><br><span class="line">    1.16MB   100%   100%     1.16MB   100%  runtime/pprof.writeGoroutineStacks</span><br><span class="line">         0     0%   100%     1.16MB   100%  net/http.(*ServeMux).ServeHTTP</span><br><span class="line">         0     0%   100%     1.16MB   100%  net/http.(*conn).serve</span><br><span class="line">         0     0%   100%     1.16MB   100%  net/http.HandlerFunc.ServeHTTP</span><br><span class="line">         0     0%   100%     1.16MB   100%  net/http.serverHandler.ServeHTTP</span><br><span class="line">         0     0%   100%     1.16MB   100%  net/http/pprof.Index</span><br><span class="line">         0     0%   100%     1.16MB   100%  net/http/pprof.handler.ServeHTTP</span><br><span class="line">         0     0%   100%     1.16MB   100%  runtime/pprof.(*Profile).WriteTo</span><br><span class="line">         0     0%   100%     1.16MB   100%  runtime/pprof.writeGoroutine</span><br><span class="line">         </span><br><span class="line">         </span><br><span class="line"><span class="comment"># tree 以树状显示</span></span><br><span class="line">(pprof) tree</span><br><span class="line">Showing nodes accounting <span class="keyword">for</span> 1.16MB, 100% of 1.16MB total</span><br><span class="line">----------------------------------------------------------+-------------</span><br><span class="line">      flat  flat%   sum%        cum   cum%   calls calls% + context</span><br><span class="line">----------------------------------------------------------+-------------</span><br><span class="line">                                            1.16MB   100% |   runtime/pprof.writeGoroutine</span><br><span class="line">    1.16MB   100%   100%     1.16MB   100%                | runtime/pprof.writeGoroutineStacks</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line"><span class="comment"># png 以图片格式输出,在当前目录下</span></span><br><span class="line">(pprof) png</span><br><span class="line">Generating report <span class="keyword">in</span> profile001.png</span><br><span class="line"></span><br><span class="line"><span class="comment"># svg 生成浏览器可以识别的svg文件,在当前目录下, 直接点开在浏览器查看</span></span><br><span class="line">(pprof) png</span><br><span class="line">Generating report <span class="keyword">in</span> profile001.png</span><br></pre></td></tr></table></figure>
+
+
+
+
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>列名</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>flat</td>
+<td>本函数的执行耗时</td>
+</tr>
+<tr>
+<td>flat%</td>
+<td>flat 占 CPU 总时间的比例。程序总耗时 16.22s, Eat 的 16.19s 占了 99.82%</td>
+</tr>
+<tr>
+<td>sum%</td>
+<td>前面每一行的 flat 占比总和</td>
+</tr>
+<tr>
+<td>cum</td>
+<td>累计量。指该函数加上该函数调用的函数总耗时</td>
+</tr>
+<tr>
+<td>cum%</td>
+<td>cum 占 CPU 总时间的比例</td>
+</tr>
+</tbody></table>
+<h1 id="3-实践"><a href="#3-实践" class="headerlink" title="3. 实践"></a>3. 实践</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下载测试项目</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/wolfogre/go-pprof-practice</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行</span></span><br><span class="line">go build</span><br><span class="line">./go-pprof-practice</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-1-排查CPU"><a href="#3-1-排查CPU" class="headerlink" title="3.1 排查CPU"></a>3.1 排查CPU</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">go tool pprof http://localhost:6060/debug/pprof/profile</span><br><span class="line"></span><br><span class="line"><span class="comment"># top 查看</span></span><br><span class="line">(pprof) top</span><br><span class="line">Showing nodes accounting <span class="keyword">for</span> 15270ms, 99.09% of 15410ms total</span><br><span class="line">Dropped 40 nodes (cum &lt;= 77.05ms)</span><br><span class="line">Showing top 10 nodes out of 11</span><br><span class="line">      flat  flat%   sum%        cum   cum%</span><br><span class="line">   12310ms 79.88% 79.88%    12780ms 82.93%  github.com/wolfogre/go-pprof-practice/animal/felidae/tiger.(*Tiger).Eat</span><br><span class="line">    1170ms  7.59% 87.48%     1170ms  7.59%  runtime.memmove</span><br><span class="line">     800ms  5.19% 92.67%      800ms  5.19%  runtime.memclrNoHeapPointers</span><br><span class="line">     520ms  3.37% 96.04%     2500ms 16.22%  github.com/wolfogre/go-pprof-practice/animal/muridae/mouse.(*Mouse).Steal</span><br><span class="line">     470ms  3.05% 99.09%      470ms  3.05%  runtime.asyncPreempt</span><br><span class="line">         0     0% 99.09%    12780ms 82.93%  github.com/wolfogre/go-pprof-practice/animal/felidae/tiger.(*Tiger).Live</span><br><span class="line">         0     0% 99.09%     2500ms 16.22%  github.com/wolfogre/go-pprof-practice/animal/muridae/mouse.(*Mouse).Live</span><br><span class="line">         0     0% 99.09%    15310ms 99.35%  main.main</span><br><span class="line">         0     0% 99.09%     1980ms 12.85%  runtime.growslice</span><br><span class="line">         0     0% 99.09%    15310ms 99.35%  runtime.main</span><br><span class="line">         </span><br><span class="line">         </span><br><span class="line">很明显，CPU 占用过高是 github.com/wolfogre/go-pprof-practice/animal/felidae/tiger.(*Tiger).Eat 造成的。   </span><br><span class="line"></span><br><span class="line"><span class="comment"># 输入 list Eat，查看问题具体在代码的哪一个位置：</span></span><br><span class="line"></span><br><span class="line">(pprof) list Eat</span><br><span class="line">Total: 15.41s</span><br><span class="line">ROUTINE ======================== github.com/wolfogre/go-pprof-practice/animal/felidae/tiger.(*Tiger).Eat <span class="keyword">in</span> /Users/liuwei/golang/pkg/mod/github.com/wolfogre/go-pprof-practice@v0.0.0-20190402114113-8ce266a210ee/animal/felidae/tiger/tiger.go</span><br><span class="line">    12.31s     12.78s (flat, cum) 82.93% of Total</span><br><span class="line">         .          .     19:&#125;</span><br><span class="line">         .          .     20:</span><br><span class="line">         .          .     21:func (t *Tiger) <span class="function"><span class="title">Eat</span></span>() &#123;</span><br><span class="line">         .          .     22:   log.Println(t.Name(), <span class="string">"eat"</span>)</span><br><span class="line">         .          .     23:   loop := 10000000000</span><br><span class="line">    12.31s     12.78s     24:   <span class="keyword">for</span> i := 0; i &lt; loop; i++ &#123;</span><br><span class="line">         .          .     25:           // <span class="keyword">do</span> nothing</span><br><span class="line">         .          .     26:   &#125;</span><br><span class="line">         .          .     27:&#125;</span><br><span class="line">         .          .     28:</span><br><span class="line">         .          .     29:func (t *Tiger) <span class="function"><span class="title">Drink</span></span>() &#123;</span><br><span class="line">         </span><br><span class="line"></span><br><span class="line">可以看到，是第 24 行那个一百亿次空循环占用了大量 CPU 时间，至此，问题定位成功！</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 输入 web, 会在浏览器弹出一个图</span></span><br><span class="line">图中，tiger.(*Tiger).Eat 函数的框特别大，箭头特别粗，pprof 生怕你不知道这个函数的 CPU 占用很高。</span><br></pre></td></tr></table></figure>
+
+<p><img src="/p/771638a0/1.png" alt="1"></p>
+<h3 id="3-2-排查内存"><a href="#3-2-排查内存" class="headerlink" title="3.2 排查内存"></a>3.2 排查内存</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 把死循环代码注释, 接着测试, 看内存使用, 注意是 heap</span></span><br><span class="line">go tool pprof http://localhost:6060/debug/pprof/heap</span><br><span class="line"></span><br><span class="line"><span class="comment"># 看 top</span></span><br><span class="line">(pprof) top</span><br><span class="line">Showing nodes accounting <span class="keyword">for</span> 768MB, 100% of 768MB total</span><br><span class="line">      flat  flat%   sum%        cum   cum%</span><br><span class="line">     768MB   100%   100%      768MB   100%  github.com/wolfogre/go-pprof-practice/animal/muridae/mouse.(*Mouse).Steal</span><br><span class="line">         0     0%   100%      768MB   100%  github.com/wolfogre/go-pprof-practice/animal/muridae/mouse.(*Mouse).Live</span><br><span class="line">         0     0%   100%      768MB   100%  main.main</span><br><span class="line">         0     0%   100%      768MB   100%  runtime.main</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看占用最多的这个函数</span></span><br><span class="line">(pprof) list Steal</span><br><span class="line">Total: 768MB</span><br><span class="line">ROUTINE ======================== github.com/wolfogre/go-pprof-practice/animal/muridae/mouse.(*Mouse).Steal <span class="keyword">in</span> /Users/liuwei/golang/pkg/mod/github.com/wolfogre/go-pprof-practice@v0.0.0-20190402114113-8ce266a210ee/animal/muridae/mouse/mouse.go</span><br><span class="line">     768MB      768MB (flat, cum)   100% of Total</span><br><span class="line">         .          .     45:</span><br><span class="line">         .          .     46:func (m *Mouse) <span class="function"><span class="title">Steal</span></span>() &#123;</span><br><span class="line">         .          .     47:   log.Println(m.Name(), <span class="string">"steal"</span>)</span><br><span class="line">         .          .     48:   max := constant.Gi</span><br><span class="line">         .          .     49:   <span class="keyword">for</span> len(m.buffer) * constant.Mi &lt; max &#123;</span><br><span class="line">     768MB      768MB     50:           m.buffer = append(m.buffer, [constant.Mi]byte&#123;&#125;)</span><br><span class="line">         .          .     51:   &#125;</span><br><span class="line">         .          .     52:&#125;</span><br><span class="line">         </span><br><span class="line">可以看到，这里有个循环会一直向 m.buffer 里追加长度为 1 MiB 的数组，直到总容量到达 1 GiB 为止，且一直不释放这些内存，这就难怪会有这么高的内存占用了。</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输入 web, 再次在浏览器感受一下, 也可以输入 png</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/p/771638a0/2.png" alt="1"></p>
+<h3 id="3-3-排查-GC"><a href="#3-3-排查-GC" class="headerlink" title="3.3 排查 GC"></a>3.3 排查 GC</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 频繁的 GC 对 golang 程序性能的影响也是非常严重的。虽然现在这个程序内存使用量并不高，但这会不会是频繁 GC 之后的假象呢？</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 为了获取程序运行过程中 GC 日志，我们需要先退出炸弹程序，再在重新启动前赋予一个环境变量，同时为了避免其他日志的干扰，使用 grep 筛选出 GC 日志查看：</span></span><br><span class="line">GODEBUG=gctrace=1 ./go-pprof-practice | grep gc</span><br><span class="line"></span><br><span class="line">gc 1 @0.003s 2%: 0.004+0.44+0.004 ms clock, 0.004+0.21/0.11/0+0.004 ms cpu, 16-&gt;16-&gt;0 MB, 17 MB goal, 1 P</span><br><span class="line">gc 2 @6.201s 0%: 0.041+2.9+0.004 ms clock, 0.041+0.31/0/0+0.004 ms cpu, 7-&gt;7-&gt;6 MB, 8 MB goal, 1 P</span><br><span class="line">gc 3 @6.204s 0%: 0.026+6.2+0.003 ms clock, 0.026+0.23/0/0+0.003 ms cpu, 14-&gt;14-&gt;12 MB, 15 MB goal, 1 P</span><br><span class="line">gc 4 @6.211s 0%: 0.038+10+0.003 ms clock, 0.038+0.23/0/0+0.003 ms cpu, 28-&gt;28-&gt;24 MB, 29 MB goal, 1 P</span><br><span class="line">gc 5 @6.223s 0%: 0.023+26+0.002 ms clock, 0.023+0/0.23/0+0.002 ms cpu, 56-&gt;56-&gt;48 MB, 57 MB goal, 1 P</span><br><span class="line">gc 6 @6.251s 0%: 0.038+47+0.003 ms clock, 0.038+0/0.25/0+0.003 ms cpu, 112-&gt;112-&gt;96 MB, 113 MB goal, 1 P</span><br><span class="line">gc 7 @6.301s 0%: 0.051+93+0.003 ms clock, 0.051+0/0.24/0+0.003 ms cpu, 224-&gt;224-&gt;192 MB, 225 MB goal, 1 P</span><br><span class="line">gc 8 @6.407s 0%: 0.023+192+0.004 ms clock, 0.023+0/0.28/0+0.004 ms cpu, 448-&gt;448-&gt;384 MB, 449 MB goal, 1 P</span><br><span class="line">gc 9 @6.631s 0%: 0.053+397+0.003 ms clock, 0.053+0/0.25/0+0.003 ms cpu, 896-&gt;896-&gt;768 MB, 897 MB goal, 1 P</span><br><span class="line">gc 10 @7.080s 0%: 0.052+1205+0.003 ms clock, 0.052+0/0.24/0+0.003 ms cpu, 1792-&gt;1792-&gt;1536 MB, 1793 MB goal, 1 P</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">可以看到，GC 差不多每 3 秒就发生一次，且每次 GC 都会从 16MB 清理到几乎 0MB，说明程序在不断的申请内存再释放，这是高性能 golang 程序所不允许的。</span><br><span class="line"></span><br><span class="line">所以接下来使用 pprof 排查时，我们在乎的不是什么地方在占用大量内存，而是什么地方在不停地申请内存，这两者是有区别的。</span><br><span class="line"></span><br><span class="line"><span class="comment">#由于内存的申请与释放频度是需要一段时间来统计的，所有我们保证炸弹程序已经运行了几分钟之后，再运行命令：</span></span><br><span class="line">go tool pprof http://localhost:6060/debug/pprof/allocs</span><br><span class="line"></span><br><span class="line"><span class="comment"># top</span></span><br><span class="line">(pprof) top</span><br><span class="line">Showing nodes accounting <span class="keyword">for</span> 16MB, 100% of 16MB total</span><br><span class="line">      flat  flat%   sum%        cum   cum%</span><br><span class="line">      16MB   100%   100%       16MB   100%  github.com/wolfogre/go-pprof-practice/animal/canidae/dog.(*Dog).Run (inline)</span><br><span class="line">         0     0%   100%       16MB   100%  github.com/wolfogre/go-pprof-practice/animal/canidae/dog.(*Dog).Live</span><br><span class="line">         0     0%   100%       16MB   100%  main.main</span><br><span class="line">         0     0%   100%       16MB   100%  runtime.main</span><br><span class="line">         </span><br><span class="line"><span class="comment"># list Run         </span></span><br><span class="line">(pprof) list Run</span><br><span class="line">Total: 16MB</span><br><span class="line">ROUTINE ======================== github.com/wolfogre/go-pprof-practice/animal/canidae/dog.(*Dog).Run <span class="keyword">in</span> /Users/liuwei/golang/pkg/mod/github.com/wolfogre/go-pprof-practice@v0.0.0-20190402114113-8ce266a210ee/animal/canidae/dog/dog.go</span><br><span class="line">      16MB       16MB (flat, cum)   100% of Total</span><br><span class="line">         .          .     38:   log.Println(d.Name(), <span class="string">"pee"</span>)</span><br><span class="line">         .          .     39:&#125;</span><br><span class="line">         .          .     40:</span><br><span class="line">         .          .     41:func (d *Dog) <span class="function"><span class="title">Run</span></span>() &#123;</span><br><span class="line">         .          .     42:   log.Println(d.Name(), <span class="string">"run"</span>)</span><br><span class="line">      16MB       16MB     43:   _ = make([]byte, 16 * constant.Mi)</span><br><span class="line">         .          .     44:&#125;</span><br><span class="line">         .          .     45:</span><br><span class="line">         .          .     46:func (d *Dog) <span class="function"><span class="title">Howl</span></span>() &#123;</span><br><span class="line">         .          .     47:   log.Println(d.Name(), <span class="string">"howl"</span>)</span><br><span class="line">         .          .     48:&#125;</span><br><span class="line">         </span><br><span class="line">         </span><br><span class="line">可以看到 github.com/wolfogre/go-pprof-practice/animal/canidae/dog.(*Dog).Run 会进行无意义的内存申请，而这个函数又会被频繁调用，这才导致程序不停地进行 GC</span><br></pre></td></tr></table></figure>
+
+<p><img src="/p/771638a0/3.png" alt="1"></p>
+<h3 id="3-4-排查协程泄露"><a href="#3-4-排查协程泄露" class="headerlink" title="3.4 排查协程泄露"></a>3.4 排查协程泄露</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">go tool pprof http://localhost:6060/debug/pprof/goroutine</span><br><span class="line"></span><br><span class="line"><span class="comment"># top 查看</span></span><br><span class="line">(pprof) top</span><br><span class="line">Showing nodes accounting <span class="keyword">for</span> 14, 100% of 14 total</span><br><span class="line">Showing top 10 nodes out of 27</span><br><span class="line">      flat  flat%   sum%        cum   cum%</span><br><span class="line">        12 85.71% 85.71%         12 85.71%  runtime.gopark</span><br><span class="line">         1  7.14% 92.86%          1  7.14%  net/http.(*connReader).backgroundRead</span><br><span class="line">         1  7.14%   100%          1  7.14%  runtime/pprof.writeRuntimeProfile</span><br><span class="line">         0     0%   100%         10 71.43%  github.com/wolfogre/go-pprof-practice/animal/canidae/wolf.(*Wolf).Drink.func1</span><br><span class="line">         0     0%   100%          1  7.14%  internal/poll.(*FD).Accept</span><br><span class="line">         0     0%   100%          1  7.14%  internal/poll.(*pollDesc).<span class="built_in">wait</span></span><br><span class="line">         0     0%   100%          1  7.14%  internal/poll.(*pollDesc).waitRead (inline)</span><br><span class="line">         0     0%   100%          1  7.14%  internal/poll.runtime_pollWait</span><br><span class="line">         0     0%   100%          1  7.14%  main.main</span><br><span class="line">         0     0%   100%          1  7.14%  main.main.func1</span><br><span class="line"></span><br><span class="line"><span class="comment"># list 函数</span></span><br><span class="line">(pprof) list Drink</span><br><span class="line">Total: 14</span><br><span class="line">ROUTINE ======================== github.com/wolfogre/go-pprof-practice/animal/canidae/wolf.(*Wolf).Drink.func1 <span class="keyword">in</span> /Users/liuwei/golang/pkg/mod/github.com/wolfogre/go-pprof-practice@v0.0.0-20190402114113-8ce266a210ee/animal/canidae/wolf/wolf.go</span><br><span class="line">         0         10 (flat, cum) 71.43% of Total</span><br><span class="line">         .          .     29:</span><br><span class="line">         .          .     30:func (w *Wolf) <span class="function"><span class="title">Drink</span></span>() &#123;</span><br><span class="line">         .          .     31:   log.Println(w.Name(), <span class="string">"drink"</span>)</span><br><span class="line">         .          .     32:   <span class="keyword">for</span> i := 0; i &lt; 10; i++ &#123;</span><br><span class="line">         .          .     33:           go <span class="function"><span class="title">func</span></span>() &#123;</span><br><span class="line">         .         10     34:                   time.Sleep(30 * time.Second)</span><br><span class="line">         .          .     35:           &#125;()</span><br><span class="line">         .          .     36:   &#125;</span><br><span class="line">         .          .     37:&#125;</span><br><span class="line">         .          .     38:</span><br><span class="line">         .          .     39:func (w *Wolf) <span class="function"><span class="title">Shit</span></span>() &#123;</span><br><span class="line">         </span><br><span class="line">可以看到，Drink 函数每次回释放 10 个协程出去，每个协程会睡眠 30 秒再退出，而 Drink 函数又会被反复调用，这才导致大量协程泄露，试想一下，如果释放出的协程会永久阻塞，那么泄露的协程数便会持续增加，内存的占用也会持续增加，那迟早是会被操作系统杀死的。</span><br></pre></td></tr></table></figure>
+
+<p><img src="/p/771638a0/4.png" alt="1"></p>
+<h3 id="3-5-排查锁的争用"><a href="#3-5-排查锁的争用" class="headerlink" title="3.5 排查锁的争用"></a>3.5 排查锁的争用</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">go tool pprof http://localhost:6060/debug/pprof/mutex</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># top 查看</span></span><br><span class="line">(pprof) top</span><br><span class="line">Showing nodes accounting <span class="keyword">for</span> 1s, 100% of 1s total</span><br><span class="line">      flat  flat%   sum%        cum   cum%</span><br><span class="line">        1s   100%   100%         1s   100%  sync.(*Mutex).Unlock (inline)</span><br><span class="line">         0     0%   100%         1s   100%  github.com/wolfogre/go-pprof-practice/animal/canidae/wolf.(*Wolf).Howl.func1</span><br><span class="line">         </span><br><span class="line"><span class="comment"># list 函数       </span></span><br><span class="line">(pprof) list Howl</span><br><span class="line">Total: 1s</span><br><span class="line">ROUTINE ======================== github.com/wolfogre/go-pprof-practice/animal/canidae/wolf.(*Wolf).Howl.func1 <span class="keyword">in</span> /Users/liuwei/golang/pkg/mod/github.com/wolfogre/go-pprof-practice@v0.0.0-20190402114113-8ce266a210ee/animal/canidae/wolf/wolf.go</span><br><span class="line">         0         1s (flat, cum)   100% of Total</span><br><span class="line">         .          .     53:</span><br><span class="line">         .          .     54:   m := &amp;sync.Mutex&#123;&#125;</span><br><span class="line">         .          .     55:   m.Lock()</span><br><span class="line">         .          .     56:   go <span class="function"><span class="title">func</span></span>() &#123;</span><br><span class="line">         .          .     57:           time.Sleep(time.Second)</span><br><span class="line">         .         1s     58:           m.Unlock()</span><br><span class="line">         .          .     59:   &#125;()</span><br><span class="line">         .          .     60:   m.Lock()</span><br><span class="line">         .          .     61:&#125;</span><br><span class="line">         </span><br><span class="line">这个锁由主协程 Lock，并启动子协程去 Unlock，主协程会阻塞在第二次 Lock 这儿等待子协程完成任务，但由于子协程足足睡眠了一秒，导致主协程等待这个锁释放足足等了一秒钟。</span><br></pre></td></tr></table></figure>
+
+<p><img src="/p/771638a0/5.png" alt="1"></p>
+<h3 id="3-6-排查阻塞操作"><a href="#3-6-排查阻塞操作" class="headerlink" title="3.6 排查阻塞操作"></a>3.6 排查阻塞操作</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">go tool pprof http://localhost:6060/debug/pprof/block</span><br><span class="line"></span><br><span class="line"><span class="comment"># top list web 大法</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="4-火焰图"><a href="#4-火焰图" class="headerlink" title="4. 火焰图"></a>4. 火焰图</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在上面例子中</span></span><br><span class="line">go tool pprof -seconds 10 http://127.0.0.1:6060/debug/pprof/profile</span><br><span class="line"></span><br><span class="line">go tool pprof -http=:8081 ~/pprof/pprof.samples.cpu.002.pb.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可以在页面中 view-&gt;flamegraph 查看火焰图</span></span><br><span class="line">http://localhost:8081/ui/flamegraph</span><br></pre></td></tr></table></figure>
+
+<p><img src="/p/771638a0/6.png" alt="1"></p>
+<h1 id="5-参考资料"><a href="#5-参考资料" class="headerlink" title="5. 参考资料"></a>5. 参考资料</h1><ul>
+<li><a href="https://golang.org/pkg/net/http/pprof/" target="_blank" rel="noopener">https://golang.org/pkg/net/http/pprof/</a></li>
+<li><a href="https://blog.wolfogre.com/posts/go-ppof-practice/" target="_blank" rel="noopener">https://blog.wolfogre.com/posts/go-ppof-practice/</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作, 一个耿直的笑脸~</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechatpay.jpg" alt="Levon 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="Levon 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/golang/" rel="tag"># golang</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/p/6d39ef4c.html" rel="next" title="tcp粘包问题">
+                  <i class="fa fa-chevron-left"></i> tcp粘包问题
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/p/67723314.html" rel="prev" title="shell读取文件内容遇到的坑">
+                  shell读取文件内容遇到的坑 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-quick-start"><span class="nav-number">1.</span> <span class="nav-text">1. quick start</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-命令查看"><span class="nav-number">2.</span> <span class="nav-text">2. 命令查看</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-实践"><span class="nav-number">3.</span> <span class="nav-text">3. 实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-排查CPU"><span class="nav-number">3.0.1.</span> <span class="nav-text">3.1 排查CPU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-排查内存"><span class="nav-number">3.0.2.</span> <span class="nav-text">3.2 排查内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-排查-GC"><span class="nav-number">3.0.3.</span> <span class="nav-text">3.3 排查 GC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-排查协程泄露"><span class="nav-number">3.0.4.</span> <span class="nav-text">3.4 排查协程泄露</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-排查锁的争用"><span class="nav-number">3.0.5.</span> <span class="nav-text">3.5 排查锁的争用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-排查阻塞操作"><span class="nav-number">3.0.6.</span> <span class="nav-text">3.6 排查阻塞操作</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-火焰图"><span class="nav-number">4.</span> <span class="nav-text">4. 火焰图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-参考资料"><span class="nav-number">5.</span> <span class="nav-text">5. 参考资料</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="Levon">
+  <p class="site-author-name" itemprop="name">Levon</p>
+  <div class="site-description" itemprop="description">Never Give Up</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">163</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">94</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/unix2dos" title="GitHub &rarr; https://github.com/unix2dos" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:levonfly@gmail.com" title="E-Mail &rarr; mailto:levonfly@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://twitter.com/levonfly" title="Twitter &rarr; https://twitter.com/levonfly" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://weibo.com/l6241425" title="Weibo &rarr; https://weibo.com/l6241425" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+    
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Levon</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">646k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">9:47</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://levonfly.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function disqus_config() {
+    this.page.url = "https://unix2dos.github.io/p/771638a0.html";
+    this.page.identifier = "p/771638a0.html";
+    this.page.title = 'golang的pprof使用';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://levonfly.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    window.addEventListener('load', loadComments, false);
+  
+</script>
+
+</body>
+</html>

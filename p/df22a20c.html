@@ -63,7 +63,7 @@
 <meta property="og:site_name" content="Levon&#39;s Blog">
 <meta property="og:description" content="我们可能同时在进行2个项目，而2个不同的项目所使用的node版本又是不一样的，或者是要用更新的node版本进行试验和学习。这种情况下，对于维护多个版本的node将会是一件非常麻烦的事情，而nvm就是为解决这个问题而产生的，他可以方便的在同一台设备上进行多个node版本之间切换，而这个正是nvm的价值所在。 1. nodejs，npm，nvm之间的区别 nodejs：在项目开发时的所需要的代码库">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-27T15:36:51.111Z">
+<meta property="og:updated_time" content="2020-07-22T12:30:39.398Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="node版本管理nvm的安装和使用">
 <meta name="twitter:description" content="我们可能同时在进行2个项目，而2个不同的项目所使用的node版本又是不一样的，或者是要用更新的node版本进行试验和学习。这种情况下，对于维护多个版本的node将会是一件非常麻烦的事情，而nvm就是为解决这个问题而产生的，他可以方便的在同一台设备上进行多个node版本之间切换，而这个正是nvm的价值所在。 1. nodejs，npm，nvm之间的区别 nodejs：在项目开发时的所需要的代码库">
@@ -286,7 +286,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-09-27 23:36:51" itemprop="dateModified" datetime="2019-09-27T23:36:51+08:00">2019-09-27</time>
+                <time title="修改时间：2020-07-22 20:30:39" itemprop="dateModified" datetime="2020-07-22T20:30:39+08:00">2020-07-22</time>
               </span>
             
           
@@ -334,7 +334,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span>2.3k</span>
+              <span>2.2k</span>
             </span>
           
             <span class="post-meta-item" title="阅读时长">
@@ -372,7 +372,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">npm ls -g --depth=0 # 查看已经安装在全局的模块，以便删除这些全局模块后再按照不同的 node 版本重新进行全局安装</span><br><span class="line"></span><br><span class="line">sudo rm -rf /usr/local/lib/node_modules # 删除全局 node_modules 目录</span><br><span class="line"></span><br><span class="line">sudo rm -rf ~/.npm/ # 删除模块缓存目录</span><br><span class="line"></span><br><span class="line">sudo rm /usr/local/bin/node # 删除 node</span><br><span class="line"></span><br><span class="line">cd  /usr/local/bin &amp;&amp; ls -l | grep "../lib/node_modules/" | awk '&#123;print $9&#125;'| xargs rm # 删除全局 node 模块注册的软链</span><br></pre></td></tr></table></figure>
 
 <p>安装: <a href="https://github.com/nvm-sh/nvm" target="_blank" rel="noopener">https://github.com/nvm-sh/nvm</a></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash(zsh)# 注意后面的bash环境</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash</span><br></pre></td></tr></table></figure>
 
 <p>重新打开一个终端输入 <code>nvm</code>即可</p>
 <h3 id="3-nvm常用指令"><a href="#3-nvm常用指令" class="headerlink" title="3. nvm常用指令"></a>3. nvm常用指令</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">nvm version #查看当前的版本</span><br><span class="line"></span><br><span class="line">nvm ls-remote #列出所有可安装的版本</span><br><span class="line"></span><br><span class="line">nvm install &lt;version&gt; #安装指定的版本，如nvm install v8.14.0</span><br><span class="line"></span><br><span class="line">nvm uninstall &lt;version&gt; #卸载指定的版本</span><br><span class="line"></span><br><span class="line">nvm ls #列出所有已经安装的版本</span><br><span class="line"></span><br><span class="line">nvm use &lt;version&gt; #切换使用指定的版本</span><br><span class="line"></span><br><span class="line">nvm current #显示当前使用的版本</span><br><span class="line"></span><br><span class="line">nvm alias default &lt;version&gt; #设置默认node版本</span><br></pre></td></tr></table></figure>
@@ -539,7 +539,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">161</span>
+          <span class="site-state-item-count">163</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -642,12 +642,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">632k</span>
+    <span title="站点总字数">646k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">9:34</span>
+    <span title="站点阅读时长">9:47</span>
 </div>
 
         
