@@ -48,7 +48,7 @@ cd  /usr/local/bin && ls -l | grep "../lib/node_modules/" | awk '{print $9}'| xa
 安装: https://github.com/nvm-sh/nvm
 
 ```shell
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash(zsh)# 注意后面的bash环境
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
 ```
 
 重新打开一个终端输入 `nvm`即可

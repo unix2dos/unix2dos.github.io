@@ -1,8 +1,12 @@
 ---
-title: "mac的homebrew使用"
-date: 2019-04-07 00:00:00
+title: mac的homebrew使用
 tags:
-- mac
+  - mac
+categories:
+  - 4-mac系统
+  - 软件
+abbrlink: be2ea1c8
+date: 2019-04-07 00:00:00
 ---
 
 Homebrew是一款Mac OS平台下的软件包管理工具，拥有安装、卸载、更新、查看、搜索等很多实用的功能。简单的一条指令，就可以实现包管理，而不用你关心各种依赖和文件路径的情况，十分方便快捷。
