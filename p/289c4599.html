@@ -67,7 +67,7 @@
 <meta property="og:image" content="https://unix2dos.github.io/p/289c4599/2.png">
 <meta property="og:image" content="https://unix2dos.github.io/p/289c4599/3.png">
 <meta property="og:image" content="https://unix2dos.github.io/p/289c4599/4.png">
-<meta property="og:updated_time" content="2020-07-01T04:16:09.383Z">
+<meta property="og:updated_time" content="2020-07-23T03:50:35.907Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="tcp介绍和tcp建立连接过程">
 <meta name="twitter:description" content="1. tcp 介绍和 udp 区别    TCP UDP    数据传输 3报文握手+数据传输+4报文挥手 数据传输   连接方式 单播(一对一) 单播(一对一), 多播(一对多), 广播 (一对全)   应用报文 一系列字节流放到缓存中, 通过滑动窗口策略发送发送方加个 TCP 头部接收方取出字节流,组合送给接收方进程 每个报文添加个UDP首部   首部 最小20字节, 最大60字节 8字节">
@@ -291,7 +291,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-01 12:16:09" itemprop="dateModified" datetime="2020-07-01T12:16:09+08:00">2020-07-01</time>
+                <time title="修改时间：2020-07-23 11:50:35" itemprop="dateModified" datetime="2020-07-23T11:50:35+08:00">2020-07-23</time>
               </span>
             
           
@@ -396,15 +396,19 @@
 <p><img src="/p/289c4599/1.png" alt="1"></p>
 <h1 id="2-tcp连接"><a href="#2-tcp连接" class="headerlink" title="2. tcp连接"></a>2. tcp连接</h1><p><img src="/p/289c4599/2.png" alt="1"></p>
 <p><img src="/p/289c4599/3.png" alt="1"></p>
-<h3 id="2-1-建立连接"><a href="#2-1-建立连接" class="headerlink" title="2.1 建立连接"></a>2.1 建立连接</h3><h5 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h5><ul>
-<li>首先处于 closed 状态</li>
-<li>创建传输控制快</li>
-<li></li>
-<li>发送握手①SYN=1 seq=x  进入<strong>SYN-SENT</strong>(同步已发送状态)</li>
-<li>发送握手③ACK=1 seq=x+1 ack=y+1 进入 <strong>ESTABLISHED</strong>(连接已建立状态)</li>
-<li>开始数据传输</li>
-</ul>
-<h5 id="服务端"><a href="#服务端" class="headerlink" title="服务端"></a>服务端</h5><ul>
+<h3 id="2-1-建立连接"><a href="#2-1-建立连接" class="headerlink" title="2.1 建立连接"></a>2.1 建立连接</h3><h5 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h5><ol>
+<li><p>首先处于 closed 状态</p>
+</li>
+<li><p>创建传输控制快</p>
+</li>
+<li><p>发送握手①SYN=1 seq=x  进入<strong>SYN-SENT</strong>(同步已发送状态)</p>
+</li>
+<li><p>发送握手③ACK=1 seq=x+1 ack=y+1 进入 <strong>ESTABLISHED</strong>(连接已建立状态)</p>
+</li>
+<li><p>开始数据传输</p>
+</li>
+</ol>
+<h5 id="服务端"><a href="#服务端" class="headerlink" title="服务端"></a>服务端</h5><ol>
 <li><p>首先处于 closed 状态</p>
 </li>
 <li><p>创建传输控制快</p>
@@ -417,28 +421,37 @@
 </li>
 <li><p>listen 监听</p>
 </li>
-<li></li>
 <li><p>发送握手② SYN=1 ACK=1 seq=y ack=x+1  进入<strong>SYN-REVD</strong>(同步已接收状态)</p>
 </li>
 <li><p>进入<strong>ESTABLISHED</strong>(连接已建立状态)</p>
 </li>
 <li><p>开始数据传输</p>
 </li>
-</ul>
-<h3 id="2-2-释放连接"><a href="#2-2-释放连接" class="headerlink" title="2.2 释放连接"></a>2.2 释放连接</h3><h5 id="主动端-可以是客户端-也可以是服务端"><a href="#主动端-可以是客户端-也可以是服务端" class="headerlink" title="主动端(可以是客户端,也可以是服务端)"></a>主动端(可以是客户端,也可以是服务端)</h5><ul>
-<li>发送挥手① FIN=1 ACK=1 seq=u  ack=v 进入 <strong>FIN_WAIT_1</strong>(终止等待1状态)</li>
-<li>收到挥手②进入 <strong>FIN_WAIT_2</strong>(终止等待2状态)</li>
-<li>接受数据</li>
-<li>发送挥手④ ACK=1 seq=u+1 ack=w+1 进入 <strong>TIME_WAIT</strong>(时间等待状态)</li>
-<li>经过2MSL后, 进入 <strong>CLOSED</strong>(关闭状态)</li>
-</ul>
-<h5 id="被动端-可以是客户端-也可以是服务端"><a href="#被动端-可以是客户端-也可以是服务端" class="headerlink" title="被动端(可以是客户端,也可以是服务端)"></a>被动端(可以是客户端,也可以是服务端)</h5><ul>
-<li>发送挥手② ACK=1 seq=v ack=u+1 并进入<strong>CLOSE_WAIT</strong>(关闭等待状态)</li>
-<li>通知应用进程断开连接, 客户端到服务器方向连接关闭, 属于半关闭状态</li>
-<li>发送未发完的数据</li>
-<li>发送挥手③ FIN=1 ACK=1 seq=w ack=u+1 进入 <strong>LAST-ACK</strong>(最后确认状态)</li>
-<li>收到挥手④后进入 <strong>CLOSED</strong>(关闭状态)</li>
-</ul>
+</ol>
+<h3 id="2-2-释放连接"><a href="#2-2-释放连接" class="headerlink" title="2.2 释放连接"></a>2.2 释放连接</h3><h5 id="主动端-可以是客户端-也可以是服务端"><a href="#主动端-可以是客户端-也可以是服务端" class="headerlink" title="主动端(可以是客户端,也可以是服务端)"></a>主动端(可以是客户端,也可以是服务端)</h5><ol>
+<li><p>发送挥手① FIN=1 ACK=1 seq=u  ack=v 进入 <strong>FIN_WAIT_1</strong>(终止等待1状态)</p>
+</li>
+<li><p>收到挥手②进入 <strong>FIN_WAIT_2</strong>(终止等待2状态)</p>
+</li>
+<li><p>接受数据</p>
+</li>
+<li><p>发送挥手④ ACK=1 seq=u+1 ack=w+1 进入 <strong>TIME_WAIT</strong>(时间等待状态)</p>
+</li>
+<li><p>经过2MSL后, 进入 <strong>CLOSED</strong>(关闭状态)</p>
+</li>
+</ol>
+<h5 id="被动端-可以是客户端-也可以是服务端"><a href="#被动端-可以是客户端-也可以是服务端" class="headerlink" title="被动端(可以是客户端,也可以是服务端)"></a>被动端(可以是客户端,也可以是服务端)</h5><ol>
+<li><p>发送挥手② ACK=1 seq=v ack=u+1 并进入<strong>CLOSE_WAIT</strong>(关闭等待状态)</p>
+</li>
+<li><p>通知应用进程断开连接, 客户端到服务器方向连接关闭, 属于半关闭状态</p>
+</li>
+<li><p>发送未发完的数据</p>
+</li>
+<li><p>发送挥手③ FIN=1 ACK=1 seq=w ack=u+1 进入 <strong>LAST-ACK</strong>(最后确认状态)</p>
+</li>
+<li><p>收到挥手④后进入 <strong>CLOSED</strong>(关闭状态)</p>
+</li>
+</ol>
 <h1 id="3-tcp-连接问题"><a href="#3-tcp-连接问题" class="headerlink" title="3. tcp 连接问题"></a>3. tcp 连接问题</h1><h3 id="3-1-为什么不用两次握手"><a href="#3-1-为什么不用两次握手" class="headerlink" title="3.1 为什么不用两次握手"></a>3.1 为什么不用两次握手</h3><p>假如第一个连接发送失败, 重传后过了好久好久, 到达了。 </p>
 <p>服务器对失败后的连接又建立了一次请求, 但客户端可能处于关闭了都无法理会, 服务器就无法释放这个连接。</p>
 <h3 id="3-2-为什么进入-TIME-WAIT-而不是直接关闭"><a href="#3-2-为什么进入-TIME-WAIT-而不是直接关闭" class="headerlink" title="3.2 为什么进入 TIME_WAIT 而不是直接关闭"></a>3.2 为什么进入 TIME_WAIT 而不是直接关闭</h3><p>因为客户端发送挥手④的时候，有可能失败。</p>
@@ -748,12 +761,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">646k</span>
+    <span title="站点总字数">648k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">9:47</span>
+    <span title="站点阅读时长">9:49</span>
 </div>
 
         
