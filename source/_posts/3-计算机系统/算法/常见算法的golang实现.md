@@ -16,6 +16,23 @@ date: 2019-01-07 00:00:00
 
 + https://leetcode-cn.com/problems/reverse-linked-list/
 
+
++ 递归版本
+
+```go
+func reverseList(head *ListNode) *ListNode {
+    if head == nil || head.Next == nil{
+        return head
+    }
+    p := reverseList(head.Next)
+    head.Next.Next = head 
+    head.Next = nil
+    return p
+}
+```
+
+<!-- more -->
+
 + 循环版本
 
 ```go
@@ -32,24 +49,6 @@ func reverseList(head *ListNode) *ListNode {
     return prev
 }
 ```
-<!-- more -->
-
-+ 递归版本
-
-```go
-func reverseList(head *ListNode) *ListNode {
-    if head == nil || head.Next == nil{
-        return head
-    }
-    // 第一步, 第二步, 第三步 疯狂递归
-    p := reverseList(head.Next)
-  
-  // 因为最后一个直接返回, 现在 head 是 倒数第二, p 是倒数第一
-    head.Next.Next = head //增加一个指向(原地翻转)
-    head.Next = nil// 删除一个指向
-    return p//p一直是最后一个, 但是由于递归完毕, 就变成第一个了
-}
-```
 
 
 
@@ -63,17 +62,10 @@ func reverseList(head *ListNode) *ListNode {
 
   key 存储节点的引用, 环的入口就是第一个重复的
 
-  + 时间复杂度 O(n)
-
-  + 空间复杂度 O(n)
-
 + 快慢指针
 
   头结点和相遇节点离入口点距离一样
 
-  + 时间复杂度 O(n)
-  
-  + 空间复杂度 O(1), 只使用了慢指针和快指针两个结点，所以空间复杂度为 O(1)*O*(1)。
 
 ```go
 func hasCycle(head *ListNode) bool {
@@ -120,6 +112,29 @@ func detectCycle(head *ListNode) *ListNode {
 ```
 
 
+
+### 1.3 两两交换链表中的节点
+
++ https://leetcode-cn.com/problems/swap-nodes-in-pairs/
+
+  ```go
+  func swapPairs(head *ListNode) *ListNode {
+      if head == nil || head.Next == nil{
+          return head
+      }
+  
+      //这一层3个节点, head, next, swapPairs()
+      //换成 next, head, swapPairs()
+  
+      next := head.Next
+      head.Next = swapPairs(next.Next)
+      next.Next = head
+  
+      return next
+  }
+  ```
+
+  
 
 # 2. 排序
 
@@ -179,7 +194,89 @@ func detectCycle(head *ListNode) *ListNode {
 
 + 一直大顶堆, 删除顶部, 再大顶堆
 
-# 3. 其他TODO
+
+
+# 3. 树
+
+### 3.1 二叉树最大深度
+
++ https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/
+
+  ```go
+  func maxDepth(root *TreeNode) int {
+      if root == nil{
+          return 0
+      }
+      left := maxDepth(root.Left)
+      right := maxDepth(root.Right)
+      return max(left,right)+1
+  }
+  
+  func max(a,b int) int {
+      if a > b {
+          return a
+      }
+      return b
+  }
+  ```
+
+  
+
+### 3.2 平衡二叉树
+
++ https://leetcode-cn.com/problems/balanced-binary-tree/
+
+```go
+func isBalanced(root *TreeNode) bool {
+    if root == nil{
+        return true
+    }
+    if !isBalanced(root.Left) || !isBalanced(root.Right){
+        return false
+    }
+    if abs(maxDepth(root.Left)-maxDepth(root.Right)) > 1 {
+        return false
+    }
+    return true
+}
+
+func maxDepth(root *TreeNode) int {
+    if root == nil {
+        return 0
+    }
+    return max(maxDepth(root.Left),maxDepth(root.Right)) + 1
+}
+
+func max(a,b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+
+func abs(a int) int {
+    if a < 0 {
+        return -a
+    }
+    return a 
+}
+```
+
+
+
+# 9. 脑力风暴
+
+### 9.1 递归
+
++ 第一步考虑出口
+
++ 第二步, 为了目的, 我应该完成怎么样的返回值
+
++ 第三步, 建议考虑倒数第二层, 只考虑当前层的逻辑
+
+  
+
+# 10. 其他TODO
 
 二分查找
 
