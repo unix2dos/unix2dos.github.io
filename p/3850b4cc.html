@@ -55,18 +55,18 @@
   };
 </script>
 
-  <meta name="description" content="1. 链表1.1 翻转链表 https://leetcode-cn.com/problems/reverse-linked-list/  循环版本   123456789101112func reverseList(head *ListNode) *ListNode &amp;#123;    var prev,curr *ListNode        curr = head    for curr !">
+  <meta name="description" content="1. 链表1.1 翻转链表 https://leetcode-cn.com/problems/reverse-linked-list/   递归版本  123456789func reverseList(head *ListNode) *ListNode &amp;#123;    if head == nil || head.Next == nil&amp;#123;        return head">
 <meta name="keywords" content="golang,算法">
 <meta property="og:type" content="article">
 <meta property="og:title" content="常见算法的golang实现">
 <meta property="og:url" content="https://unix2dos.github.io/p/3850b4cc.html">
 <meta property="og:site_name" content="Levon&#39;s Blog">
-<meta property="og:description" content="1. 链表1.1 翻转链表 https://leetcode-cn.com/problems/reverse-linked-list/  循环版本   123456789101112func reverseList(head *ListNode) *ListNode &amp;#123;    var prev,curr *ListNode        curr = head    for curr !">
+<meta property="og:description" content="1. 链表1.1 翻转链表 https://leetcode-cn.com/problems/reverse-linked-list/   递归版本  123456789func reverseList(head *ListNode) *ListNode &amp;#123;    if head == nil || head.Next == nil&amp;#123;        return head">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-07-19T10:21:57.876Z">
+<meta property="og:updated_time" content="2020-07-23T08:06:44.115Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="常见算法的golang实现">
-<meta name="twitter:description" content="1. 链表1.1 翻转链表 https://leetcode-cn.com/problems/reverse-linked-list/  循环版本   123456789101112func reverseList(head *ListNode) *ListNode &amp;#123;    var prev,curr *ListNode        curr = head    for curr !">
+<meta name="twitter:description" content="1. 链表1.1 翻转链表 https://leetcode-cn.com/problems/reverse-linked-list/   递归版本  123456789func reverseList(head *ListNode) *ListNode &amp;#123;    if head == nil || head.Next == nil&amp;#123;        return head">
   <link rel="canonical" href="https://unix2dos.github.io/p/3850b4cc">
 
 
@@ -286,7 +286,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-19 18:21:57" itemprop="dateModified" datetime="2020-07-19T18:21:57+08:00">2020-07-19</time>
+                <time title="修改时间：2020-07-23 16:06:44" itemprop="dateModified" datetime="2020-07-23T16:06:44+08:00">2020-07-23</time>
               </span>
             
           
@@ -334,7 +334,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span>2.9k</span>
+              <span>4.3k</span>
             </span>
           
             <span class="post-meta-item" title="阅读时长">
@@ -344,7 +344,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span>3 分钟</span>
+              <span>4 分钟</span>
             </span>
           
 
@@ -358,19 +358,19 @@
 
       
         <h1 id="1-链表"><a href="#1-链表" class="headerlink" title="1. 链表"></a>1. 链表</h1><h3 id="1-1-翻转链表"><a href="#1-1-翻转链表" class="headerlink" title="1.1 翻转链表"></a>1.1 翻转链表</h3><ul>
-<li><p><a href="https://leetcode-cn.com/problems/reverse-linked-list/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/reverse-linked-list/</a></p>
-</li>
-<li><p>循环版本</p>
-</li>
+<li><a href="https://leetcode-cn.com/problems/reverse-linked-list/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/reverse-linked-list/</a></li>
 </ul>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">reverseList</span><span class="params">(head *ListNode)</span> *<span class="title">ListNode</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> prev,curr *ListNode</span><br><span class="line">    </span><br><span class="line">    curr = head</span><br><span class="line">    <span class="keyword">for</span> curr != <span class="literal">nil</span> &#123;</span><br><span class="line">        tmp := curr.Next</span><br><span class="line">        curr.Next = prev</span><br><span class="line">        prev = curr</span><br><span class="line">        curr = tmp</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> prev</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>递归版本</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">reverseList</span><span class="params">(head *ListNode)</span> *<span class="title">ListNode</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> head == <span class="literal">nil</span> || head.Next == <span class="literal">nil</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> head</span><br><span class="line">    &#125;</span><br><span class="line">    p := reverseList(head.Next)</span><br><span class="line">    head.Next.Next = head </span><br><span class="line">    head.Next = <span class="literal">nil</span></span><br><span class="line">    <span class="keyword">return</span> p</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <a id="more"></a>
 
 <ul>
-<li>递归版本</li>
+<li>循环版本</li>
 </ul>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">reverseList</span><span class="params">(head *ListNode)</span> *<span class="title">ListNode</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> head == <span class="literal">nil</span> || head.Next == <span class="literal">nil</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> head</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 第一步, 第二步, 第三步 疯狂递归</span></span><br><span class="line">    p := reverseList(head.Next)</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 因为最后一个直接返回, 现在 head 是 倒数第二, p 是倒数第一</span></span><br><span class="line">    head.Next.Next = head <span class="comment">//增加一个指向(原地翻转)</span></span><br><span class="line">    head.Next = <span class="literal">nil</span><span class="comment">// 删除一个指向</span></span><br><span class="line">    <span class="keyword">return</span> p<span class="comment">//p一直是最后一个, 但是由于递归完毕, 就变成第一个了</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">reverseList</span><span class="params">(head *ListNode)</span> *<span class="title">ListNode</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> prev,curr *ListNode</span><br><span class="line">    </span><br><span class="line">    curr = head</span><br><span class="line">    <span class="keyword">for</span> curr != <span class="literal">nil</span> &#123;</span><br><span class="line">        tmp := curr.Next</span><br><span class="line">        curr.Next = prev</span><br><span class="line">        prev = curr</span><br><span class="line">        curr = tmp</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> prev</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h3 id="1-2-链表有环和入口"><a href="#1-2-链表有环和入口" class="headerlink" title="1.2 链表有环和入口"></a>1.2 链表有环和入口</h3><ul>
 <li><p><a href="https://leetcode-cn.com/problems/linked-list-cycle/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/linked-list-cycle/</a></p>
@@ -379,21 +379,9 @@
 </li>
 <li><p>hash 表判断</p>
 <p>key 存储节点的引用, 环的入口就是第一个重复的</p>
-<ul>
-<li><p>时间复杂度 O(n)</p>
-</li>
-<li><p>空间复杂度 O(n)</p>
-</li>
-</ul>
 </li>
 <li><p>快慢指针</p>
 <p>头结点和相遇节点离入口点距离一样</p>
-<ul>
-<li><p>时间复杂度 O(n)</p>
-</li>
-<li><p>空间复杂度 O(1), 只使用了慢指针和快指针两个结点，所以空间复杂度为 O(1)<em>O</em>(1)。</p>
-</li>
-</ul>
 </li>
 </ul>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">hasCycle</span><span class="params">(head *ListNode)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">    slow := head</span><br><span class="line">    fast := head</span><br><span class="line">    <span class="keyword">for</span> (fast != <span class="literal">nil</span> &amp;&amp; fast.Next != <span class="literal">nil</span>)&#123;  <span class="comment">// 一定要判断 fast</span></span><br><span class="line">        slow = slow.Next</span><br><span class="line">        fast = fast.Next.Next</span><br><span class="line">        <span class="keyword">if</span> slow == fast&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -403,6 +391,14 @@
 </ul>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">detectCycle</span><span class="params">(head *ListNode)</span> *<span class="title">ListNode</span></span> &#123;</span><br><span class="line">    slow := head</span><br><span class="line">    fast := head</span><br><span class="line">    cycle := <span class="literal">false</span></span><br><span class="line">    <span class="keyword">for</span> (fast != <span class="literal">nil</span> &amp;&amp; fast.Next != <span class="literal">nil</span>)&#123; <span class="comment">// 一定要判断 fast</span></span><br><span class="line">        slow = slow.Next</span><br><span class="line">        fast = fast.Next.Next</span><br><span class="line">        <span class="keyword">if</span> slow == fast&#123;</span><br><span class="line">            cycle = <span class="literal">true</span></span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> !cycle&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    p1 := head</span><br><span class="line">    p2 := slow <span class="comment">// 或者 fast</span></span><br><span class="line">    <span class="keyword">for</span> p1 != p2 &#123;</span><br><span class="line">        p1 = p1.Next</span><br><span class="line">        p2 = p2.Next</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> p1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<h3 id="1-3-两两交换链表中的节点"><a href="#1-3-两两交换链表中的节点" class="headerlink" title="1.3 两两交换链表中的节点"></a>1.3 两两交换链表中的节点</h3><ul>
+<li><p><a href="https://leetcode-cn.com/problems/swap-nodes-in-pairs/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/swap-nodes-in-pairs/</a></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">swapPairs</span><span class="params">(head *ListNode)</span> *<span class="title">ListNode</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> head == <span class="literal">nil</span> || head.Next == <span class="literal">nil</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> head</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//这一层3个节点, head, next, swapPairs()</span></span><br><span class="line">    <span class="comment">//换成 next, head, swapPairs()</span></span><br><span class="line"></span><br><span class="line">    next := head.Next</span><br><span class="line">    head.Next = swapPairs(next.Next)</span><br><span class="line">    next.Next = head</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> next</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
 <h1 id="2-排序"><a href="#2-排序" class="headerlink" title="2. 排序"></a>2. 排序</h1><h3 id="2-1-快速排序"><a href="#2-1-快速排序" class="headerlink" title="2.1 快速排序"></a>2.1 快速排序</h3><ul>
 <li><p><a href="https://leetcode-cn.com/problems/sort-an-array/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/sort-an-array/</a></p>
 </li>
@@ -417,7 +413,28 @@
 <ul>
 <li>一直大顶堆, 删除顶部, 再大顶堆</li>
 </ul>
-<h1 id="3-其他TODO"><a href="#3-其他TODO" class="headerlink" title="3. 其他TODO"></a>3. 其他TODO</h1><p>二分查找</p>
+<h1 id="3-树"><a href="#3-树" class="headerlink" title="3. 树"></a>3. 树</h1><h3 id="3-1-二叉树最大深度"><a href="#3-1-二叉树最大深度" class="headerlink" title="3.1 二叉树最大深度"></a>3.1 二叉树最大深度</h3><ul>
+<li><p><a href="https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/</a></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">maxDepth</span><span class="params">(root *TreeNode)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> root == <span class="literal">nil</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">    left := maxDepth(root.Left)</span><br><span class="line">    right := maxDepth(root.Right)</span><br><span class="line">    <span class="keyword">return</span> max(left,right)+<span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">max</span><span class="params">(a,b <span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> a &gt; b &#123;</span><br><span class="line">        <span class="keyword">return</span> a</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<h3 id="3-2-平衡二叉树"><a href="#3-2-平衡二叉树" class="headerlink" title="3.2 平衡二叉树"></a>3.2 平衡二叉树</h3><ul>
+<li><a href="https://leetcode-cn.com/problems/balanced-binary-tree/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/balanced-binary-tree/</a></li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">isBalanced</span><span class="params">(root *TreeNode)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> root == <span class="literal">nil</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> !isBalanced(root.Left) || !isBalanced(root.Right)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> abs(maxDepth(root.Left)-maxDepth(root.Right)) &gt; <span class="number">1</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">maxDepth</span><span class="params">(root *TreeNode)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> root == <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> max(maxDepth(root.Left),maxDepth(root.Right)) + <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">max</span><span class="params">(a,b <span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> a &gt; b &#123;</span><br><span class="line">        <span class="keyword">return</span> a</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> b</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">abs</span><span class="params">(a <span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> a &lt; <span class="number">0</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> -a</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> a </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="9-脑力风暴"><a href="#9-脑力风暴" class="headerlink" title="9. 脑力风暴"></a>9. 脑力风暴</h1><h3 id="9-1-递归"><a href="#9-1-递归" class="headerlink" title="9.1 递归"></a>9.1 递归</h3><ul>
+<li><p>第一步考虑出口</p>
+</li>
+<li><p>第二步, 为了目的, 我应该完成怎么样的返回值</p>
+</li>
+<li><p>第三步, 建议考虑倒数第二层, 只考虑当前层的逻辑</p>
+</li>
+</ul>
+<h1 id="10-其他TODO"><a href="#10-其他TODO" class="headerlink" title="10. 其他TODO"></a>10. 其他TODO</h1><p>二分查找</p>
 <p>反转字符串 </p>
 <p>回文字符串</p>
 
@@ -540,7 +557,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-链表"><span class="nav-number">1.</span> <span class="nav-text">1. 链表</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-翻转链表"><span class="nav-number">1.0.1.</span> <span class="nav-text">1.1 翻转链表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-链表有环和入口"><span class="nav-number">1.0.2.</span> <span class="nav-text">1.2 链表有环和入口</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-排序"><span class="nav-number">2.</span> <span class="nav-text">2. 排序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-快速排序"><span class="nav-number">2.0.1.</span> <span class="nav-text">2.1 快速排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-归并排序"><span class="nav-number">2.0.2.</span> <span class="nav-text">2.2 归并排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-堆排序"><span class="nav-number">2.0.3.</span> <span class="nav-text">2.3 堆排序</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-其他TODO"><span class="nav-number">3.</span> <span class="nav-text">3. 其他TODO</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-链表"><span class="nav-number">1.</span> <span class="nav-text">1. 链表</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-翻转链表"><span class="nav-number">1.0.1.</span> <span class="nav-text">1.1 翻转链表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-链表有环和入口"><span class="nav-number">1.0.2.</span> <span class="nav-text">1.2 链表有环和入口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-两两交换链表中的节点"><span class="nav-number">1.0.3.</span> <span class="nav-text">1.3 两两交换链表中的节点</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-排序"><span class="nav-number">2.</span> <span class="nav-text">2. 排序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-快速排序"><span class="nav-number">2.0.1.</span> <span class="nav-text">2.1 快速排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-归并排序"><span class="nav-number">2.0.2.</span> <span class="nav-text">2.2 归并排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-堆排序"><span class="nav-number">2.0.3.</span> <span class="nav-text">2.3 堆排序</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-树"><span class="nav-number">3.</span> <span class="nav-text">3. 树</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-二叉树最大深度"><span class="nav-number">3.0.1.</span> <span class="nav-text">3.1 二叉树最大深度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-平衡二叉树"><span class="nav-number">3.0.2.</span> <span class="nav-text">3.2 平衡二叉树</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#9-脑力风暴"><span class="nav-number">4.</span> <span class="nav-text">9. 脑力风暴</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#9-1-递归"><span class="nav-number">4.0.1.</span> <span class="nav-text">9.1 递归</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#10-其他TODO"><span class="nav-number">5.</span> <span class="nav-text">10. 其他TODO</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -662,12 +679,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">646k</span>
+    <span title="站点总字数">648k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">9:47</span>
+    <span title="站点阅读时长">9:49</span>
 </div>
 
         
