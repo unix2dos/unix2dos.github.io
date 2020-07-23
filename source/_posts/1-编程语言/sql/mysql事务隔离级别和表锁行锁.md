@@ -82,11 +82,11 @@ myisam 只支持表锁, innodb支持表锁和行锁.
 
 假设数据是 1, 4, 7, 10
 
-| 算法                 | 描述                                            | 使用                                                         | 备注         |
-| -------------------- | ----------------------------------------------- | :----------------------------------------------------------- | ------------ |
-| Record Lock记录锁    | 唯一主键, 精准匹配                              | select * from t where id=4 for update; <br/>锁住 id=4        |              |
-| Gap Lock间隙锁       | 完全避过了主键记录, 锁住数据不存在的区间        | select * from where id > 4 and id < 7 for update; <br/>锁住4-7的区间 | 为了不让插入 |
-| Next-key Lock 临键锁 | = Record Lock + Gap Lock,包含记录和不存在的区间 | select * from where id > 5 and id < 9 for update;<br/>锁住4-7, 7-10的区间 |              |
+| 算法                 | 描述                                            | 使用                                                         | 备注                         |
+| -------------------- | ----------------------------------------------- | :----------------------------------------------------------- | ---------------------------- |
+| Record Lock记录锁    | 唯一主键, 精准匹配                              | select * from t where id=4 for update; <br/>锁住 id=4        |                              |
+| Gap Lock间隙锁       | 完全避过了主键记录, 锁住数据不存在的区间        | select * from where id > 4 and id < 7 for update; <br/>锁住 (4-7) 的区间 (不包括4和7) | 为了不让插入                 |
+| Next-key Lock 临键锁 | = Record Lock + Gap Lock,包含记录和不存在的区间 | select * from where id > 5 and id < 9 for update;<br/>锁住 (4-7],  (7-10] 的区间 | 同时包含记录和区间, 两个都锁 |
 
 
 
@@ -113,7 +113,62 @@ myisam 只支持表锁, innodb支持表锁和行锁.
 
 
 
+### 2.4 意向锁
+
+InnoDB支持多粒度锁(multiple granularity locking)，它允许行级锁与表级锁共存，实际应用中，InnoDB使用的是意向锁。
+
++ 首先，意向锁，是一个表级别的锁(table-level locking)；
+
+  
+
++ 意向锁分为：
+
+  + **意向共享锁**(intention shared lock, IS)，它预示着，事务有意向对表中的某些行加共享S锁
+
+  + **意向排它锁**(intention exclusive lock, IX)，它预示着，事务有意向对表中的某些行加排它X锁
+
+  举个例子：
+
+  select … lock in share mode，要设置**IS锁**；
+
+  select … for update，要设置**IX锁**；
+
+  
+
++ 意向锁协议(intention locking protocol)并不复杂：
+
+  + 事务要获得某些行的S锁，必须先获得表的IS锁
+
+  + 事务要获得某些行的X锁，必须先获得表的IX锁
+
+
+
++ 由于意向锁仅仅表明意向，它其实是比较弱的锁，意向锁之间并不相互互斥，而是可以并行，其**兼容互斥表**如下：
+
+  |      | IS   | IX   |
+  | ---- | ---- | ---- |
+  | IS   | 兼容 | 兼容 |
+  | IX   | 兼容 | 兼容 |
+
+  
+
++ 既然意向锁之间都相互兼容，那其意义在哪里呢？它会与共享锁/排它锁互斥，其**兼容互斥表**如下：
+
+  |      | S    | X    |
+  | ---- | ---- | ---- |
+  | IS   | 兼容 | 互斥 |
+  | IX   | 互斥 | 互斥 |
+
+
+
++ 意向锁是有数据引擎自己维护的，用户无法手动操作意向锁，在为数据行加共享 / 排他锁之前，InooDB 会先获取该数据行所在在数据表的对应意向锁。
+
+  意向锁类似一个标志, 能提高加 表锁 的效率
+
+
+
 # 3. 参考资料
 
 + [MySQL事务和锁机制详解](https://www.bilibili.com/video/BV1x54y1979n?from=search&seid=4833652458207423339)
++ https://www.wencst.com/archives/1521
 

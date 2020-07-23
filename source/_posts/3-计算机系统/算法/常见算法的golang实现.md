@@ -58,14 +58,13 @@ func reverseList(head *ListNode) *ListNode {
 
 + https://leetcode-cn.com/problems/linked-list-cycle-ii/
 
-+ hash 表判断
++ hash
 
   key 存储节点的引用, 环的入口就是第一个重复的
 
-+ 快慢指针
++ 快慢指针 
 
   头结点和相遇节点离入口点距离一样
-
 
 ```go
 func hasCycle(head *ListNode) bool {
@@ -261,6 +260,71 @@ func abs(a int) int {
     return a 
 }
 ```
+
+
+
+# 8. 其他
+
+### 8.1 LRU
+
++ https://leetcode-cn.com/problems/lru-cache/solution/
+
+  ```go
+  type LRUCache struct {
+      Capacity int
+      Map map[int]int
+      List []int
+  }
+  
+  
+  func Constructor(capacity int) LRUCache {
+    return LRUCache{
+          Capacity : capacity,
+          Map : make(map[int]int, 0),
+          List : make([]int, 0),
+      }
+  }
+  
+  func DelKey(a []int, key int) []int{
+      for i := 0; i < len(a); i++ {
+  		if a[i] == key {
+              return append(a[:i], a[i+1:]...)
+  		}
+  	}
+  	return a[1:len(a)]
+  }
+  
+  func (this *LRUCache) Get(key int) int {
+      if val, ok := this.Map[key]; ok{
+          this.List = DelKey(this.List, key)
+          this.List = append(this.List, key)
+          return val
+      }
+      return -1
+  }
+  
+  
+  func (this *LRUCache) Put(key int, value int)  {
+  
+      if _, ok := this.Map[key]; ok{
+          this.Map[key] = value
+          this.List = DelKey(this.List, key)
+          this.List = append(this.List, key)
+          return 
+      }
+  
+      if len(this.Map) >= this.Capacity{
+          delKey := this.List[0]      
+          this.List = DelKey(this.List, key)
+          delete(this.Map, delKey)
+      }
+  
+      this.Map[key] = value
+      this.List = append(this.List, key)
+  }
+  ```
+  
+  
 
 
 
