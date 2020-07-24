@@ -455,22 +455,16 @@ Redis服务器将时间事件放在一个链表中，当时间事件执行器运
 
   HMGET teacher 1::name 1::age
 
-
-
 ### 8.3 list 用法
 
 + 实现阻塞消息队列
 
   LPUSH <=> BPROP
 
-
-
 ### 8.4 set 用法
 
 + 无序, 去重
 + 微博关注关系
-
-
 
 ### 8.5 zset 用法
 
@@ -480,7 +474,51 @@ Redis服务器将时间事件放在一个链表中，当时间事件执行器运
 
   默认字典排序
 
-# 9. 参考资料
+
+
+# 9. redis pipeline
+
++ redis的管道命令，允许client将多个请求依次发给服务器，过程中而不需要等待请求的回复，在最后再一并读取结果即可。
+
++ pipeline不保证原子性
+
+```go
+package main
+
+import (
+    "github.com/go-redis/redis"
+    "fmt"
+)
+
+func main() {
+    client := redis.NewClusterClient(&redis.ClusterOptions{
+        Addrs: []string{"192.168.120.110:6379"},
+        ReadOnly: true,
+        RouteRandomly: true,
+    })
+
+    pipe := client.Pipeline()
+    pipe.HGetAll("1")
+    pipe.HGetAll("2")
+    pipe.HGetAll("3")
+    cmders, err := pipe.Exec()
+    if err != nil {
+        fmt.Println("err", err)
+    }
+    for _, cmder := range cmders {
+        cmd := cmder.(*redis.StringStringMapCmd)
+        strMap, err := cmd.Result()
+        if err != nil {
+            fmt.Println("err", err)
+        }
+        fmt.Println("strMap", strMap)
+    }
+}
+```
+
+
+
+# 10. 参考资料
 
 + https://github.com/ZhongFuCheng3y/3y#tvredis
 
