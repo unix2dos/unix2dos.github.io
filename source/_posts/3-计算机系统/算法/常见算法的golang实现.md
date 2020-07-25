@@ -141,8 +141,6 @@ func detectCycle(head *ListNode) *ListNode {
 
 + https://leetcode-cn.com/problems/sort-an-array/
 
-+ 模板
-
   ```go
   func parition(nums []int, left, right int)  int{
   
@@ -177,6 +175,7 @@ func detectCycle(head *ListNode) *ListNode {
       return nums
   }
   ```
+
 
 
 
@@ -263,6 +262,63 @@ func abs(a int) int {
 
 
 
+### 3.3 二叉搜索树最近祖先
+
++ https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-search-tree/
+
+```go
+func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
+	val := root.Val
+    pv := p.Val
+    qv := q.Val
+
+    if pv > val && qv > val {
+        return lowestCommonAncestor(root.Right, p, q)
+    }else if pv < val && qv < val {
+        return lowestCommonAncestor(root.Left, p, q)
+    }else{
+        return root
+    }
+}
+```
+
+### 3.4 二叉树最近祖先
+
+```go
+
+```
+
+
+
+
+
+# 4. 查找
+
+### 4.1 二分查找
+
++ https://leetcode-cn.com/problems/binary-search/
+
+  ```go
+  func search(nums []int, target int) int {
+      left ,right := 0, len(nums)-1
+    
+      for left <= right {
+          mid := left + (right - left) /2
+          if target == nums[mid] {
+              return mid
+          }else if target > nums[mid]{
+              left = mid+1
+          }else{
+              right = mid-1
+          }
+      }
+      
+    	return -1
+  }
+  ```
+
+  
+
 # 8. 其他
 
 ### 8.1 LRU
@@ -324,7 +380,18 @@ func abs(a int) int {
   }
   ```
   
-  
+
+
+
+### 8.2 温度
+
++ https://leetcode-cn.com/problems/daily-temperatures/
+
+```go
+
+```
+
+
 
 
 
