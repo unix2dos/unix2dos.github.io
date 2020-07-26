@@ -15,15 +15,6 @@ Kubernetes中的大部分概念Node、Pod、Replication Controller、Service等�
 
 <!-- more -->
 
-+ Master：集群控制管理节点，所有的命令都经由master处理。
-
-+ Node：是kubernetes集群的工作负载节点。Master为其分配工作，当某个Node宕机时，Master会将其工作负载自动转移到其他节点。
-
-+ Pod：是kubernetes最重要也是最基本的概念。每个Pod都会包含一个 “根容器”，还会包含一个或者多个紧密相连的业务容器。
-
-+ Label：是一个key=value的键值对，其中key与value由用户自己指定。可以附加到各种资源对象上，一个资源对象可以定义任意数量的Label。可以通过LabelSelector（标签选择器）查询和筛选资源对象。
-
-
 
 ### 1. Kubernetes 本地安装
 

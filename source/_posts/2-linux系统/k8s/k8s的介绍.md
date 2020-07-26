@@ -1,5 +1,5 @@
 ---
-title: k8s的原理和实践
+title: k8s的介绍
 tags:
   - k8s
   - linux
@@ -7,7 +7,7 @@ categories:
   - 2-linux系统
   - k8s
 abbrlink: 40c9599
-date: 2020-04-24 17:50:00
+date: 2020-03-24 17:50:00
 ---
 
 
@@ -16,32 +16,43 @@ date: 2020-04-24 17:50:00
 
 先来看一张 k8s 架构设计以及组件之间的通信协议
 
-![1](k8s实践/2.jpeg)
-
-
-
-+ Master 负责管理整个集群。Master 协调集群中的所有活动，例如调度应用、维护应用的所需状态、应用扩容以及推出新的更新。
-
-+ Node 是一个虚拟机或者物理机，它在 Kubernetes 集群中充当工作机器的角色。
-+ 在 Kubernetes 上部署应用时，您告诉 Master 启动应用容器。 Master 就编排容器在群集的 Node 上运行。 Node 使用 Master 暴露的 Kubernetes API 与 Master 通信。
+![1](k8s的介绍/1.jpeg)
 
 <!-- more -->
 
++ Master
+  
+  Master 负责管理整个集群。Master 协调集群中的所有活动，例如调度应用、维护应用的所需状态、应用扩容以及推出新的更新。
+  
+  + APISERVER 所有服务统一入口
+  + RC 维持副本期望数目
+  + Scheduler 负责介绍任务, 选择合适的节点分配任务 
+  + Etcd 持久化存储信息
+  
++ Node
+  
+  Node在 Kubernetes 集群中充当工作机器的角色。告诉 Master 启动应用容器， Master 就编排容器在群集的 Node 上运行。 Node 使用 Master 暴露的 Kubernetes API 与 Master 通信。
+  
+  + kubelet 直接跟容器引擎(docker)交互, 实现容器的生命周期管理
+  + kube-proxy 负责写入规则到 IPTABLES, IPVS 实现服务映射访问
 
-下面是更抽象的一个视图：
-![1](k8s实践/3.png)
+
+
+### 0.1 抽象视图：
+
+![1](k8s的介绍/2.png)
 
 
 
-Master架构:
-![1](k8s实践/4.png)
+### 0.2 Master架构:
+
+![1](k8s的介绍/3.png)
 
 
 
-Node架构:
-![1](k8s实践/5.png)
+### 0.3 Node架构:
 
-最后走一遍 k8s 官网的交互式教程, 能够快速的对 k8s 有一个简单的了解.
+![1](k8s的介绍/4.png)
 
 
 
