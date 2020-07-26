@@ -55,23 +55,23 @@
   };
 </script>
 
-  <meta name="description" content="0. 前言先来看一张 k8s 架构设计以及组件之间的通信协议   Master 负责管理整个集群。Master 协调集群中的所有活动，例如调度应用、维护应用的所需状态、应用扩容以及推出新的更新。  Node 是一个虚拟机或者物理机，它在 Kubernetes 集群中充当工作机器的角色。  在 Kubernetes 上部署应用时，您告诉 Master 启动应用容器。 Master 就编排容器在群集的">
+  <meta name="description" content="0. 前言先来看一张 k8s 架构设计以及组件之间的通信协议">
 <meta name="keywords" content="linux,k8s">
 <meta property="og:type" content="article">
-<meta property="og:title" content="k8s的原理和实践">
+<meta property="og:title" content="k8s的介绍">
 <meta property="og:url" content="https://unix2dos.github.io/p/40c9599.html">
 <meta property="og:site_name" content="Levon&#39;s Blog">
-<meta property="og:description" content="0. 前言先来看一张 k8s 架构设计以及组件之间的通信协议   Master 负责管理整个集群。Master 协调集群中的所有活动，例如调度应用、维护应用的所需状态、应用扩容以及推出新的更新。  Node 是一个虚拟机或者物理机，它在 Kubernetes 集群中充当工作机器的角色。  在 Kubernetes 上部署应用时，您告诉 Master 启动应用容器。 Master 就编排容器在群集的">
+<meta property="og:description" content="0. 前言先来看一张 k8s 架构设计以及组件之间的通信协议">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://unix2dos.github.io/p/40c9599/2.jpeg">
+<meta property="og:image" content="https://unix2dos.github.io/p/40c9599/1.jpeg">
+<meta property="og:image" content="https://unix2dos.github.io/p/40c9599/2.png">
 <meta property="og:image" content="https://unix2dos.github.io/p/40c9599/3.png">
 <meta property="og:image" content="https://unix2dos.github.io/p/40c9599/4.png">
-<meta property="og:image" content="https://unix2dos.github.io/p/40c9599/5.png">
-<meta property="og:updated_time" content="2020-04-25T05:07:44.487Z">
+<meta property="og:updated_time" content="2020-07-26T03:06:14.724Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="k8s的原理和实践">
-<meta name="twitter:description" content="0. 前言先来看一张 k8s 架构设计以及组件之间的通信协议   Master 负责管理整个集群。Master 协调集群中的所有活动，例如调度应用、维护应用的所需状态、应用扩容以及推出新的更新。  Node 是一个虚拟机或者物理机，它在 Kubernetes 集群中充当工作机器的角色。  在 Kubernetes 上部署应用时，您告诉 Master 启动应用容器。 Master 就编排容器在群集的">
-<meta name="twitter:image" content="https://unix2dos.github.io/p/40c9599/2.jpeg">
+<meta name="twitter:title" content="k8s的介绍">
+<meta name="twitter:description" content="0. 前言先来看一张 k8s 架构设计以及组件之间的通信协议">
+<meta name="twitter:image" content="https://unix2dos.github.io/p/40c9599/1.jpeg">
   <link rel="canonical" href="https://unix2dos.github.io/p/40c9599">
 
 
@@ -86,7 +86,7 @@
   };
 </script>
 
-  <title>k8s的原理和实践 | Levon's Blog</title>
+  <title>k8s的介绍 | Levon's Blog</title>
   
 
 
@@ -264,7 +264,7 @@
       <meta itemprop="name" content="Levon's Blog">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">k8s的原理和实践
+        <h2 class="post-title" itemprop="name headline">k8s的介绍
 
           
         </h2>
@@ -280,7 +280,7 @@
                 
               
 
-              <time title="创建时间：2020-04-24 17:50:00" itemprop="dateCreated datePublished" datetime="2020-04-24T17:50:00+08:00">2020-04-24</time>
+              <time title="创建时间：2020-03-24 17:50:00" itemprop="dateCreated datePublished" datetime="2020-03-24T17:50:00+08:00">2020-03-24</time>
             </span>
           
             
@@ -291,7 +291,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-25 13:07:44" itemprop="dateModified" datetime="2020-04-25T13:07:44+08:00">2020-04-25</time>
+                <time title="修改时间：2020-07-26 11:06:14" itemprop="dateModified" datetime="2020-07-26T11:06:14+08:00">2020-07-26</time>
               </span>
             
           
@@ -339,7 +339,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span>1.9k</span>
+              <span>2k</span>
             </span>
           
             <span class="post-meta-item" title="阅读时长">
@@ -363,22 +363,30 @@
 
       
         <h1 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h1><p>先来看一张 k8s 架构设计以及组件之间的通信协议</p>
-<p><img src="/p/40c9599/2.jpeg" alt="1"></p>
-<ul>
-<li><p>Master 负责管理整个集群。Master 协调集群中的所有活动，例如调度应用、维护应用的所需状态、应用扩容以及推出新的更新。</p>
-</li>
-<li><p>Node 是一个虚拟机或者物理机，它在 Kubernetes 集群中充当工作机器的角色。</p>
-</li>
-<li><p>在 Kubernetes 上部署应用时，您告诉 Master 启动应用容器。 Master 就编排容器在群集的 Node 上运行。 Node 使用 Master 暴露的 Kubernetes API 与 Master 通信。</p>
-</li>
-</ul>
+<p><img src="/p/40c9599/1.jpeg" alt="1"></p>
 <a id="more"></a>
 
-
-<p>下面是更抽象的一个视图：<br><img src="/p/40c9599/3.png" alt="1"></p>
-<p>Master架构:<br><img src="/p/40c9599/4.png" alt="1"></p>
-<p>Node架构:<br><img src="/p/40c9599/5.png" alt="1"></p>
-<p>最后走一遍 k8s 官网的交互式教程, 能够快速的对 k8s 有一个简单的了解.</p>
+<ul>
+<li><p>Master</p>
+<p>Master 负责管理整个集群。Master 协调集群中的所有活动，例如调度应用、维护应用的所需状态、应用扩容以及推出新的更新。</p>
+<ul>
+<li>APISERVER 所有服务统一入口</li>
+<li>RC 维持副本期望数目</li>
+<li>Scheduler 负责介绍任务, 选择合适的节点分配任务 </li>
+<li>Etcd 持久化存储信息</li>
+</ul>
+</li>
+<li><p>Node</p>
+<p>Node在 Kubernetes 集群中充当工作机器的角色。告诉 Master 启动应用容器， Master 就编排容器在群集的 Node 上运行。 Node 使用 Master 暴露的 Kubernetes API 与 Master 通信。</p>
+<ul>
+<li>kubelet 直接跟容器引擎(docker)交互, 实现容器的生命周期管理</li>
+<li>kube-proxy 负责写入规则到 IPTABLES, IPVS 实现服务映射访问</li>
+</ul>
+</li>
+</ul>
+<h3 id="0-1-抽象视图："><a href="#0-1-抽象视图：" class="headerlink" title="0.1 抽象视图："></a>0.1 抽象视图：</h3><p><img src="/p/40c9599/2.png" alt="1"></p>
+<h3 id="0-2-Master架构"><a href="#0-2-Master架构" class="headerlink" title="0.2 Master架构:"></a>0.2 Master架构:</h3><p><img src="/p/40c9599/3.png" alt="1"></p>
+<h3 id="0-3-Node架构"><a href="#0-3-Node架构" class="headerlink" title="0.3 Node架构:"></a>0.3 Node架构:</h3><p><img src="/p/40c9599/4.png" alt="1"></p>
 <h1 id="1-kubectl"><a href="#1-kubectl" class="headerlink" title="1. kubectl"></a>1. kubectl</h1><ul>
 <li><p>kubectl version </p>
 <p>client  version 是kubectl的版本</p>
@@ -547,8 +555,8 @@
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
-                <a href="/p/67723314.html" rel="next" title="shell读取文件内容遇到的坑">
-                  <i class="fa fa-chevron-left"></i> shell读取文件内容遇到的坑
+                <a href="/p/771638a0.html" rel="next" title="golang的pprof使用">
+                  <i class="fa fa-chevron-left"></i> golang的pprof使用
                 </a>
               
             </div>
@@ -557,8 +565,8 @@
 
             <div class="post-nav-prev post-nav-item">
               
-                <a href="/p/dc81a411.html" rel="prev" title="python爬虫项目在docker中的部署实践">
-                  python爬虫项目在docker中的部署实践 <i class="fa fa-chevron-right"></i>
+                <a href="/p/67723314.html" rel="prev" title="shell读取文件内容遇到的坑">
+                  shell读取文件内容遇到的坑 <i class="fa fa-chevron-right"></i>
                 </a>
               
             </div>
@@ -617,7 +625,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-number">1.</span> <span class="nav-text">0. 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-kubectl"><span class="nav-number">2.</span> <span class="nav-text">1. kubectl</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-问题记录"><span class="nav-number">3.</span> <span class="nav-text">2. 问题记录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-参考资料"><span class="nav-number">4.</span> <span class="nav-text">3. 参考资料</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-number">1.</span> <span class="nav-text">0. 前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0-1-抽象视图："><span class="nav-number">1.0.1.</span> <span class="nav-text">0.1 抽象视图：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0-2-Master架构"><span class="nav-number">1.0.2.</span> <span class="nav-text">0.2 Master架构:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0-3-Node架构"><span class="nav-number">1.0.3.</span> <span class="nav-text">0.3 Node架构:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-kubectl"><span class="nav-number">2.</span> <span class="nav-text">1. kubectl</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-问题记录"><span class="nav-number">3.</span> <span class="nav-text">2. 问题记录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-参考资料"><span class="nav-number">4.</span> <span class="nav-text">3. 参考资料</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -739,12 +747,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">650k</span>
+    <span title="站点总字数">651k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">9:50</span>
+    <span title="站点阅读时长">9:52</span>
 </div>
 
         
@@ -829,7 +837,7 @@
   function disqus_config() {
     this.page.url = "https://unix2dos.github.io/p/40c9599.html";
     this.page.identifier = "p/40c9599.html";
-    this.page.title = 'k8s的原理和实践';};
+    this.page.title = 'k8s的介绍';};
   function loadComments() {
     if (window.DISQUS) {
       DISQUS.reset({
