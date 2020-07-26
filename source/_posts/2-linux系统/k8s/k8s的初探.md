@@ -20,7 +20,7 @@ Kubernetes中的大部分概念Node、Pod、Replication Controller、Service等�
 
 我们需要安装以下东西：Kubernetes 的命令行客户端 kubctl、一个可以在本地跑起来的 Kubernetes 环境 Minikube。
 
-#### 1.1 安装 kub
+#### 1.1 安装 k8s
 
 ```bash
 cat <<EOF > /etc/yum.repos.d/kubernetes.repo
@@ -43,6 +43,8 @@ systemctl enable kubelet && systemctl start kubelet
 
 
 #### 1.2 安装 minikube
+
+minikube 是一种轻量级的 Kubernetes 实现，可在本地计算机上创建 VM 并部署仅包含一个节点的简单集群。简单理解为一个运行在本地Node，我们可以在里面创建Pods来创建对应的服务.
 
 ```bash
 curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 \
@@ -289,7 +291,7 @@ curl http://10.0.0.5:30050
 
 ### 3. 总结
 
-+ 容器(可以不是 docker) 放在 pod 里面
++ 容器引擎(例如docker) 放在 pod 里面
 + pod 增加了标签后, service 可以管理
 
 
