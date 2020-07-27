@@ -56,7 +56,73 @@ date: 2020-03-24 17:50:00
 
 
 
-# 1. kubectl 
+
+
+# 1. Pod
+
+### 1.1 自主式 pod
+
+pod 里面的容器, 通过 pause 网络共享和文件共享
+
+### 1.2 控制器管理的 pod
+
++ ReplicationController
+
+  建议用 RS代替
+
++ ReplicaSet
+
+  支持集合式的selector
+
++ Deployment
+
+  自动管理 ReplicatSet
+
+  + HPA
+
+    弹性伸缩, 增加或减少 pod
+
++ StatefulSet
+
+  解决有状态服务的问题(Deployment和ReplicaSet是无状态服务)
+
++ DaemonSet
+
+  确保 Node 运行 pod 的副本
+
++ Job, CronJob
+
+  负责批处理任务
+
+
+
+# 3. 网络通信
+
+### 3.1 同一个 pod
+
+共享网络命名空间
+
+### 3.2 pod1, pod2
+
++ 同一主机, docker0网段
++ 不同主机, podIP 和 nodeIP 关联起来(flannel)
+
+### 3.3 pod, service
+
++ iptables转发和维护
++ lvs转发和维护
+
+### 3.4 pod, 外网
+
+转发到宿主主机的网卡
+
+### 3.5 外网, pod
+
+service, nodeport 方式
+
+
+
+# 6. kubectl 
 
 + kubectl version 
 
@@ -184,7 +250,7 @@ date: 2020-03-24 17:50:00
 
 
 
-# 2. 问题记录
+# 7. 问题记录
 
 + minikube是干啥的?
 
@@ -204,8 +270,9 @@ date: 2020-03-24 17:50:00
 
 
 
-# 3. 参考资料
+# 8. 参考资料
 
 + https://kubernetes.io/zh/docs/tutorials/hello-minikube/
 + https://www.bookstack.cn/read/kubernetes-handbook/concepts-index.md
++ https://www.bilibili.com/video/BV1w4411y7Go
 
