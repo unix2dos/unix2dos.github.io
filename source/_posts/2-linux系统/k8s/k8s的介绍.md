@@ -7,7 +7,7 @@ categories:
   - 2-linux系统
   - k8s
 abbrlink: 40c9599
-date: 2020-03-24 17:50:00
+date: 2020-02-22 17:50:00
 ---
 
 
@@ -122,7 +122,7 @@ service, nodeport 方式
 
 
 
-# 6. kubectl 
+# 4. kubectl 
 
 + kubectl version 
 
@@ -250,7 +250,7 @@ service, nodeport 方式
 
 
 
-# 7. 问题记录
+# 5. 问题记录
 
 + minikube是干啥的?
 
@@ -270,7 +270,7 @@ service, nodeport 方式
 
 
 
-# 8. 参考资料
+# 6. 参考资料
 
 + https://kubernetes.io/zh/docs/tutorials/hello-minikube/
 + https://www.bookstack.cn/read/kubernetes-handbook/concepts-index.md

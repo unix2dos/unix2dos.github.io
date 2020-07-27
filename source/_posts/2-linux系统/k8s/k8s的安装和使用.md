@@ -1,12 +1,12 @@
 ---
-title: 跟着官网学k8s
+title: k8s的安装和使用
 tags:
   - k8s
 categories:
   - 2-linux系统
   - k8s
 abbrlink: caa8b60
-date: 2020-03-26 00:00:00
+date: 2020-02-23 00:00:00
 ---
 
 # 1. 安装

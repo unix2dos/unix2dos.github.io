@@ -6,21 +6,21 @@ categories:
   - 2-linux系统
   - k8s
 abbrlink: '890e8359'
-date: 2019-12-17 12:04:01
+date: 2020-02-21 12:04:01
 ---
 
-### 0. 前言
+# 0. 前言
 
 Kubernetes中的大部分概念Node、Pod、Replication Controller、Service等都可以看作一种“资源对象”，几乎所有的资源对象都可以通过kubectl工具（API调用）执行增、删、改、查等操作并将其保存在etcd中持久化存储。从这个角度来看，kubernetes其实是一个高度自动化的资源控制系统，通过跟踪对比etcd库里保存的“资源期望状态”与当前环境中的“实际资源状态”的差异来实现自动控制和自动纠错的高级功能。
 
 <!-- more -->
 
 
-### 1. Kubernetes 本地安装
+# 1. Kubernetes 本地安装
 
 我们需要安装以下东西：Kubernetes 的命令行客户端 kubctl、一个可以在本地跑起来的 Kubernetes 环境 Minikube。
 
-#### 1.1 安装 k8s
+### 1.1 安装 k8s
 
 ```bash
 cat <<EOF > /etc/yum.repos.d/kubernetes.repo
@@ -42,7 +42,7 @@ systemctl enable kubelet && systemctl start kubelet
 
 
 
-#### 1.2 安装 minikube
+### 1.2 安装 minikube
 
 minikube 是一种轻量级的 Kubernetes 实现，可在本地计算机上创建 VM 并部署仅包含一个节点的简单集群。简单理解为一个运行在本地Node，我们可以在里面创建Pods来创建对应的服务.
 
@@ -69,7 +69,7 @@ minikube
 
 
 
-### 2. 使用
+# 2. 使用
 
 典型的 Kubernetes 集群包含一个 master 和多个 node。每个 node 上运行着维护 node 状态并和 master 通信的 kubelet。作为一个开发和测试的环境，Minikube 会建立一个有一个 node 的集群，用下面的命令可以看到：
 
@@ -81,14 +81,12 @@ minikube   Ready     1h        v1.10.0
 
 
 
-#### 2.1 创建 docker 容器
+### 2.1 创建 docker 容器
 
 ```bash
 mkdir html
 echo '<h1>Hello Kubernetes!</h1>' > html/index.html
 ```
-
-
 
 `Dockerfile`
 
@@ -105,7 +103,7 @@ docker build -t k8s-demo:0.1 .
 
 
 
-#### 2.2 创建pod
+### 2.2 创建pod
 
 `pod.yml`
 
@@ -142,7 +140,9 @@ kubectl apply -f pod.yml
 
 虽然这个 pod 在运行，我们无法从外部直接访问。要把服务暴露出来，我们需要创建一个 Service。Service 的作用有点像建立了一个反向代理和负载均衡器，负责把请求分发给后面的 pod。
 
-#### 2.3 创建service
+
+
+### 2.3 创建service
 
 `svc.yaml`
 
@@ -196,7 +196,7 @@ curl http://10.0.0.5:30050
 
 
 
-#### 2.4 创建 deployment
+### 2.4 创建 deployment
 
 在正式环境中我们需要让一个服务不受单个节点故障的影响，并且还要根据负载变化动态调整节点数量，所以不可能像上面一样逐个管理 pod。
 
@@ -289,13 +289,13 @@ curl http://10.0.0.5:30050
 
 
 
-### 3. 总结
+# 3. 总结
 
 + 容器引擎(例如docker) 放在 pod 里面
 + pod 增加了标签后, service 可以管理
 
 
 
-### 4. 参考资料
+# 4. 参考资料
 
 + https://zhuanlan.zhihu.com/p/39937913
