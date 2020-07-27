@@ -67,7 +67,7 @@
 <meta property="og:image" content="https://unix2dos.github.io/p/40c9599/2.png">
 <meta property="og:image" content="https://unix2dos.github.io/p/40c9599/3.png">
 <meta property="og:image" content="https://unix2dos.github.io/p/40c9599/4.png">
-<meta property="og:updated_time" content="2020-07-26T03:06:14.724Z">
+<meta property="og:updated_time" content="2020-07-27T02:35:57.876Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="k8s的介绍">
 <meta name="twitter:description" content="0. 前言先来看一张 k8s 架构设计以及组件之间的通信协议">
@@ -291,7 +291,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-26 11:06:14" itemprop="dateModified" datetime="2020-07-26T11:06:14+08:00">2020-07-26</time>
+                <time title="修改时间：2020-07-27 10:35:57" itemprop="dateModified" datetime="2020-07-27T10:35:57+08:00">2020-07-27</time>
               </span>
             
           
@@ -339,7 +339,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span>2k</span>
+              <span>2.5k</span>
             </span>
           
             <span class="post-meta-item" title="阅读时长">
@@ -387,7 +387,44 @@
 <h3 id="0-1-抽象视图："><a href="#0-1-抽象视图：" class="headerlink" title="0.1 抽象视图："></a>0.1 抽象视图：</h3><p><img src="/p/40c9599/2.png" alt="1"></p>
 <h3 id="0-2-Master架构"><a href="#0-2-Master架构" class="headerlink" title="0.2 Master架构:"></a>0.2 Master架构:</h3><p><img src="/p/40c9599/3.png" alt="1"></p>
 <h3 id="0-3-Node架构"><a href="#0-3-Node架构" class="headerlink" title="0.3 Node架构:"></a>0.3 Node架构:</h3><p><img src="/p/40c9599/4.png" alt="1"></p>
-<h1 id="1-kubectl"><a href="#1-kubectl" class="headerlink" title="1. kubectl"></a>1. kubectl</h1><ul>
+<h1 id="1-Pod"><a href="#1-Pod" class="headerlink" title="1. Pod"></a>1. Pod</h1><h3 id="1-1-自主式-pod"><a href="#1-1-自主式-pod" class="headerlink" title="1.1 自主式 pod"></a>1.1 自主式 pod</h3><p>pod 里面的容器, 通过 pause 网络共享和文件共享</p>
+<h3 id="1-2-控制器管理的-pod"><a href="#1-2-控制器管理的-pod" class="headerlink" title="1.2 控制器管理的 pod"></a>1.2 控制器管理的 pod</h3><ul>
+<li><p>ReplicationController</p>
+<p>建议用 RS代替</p>
+</li>
+<li><p>ReplicaSet</p>
+<p>支持集合式的selector</p>
+</li>
+<li><p>Deployment</p>
+<p>自动管理 ReplicatSet</p>
+<ul>
+<li><p>HPA</p>
+<p>弹性伸缩, 增加或减少 pod</p>
+</li>
+</ul>
+</li>
+<li><p>StatefulSet</p>
+<p>解决有状态服务的问题(Deployment和ReplicaSet是无状态服务)</p>
+</li>
+<li><p>DaemonSet</p>
+<p>确保 Node 运行 pod 的副本</p>
+</li>
+<li><p>Job, CronJob</p>
+<p>负责批处理任务</p>
+</li>
+</ul>
+<h1 id="3-网络通信"><a href="#3-网络通信" class="headerlink" title="3. 网络通信"></a>3. 网络通信</h1><h3 id="3-1-同一个-pod"><a href="#3-1-同一个-pod" class="headerlink" title="3.1 同一个 pod"></a>3.1 同一个 pod</h3><p>共享网络命名空间</p>
+<h3 id="3-2-pod1-pod2"><a href="#3-2-pod1-pod2" class="headerlink" title="3.2 pod1, pod2"></a>3.2 pod1, pod2</h3><ul>
+<li>同一主机, docker0网段</li>
+<li>不同主机, podIP 和 nodeIP 关联起来(flannel)</li>
+</ul>
+<h3 id="3-3-pod-service"><a href="#3-3-pod-service" class="headerlink" title="3.3 pod, service"></a>3.3 pod, service</h3><ul>
+<li>iptables转发和维护</li>
+<li>lvs转发和维护</li>
+</ul>
+<h3 id="3-4-pod-外网"><a href="#3-4-pod-外网" class="headerlink" title="3.4 pod, 外网"></a>3.4 pod, 外网</h3><p>转发到宿主主机的网卡</p>
+<h3 id="3-5-外网-pod"><a href="#3-5-外网-pod" class="headerlink" title="3.5 外网, pod"></a>3.5 外网, pod</h3><p>service, nodeport 方式</p>
+<h1 id="6-kubectl"><a href="#6-kubectl" class="headerlink" title="6. kubectl"></a>6. kubectl</h1><ul>
 <li><p>kubectl version </p>
 <p>client  version 是kubectl的版本</p>
 <p>server version 是 k8s 的版本</p>
@@ -489,7 +526,7 @@
 <p>回滚</p>
 </li>
 </ul>
-<h1 id="2-问题记录"><a href="#2-问题记录" class="headerlink" title="2. 问题记录"></a>2. 问题记录</h1><ul>
+<h1 id="7-问题记录"><a href="#7-问题记录" class="headerlink" title="7. 问题记录"></a>7. 问题记录</h1><ul>
 <li><p>minikube是干啥的?</p>
 <p> minikube 是一种轻量级的 Kubernetes 实现，可在本地计算机上创建 VM 并部署仅包含一个节点的简单集群。</p>
 <p>简单理解为一个运行在本地Node，我们可以在里面创建Pods来创建对应的服务.</p>
@@ -501,9 +538,10 @@
 <p>单独创建pod的时候就不会有deployment出现，但是创建deployment的时候一定会创建pod,因为pod是一个基础的单位。</p>
 </li>
 </ul>
-<h1 id="3-参考资料"><a href="#3-参考资料" class="headerlink" title="3. 参考资料"></a>3. 参考资料</h1><ul>
+<h1 id="8-参考资料"><a href="#8-参考资料" class="headerlink" title="8. 参考资料"></a>8. 参考资料</h1><ul>
 <li><a href="https://kubernetes.io/zh/docs/tutorials/hello-minikube/" target="_blank" rel="noopener">https://kubernetes.io/zh/docs/tutorials/hello-minikube/</a></li>
 <li><a href="https://www.bookstack.cn/read/kubernetes-handbook/concepts-index.md" target="_blank" rel="noopener">https://www.bookstack.cn/read/kubernetes-handbook/concepts-index.md</a></li>
+<li><a href="https://www.bilibili.com/video/BV1w4411y7Go" target="_blank" rel="noopener">https://www.bilibili.com/video/BV1w4411y7Go</a></li>
 </ul>
 
     </div>
@@ -625,7 +663,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-number">1.</span> <span class="nav-text">0. 前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0-1-抽象视图："><span class="nav-number">1.0.1.</span> <span class="nav-text">0.1 抽象视图：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0-2-Master架构"><span class="nav-number">1.0.2.</span> <span class="nav-text">0.2 Master架构:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0-3-Node架构"><span class="nav-number">1.0.3.</span> <span class="nav-text">0.3 Node架构:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-kubectl"><span class="nav-number">2.</span> <span class="nav-text">1. kubectl</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-问题记录"><span class="nav-number">3.</span> <span class="nav-text">2. 问题记录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-参考资料"><span class="nav-number">4.</span> <span class="nav-text">3. 参考资料</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-number">1.</span> <span class="nav-text">0. 前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0-1-抽象视图："><span class="nav-number">1.0.1.</span> <span class="nav-text">0.1 抽象视图：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0-2-Master架构"><span class="nav-number">1.0.2.</span> <span class="nav-text">0.2 Master架构:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0-3-Node架构"><span class="nav-number">1.0.3.</span> <span class="nav-text">0.3 Node架构:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Pod"><span class="nav-number">2.</span> <span class="nav-text">1. Pod</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-自主式-pod"><span class="nav-number">2.0.1.</span> <span class="nav-text">1.1 自主式 pod</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-控制器管理的-pod"><span class="nav-number">2.0.2.</span> <span class="nav-text">1.2 控制器管理的 pod</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-网络通信"><span class="nav-number">3.</span> <span class="nav-text">3. 网络通信</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-同一个-pod"><span class="nav-number">3.0.1.</span> <span class="nav-text">3.1 同一个 pod</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-pod1-pod2"><span class="nav-number">3.0.2.</span> <span class="nav-text">3.2 pod1, pod2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-pod-service"><span class="nav-number">3.0.3.</span> <span class="nav-text">3.3 pod, service</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-pod-外网"><span class="nav-number">3.0.4.</span> <span class="nav-text">3.4 pod, 外网</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-外网-pod"><span class="nav-number">3.0.5.</span> <span class="nav-text">3.5 外网, pod</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-kubectl"><span class="nav-number">4.</span> <span class="nav-text">6. kubectl</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-问题记录"><span class="nav-number">5.</span> <span class="nav-text">7. 问题记录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-参考资料"><span class="nav-number">6.</span> <span class="nav-text">8. 参考资料</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -644,7 +682,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">163</span>
+          <span class="site-state-item-count">164</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -747,12 +785,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">651k</span>
+    <span title="站点总字数">658k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">9:52</span>
+    <span title="站点阅读时长">9:58</span>
 </div>
 
         
