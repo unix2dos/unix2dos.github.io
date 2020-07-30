@@ -13,14 +13,22 @@ date: 2018-04-07 00:00:00
 
 XSS，即 Cross Site Script，中译是跨站脚本攻击；其原本缩写是 CSS，但为了和层叠样式表(Cascading Style Sheet)有所区分，因而在安全领域叫做 XSS。
 
+<script>alert('xss攻击开始')</script>
+
+<script>alert('1')</script>
+
+<script>alert('2')</script>
+
+<script>alert('3"')</script>
+
 <!-- more -->
 
 XSS 攻击是指攻击者在网站上注入恶意的客户端代码，通过恶意脚本对客户端网页进行篡改，从而在用户浏览网页时，对用户浏览器进行控制或者获取用户隐私数据的一种攻击方式。
 
 ### 1.1 举例
 
-+ 在网页 input 或者 textarea 中输入 <script>alert('xss')</script>或者其他脚本
-+ 直接使用 URL 参数攻击 https://www.baidu.com?jarttoTest=<script>alert(document.cookie)</script>
++ 在网页 input 或者 textarea 中输入` <script>alert('xss')</script>`或者其他脚本
++ 直接使用 URL 参数攻击` https://www.baidu.com?jarttoTest=<script>alert(document.cookie)</script>`
 
 ### 1.2 防范
 
