@@ -387,12 +387,6 @@ func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
 
 + https://leetcode-cn.com/problems/daily-temperatures/
 
-```go
-
-```
-
-
-
 
 
 # 9. 脑力风暴
@@ -403,7 +397,7 @@ func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
 
 + 第二步, 为了目的, 我应该完成怎么样的返回值
 
-+ 第三步, 建议考虑倒数第二层, 只考虑当前层的逻辑
++ 第三步, 例如考虑倒数第二层或简单理解的层, 只考虑当前层的逻辑
 
   
 
@@ -414,3 +408,14 @@ func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
 反转字符串 
 
 回文字符串
+
+最长公用子串
+
+
+
+
+
+# 11. 参考资料
+
++ https://labuladong.gitbook.io/
++ https://lyl0724.github.io/2020/01/25/1/
