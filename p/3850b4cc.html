@@ -63,7 +63,7 @@
 <meta property="og:site_name" content="Levon&#39;s Blog">
 <meta property="og:description" content="1. 链表1.1 翻转链表 https://leetcode-cn.com/problems/reverse-linked-list/   递归版本  123456789func reverseList(head *ListNode) *ListNode &amp;#123;    if head == nil || head.Next == nil&amp;#123;        return head">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-07-25T15:56:53.028Z">
+<meta property="og:updated_time" content="2020-08-04T13:57:20.867Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="常见算法的golang实现">
 <meta name="twitter:description" content="1. 链表1.1 翻转链表 https://leetcode-cn.com/problems/reverse-linked-list/   递归版本  123456789func reverseList(head *ListNode) *ListNode &amp;#123;    if head == nil || head.Next == nil&amp;#123;        return head">
@@ -286,7 +286,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-25 23:56:53" itemprop="dateModified" datetime="2020-07-25T23:56:53+08:00">2020-07-25</time>
+                <time title="修改时间：2020-08-04 21:57:20" itemprop="dateModified" datetime="2020-08-04T21:57:20+08:00">2020-08-04</time>
               </span>
             
           
@@ -334,7 +334,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span>6.6k</span>
+              <span>7.2k</span>
             </span>
           
             <span class="post-meta-item" title="阅读时长">
@@ -344,7 +344,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span>6 分钟</span>
+              <span>7 分钟</span>
             </span>
           
 
@@ -394,6 +394,14 @@
 <h3 id="1-3-两两交换链表中的节点"><a href="#1-3-两两交换链表中的节点" class="headerlink" title="1.3 两两交换链表中的节点"></a>1.3 两两交换链表中的节点</h3><ul>
 <li><p><a href="https://leetcode-cn.com/problems/swap-nodes-in-pairs/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/swap-nodes-in-pairs/</a></p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">swapPairs</span><span class="params">(head *ListNode)</span> *<span class="title">ListNode</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> head == <span class="literal">nil</span> || head.Next == <span class="literal">nil</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> head</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//这一层3个节点, head, next, swapPairs()</span></span><br><span class="line">    <span class="comment">//换成 next, head, swapPairs()</span></span><br><span class="line"></span><br><span class="line">    next := head.Next</span><br><span class="line">    head.Next = swapPairs(next.Next)</span><br><span class="line">    next.Next = head</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> next</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="1-4-合并两个有序链表"><a href="#1-4-合并两个有序链表" class="headerlink" title="1.4 合并两个有序链表"></a>1.4 合并两个有序链表</h3><ul>
+<li><p><a href="https://leetcode-cn.com/problems/merge-two-sorted-lists/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/merge-two-sorted-lists/</a></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">mergeTwoLists</span><span class="params">(l1 *ListNode, l2 *ListNode)</span> *<span class="title">ListNode</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> l1 == <span class="literal">nil</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> l2</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> l2 == <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> l1</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> l1.Val &lt; l2.Val &#123;</span><br><span class="line">        l1.Next = mergeTwoLists(l1.Next, l2)</span><br><span class="line">        <span class="keyword">return</span> l1</span><br><span class="line">    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">        l2.Next = mergeTwoLists(l1, l2.Next)</span><br><span class="line">        <span class="keyword">return</span> l2</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
 
 
 
@@ -452,19 +460,22 @@
 <h3 id="8-2-温度"><a href="#8-2-温度" class="headerlink" title="8.2 温度"></a>8.2 温度</h3><ul>
 <li><a href="https://leetcode-cn.com/problems/daily-temperatures/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/daily-temperatures/</a></li>
 </ul>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
 <h1 id="9-脑力风暴"><a href="#9-脑力风暴" class="headerlink" title="9. 脑力风暴"></a>9. 脑力风暴</h1><h3 id="9-1-递归"><a href="#9-1-递归" class="headerlink" title="9.1 递归"></a>9.1 递归</h3><ul>
 <li><p>第一步考虑出口</p>
 </li>
 <li><p>第二步, 为了目的, 我应该完成怎么样的返回值</p>
 </li>
-<li><p>第三步, 建议考虑倒数第二层, 只考虑当前层的逻辑</p>
+<li><p>第三步, 例如考虑倒数第二层或简单理解的层, 只考虑当前层的逻辑</p>
 </li>
 </ul>
 <h1 id="10-其他TODO"><a href="#10-其他TODO" class="headerlink" title="10. 其他TODO"></a>10. 其他TODO</h1><p>二分查找</p>
 <p>反转字符串 </p>
 <p>回文字符串</p>
+<p>最长公用子串</p>
+<h1 id="11-参考资料"><a href="#11-参考资料" class="headerlink" title="11. 参考资料"></a>11. 参考资料</h1><ul>
+<li><a href="https://labuladong.gitbook.io/" target="_blank" rel="noopener">https://labuladong.gitbook.io/</a></li>
+<li><a href="https://lyl0724.github.io/2020/01/25/1/" target="_blank" rel="noopener">https://lyl0724.github.io/2020/01/25/1/</a></li>
+</ul>
 
     </div>
 
@@ -585,7 +596,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-链表"><span class="nav-number">1.</span> <span class="nav-text">1. 链表</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-翻转链表"><span class="nav-number">1.0.1.</span> <span class="nav-text">1.1 翻转链表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-链表有环和入口"><span class="nav-number">1.0.2.</span> <span class="nav-text">1.2 链表有环和入口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-两两交换链表中的节点"><span class="nav-number">1.0.3.</span> <span class="nav-text">1.3 两两交换链表中的节点</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-排序"><span class="nav-number">2.</span> <span class="nav-text">2. 排序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-快速排序"><span class="nav-number">2.0.1.</span> <span class="nav-text">2.1 快速排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-归并排序"><span class="nav-number">2.0.2.</span> <span class="nav-text">2.2 归并排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-堆排序"><span class="nav-number">2.0.3.</span> <span class="nav-text">2.3 堆排序</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-树"><span class="nav-number">3.</span> <span class="nav-text">3. 树</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-二叉树最大深度"><span class="nav-number">3.0.1.</span> <span class="nav-text">3.1 二叉树最大深度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-平衡二叉树"><span class="nav-number">3.0.2.</span> <span class="nav-text">3.2 平衡二叉树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-二叉搜索树最近祖先"><span class="nav-number">3.0.3.</span> <span class="nav-text">3.3 二叉搜索树最近祖先</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-二叉树最近祖先"><span class="nav-number">3.0.4.</span> <span class="nav-text">3.4 二叉树最近祖先</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-查找"><span class="nav-number">4.</span> <span class="nav-text">4. 查找</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-二分查找"><span class="nav-number">4.0.1.</span> <span class="nav-text">4.1 二分查找</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-其他"><span class="nav-number">5.</span> <span class="nav-text">8. 其他</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-1-LRU"><span class="nav-number">5.0.1.</span> <span class="nav-text">8.1 LRU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-2-温度"><span class="nav-number">5.0.2.</span> <span class="nav-text">8.2 温度</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#9-脑力风暴"><span class="nav-number">6.</span> <span class="nav-text">9. 脑力风暴</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#9-1-递归"><span class="nav-number">6.0.1.</span> <span class="nav-text">9.1 递归</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#10-其他TODO"><span class="nav-number">7.</span> <span class="nav-text">10. 其他TODO</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-链表"><span class="nav-number">1.</span> <span class="nav-text">1. 链表</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-翻转链表"><span class="nav-number">1.0.1.</span> <span class="nav-text">1.1 翻转链表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-链表有环和入口"><span class="nav-number">1.0.2.</span> <span class="nav-text">1.2 链表有环和入口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-两两交换链表中的节点"><span class="nav-number">1.0.3.</span> <span class="nav-text">1.3 两两交换链表中的节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-合并两个有序链表"><span class="nav-number">1.0.4.</span> <span class="nav-text">1.4 合并两个有序链表</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-排序"><span class="nav-number">2.</span> <span class="nav-text">2. 排序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-快速排序"><span class="nav-number">2.0.1.</span> <span class="nav-text">2.1 快速排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-归并排序"><span class="nav-number">2.0.2.</span> <span class="nav-text">2.2 归并排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-堆排序"><span class="nav-number">2.0.3.</span> <span class="nav-text">2.3 堆排序</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-树"><span class="nav-number">3.</span> <span class="nav-text">3. 树</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-二叉树最大深度"><span class="nav-number">3.0.1.</span> <span class="nav-text">3.1 二叉树最大深度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-平衡二叉树"><span class="nav-number">3.0.2.</span> <span class="nav-text">3.2 平衡二叉树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-二叉搜索树最近祖先"><span class="nav-number">3.0.3.</span> <span class="nav-text">3.3 二叉搜索树最近祖先</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-二叉树最近祖先"><span class="nav-number">3.0.4.</span> <span class="nav-text">3.4 二叉树最近祖先</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-查找"><span class="nav-number">4.</span> <span class="nav-text">4. 查找</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-二分查找"><span class="nav-number">4.0.1.</span> <span class="nav-text">4.1 二分查找</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-其他"><span class="nav-number">5.</span> <span class="nav-text">8. 其他</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-1-LRU"><span class="nav-number">5.0.1.</span> <span class="nav-text">8.1 LRU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-2-温度"><span class="nav-number">5.0.2.</span> <span class="nav-text">8.2 温度</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#9-脑力风暴"><span class="nav-number">6.</span> <span class="nav-text">9. 脑力风暴</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#9-1-递归"><span class="nav-number">6.0.1.</span> <span class="nav-text">9.1 递归</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#10-其他TODO"><span class="nav-number">7.</span> <span class="nav-text">10. 其他TODO</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#11-参考资料"><span class="nav-number">8.</span> <span class="nav-text">11. 参考资料</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
