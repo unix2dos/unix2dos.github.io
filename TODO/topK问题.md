@@ -11,17 +11,36 @@ TopK Elements 问题用于找出一组数中最大的或最小的 K 个的数。
 
 <!-- more -->
 
-### 1.1 最小
-
-+ https://leetcode-cn.com/problems/zui-xiao-de-kge-shu-lcof
-
-  ```go
-  1
-  ```
-
-### 1.2 最大
+### 1.1 最大
 
 + https://leetcode-cn.com/problems/kth-largest-element-in-an-array/
+
+  + 堆
+  
+  ```go
+
+  ```
+  
+  + 快速选择
+  
+  ```go
+  
+  ```
+  
+  + 比较
+  
+    看起来分治法的快速选择算法的时间、空间复杂度都优于使用堆的方法，但是要注意到快速选择算法的几点局限性：
+  
+    + 算法需要修改原数组，如果原数组不能修改的话，还需要拷贝一份数组，空间复杂度就上去了。
+  
+    + 算法需要保存所有的数据。如果把数据看成输入流的话，使用堆的方法是来一个处理一个，不需要保存数据，只需要保存 k 个元素的最大堆。而快速选择的方法需要先保存下来所有的数据，再运行算法。当数据量非常大的时候，甚至内存都放不下的时候，就麻烦了。所以当数据量大的时候还是用基于堆的方法比较好。
+  
+    
+
+
+### 1.2 最小
+
++ https://leetcode-cn.com/problems/zui-xiao-de-kge-shu-lcof
 
   ```go
   1
@@ -32,8 +51,10 @@ TopK Elements 问题用于找出一组数中最大的或最小的 K 个的数。
 + https://leetcode-cn.com/problems/smallest-k-lcci/
 
   ```go
-  
+  1
   ```
+
+
 
 # 2. TOP最小的解法
 
@@ -189,8 +210,6 @@ public:
 + https://xiaozhuanlan.com/topic/4176082593
 + https://zhuanlan.51cto.com/art/201809/584259.htm
 + https://github.com/sisterAn/JavaScript-Algorithms/issues/73
-+ https://leetcode-cn.com/problems/zui-xiao-de-kge-shu-lcof/solution/zui-xiao-de-kge-shu-by-leetcode-solution/
 + https://leetcode-cn.com/problems/kth-largest-element-in-an-array/solution/shu-zu-zhong-de-di-kge-zui-da-yuan-su-by-leetcode-/
-
-+ https://leetcode-cn.com/problems/zui-xiao-de-kge-shu-lcof/solution/3chong-jie-fa-miao-sha-topkkuai-pai-dui-er-cha-sou/
++ https://leetcode-cn.com/problems/zui-xiao-de-kge-shu-lcof/solution/zui-xiao-de-kge-shu-by-leetcode-solution/
 + https://leetcode-cn.com/problems/zui-xiao-de-kge-shu-lcof/solution/tu-jie-top-k-wen-ti-de-liang-chong-jie-fa-you-lie-/
