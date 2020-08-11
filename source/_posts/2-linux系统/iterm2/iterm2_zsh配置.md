@@ -1,5 +1,5 @@
 ---
-title: iterm2_zsh配置
+title: iterm2安装zsh配置常用插件
 tags:
   - linux
   - iterm2
@@ -10,7 +10,7 @@ categories:
 date: 2019-07-02 21:40:46
 ---
 
-先上下效果图
+直接看效果图
 
 ![1](iterm2_zsh配置/3.png)
 
@@ -18,37 +18,68 @@ date: 2019-07-02 21:40:46
 
 
 
-### 1. 配色iterm2
-
-```bash
-https://github.com/mbadolato/iTerm2-Color-Schemes # 这上面好多, 慢慢挑
-https://github.com/dracula/dracula-theme/ # 选用的这个
-https://github.com/MartinSeeler/iterm2-material-design 
-```
-
 <!-- more -->
 
-### 2. 安装zsh
+# 1. 安装
+
+### 1.1 安装 ohmyzsh
+
+ https://github.com/ohmyzsh/ohmyzsh
+
+注意安装会覆盖 `.zshrc`, 提前备份下
 
 ```
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 
-
-
-### 3. 修改主题 powerlevel9k
+有效配置
 
 ```bash
-cd ~/.zgen/robbyrussell/oh-my-zsh-master/themes
-git clone https://github.com/bhilburn/powerlevel9k/
-
-.zshrc
-ZSH_THEME="powerlevel9k/powerlevel9k"
+ export ZSH="/Users/liuwei/.oh-my-zsh"
+ ZSH_THEME="robbyrussell"
+ plugins=(git)
+ source $ZSH/oh-my-zsh.sh
 ```
 
 
 
-### 4. 设置字体
+### 1.2  安装主题 powerlevel10k
+
+https://github.com/romkatv/powerlevel10k
+
+```bash
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+
+# 设置主题  ~/.zshrc
+ZSH_THEME="powerlevel10k/powerlevel10k" 
+```
+
+
+
+主题配置
+
+```bash
+POWERLEVEL9K_MODE='nerdfont-complete'
+ZSH_THEME="powerlevel9k/powerlevel9k"
+POWERLEVEL9K_CONTEXT_TEMPLATE='%n'
+POWERLEVEL9K_CONTEXT_DEFAULT_FOREGROUND='white'
+POWERLEVEL9K_PROMPT_ON_NEWLINE=true
+POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="%F{014}\u2570%F{cyan}\uF460%F{073}\uF460%F{109}\uF460%f "
+POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon context battery dir vcs)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status time dir_writable ip public_ip ram load background_jobs)
+```
+
+
+
+### 1.3 安装字体
+
+```bash
+# 下载推荐字体
+https://github.com/romkatv/powerlevel10k#meslo-nerd-font-patched-for-powerlevel10k
+```
+
+也可选择其他字体安装
 
 ```bash
 # powerline
@@ -74,62 +105,70 @@ brew cask install font-hack-nerd-font
 
 
 
+# 2. 插件
 
-
-### 5. 主题配置
+### 2.1 git
 
 ```bash
-POWERLEVEL9K_MODE='nerdfont-complete'
-ZSH_THEME="powerlevel9k/powerlevel9k"
-POWERLEVEL9K_CONTEXT_TEMPLATE='%n'
-POWERLEVEL9K_CONTEXT_DEFAULT_FOREGROUND='white'
-POWERLEVEL9K_PROMPT_ON_NEWLINE=true
-POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="%F{014}\u2570%F{cyan}\uF460%F{073}\uF460%F{109}\uF460%f "
-POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon context battery dir vcs)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status time dir_writable ip public_ip ram load background_jobs)
+#.zshrc
+plugins=(git)
 ```
 
+### 2.2 自动补充
 
-
-### 6. zsh 安装插件
+https://github.com/zsh-users/zsh-autosuggestions
 
 ```bash
-#1. git
-.zshrc
-plugins=(git)
-
-#2. autojump
-brew install autojump #使用上就是 j xxx_Tab
-
-.zshrc
-[[ -s $(brew --prefix)/etc/profile.d/autojump.sh ]] && . $(brew --prefix)/etc/profile.d/autojump.sh
-
-
-#3. 自动补充命令
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
-.zshrc
+#.zshrc
 plugins=(zsh-autosuggestions)
+```
 
-#4. 命令语法高亮
+### 2.3 语法高亮
+
+https://github.com/zsh-users/zsh-syntax-highlighting
+
+```bash
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 
-.zshrc
+#.zshrc
 plugins=(zsh-syntax-highlighting)
-
-#5. colors
-gem install colorls
-
-.zshrc
-source $(dirname $(gem which colorls))/tab_complete.sh
 ```
 
 
 
-### 7. 遇到的问题
+# 3. 配色
 
-- 图案不显示
+### 3.1 配色项目
+
+```bash
+https://github.com/dracula/dracula-theme/ # 选用的这个!!!好看!!!支持各种终端
+https://github.com/mbadolato/iTerm2-Color-Schemes # 这上面好多, 慢慢挑
+https://github.com/MartinSeeler/iterm2-material-design 
+```
+
+### 3.2 安装dracula
+
+https://github.com/dracula/iterm
+
+```bash
+git clone https://github.com/dracula/iterm.git
+
+#Activating theme
+iTerm2 > Preferences > Profiles > Colors Tab
+Open the Color Presets... drop-down in the bottom right corner
+Select Import... from the list
+
+Select the Dracula.itermcolors file
+Select the Dracula from Color Presets...
+```
+
+
+
+# 4. 遇到的问题
+
+### 4.1 图案不显示
 
 ```bash
 POWERLEVEL9K_MODE='nerdfont-complete' #这句话一定要在下面source之前
@@ -138,7 +177,7 @@ source $ZSH/oh-my-zsh.sh
 
 
 
-### 8. 参考资料
+# 5. 参考资料
 
 + [打造 Mac 下高颜值好用的终端环境](https://blog.biezhi.me/2018/11/build-a-beautiful-mac-terminal-environment.html)
 

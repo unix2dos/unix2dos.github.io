@@ -27,7 +27,9 @@ tmux是一款优秀的终端复用软件，它比Screen更加强大。 tmux之�
 
 
 
-### 1. tmux 安装
+# 1. 安装
+
+### 1.1 tmux 安装
 
 ```bash
 brew install tmux #mac
@@ -37,7 +39,9 @@ apt-get install tmux #linux
 
 
 
-安装成功后, 需要再安装一个插件:   https://github.com/gpakosz/.tmux
+### 1.2 oh my tmux 安装
+
++ https://github.com/gpakosz/.tmux
 
 ```bash
 cd
@@ -46,92 +50,11 @@ ln -s -f .tmux/.tmux.conf
 cp .tmux/.tmux.conf.local .
 ```
 
-
-
 以后配置修改   ~/.tmux.conf.local 即可. 
 
 
 
-### 2. tmux 配置
-
-```bash
-tmux source-file ~/.tmux.conf # 刷新配置
-
-set-option -g prefix2 `  # 设置一个不常用的`键作为指令前缀，按键更快些, 建议用 ctrl+a
-
-set -g mouse on  # 最好关掉, 要不然影响iterm2自带鼠标选中
-```
-
-
-
- Oh My Tmux 快捷键
-
-```bash
-自动把 ctrl + a 当做第二个前缀
-
-<prefix> m #切换鼠标开启状态
-
-<prefix> e #自动打开配置
-
-<prefix> r # 刷新配置
-
-<prefix> C-c  #新建一个 Session
-
-<prefix> C-h 和 <prefix> C-l # 向左向右切换 window
-
-<prefix> Tab #回到上一个 window
-
-<prefix> - 和 <prefix> _  #水平和垂直分屏
-
-<prefix> h, <prefix> j, <prefix> k and <prefix> l    #移动 panel
-
-<prefix> + #让当前 panel 成为 window, 注意 再一次还能回到 panel
-```
-
-
-
-修改Oh My Tmux 配置
-
-```bash
-tmux_conf_new_window_retain_current_path=true  #window保持路径
-tmux_conf_new_pane_reconnect_ssh=true  #重新连接 ssh
-tmux_conf_new_session_prompt=true  #新建 session 输入名字
-
-tmux_conf_theme_status_left=' ❐ #S '  #左边状态栏精简
-tmux_conf_theme_status_right='#{prefix}#{pairing}#{synchronized} #(curl wttr.in?format=3) | %Y-%m-%d | %H:%M:%S | w-#(echo $(((%j/7)+(%j%7>0)))) , %a' # 右边显示天气, 和week of year
-tmux_conf_theme_prefix='🍎 🍐 🍊 🍋 🍌 🍉 '  # 前缀显示emoji
-
-
-增加配置
-
-bind N previous-window # 上一个窗口
-bind n next-window # 下一个窗口
-
-bind-key -n C-S-Left swap-window -t -1 # Ctrl+Shift+Left  window向左(不需要prefix)
-bind-key -n C-S-Right swap-window -t +1 #  Ctrl+Shift+Left window向右(不需要prefix)
-
-#bind-key x kill-pane # 关闭确认
-#bind-key & kill-window # 关闭确认
-
-set-option -g status-position top # 状态栏放到上面
-
-set -g status-right 'Continuum status: #{continuum_status}'
-set -g @continuum-save-interval '10'
-set -g @continuum-restore 'on'
-
-# List of plugins
-set -g @tpm_plugins '          \
-	tmux-plugins/tpm             \
-	tmux-plugins/tmux-resurrect  \
-	tmux-plugins/tmux-continuum  \
-'
-# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
-run '~/.tmux/plugins/tpm/tpm'
-```
-
-
-
-### 3. tmux 使用
+# 2. tmux 使用
 
 tmux使用C/S模型构建，主要包括以下单元模块：
 
@@ -140,13 +63,11 @@ tmux使用C/S模型构建，主要包括以下单元模块：
 - window窗口。一个会话可以包含多个窗口。
 - pane面板。一个窗口可以包含多个面板。
 
-
-
 我习惯一个项目用一个 session, 一个工作区用一个 window, 快捷操作开始一个 panel. 如果刚开始记不住 tmux的操作, 一定多练习, 一定多用, 你会发现离不开它了.
 
 
 
-#### 3.0 tmux 命令
+### 2.1 tmux 命令
 
 ```bash
 tmux ls # 查看当前所有的session
@@ -164,9 +85,9 @@ tmux kill-server  #关闭服务器，所有的会话都将关闭
 
 
 
-#### 3.1 session操作
+### 2.2 session操作
 
-+ 新建 <prefix> C-c   或     :new 
++ 新建 <prefix> C-c
 
 + 删除  :kill-session  或  tmux ls 以后 tmux kill-session -t 名字
 
@@ -178,9 +99,7 @@ tmux kill-server  #关闭服务器，所有的会话都将关闭
 
 
 
-#### 3.2 window 操作
-
-
+### 2.3 window 操作
 
 + 新建   c
 + 关闭  ctrl+d 或   &
@@ -194,7 +113,7 @@ tmux kill-server  #关闭服务器，所有的会话都将关闭
 
 
 
-#### 3.3 panel 操作
+### 2.4 panel 操作
 
 + 新建上下   - 或  "
 
@@ -210,9 +129,125 @@ tmux kill-server  #关闭服务器，所有的会话都将关闭
 
 + 变窗口  !   如果只是临时变 window, 用+
 
+
+
+### 2.5 Oh My Tmux 操作
+
+```bash
+#自动把 ctrl + a 当做第二个前缀
+
+<prefix> m #切换鼠标开启状态
+
+<prefix> e #自动打开配置
+
+<prefix> r # 刷新配置
+
+<prefix> C-c  #新建一个 Session
+
+<prefix> - 和 <prefix> _  #水平和垂直分屏
+
+<prefix> + #让当前 panel 成为 window, 注意 再一次还能回到 panel
+```
+
+
+
+# 3. 配置
+
+### 3.1 tmux 配置
+
+```bash
+tmux source-file ~/.tmux.conf # 刷新配置
+
+set-option -g prefix2 `  # 设置一个不常用的`键作为指令前缀，按键更快些, 建议用 ctrl+a
+
+set -g mouse on  # 最好关掉, 要不然影响iterm2自带鼠标选中
+```
+
+
+
+### 3.2 tmux 插件
+
++ tpm 插件管理
+
+  ```bash
+  git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+  ```
+
+  配置
+
+  ```bash
+  set -g status-right 'Continuum status: #{continuum_status}'
+  set -g @continuum-save-interval '10'
+  set -g @continuum-restore 'on'
+
+  set -g @tpm_plugins '          \
+    tmux-plugins/tpm             \
+    tmux-plugins/tmux-resurrect  \
+    tmux-plugins/tmux-continuum  \
+  '
+  run '~/.tmux/plugins/tpm/tpm'
+  ```
+
+  安装
+
+  ```bash
+  Installing plugins
+  1. Add new plugin to ~/.tmux.conf with set -g @plugin '...'
+  2. Press prefix + I (capital i, as in Install) to fetch the plugin.
+
+  You're good to go! The plugin was cloned to ~/.tmux/plugins/ dir and sourced.
+  ```
+
+
+
++ tmux-resurrect 保存session
+
+  ```bash
+  <prefix> ctrl + s #save
+  <prefix> ctrl + r #load
+  ```
+
+
+
+### 3.3 修改Oh My Tmux 配置
+
+  ```bash
+  tmux_conf_new_window_retain_current_path=true  #window保持路径
+  tmux_conf_new_pane_reconnect_ssh=true  #重新连接 ssh
+  tmux_conf_new_session_prompt=true  #新建 session 输入名字
+
+  #左边状态栏精简
+  tmux_conf_theme_status_left=' ❐ #S '  
+  # 右边显示天气, 和week of year
+  tmux_conf_theme_status_right='#{prefix}#{pairing}#{synchronized} #(curl wttr.in?format=3) | %Y-%m-%d | %H:%M:%S | w-#(echo $(((%j/7)+(%j%7>0)))) , %a' 
+  # 前缀显示emoji
+  tmux_conf_theme_prefix='🍎 🍐 🍊 🍋 🍌 🍉 '
+  # 状态栏放到上面
+  set -g status-position top
+
+------------------------------------------------------------------
+
+  # Ctrl+Shift+Left  window向左(不需要prefix), Ctrl+Shift+Left window向右(不需要prefix)
+  bind-key -n C-S-Left swap-window -t -1 
+  bind-key -n C-S-Right swap-window -t +1 
+
+
+  # 插件相关
+  set -g status-right 'Continuum status: #{continuum_status}'
+  set -g @continuum-save-interval '10'
+  set -g @continuum-restore 'on'
+
+  set -g @tpm_plugins '          \
+    tmux-plugins/tpm             \
+    tmux-plugins/tmux-resurrect  \
+    tmux-plugins/tmux-continuum  \
+  '
+  run '~/.tmux/plugins/tpm/tpm'
+  ```
+
   
 
-### 4. tmux 遇到的问题
+# 4. tmux 遇到的问题
 
 1. off, 鼠标无法滚动
 
@@ -230,23 +265,7 @@ tmux kill-server  #关闭服务器，所有的会话都将关闭
 
 
 
-### 5. tmux 插件
+# 5. 参考资料
 
-+ tpm
++ http://louiszhai.github.io/2017/09/30/tmux/
 
-```bash
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-```
-
-+ tmux-resurrect
-
-```bash
-<prefix> ctrl + s #save
-<prefix> ctrl + r #load
-```
-
-
-
-### 6. 参考资料
-
-进阶: http://louiszhai.github.io/2017/09/30/tmux/
