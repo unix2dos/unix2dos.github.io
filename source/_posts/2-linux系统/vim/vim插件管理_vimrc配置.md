@@ -1,5 +1,5 @@
 ---
-title: vim插件管理_vimrc配置和拷贝系统剪贴板
+title: vim插件管理_vimrc配置
 tags:
   - vim
   - linux
@@ -10,33 +10,20 @@ categories:
 date: 2018-05-15 22:06:13
 ---
 
+# 1. vim-plug 安装
 
-### vim-plug 安装
+```bash
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
+# 进入vim,  :PlugInstall 执行安装命令
 ```
-https://github.com/junegunn/vim-plug
-
-:PlugInstall 执行安装命令
-```
-
-
-### vim 拷贝到系统剪贴板
-
-1. which vim可以看到当前使用的vim是哪个，vim --version可以看到当前使用的vim支持哪些feature，'+'前缀表示拥有的feature，'-'前缀表示未拥有；
-
-2. '+clipboard'是支持使用系统剪切板的feature；如果你当前使用的vim不支持clipboard，那需要brew upgrade vim装一个新的；
-
-3. 安装新的以后，要把这个新的vim设置为默认vim，通常使用alias设置一下别名，或者通过环境变量设置，或者删掉旧的，做个软连接；
-
-4. 确认+clipboard以后，在.vimrc文件中加入set clipboard=unamed，就可以在vim中使用系统剪切板了
-
 
 <!-- more -->
 
+# 2. 我的.vimrc
 
-### 我的.vimrc
-
-```
+```bash
 " Plugin 
 call plug#begin()
 Plug 'tomasr/molokai' "主题
@@ -153,3 +140,19 @@ set nocursorline                " Dont highlight cursor
 set lazyredraw                  " Wait to redraw
 set cursorcolumn
 ```
+
+
+
+# 3. vim配置
+
+### 3.1 vim 拷贝到系统剪贴板
+
+1. which vim可以看到当前使用的vim是哪个，vim --version可以看到当前使用的vim支持哪些feature，'+'前缀表示拥有的feature，'-'前缀表示未拥有；
+
+2. '+clipboard'是支持使用系统剪切板的feature；如果你当前使用的vim不支持clipboard，那需要brew upgrade vim装一个新的；
+
+3. 安装新的以后，要把这个新的vim设置为默认vim，通常使用alias设置一下别名，或者通过环境变量设置，或者删掉旧的，做个软连接；
+
+4. 确认+clipboard以后，在.vimrc文件中加入set clipboard=unamed，就可以在vim中使用系统剪切板了
+
+
