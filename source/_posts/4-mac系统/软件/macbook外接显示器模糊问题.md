@@ -1,8 +1,12 @@
 ---
-title: "macbook外接显示器模糊问题"
-date: 2020-08-12 00:00:00
+title: macbook外接显示器模糊问题
 tags:
-- mac
+  - mac
+categories:
+  - 4-mac系统
+  - 软件
+abbrlink: a6586325
+date: 2020-08-12 00:00:00
 ---
 
 # 1. 解决方案

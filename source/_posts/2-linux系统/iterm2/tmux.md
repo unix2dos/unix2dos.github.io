@@ -173,32 +173,25 @@ set -g mouse on  # 最好关掉, 要不然影响iterm2自带鼠标选中
   git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
   ```
 
-  配置
+  配置参考:
 
   ```bash
-  set -g status-right 'Continuum status: #{continuum_status}'
-  set -g @continuum-save-interval '10'
-  set -g @continuum-restore 'on'
-
   set -g @tpm_plugins '          \
     tmux-plugins/tpm             \
-    tmux-plugins/tmux-resurrect  \
-    tmux-plugins/tmux-continuum  \
   '
-  run '~/.tmux/plugins/tpm/tpm'
+run '~/.tmux/plugins/tpm/tpm'
   ```
-
-  安装
-
+  
+  安装:
+  
   ```bash
   Installing plugins
   1. Add new plugin to ~/.tmux.conf with set -g @plugin '...'
-  2. Press prefix + I (capital i, as in Install) to fetch the plugin.
-
-  You're good to go! The plugin was cloned to ~/.tmux/plugins/ dir and sourced.
   ```
+2. Press prefix + I (capital i, as in Install) to fetch the plugin.
 
-
+You're good to go! The plugin was cloned to ~/.tmux/plugins/ dir and sourced.
+  ```
 
 + tmux-resurrect 保存session
 
@@ -219,7 +212,7 @@ set -g mouse on  # 最好关掉, 要不然影响iterm2自带鼠标选中
   #左边状态栏精简
   tmux_conf_theme_status_left=' ❐ #S '  
   # 右边显示天气, 和week of year
-  tmux_conf_theme_status_right='#{prefix}#{pairing}#{synchronized} #(curl wttr.in?format=3) | %Y-%m-%d | %H:%M:%S | w-#(echo $(((%j/7)+(%j%7>0)))) , %a' 
+  tmux_conf_theme_status_right='#{prefix}#{pairing}#{synchronized} | %Y-%m-%d | %H:%M:%S | w-#(echo $(((%j/7)+(%j%7>0)))) , %a'
   # 前缀显示emoji
   tmux_conf_theme_prefix='🍎 🍐 🍊 🍋 🍌 🍉 '
   # 状态栏放到上面
@@ -232,15 +225,18 @@ set -g mouse on  # 最好关掉, 要不然影响iterm2自带鼠标选中
   bind-key -n C-S-Right swap-window -t +1 
 
 
-  # 插件相关
+  # 插件相关, 参考3.2安装插件步骤
   set -g status-right 'Continuum status: #{continuum_status}'
   set -g @continuum-save-interval '10'
   set -g @continuum-restore 'on'
 
-  set -g @tpm_plugins '          \
-    tmux-plugins/tpm             \
-    tmux-plugins/tmux-resurrect  \
-    tmux-plugins/tmux-continuum  \
+  set -g @tpm_plugins '    \
+  tmux-plugins/tpm            \
+  tmux-plugins/tmux-open \
+  tmux-plugins/tmux-yank	\
+  tmux-plugins/tmux-sensible  \
+  tmux-plugins/tmux-resurrect  \
+  tmux-plugins/tmux-continuum  \
   '
   run '~/.tmux/plugins/tpm/tpm'
   ```
@@ -249,19 +245,38 @@ set -g mouse on  # 最好关掉, 要不然影响iterm2自带鼠标选中
 
 # 4. tmux 遇到的问题
 
-1. off, 鼠标无法滚动
+### 4.1 off, 鼠标无法滚动
 
-   In iTerm2 all you need to do is to go to Preferences > Profile > Terminal and check ‘Save lines to scrollback when an app status bar is present’.
+In iTerm2 all you need to do is to go to 
 
-2. on, 鼠标无法智能选中
+Preferences > Profile > Terminal and check ‘Save lines to scrollback when an app status bar is present’.
 
-   快速关闭, m
+### 4.2 on, 鼠标无法智能选中
 
-3. 无论off, on  鼠标点击文件不是默认 app 打开
+快速关闭, prefix+m
 
-   https://stackoverflow.com/a/56715244/7062454
+### 4.3 无论off, on  鼠标点击文件不是默认 app 打开
 
-   自己强答一题: 先退出 tmux seesion, 用鼠标点击通过默认 app 打开, 再进入 tmux session 就可以了
+https://stackoverflow.com/a/56715244/7062454
+
+自己强答一题: 先退出 tmux seesion, 用鼠标点击通过默认 app 打开, 再进入 tmux session 就可以了
+
+### 4.4 鼠标无法滚动
+
++ 重置iterm2
+
+  删除app后, 清理一下配置
+
+  ```bash
+  rm ~/Library/Application\ Support/iTerm2
+  rm ~/Library/Preferences/com.googlecode.iterm2.*
+  ```
+
++ 重置 oh my tmux
+
+  ```bash
+  #出问题, 大概率.tmux.conf.local
+  ```
 
 
 
