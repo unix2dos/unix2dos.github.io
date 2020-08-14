@@ -214,13 +214,66 @@ func detectCycle(head *ListNode) *ListNode {
 
 
 
-### 2.3 堆排序TODO
+### 2.3 堆排序
 
-堆排序的思想就是先将待排序的序列建成大根堆，使得每个父节点的元素大于等于它的子节点。此时整个序列最大值即为堆顶元素。
++ https://www.bilibili.com/video/BV1Eb41147dK
 
-我们将其与末尾元素交换，使末尾元素为最大值，然后再调整堆顶元素使得剩下的 n−1 个元素仍为大根堆，再重复执行以上操作我们即能得到一个有序的序列。
+1. 堆排序的思想就是先将待排序的序列建成大根堆，使得每个父节点的元素大于等于它的子节点。此时整个序列最大值即为堆顶元素。
 
-+ 一直大顶堆, 删除顶部, 再大顶堆
+2. 我们将其与末尾元素交换，使末尾元素为最大值，然后再调整堆顶元素使得剩下的 n−1 个元素仍为大根堆
+3. 再重复 2 的操作我们即能得到一个有序的序列。
+
++ 为什么不小顶堆
+
+  因为建好的小顶堆也不是排序好的
+
+```go
+package main
+
+import "fmt"
+
+func heapify(arr []int, i int, length int) {
+	if i >= length {
+		return
+	}
+	// i和自己左孩子, 右孩子去比较, 如果大, 就交换, 保持顶部最大
+	max := i
+	lChild := i*2 + 1
+	rChild := i*2 + 2
+	if lChild <= length && arr[lChild] > arr[max] {
+		max = lChild
+	}
+	if rChild <= length && arr[rChild] > arr[max] {
+		max = rChild
+	}
+	if max != i {
+		// 交换
+		arr[i], arr[max] = arr[max], arr[i]
+		heapify(arr, max, length)
+	}
+}
+
+func main() {
+	arr := []int{3, 5, 3, 0, 8, 6, 1, 5, 8, 6, 2, 4, 9, 4, 7, 0, 1, 8, 9, 7, 3, 1, 2, 5, 9, 7, 4, 0, 2, 6}
+	fmt.Println(arr)
+
+	// 构建大顶堆
+	length := len(arr) - 1
+	for i := length / 2; i >= 0; i-- {
+		heapify(arr, i, length)
+	}
+	fmt.Println(arr)
+
+	// 排序
+	for i := length; i >= 1; i-- {
+		arr[i], arr[0] = arr[0], arr[i]
+		length-- // 切腿
+		heapify(arr, 0, length)
+	}
+	fmt.Println(arr)
+}
+
+```
 
 
 
@@ -441,7 +494,7 @@ func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
 
 最长公用子串
 
-
+KMP
 
 
 
