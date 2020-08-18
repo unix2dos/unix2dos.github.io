@@ -221,9 +221,11 @@ You're good to go! The plugin was cloned to ~/.tmux/plugins/ dir and sourced.
 ------------------------------------------------------------------
 
   # Ctrl+Shift+Left  window向左(不需要prefix), Ctrl+Shift+Left window向右(不需要prefix)
-  bind-key -n C-S-Left swap-window -t -1 
-  bind-key -n C-S-Right swap-window -t +1 
-
+  #bind-key -n C-S-Left swap-window -t -1 
+  #bind-key -n C-S-Right swap-window -t +1 
+  #链接: https://superuser.com/a/552493
+  bind-key -n C-S-Left swap-window -t -1\; select-window -t -1
+  bind-key -n C-S-Right swap-window -t +1\; select-window -t +1
 
   # 插件相关, 参考3.2安装插件步骤
   set -g status-right 'Continuum status: #{continuum_status}'
