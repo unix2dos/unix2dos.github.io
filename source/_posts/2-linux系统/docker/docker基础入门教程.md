@@ -1,13 +1,12 @@
 ---
-title: docker基础入门
+title: docker基础入门教程
 tags:
   - docker
-  - linux
 categories:
   - 2-linux系统
   - docker
-abbrlink: d6254db7
-date: 2018-05-26 00:00:01
+abbrlink: a12c5ca5
+date: 2018-05-25 00:00:02
 ---
 
 
@@ -16,7 +15,7 @@ date: 2018-05-26 00:00:01
 
 + 镜像
 
-镜像包含操作系统完整的 `root` 文件系统，其体积往往是庞大的，因此在 Docker 设计时，就充分利用 [Union FS](https://en.wikipedia.org/wiki/Union_mount) 的技术，将其设计为分层存储的架构。所以严格来说，镜像并非是像一个 ISO 那样的打包文件，镜像只是一个虚拟的概念，其实际体现并非由一个文件组成，而是由一组文件系统组成，或者说，由多层文件系统联合组成。
+镜像包含操作系统完整的 `root` 文件系统，其体积往往是庞大的，因此在 Docker 设计时，就充分利用 Union FS 的技术，将其设计为分层存储的架构。所以严格来说，镜像并非是像一个 ISO 那样的打包文件，镜像只是一个虚拟的概念，其实际体现并非由一个文件组成，而是由一组文件系统组成，或者说，由多层文件系统联合组成。
 
 + 容器
 
@@ -24,7 +23,7 @@ date: 2018-05-26 00:00:01
 
 
 
-容器不应该向其存储层内写入任何数据，容器存储层要保持无状态化。所有的文件写入操作，都应该使用 [数据卷（Volume）](https://yeasy.gitbooks.io/docker_practice/content/data_management/volume.html)、或者绑定宿主目录，在这些位置的读写会跳过容器存储层，直接对宿主（或网络存储）发生读写，其性能和稳定性更高。
+容器不应该向其存储层内写入任何数据，容器存储层要保持无状态化。所有的文件写入操作，都应该使用 数据卷（Volume）、或者绑定宿主目录，在这些位置的读写会跳过容器存储层，直接对宿主（或网络存储）发生读写，其性能和稳定性更高。
 
 数据卷的生存周期独立于容器，容器消亡，数据卷不会消亡。因此，使用数据卷后，容器删除或者重新运行之后，数据却不会丢失。
 
@@ -36,7 +35,7 @@ date: 2018-05-26 00:00:01
 
 
 
-以 [Ubuntu 镜像](https://store.docker.com/images/ubuntu) 为例，`ubuntu` 是仓库的名字，其内包含有不同的版本标签，如，`14.04`, `16.04`。我们可以通过 `ubuntu:14.04`，或者 `ubuntu:16.04` 来具体指定所需哪个版本的镜像。如果忽略了标签，比如 `ubuntu`，那将视为 `ubuntu:latest`。
+以 Ubuntu 镜像 为例，`ubuntu` 是仓库的名字，其内包含有不同的版本标签，如，`14.04`, `16.04`。我们可以通过 `ubuntu:14.04`，或者 `ubuntu:16.04` 来具体指定所需哪个版本的镜像。如果忽略了标签，比如 `ubuntu`，那将视为 `ubuntu:latest`。
 
 
 
@@ -46,7 +45,7 @@ date: 2018-05-26 00:00:01
 
 # 1. 使用镜像
 
-### 1.1 获取镜像
+1.1 获取镜像
 
 ```
 docker pull [选项] [Docker Registry 地址[:端口号]/]仓库名[:标签]
@@ -62,7 +61,7 @@ docker pull ubuntu:16.04
 
 
 
-#### 1.2 运行容器
+1.2 运行容器
 
 ```
 docker run -it --rm \
@@ -77,7 +76,7 @@ docker run -it --rm \
 
 
 
-### 1.3 列出镜像
+1.3 列出镜像
 
 ```
 docker images
@@ -89,7 +88,7 @@ docker images
 
 
 
-### 1.4 虚悬镜像
+1.4 虚悬镜像
 
  `docker pull` 可能导致这种情况，`docker build` 也同样可以导致这种现象。由于新旧镜像同名，旧镜像名称被取消，从而出现仓库名、标签均为 `<none>` 的镜像。这类无标签镜像也被称为 **虚悬镜像(dangling image)**
 
@@ -103,7 +102,7 @@ docker image prune
 
 
 
-### 1.4 删除本地镜像
+1.4 删除本地镜像
 
 如果要删除本地的镜像，可以使用 `docker image rm` 命令，其格式为：
 
@@ -119,7 +118,7 @@ Dockerfile 是一个文本文件，其内包含了一条条的**指令(Instructi
 
 
 
-### 2.1 构建镜像
+2.1 构建镜像
 
 在 `Dockerfile` 文件所在目录执行：
 
@@ -137,13 +136,13 @@ docker build [选项] <上下文路径/URL/->
 
 
 
-### 2.2 镜像构建上下文（Context） 上下文路径就是 docker build 指定的
+2.2 镜像构建上下文（Context） 上下文路径就是 docker build 指定的
 
 如果注意，会看到 `docker build` 命令最后有一个 `.`。`.` 表示当前目录，而 `Dockerfile` 就在当前目录，因此不少初学者以为这个路径是在指定 `Dockerfile` 所在路径，这么理解其实是不准确的。如果对应上面的命令格式，你可能会发现，这是在指定**上下文路径**。那么什么是上下文呢？
 
 
 
-首先我们要理解 `docker build` 的工作原理。Docker 在运行时分为 Docker 引擎（也就是服务端守护进程）和客户端工具。Docker 的引擎提供了一组 REST API，被称为 [Docker Remote API](https://docs.docker.com/engine/reference/api/docker_remote_api/)，而如 `docker` 命令这样的客户端工具，则是通过这组 API 与 Docker 引擎交互，从而完成各种功能。因此，虽然表面上我们好像是在本机执行各种 `docker` 功能，但实际上，一切都是使用的远程调用形式在服务端（Docker 引擎）完成。也因为这种 C/S 设计，让我们操作远程服务器的 Docker 引擎变得轻而易举。
+首先我们要理解 `docker build` 的工作原理。Docker 在运行时分为 Docker 引擎（也就是服务端守护进程）和客户端工具。Docker 的引擎提供了一组 REST API，被称为 Docker Remote API，而如 docker 命令这样的客户端工具，则是通过这组 API 与 Docker 引擎交互，从而完成各种功能。因此，虽然表面上我们好像是在本机执行各种 `docker` 功能，但实际上，一切都是使用的远程调用形式在服务端（Docker 引擎）完成。也因为这种 C/S 设计，让我们操作远程服务器的 Docker 引擎变得轻而易举。
 
 
 
@@ -195,7 +194,7 @@ COPY ./package.json /app/
 
 
 
-### 2.3 dockerfile 指令
+2.3 dockerfile 指令
 
 
 
@@ -203,15 +202,13 @@ COPY ./package.json /app/
 
 所谓定制镜像，那一定是以一个镜像为基础，在其上进行定制。就像我们之前运行了一个 `nginx` 镜像的容器，再进行修改一样，基础镜像是必须指定的。而 `FROM` 就是指定**基础镜像**，因此一个 `Dockerfile` 中 `FROM` 是必备的指令，并且必须是第一条指令。
 
-在 [Docker Store](https://store.docker.com/) 上有非常多的高质量的官方镜像，有可以直接拿来使用的服务类的镜像，如 [`nginx`](https://store.docker.com/images/nginx/)、[`redis`](https://store.docker.com/images/redis/)、[`mongo`](https://store.docker.com/images/mongo/)、[`mysql`](https://store.docker.com/images/mysql/)、[`httpd`](https://store.docker.com/images/httpd/)、[`php`](https://store.docker.com/images/php/)、[`tomcat`](https://store.docker.com/images/tomcat/) 等；也有一些方便开发、构建、运行各种语言应用的镜像，如 [`node`](https://store.docker.com/images/node)、[`openjdk`](https://store.docker.com/images/openjdk/)、[`python`](https://store.docker.com/images/python/)、[`ruby`](https://store.docker.com/images/ruby/)、[`golang`](https://store.docker.com/images/golang/) 等。可以在其中寻找一个最符合我们最终目标的镜像为基础镜像进行定制。
+在 Docker Store 上有非常多的高质量的官方镜像，有可以直接拿来使用的服务类的镜像，如 nginx、redis、mongo、mysql、httpd、php、tomcat 等；也有一些方便开发、构建、运行各种语言应用的镜像，如 node、openjdk、python、ruby、golang 等。可以在其中寻找一个最符合我们最终目标的镜像为基础镜像进行定制。
 
 
 
-如果没有找到对应服务的镜像，官方镜像中还提供了一些更为基础的操作系统镜像，如 [`ubuntu`](https://store.docker.com/images/ubuntu/)、[`debian`](https://store.docker.com/images/debian/)、[`centos`](https://store.docker.com/images/centos/)、[`fedora`](https://store.docker.com/images/fedora/)、[`alpine`](https://store.docker.com/images/alpine/) 等，这些操作系统的软件库为我们提供了更广阔的扩展空间。
+如果没有找到对应服务的镜像，官方镜像中还提供了一些更为基础的操作系统镜像，如 ubuntu、debian、centos、fedora、alpine 等，这些操作系统的软件库为我们提供了更广阔的扩展空间。
 
-除了选择现有镜像为基础镜像外，Docker 还存在一个特殊的镜像，名为 `scratch`。这个镜像是虚拟的概念，并不实际存在，它表示一个空白的镜像。
-
-
+除了选择现有镜像为基础镜像外，Docker 还存在一个特殊的镜像，名为 scratch。这个镜像是虚拟的概念，并不实际存在，它表示一个空白的镜像。
 
 + RUN 执行命令
 
@@ -278,7 +275,7 @@ RUN buildDeps='gcc libc6-dev make' \
 COPY package.json /usr/src/app/
 ```
 
-`<源路径>` 可以是多个，甚至可以是通配符，其通配符规则要满足 Go 的 [`filepath.Match`](https://golang.org/pkg/path/filepath/#Match) 规则，如：
+`<源路径>` 可以是多个，甚至可以是通配符，其通配符规则要满足 Go 的 filepath.Match 规则，如：
 
 ```
 COPY hom* /mydir/
@@ -385,7 +382,7 @@ CMD ["nginx", "-g", "daemon off;"]
 
 
 
-##### 场景一：让镜像变成像命令一样使用
++ 场景一：让镜像变成像命令一样使用
 
 假设我们需要一个得知自己当前公网 IP 的镜像，那么可以先用 `CMD` 来实现：
 
@@ -452,7 +449,7 @@ Connection: keep-alive
 
   
 
-##### 场景二：应用运行前的准备工作
++ 场景二：应用运行前的准备工作
 
  启动容器就是启动主进程，但有些时候，启动主进程前，需要一些准备工作。
 
@@ -650,7 +647,7 @@ HEALTHCHECK --interval=5s --timeout=3s \
 
  
 
-### 2.4 docker多阶段构建 (多个 FROM as)
+2.4 docker多阶段构建 (多个 FROM as)
 
 我们构建 Docker 镜像时，一种方式是将所有的构建过程编包含在一个 `Dockerfile` 中，包括项目及其依赖库的编译、测试、打包等流程，这里可能会带来的一些问题：
 
@@ -724,7 +721,7 @@ $ COPY --from=nginx:latest /etc/nginx/nginx.conf /nginx.conf
 
 
 
-### 2.5 其它制作镜像的方式
+2.5 其它制作镜像的方式
 
 
 
@@ -778,7 +775,7 @@ docker save <镜像名> | bzip2 | pv | ssh <用户名>@<主机名> 'cat | docker
 
 # 3. 操作容器
 
-### 3.1 新建并启动 
+3.1 新建并启动 
 
 所需要的命令主要为 `docker run`。
 
@@ -803,13 +800,13 @@ root@af8bae53bdd3:/#
 
 
 
-### 3.2 启动已终止容器
+3.2 启动已终止容器
 
 可以利用 `docker container start` 命令，直接将一个已经终止的容器启动运行。
 
 
 
-### 3.3 后台运行
+3.3 后台运行
 
 更多的时候，需要让 Docker 在后台运行而不是直接把执行命令的结果输出在当前宿主机下。此时，可以通过添加 `-d` 参数来实现。
 
@@ -834,13 +831,13 @@ hello world
 
 
 
-### 3.4 终止容器
+3.4 终止容器
 
 可以使用 `docker container stop` 来终止一个运行中的容器。
 
  
 
-### 3.5 进入容器
+3.5 进入容器
 
 `docker exec` 后边可以跟多个参数，这里主要说明 `-i` `-t` 参数。
 
@@ -857,7 +854,7 @@ root@69d137adef7a:/#
 
 
 
-### 3.6 导出容器
+3.6 导出容器
 
 如果要导出本地某个容器，可以使用 `docker export` 命令。
 
@@ -869,7 +866,7 @@ docker export 7691a814370e > ubuntu.tar
 
 
 
-### 3.7 导入容器快照
+3.7 导入容器快照
 
 ```
 $ cat ubuntu.tar | docker import - test/ubuntu:v1.0
@@ -892,7 +889,7 @@ $ docker import http://example.com/exampleimage.tgz example/imagerepo
 
 
 
-### 3.8 删除容器
+3.8 删除容器
 
 可以使用 `docker container rm` 来删除一个处于终止状态的容器。例如
 
@@ -903,7 +900,7 @@ trusting_newton
 
 
 
-### 3.9 清理所有处于终止状态的容器
+3.9 清理所有处于终止状态的容器
 
 ```
 $ docker container prune
@@ -913,7 +910,7 @@ $ docker container prune
 
 # 4. 访问仓库
 
-#### Docker Hub
+4.1 Docker Hub
 
 你可以在 [https://cloud.docker.com](https://cloud.docker.com/) 免费注册一个 Docker 账号。
 
@@ -923,7 +920,7 @@ $ docker container prune
 
 
 
-#### 拉取镜像
+4.2 拉取镜像
 
 你可以通过 `docker search` 命令来查找官方仓库中的镜像，并利用 `docker pull` 命令来将它下载到本地。
 
@@ -935,7 +932,7 @@ $ docker container prune
 
 
 
-#### 推送镜像
+4.3 推送镜像
 
 用户也可以在登录后通过 `docker push` 命令来将自己的镜像推送到 Docker Hub。
 
@@ -958,7 +955,7 @@ username/ubuntu
 
 
 
-#### 自动创建
+4.4 自动创建
 
 有时候，用户创建了镜像，安装了某个软件，如果软件发布新版本则需要手动更新镜像。
 
@@ -978,7 +975,7 @@ username/ubuntu
 
 
 
-#### 私有仓库
+4.5 私有仓库
 
 [`docker-registry`](https://docs.docker.com/registry/) 是官方提供的工具，可以用于构建私有的镜像仓库。
 
@@ -988,7 +985,7 @@ username/ubuntu
 
 # 5. 数据管理
 
-### 5.1 数据卷
+5.1 数据卷
 
  `数据卷` 是一个可供一个或多个容器使用的特殊目录，它绕过 UFS，可以提供很多有用的特性：
 
@@ -1001,13 +998,13 @@ username/ubuntu
 
 
 
-#### 选择 -v 还是 -–mount 参数
+5.2 选择 -v 还是 -–mount 参数
 
 Docker 新用户应该选择 `--mount` 参数，经验丰富的 Docker 使用者对 `-v` 或者 `--volume` 已经很熟悉了，但是推荐使用 `--mount` 参数。
 
 
 
-#### 创建一个数据卷
+5.3 创建一个数据卷
 
 ```
 $ docker volume create my-vol
@@ -1043,7 +1040,7 @@ $ docker volume inspect my-vol
 
 
 
-#### 启动一个挂载数据卷的容器
+5.4 启动一个挂载数据卷的容器
 
  在用 `docker run` 命令的时候，使用 `--mount` 标记来将 `数据卷` 挂载到容器里。在一次 `docker run`中可以挂载多个 `数据卷`。
 
@@ -1063,7 +1060,7 @@ $ docker run -d -P \
 
 
 
-#### 查看数据卷的具体信息
+5.5 查看数据卷的具体信息
 
 在主机里使用以下命令可以查看 `web` 容器的信息
 
@@ -1092,7 +1089,7 @@ $ docker inspect web
 
 
 
-#### 删除数据卷
+5.6 删除数据卷
 
 ```
 $ docker volume rm my-vol
@@ -1112,9 +1109,7 @@ $ docker volume prune
 
 
 
-### 5.2 挂载主机目录
-
-#### 挂载一个主机目录作为数据卷
+5.7 挂载一个主机目录作为数据卷
 
 使用 `--mount` 标记可以指定挂载一个本地主机的目录到容器中去。
 
@@ -1153,7 +1148,7 @@ touch: new.txt: Read-only file system
 
 
 
-#### 查看数据卷的具体信息
+5.8 查看数据卷的具体信息
 
 在主机里使用以下命令可以查看 `web` 容器的信息
 
@@ -1178,7 +1173,7 @@ $ docker inspect web
 
 
 
-#### 挂载一个本地主机文件作为数据卷
+5.9 挂载一个本地主机文件作为数据卷
 
 `--mount` 标记也可以从主机挂载单个文件到容器中
 
@@ -1200,7 +1195,7 @@ root@2affd44b4667:/# history
 
 # 6. 使用网络
 
-### 6.1 外部访问容器
+6.1 外部访问容器
 
 容器中可以运行一些网络应用，要让外部也可以访问这些应用，可以通过 `-P` 或 `-p` 参数来指定端口映射。
 
@@ -1226,7 +1221,7 @@ bc533791f3f5  training/webapp:latest  python app.py 5 seconds ago  Up 2 seconds 
 
 
 
-#### 映射所有接口地址 
+6.2 映射所有接口地址 
 
 使用 `hostPort:containerPort` 格式本地的 5000 端口映射到容器的 5000 端口，可以执行
 
@@ -1238,7 +1233,7 @@ $ docker run -d -p 5000:5000 training/webapp python app.py
 
 
 
-#### 映射到指定地址的指定端口  
+6.3 映射到指定地址的指定端口  
 
 可以使用 `ip:hostPort:containerPort` 格式指定映射使用一个特定地址，比如 localhost 地址 127.0.0.1
 
@@ -1248,7 +1243,7 @@ $ docker run -d -p 127.0.0.1:5000:5000 training/webapp python app.py
 
 
 
-#### 映射到指定地址的任意端口
+6.4 映射到指定地址的任意端口
 
 使用 `ip::containerPort` 绑定 localhost 的任意端口到容器的 5000 端口，本地主机会自动分配一个端口。
 
@@ -1266,7 +1261,7 @@ $ docker run -d -p 127.0.0.1:5000:5000/udp training/webapp python app.py
 
 
 
-#### 查看映射端口配置
+6.5 查看映射端口配置
 
  使用 `docker port` 来查看当前映射的端口配置，也可以查看到绑定的地址
 
@@ -1293,9 +1288,9 @@ $ docker run -d \
 
 
 
-### 6.2 容器互联
+6.7 容器互联
 
-#### 新建网络
++ 新建网络
 
  下面先创建一个新的 Docker 网络。
 
@@ -1307,7 +1302,7 @@ $ docker network create -d bridge my-net
 
 
 
-#### 连接容器
++ 连接容器
 
 运行一个容器并连接到新建的 `my-net` 网络
 
@@ -1363,15 +1358,11 @@ PING busybox1 (172.19.0.2): 56 data bytes
 
 这样，`busybox1` 容器和 `busybox2` 容器建立了互联关系。
 
-
-
-
-
 如果你有多个容器之间需要互相连接，推荐使用 [Docker Compose](https://yeasy.gitbooks.io/docker_practice/content/compose)。
 
 
 
-### 6.3 配置 DNS
+6.8 配置 DNS
 
  如何自定义配置容器的主机名和 DNS 呢？秘诀就是 Docker 利用虚拟文件来挂载容器的 3 个相关配置文件。
 
@@ -1419,15 +1410,13 @@ tmpfs on /etc/resolv.conf type tmpfs ...
 
 
 
-# 7. 高级网络配置 TODO
+# 7. 高级网络配置 TODO:
 
 
 
 # 8. Docker Compose(组成) 项目
 
-
-
-### 8.1 Compose 简介
+8.1 Compose 简介
 
 `Compose` 项目是 Docker 官方的开源项目，负责实现对 Docker 容器集群的快速编排。
 
@@ -1452,7 +1441,7 @@ tmpfs on /etc/resolv.conf type tmpfs ...
 
 
 
-### 8.2 安装与卸载
+8.2 安装与卸载
 
 - `Compose` 可以通过 Python 的包管理工具 `pip` 进行安装
 
@@ -1468,7 +1457,7 @@ docker-compose version 1.21.0, build 5920eb0
 
 
 
-### 8.3 Compose 命令说明使用
+8.3 Compose 命令说明使用
 
 对于 Compose 来说，大部分命令的对象既可以是项目本身，也可以指定为项目中的服务或者容器。如果没有特别的说明，命令对象将是项目，这意味着项目中所有的服务都会受到命令影响。
 
@@ -1482,7 +1471,7 @@ docker-compose [-f=<arg>...] [options] [COMMAND] [ARGS...]
 
  
 
-#### 命令选项
+命令选项
 
 - `-f, --file FILE` 指定使用的 Compose 模板文件，默认为 `docker-compose.yml`，可以多次指定。
 - `-p, --project-name NAME` 指定项目名称，默认将使用所在目录名称作为项目名。
@@ -1493,7 +1482,7 @@ docker-compose [-f=<arg>...] [options] [COMMAND] [ARGS...]
 
  
 
-#### 命令使用说明
+命令使用说明
 
 
 
@@ -1745,13 +1734,13 @@ $ docker-compose scale web=3 db=2
 
 
 
-##### 8.23 `version` 打印版本信息
+8.23 `version` 打印版本信息
 
 格式为 `docker-compose version`。
 
 
 
-### 8.4 Compose 模板文件
+8.24 Compose 模板文件
 
 模板文件是使用 `Compose` 的核心，涉及到的指令关键字也比较多。大部分指令跟 `docker run` 相关参数的含义都是类似的。
 
