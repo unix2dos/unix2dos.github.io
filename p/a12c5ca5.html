@@ -63,7 +63,7 @@
 <meta property="og:site_name" content="Levon&#39;s Blog">
 <meta property="og:description" content="0. 基本概念 镜像  镜像包含操作系统完整的 root 文件系统，其体积往往是庞大的，因此在 Docker 设计时，就充分利用 Union FS 的技术，将其设计为分层存储的架构。所以严格来说，镜像并非是像一个 ISO 那样的打包文件，镜像只是一个虚拟的概念，其实际体现并非由一个文件组成，而是由一组文件系统组成，或者说，由多层文件系统联合组成。  容器  每一个容器运行时，是以镜像为基础层，在其">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-08-23T08:48:53.023Z">
+<meta property="og:updated_time" content="2020-08-23T08:51:08.035Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="docker基础入门教程">
 <meta name="twitter:description" content="0. 基本概念 镜像  镜像包含操作系统完整的 root 文件系统，其体积往往是庞大的，因此在 Docker 设计时，就充分利用 Union FS 的技术，将其设计为分层存储的架构。所以严格来说，镜像并非是像一个 ISO 那样的打包文件，镜像只是一个虚拟的概念，其实际体现并非由一个文件组成，而是由一组文件系统组成，或者说，由多层文件系统联合组成。  容器  每一个容器运行时，是以镜像为基础层，在其">
@@ -286,7 +286,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-23 16:48:53" itemprop="dateModified" datetime="2020-08-23T16:48:53+08:00">2020-08-23</time>
+                <time title="修改时间：2020-08-23 16:51:08" itemprop="dateModified" datetime="2020-08-23T16:51:08+08:00">2020-08-23</time>
               </span>
             
           
@@ -360,12 +360,12 @@
         <h1 id="0-基本概念"><a href="#0-基本概念" class="headerlink" title="0. 基本概念"></a>0. 基本概念</h1><ul>
 <li>镜像</li>
 </ul>
-<p>镜像包含操作系统完整的 <code>root</code> 文件系统，其体积往往是庞大的，因此在 Docker 设计时，就充分利用 <a href="https://en.wikipedia.org/wiki/Union_mount" target="_blank" rel="noopener">Union FS</a> 的技术，将其设计为分层存储的架构。所以严格来说，镜像并非是像一个 ISO 那样的打包文件，镜像只是一个虚拟的概念，其实际体现并非由一个文件组成，而是由一组文件系统组成，或者说，由多层文件系统联合组成。</p>
+<p>镜像包含操作系统完整的 <code>root</code> 文件系统，其体积往往是庞大的，因此在 Docker 设计时，就充分利用 Union FS 的技术，将其设计为分层存储的架构。所以严格来说，镜像并非是像一个 ISO 那样的打包文件，镜像只是一个虚拟的概念，其实际体现并非由一个文件组成，而是由一组文件系统组成，或者说，由多层文件系统联合组成。</p>
 <ul>
 <li>容器</li>
 </ul>
 <p>每一个容器运行时，是以镜像为基础层，在其上创建一个当前容器的存储层，我们可以称这个为容器运行时读写而准备的存储层为容器存储层。</p>
-<p>容器不应该向其存储层内写入任何数据，容器存储层要保持无状态化。所有的文件写入操作，都应该使用 <a href="https://yeasy.gitbooks.io/docker_practice/content/data_management/volume.html" target="_blank" rel="noopener">数据卷（Volume）</a>、或者绑定宿主目录，在这些位置的读写会跳过容器存储层，直接对宿主（或网络存储）发生读写，其性能和稳定性更高。</p>
+<p>容器不应该向其存储层内写入任何数据，容器存储层要保持无状态化。所有的文件写入操作，都应该使用 数据卷（Volume）、或者绑定宿主目录，在这些位置的读写会跳过容器存储层，直接对宿主（或网络存储）发生读写，其性能和稳定性更高。</p>
 <p>数据卷的生存周期独立于容器，容器消亡，数据卷不会消亡。因此，使用数据卷后，容器删除或者重新运行之后，数据却不会丢失。</p>
 <a id="more"></a>
 
@@ -373,7 +373,7 @@
 <li>仓库</li>
 </ul>
 <p>一个仓库会包含同一个软件不同版本的镜像，而标签就常用于对应该软件的各个版本。我们可以通过 <code>&lt;仓库名&gt;:&lt;标签&gt;</code> 的格式来指定具体是这个软件哪个版本的镜像。如果不给出标签，将以 <code>latest</code> 作为默认标签。</p>
-<p>以 <a href="https://store.docker.com/images/ubuntu" target="_blank" rel="noopener">Ubuntu 镜像</a> 为例，<code>ubuntu</code> 是仓库的名字，其内包含有不同的版本标签，如，<code>14.04</code>, <code>16.04</code>。我们可以通过 <code>ubuntu:14.04</code>，或者 <code>ubuntu:16.04</code> 来具体指定所需哪个版本的镜像。如果忽略了标签，比如 <code>ubuntu</code>，那将视为 <code>ubuntu:latest</code>。</p>
+<p>以 Ubuntu 镜像 为例，<code>ubuntu</code> 是仓库的名字，其内包含有不同的版本标签，如，<code>14.04</code>, <code>16.04</code>。我们可以通过 <code>ubuntu:14.04</code>，或者 <code>ubuntu:16.04</code> 来具体指定所需哪个版本的镜像。如果忽略了标签，比如 <code>ubuntu</code>，那将视为 <code>ubuntu:latest</code>。</p>
 <p>仓库名经常以 <em>两段式路径</em> 形式出现，比如 <code>jwilder/nginx-proxy</code>，前者往往意味着 Docker Registry 多用户环境下的用户名，后者则往往是对应的软件名。但这并非绝对，取决于所使用的具体 Docker Registry 的软件或服务。</p>
 <h1 id="1-使用镜像"><a href="#1-使用镜像" class="headerlink" title="1. 使用镜像"></a>1. 使用镜像</h1><p>1.1 获取镜像</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull [选项] [Docker Registry 地址[:端口号]/]仓库名[:标签]</span><br></pre></td></tr></table></figure>
@@ -417,7 +417,7 @@
 
 <p>2.2 镜像构建上下文（Context） 上下文路径就是 docker build 指定的</p>
 <p>如果注意，会看到 <code>docker build</code> 命令最后有一个 <code>.</code>。<code>.</code> 表示当前目录，而 <code>Dockerfile</code> 就在当前目录，因此不少初学者以为这个路径是在指定 <code>Dockerfile</code> 所在路径，这么理解其实是不准确的。如果对应上面的命令格式，你可能会发现，这是在指定<strong>上下文路径</strong>。那么什么是上下文呢？</p>
-<p>首先我们要理解 <code>docker build</code> 的工作原理。Docker 在运行时分为 Docker 引擎（也就是服务端守护进程）和客户端工具。Docker 的引擎提供了一组 REST API，被称为 <a href="https://docs.docker.com/engine/reference/api/docker_remote_api/" target="_blank" rel="noopener">Docker Remote API</a>，而如 <code>docker</code> 命令这样的客户端工具，则是通过这组 API 与 Docker 引擎交互，从而完成各种功能。因此，虽然表面上我们好像是在本机执行各种 <code>docker</code> 功能，但实际上，一切都是使用的远程调用形式在服务端（Docker 引擎）完成。也因为这种 C/S 设计，让我们操作远程服务器的 Docker 引擎变得轻而易举。</p>
+<p>首先我们要理解 <code>docker build</code> 的工作原理。Docker 在运行时分为 Docker 引擎（也就是服务端守护进程）和客户端工具。Docker 的引擎提供了一组 REST API，被称为 Docker Remote API，而如 docker 命令这样的客户端工具，则是通过这组 API 与 Docker 引擎交互，从而完成各种功能。因此，虽然表面上我们好像是在本机执行各种 <code>docker</code> 功能，但实际上，一切都是使用的远程调用形式在服务端（Docker 引擎）完成。也因为这种 C/S 设计，让我们操作远程服务器的 Docker 引擎变得轻而易举。</p>
 <p>当我们进行镜像构建的时候，并非所有定制都会通过 <code>RUN</code> 指令完成，经常会需要将一些本地文件复制进镜像，比如通过 <code>COPY</code> 指令、<code>ADD</code> 指令等。而 <code>docker build</code> 命令构建镜像，其实并非在本地构建，而是在服务端，也就是 Docker 引擎中构建的。那么在这种客户端/服务端的架构中，如何才能让服务端获得本地文件呢？</p>
 <p>这就引入了上下文的概念。当构建的时候，用户会指定构建镜像上下文的路径，<code>docker build</code> 命令得知这个路径后，会将路径下的所有内容打包，然后上传给 Docker 引擎。这样 Docker 引擎收到这个上下文包后，展开就会获得构建镜像所需的一切文件。</p>
 <p>如果在 <code>Dockerfile</code> 中这么写：</p>
@@ -436,9 +436,9 @@
 <li>FROM 指定基础镜像</li>
 </ul>
 <p>所谓定制镜像，那一定是以一个镜像为基础，在其上进行定制。就像我们之前运行了一个 <code>nginx</code> 镜像的容器，再进行修改一样，基础镜像是必须指定的。而 <code>FROM</code> 就是指定<strong>基础镜像</strong>，因此一个 <code>Dockerfile</code> 中 <code>FROM</code> 是必备的指令，并且必须是第一条指令。</p>
-<p>在 <a href="https://store.docker.com/" target="_blank" rel="noopener">Docker Store</a> 上有非常多的高质量的官方镜像，有可以直接拿来使用的服务类的镜像，如 <a href="https://store.docker.com/images/nginx/" target="_blank" rel="noopener"><code>nginx</code></a>、<a href="https://store.docker.com/images/redis/" target="_blank" rel="noopener"><code>redis</code></a>、<a href="https://store.docker.com/images/mongo/" target="_blank" rel="noopener"><code>mongo</code></a>、<a href="https://store.docker.com/images/mysql/" target="_blank" rel="noopener"><code>mysql</code></a>、<a href="https://store.docker.com/images/httpd/" target="_blank" rel="noopener"><code>httpd</code></a>、<a href="https://store.docker.com/images/php/" target="_blank" rel="noopener"><code>php</code></a>、<a href="https://store.docker.com/images/tomcat/" target="_blank" rel="noopener"><code>tomcat</code></a> 等；也有一些方便开发、构建、运行各种语言应用的镜像，如 <a href="https://store.docker.com/images/node" target="_blank" rel="noopener"><code>node</code></a>、<a href="https://store.docker.com/images/openjdk/" target="_blank" rel="noopener"><code>openjdk</code></a>、<a href="https://store.docker.com/images/python/" target="_blank" rel="noopener"><code>python</code></a>、<a href="https://store.docker.com/images/ruby/" target="_blank" rel="noopener"><code>ruby</code></a>、<a href="https://store.docker.com/images/golang/" target="_blank" rel="noopener"><code>golang</code></a> 等。可以在其中寻找一个最符合我们最终目标的镜像为基础镜像进行定制。</p>
-<p>如果没有找到对应服务的镜像，官方镜像中还提供了一些更为基础的操作系统镜像，如 <a href="https://store.docker.com/images/ubuntu/" target="_blank" rel="noopener"><code>ubuntu</code></a>、<a href="https://store.docker.com/images/debian/" target="_blank" rel="noopener"><code>debian</code></a>、<a href="https://store.docker.com/images/centos/" target="_blank" rel="noopener"><code>centos</code></a>、<a href="https://store.docker.com/images/fedora/" target="_blank" rel="noopener"><code>fedora</code></a>、<a href="https://store.docker.com/images/alpine/" target="_blank" rel="noopener"><code>alpine</code></a> 等，这些操作系统的软件库为我们提供了更广阔的扩展空间。</p>
-<p>除了选择现有镜像为基础镜像外，Docker 还存在一个特殊的镜像，名为 <code>scratch</code>。这个镜像是虚拟的概念，并不实际存在，它表示一个空白的镜像。</p>
+<p>在 Docker Store 上有非常多的高质量的官方镜像，有可以直接拿来使用的服务类的镜像，如 nginx、redis、mongo、mysql、httpd、php、tomcat 等；也有一些方便开发、构建、运行各种语言应用的镜像，如 node、openjdk、python、ruby、golang 等。可以在其中寻找一个最符合我们最终目标的镜像为基础镜像进行定制。</p>
+<p>如果没有找到对应服务的镜像，官方镜像中还提供了一些更为基础的操作系统镜像，如 ubuntu、debian、centos、fedora、alpine 等，这些操作系统的软件库为我们提供了更广阔的扩展空间。</p>
+<p>除了选择现有镜像为基础镜像外，Docker 还存在一个特殊的镜像，名为 scratch。这个镜像是虚拟的概念，并不实际存在，它表示一个空白的镜像。</p>
 <ul>
 <li>RUN 执行命令</li>
 </ul>
@@ -468,7 +468,7 @@
 <p><code>COPY</code> 指令将从构建上下文目录中 <code>&lt;源路径&gt;</code> 的文件/目录复制到新的一层的镜像内的 <code>&lt;目标路径&gt;</code> 位置。比如：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">COPY package.json /usr/src/app/</span><br></pre></td></tr></table></figure>
 
-<p><code>&lt;源路径&gt;</code> 可以是多个，甚至可以是通配符，其通配符规则要满足 Go 的 <a href="https://golang.org/pkg/path/filepath/#Match" target="_blank" rel="noopener"><code>filepath.Match</code></a> 规则，如：</p>
+<p><code>&lt;源路径&gt;</code> 可以是多个，甚至可以是通配符，其通配符规则要满足 Go 的 filepath.Match 规则，如：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">COPY hom* /mydir/</span><br><span class="line">COPY hom?.txt /mydir/</span><br></pre></td></tr></table></figure>
 
 <p><code>&lt;目标路径&gt;</code> 可以是容器内的绝对路径，也可以是相对于工作目录的相对路径（工作目录可以用 <code>WORKDIR</code>指令来指定）。目标路径不需要事先创建，如果目录不存在会在复制文件前先行创建缺失目录。</p>
