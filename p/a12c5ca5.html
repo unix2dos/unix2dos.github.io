@@ -63,7 +63,7 @@
 <meta property="og:site_name" content="Levon&#39;s Blog">
 <meta property="og:description" content="0. 基本概念 镜像  镜像包含操作系统完整的 root 文件系统，其体积往往是庞大的，因此在 Docker 设计时，就充分利用 Union FS 的技术，将其设计为分层存储的架构。所以严格来说，镜像并非是像一个 ISO 那样的打包文件，镜像只是一个虚拟的概念，其实际体现并非由一个文件组成，而是由一组文件系统组成，或者说，由多层文件系统联合组成。  容器  每一个容器运行时，是以镜像为基础层，在其">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-08-23T08:46:32.809Z">
+<meta property="og:updated_time" content="2020-08-23T08:48:53.023Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="docker基础入门教程">
 <meta name="twitter:description" content="0. 基本概念 镜像  镜像包含操作系统完整的 root 文件系统，其体积往往是庞大的，因此在 Docker 设计时，就充分利用 Union FS 的技术，将其设计为分层存储的架构。所以严格来说，镜像并非是像一个 ISO 那样的打包文件，镜像只是一个虚拟的概念，其实际体现并非由一个文件组成，而是由一组文件系统组成，或者说，由多层文件系统联合组成。  容器  每一个容器运行时，是以镜像为基础层，在其">
@@ -286,7 +286,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-23 16:46:32" itemprop="dateModified" datetime="2020-08-23T16:46:32+08:00">2020-08-23</time>
+                <time title="修改时间：2020-08-23 16:48:53" itemprop="dateModified" datetime="2020-08-23T16:48:53+08:00">2020-08-23</time>
               </span>
             
           
@@ -375,7 +375,8 @@
 <p>一个仓库会包含同一个软件不同版本的镜像，而标签就常用于对应该软件的各个版本。我们可以通过 <code>&lt;仓库名&gt;:&lt;标签&gt;</code> 的格式来指定具体是这个软件哪个版本的镜像。如果不给出标签，将以 <code>latest</code> 作为默认标签。</p>
 <p>以 <a href="https://store.docker.com/images/ubuntu" target="_blank" rel="noopener">Ubuntu 镜像</a> 为例，<code>ubuntu</code> 是仓库的名字，其内包含有不同的版本标签，如，<code>14.04</code>, <code>16.04</code>。我们可以通过 <code>ubuntu:14.04</code>，或者 <code>ubuntu:16.04</code> 来具体指定所需哪个版本的镜像。如果忽略了标签，比如 <code>ubuntu</code>，那将视为 <code>ubuntu:latest</code>。</p>
 <p>仓库名经常以 <em>两段式路径</em> 形式出现，比如 <code>jwilder/nginx-proxy</code>，前者往往意味着 Docker Registry 多用户环境下的用户名，后者则往往是对应的软件名。但这并非绝对，取决于所使用的具体 Docker Registry 的软件或服务。</p>
-<h1 id="1-使用镜像"><a href="#1-使用镜像" class="headerlink" title="1. 使用镜像"></a>1. 使用镜像</h1><h3 id="1-1-获取镜像"><a href="#1-1-获取镜像" class="headerlink" title="1.1 获取镜像"></a>1.1 获取镜像</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull [选项] [Docker Registry 地址[:端口号]/]仓库名[:标签]</span><br></pre></td></tr></table></figure>
+<h1 id="1-使用镜像"><a href="#1-使用镜像" class="headerlink" title="1. 使用镜像"></a>1. 使用镜像</h1><p>1.1 获取镜像</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull [选项] [Docker Registry 地址[:端口号]/]仓库名[:标签]</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>Docker 镜像仓库地址：地址的格式一般是 <code>&lt;域名/IP&gt;[:端口号]</code>。默认地址是 Docker Hub。</li>
@@ -383,7 +384,8 @@
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker pull ubuntu:16.04</span><br><span class="line">16.04: Pulling from library/ubuntu</span><br></pre></td></tr></table></figure>
 
-<h3 id="1-2-运行容器"><a href="#1-2-运行容器" class="headerlink" title="1.2 运行容器"></a>1.2 运行容器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --rm \</span><br><span class="line">    ubuntu:16.04 \</span><br><span class="line">    bash</span><br></pre></td></tr></table></figure>
+<p>1.2 运行容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --rm \</span><br><span class="line">    ubuntu:16.04 \</span><br><span class="line">    bash</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li><code>-it</code>：这是两个参数，一个是 <code>-i</code>：交互式操作，一个是 <code>-t</code> 终端。我们这里打算进入 <code>bash</code> 执行一些命令并查看返回结果，因此我们需要交互式终端。</li>
@@ -391,25 +393,30 @@
 <li><code>ubuntu:16.04</code>：这是指用 <code>ubuntu:16.04</code> 镜像为基础来启动容器。</li>
 <li><code>bash</code>：放在镜像名后的是<strong>命令</strong>，这里我们希望有个交互式 Shell，因此用的是 <code>bash</code></li>
 </ul>
-<h3 id="1-3-列出镜像"><a href="#1-3-列出镜像" class="headerlink" title="1.3 列出镜像"></a>1.3 列出镜像</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker images</span><br></pre></td></tr></table></figure>
+<p>1.3 列出镜像</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker images</span><br></pre></td></tr></table></figure>
 
 <p>列表包含了 <code>仓库名</code>、<code>标签</code>、<code>镜像 ID</code>、<code>创建时间</code> 以及 <code>所占用的空间</code>。</p>
 <p><strong>镜像 ID</strong> 则是镜像的唯一标识，一个镜像可以对应多个<strong>标签</strong>。</p>
-<h3 id="1-4-虚悬镜像"><a href="#1-4-虚悬镜像" class="headerlink" title="1.4 虚悬镜像"></a>1.4 虚悬镜像</h3><p> <code>docker pull</code> 可能导致这种情况，<code>docker build</code> 也同样可以导致这种现象。由于新旧镜像同名，旧镜像名称被取消，从而出现仓库名、标签均为 <code>&lt;none&gt;</code> 的镜像。这类无标签镜像也被称为 <strong>虚悬镜像(dangling image)</strong></p>
+<p>1.4 虚悬镜像</p>
+<p> <code>docker pull</code> 可能导致这种情况，<code>docker build</code> 也同样可以导致这种现象。由于新旧镜像同名，旧镜像名称被取消，从而出现仓库名、标签均为 <code>&lt;none&gt;</code> 的镜像。这类无标签镜像也被称为 <strong>虚悬镜像(dangling image)</strong></p>
 <p>一般来说，虚悬镜像已经失去了存在的价值，是可以随意删除的，可以用下面的命令删除。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker image prune</span><br></pre></td></tr></table></figure>
 
-<h3 id="1-4-删除本地镜像"><a href="#1-4-删除本地镜像" class="headerlink" title="1.4 删除本地镜像"></a>1.4 删除本地镜像</h3><p>如果要删除本地的镜像，可以使用 <code>docker image rm</code> 命令，其格式为：</p>
+<p>1.4 删除本地镜像</p>
+<p>如果要删除本地的镜像，可以使用 <code>docker image rm</code> 命令，其格式为：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker image rm [选项] &lt;镜像1&gt; [&lt;镜像2&gt; ...]</span><br></pre></td></tr></table></figure>
 
 <h4 id><a href="#" class="headerlink" title></a></h4><h1 id="2-Dockerfile-定制镜像"><a href="#2-Dockerfile-定制镜像" class="headerlink" title="2. Dockerfile 定制镜像"></a>2. Dockerfile 定制镜像</h1><p>Dockerfile 是一个文本文件，其内包含了一条条的<strong>指令(Instruction)</strong>，每一条指令构建一层，因此每一条指令的内容，就是描述该层应当如何构建。</p>
-<h3 id="2-1-构建镜像"><a href="#2-1-构建镜像" class="headerlink" title="2.1 构建镜像"></a>2.1 构建镜像</h3><p>在 <code>Dockerfile</code> 文件所在目录执行：</p>
+<p>2.1 构建镜像</p>
+<p>在 <code>Dockerfile</code> 文件所在目录执行：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker build -t nginx:v3 .</span><br></pre></td></tr></table></figure>
 
 <p>这里我们使用了 <code>docker build</code> 命令进行镜像构建。其格式为：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build [选项] &lt;上下文路径/URL/-&gt;</span><br></pre></td></tr></table></figure>
 
-<h3 id="2-2-镜像构建上下文（Context）-上下文路径就是-docker-build-指定的"><a href="#2-2-镜像构建上下文（Context）-上下文路径就是-docker-build-指定的" class="headerlink" title="2.2 镜像构建上下文（Context） 上下文路径就是 docker build 指定的"></a>2.2 镜像构建上下文（Context） 上下文路径就是 docker build 指定的</h3><p>如果注意，会看到 <code>docker build</code> 命令最后有一个 <code>.</code>。<code>.</code> 表示当前目录，而 <code>Dockerfile</code> 就在当前目录，因此不少初学者以为这个路径是在指定 <code>Dockerfile</code> 所在路径，这么理解其实是不准确的。如果对应上面的命令格式，你可能会发现，这是在指定<strong>上下文路径</strong>。那么什么是上下文呢？</p>
+<p>2.2 镜像构建上下文（Context） 上下文路径就是 docker build 指定的</p>
+<p>如果注意，会看到 <code>docker build</code> 命令最后有一个 <code>.</code>。<code>.</code> 表示当前目录，而 <code>Dockerfile</code> 就在当前目录，因此不少初学者以为这个路径是在指定 <code>Dockerfile</code> 所在路径，这么理解其实是不准确的。如果对应上面的命令格式，你可能会发现，这是在指定<strong>上下文路径</strong>。那么什么是上下文呢？</p>
 <p>首先我们要理解 <code>docker build</code> 的工作原理。Docker 在运行时分为 Docker 引擎（也就是服务端守护进程）和客户端工具。Docker 的引擎提供了一组 REST API，被称为 <a href="https://docs.docker.com/engine/reference/api/docker_remote_api/" target="_blank" rel="noopener">Docker Remote API</a>，而如 <code>docker</code> 命令这样的客户端工具，则是通过这组 API 与 Docker 引擎交互，从而完成各种功能。因此，虽然表面上我们好像是在本机执行各种 <code>docker</code> 功能，但实际上，一切都是使用的远程调用形式在服务端（Docker 引擎）完成。也因为这种 C/S 设计，让我们操作远程服务器的 Docker 引擎变得轻而易举。</p>
 <p>当我们进行镜像构建的时候，并非所有定制都会通过 <code>RUN</code> 指令完成，经常会需要将一些本地文件复制进镜像，比如通过 <code>COPY</code> 指令、<code>ADD</code> 指令等。而 <code>docker build</code> 命令构建镜像，其实并非在本地构建，而是在服务端，也就是 Docker 引擎中构建的。那么在这种客户端/服务端的架构中，如何才能让服务端获得本地文件呢？</p>
 <p>这就引入了上下文的概念。当构建的时候，用户会指定构建镜像上下文的路径，<code>docker build</code> 命令得知这个路径后，会将路径下的所有内容打包，然后上传给 Docker 引擎。这样 Docker 引擎收到这个上下文包后，展开就会获得构建镜像所需的一切文件。</p>
@@ -424,7 +431,8 @@
 <p>那么为什么会有人误以为 <code>.</code> 是指定 <code>Dockerfile</code> 所在目录呢？这是因为在默认情况下，如果不额外指定 <code>Dockerfile</code> 的话，会将上下文目录下的名为 <code>Dockerfile</code> 的文件作为 Dockerfile。</p>
 <p>这只是默认行为，实际上 <code>Dockerfile</code> 的文件名并不要求必须为 <code>Dockerfile</code>，而且并不要求必须位于上下文目录中，比如可以用 <code>-f ../Dockerfile.php</code> 参数指定某个文件作为 <code>Dockerfile</code>。</p>
 <p>当然，一般大家习惯性的会使用默认的文件名 <code>Dockerfile</code>，以及会将其置于镜像构建上下文目录中。</p>
-<h3 id="2-3-dockerfile-指令"><a href="#2-3-dockerfile-指令" class="headerlink" title="2.3 dockerfile 指令"></a>2.3 dockerfile 指令</h3><ul>
+<p>2.3 dockerfile 指令</p>
+<ul>
 <li>FROM 指定基础镜像</li>
 </ul>
 <p>所谓定制镜像，那一定是以一个镜像为基础，在其上进行定制。就像我们之前运行了一个 <code>nginx</code> 镜像的容器，再进行修改一样，基础镜像是必须指定的。而 <code>FROM</code> 就是指定<strong>基础镜像</strong>，因此一个 <code>Dockerfile</code> 中 <code>FROM</code> 是必备的指令，并且必须是第一条指令。</p>
@@ -634,7 +642,8 @@
 <p>格式：<code>ONBUILD &lt;其它指令&gt;</code>。</p>
 <p><code>ONBUILD</code> 是一个特殊的指令，它后面跟的是其它指令，比如 <code>RUN</code>, <code>COPY</code> 等，而这些指令，在当前镜像构建时并不会被执行。只有当以当前镜像为基础镜像，去构建下一级镜像的时候才会被执行。</p>
 <p><code>Dockerfile</code> 中的其它指令都是为了定制当前镜像而准备的，唯有 <code>ONBUILD</code> 是为了帮助别人定制自己而准备的。</p>
-<h3 id="2-4-docker多阶段构建-多个-FROM-as"><a href="#2-4-docker多阶段构建-多个-FROM-as" class="headerlink" title="2.4 docker多阶段构建 (多个 FROM as)"></a>2.4 docker多阶段构建 (多个 FROM as)</h3><p>我们构建 Docker 镜像时，一种方式是将所有的构建过程编包含在一个 <code>Dockerfile</code> 中，包括项目及其依赖库的编译、测试、打包等流程，这里可能会带来的一些问题：</p>
+<p>2.4 docker多阶段构建 (多个 FROM as)</p>
+<p>我们构建 Docker 镜像时，一种方式是将所有的构建过程编包含在一个 <code>Dockerfile</code> 中，包括项目及其依赖库的编译、测试、打包等流程，这里可能会带来的一些问题：</p>
 <ul>
 <li><p><code>Dockerfile</code> 特别长，可维护性降低</p>
 </li>
@@ -665,7 +674,8 @@
 <p>上面例子中我们使用 <code>COPY --from=0 /go/src/github.com/go/helloworld/app .</code> 从上一阶段的镜像中复制文件，我们也可以复制任意镜像中的文件。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ COPY --from=nginx:latest /etc/nginx/nginx.conf /nginx.conf</span><br></pre></td></tr></table></figure>
 
-<h3 id="2-5-其它制作镜像的方式"><a href="#2-5-其它制作镜像的方式" class="headerlink" title="2.5 其它制作镜像的方式"></a>2.5 其它制作镜像的方式</h3><ul>
+<p>2.5 其它制作镜像的方式</p>
+<ul>
 <li><code>docker save</code> 和 <code>docker load</code></li>
 </ul>
 <p>Docker 还提供了 <code>docker load</code> 和 <code>docker save</code> 命令，用以将镜像保存为一个 <code>tar</code> 文件，然后传输到另一个位置上，再加载进来。这是在没有 Docker Registry 时的做法，现在已经不推荐，镜像迁移应该直接使用 Docker Registry，无论是直接使用 Docker Hub 还是使用内网私有 Registry 都可以。</p>
@@ -1216,7 +1226,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-基本概念"><span class="nav-number">1.</span> <span class="nav-text">0. 基本概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-使用镜像"><span class="nav-number">2.</span> <span class="nav-text">1. 使用镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-获取镜像"><span class="nav-number">2.0.1.</span> <span class="nav-text">1.1 获取镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-运行容器"><span class="nav-number">2.0.2.</span> <span class="nav-text">1.2 运行容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-列出镜像"><span class="nav-number">2.0.3.</span> <span class="nav-text">1.3 列出镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-虚悬镜像"><span class="nav-number">2.0.4.</span> <span class="nav-text">1.4 虚悬镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-删除本地镜像"><span class="nav-number">2.0.5.</span> <span class="nav-text">1.4 删除本地镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#null"><span class="nav-number">2.0.5.1.</span> <span class="nav-text"></span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Dockerfile-定制镜像"><span class="nav-number">3.</span> <span class="nav-text">2. Dockerfile 定制镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-构建镜像"><span class="nav-number">3.0.1.</span> <span class="nav-text">2.1 构建镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-镜像构建上下文（Context）-上下文路径就是-docker-build-指定的"><span class="nav-number">3.0.2.</span> <span class="nav-text">2.2 镜像构建上下文（Context） 上下文路径就是 docker build 指定的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-dockerfile-指令"><span class="nav-number">3.0.3.</span> <span class="nav-text">2.3 dockerfile 指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-docker多阶段构建-多个-FROM-as"><span class="nav-number">3.0.4.</span> <span class="nav-text">2.4 docker多阶段构建 (多个 FROM as)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-其它制作镜像的方式"><span class="nav-number">3.0.5.</span> <span class="nav-text">2.5 其它制作镜像的方式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-操作容器"><span class="nav-number">4.</span> <span class="nav-text">3. 操作容器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-访问仓库"><span class="nav-number">5.</span> <span class="nav-text">4. 访问仓库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-数据管理"><span class="nav-number">6.</span> <span class="nav-text">5. 数据管理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-使用网络"><span class="nav-number">7.</span> <span class="nav-text">6. 使用网络</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-高级网络配置-TODO"><span class="nav-number">8.</span> <span class="nav-text">7. 高级网络配置 TODO:</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-Docker-Compose-组成-项目"><span class="nav-number">9.</span> <span class="nav-text">8. Docker Compose(组成) 项目</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-基本概念"><span class="nav-number">1.</span> <span class="nav-text">0. 基本概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-使用镜像"><span class="nav-number">2.</span> <span class="nav-text">1. 使用镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#null"><span class="nav-number">2.0.0.1.</span> <span class="nav-text"></span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Dockerfile-定制镜像"><span class="nav-number">3.</span> <span class="nav-text">2. Dockerfile 定制镜像</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-操作容器"><span class="nav-number">4.</span> <span class="nav-text">3. 操作容器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-访问仓库"><span class="nav-number">5.</span> <span class="nav-text">4. 访问仓库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-数据管理"><span class="nav-number">6.</span> <span class="nav-text">5. 数据管理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-使用网络"><span class="nav-number">7.</span> <span class="nav-text">6. 使用网络</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-高级网络配置-TODO"><span class="nav-number">8.</span> <span class="nav-text">7. 高级网络配置 TODO:</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-Docker-Compose-组成-项目"><span class="nav-number">9.</span> <span class="nav-text">8. Docker Compose(组成) 项目</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
