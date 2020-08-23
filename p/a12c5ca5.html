@@ -63,7 +63,7 @@
 <meta property="og:site_name" content="Levon&#39;s Blog">
 <meta property="og:description" content="0. 基本概念 镜像  镜像包含操作系统完整的 root 文件系统，其体积往往是庞大的，因此在 Docker 设计时，就充分利用 Union FS 的技术，将其设计为分层存储的架构。所以严格来说，镜像并非是像一个 ISO 那样的打包文件，镜像只是一个虚拟的概念，其实际体现并非由一个文件组成，而是由一组文件系统组成，或者说，由多层文件系统联合组成。  容器  每一个容器运行时，是以镜像为基础层，在其">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-08-23T08:51:08.035Z">
+<meta property="og:updated_time" content="2020-08-23T08:55:28.659Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="docker基础入门教程">
 <meta name="twitter:description" content="0. 基本概念 镜像  镜像包含操作系统完整的 root 文件系统，其体积往往是庞大的，因此在 Docker 设计时，就充分利用 Union FS 的技术，将其设计为分层存储的架构。所以严格来说，镜像并非是像一个 ISO 那样的打包文件，镜像只是一个虚拟的概念，其实际体现并非由一个文件组成，而是由一组文件系统组成，或者说，由多层文件系统联合组成。  容器  每一个容器运行时，是以镜像为基础层，在其">
@@ -286,7 +286,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-23 16:51:08" itemprop="dateModified" datetime="2020-08-23T16:51:08+08:00">2020-08-23</time>
+                <time title="修改时间：2020-08-23 16:55:28" itemprop="dateModified" datetime="2020-08-23T16:55:28+08:00">2020-08-23</time>
               </span>
             
           
@@ -334,7 +334,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span>32k</span>
+              <span>23k</span>
             </span>
           
             <span class="post-meta-item" title="阅读时长">
@@ -344,7 +344,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span>29 分钟</span>
+              <span>21 分钟</span>
             </span>
           
 
@@ -844,270 +844,6 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ docker run --rm -it \</span><br><span class="line">   # -v $HOME/.bash_history:/root/.bash_history \</span><br><span class="line">   --mount type=bind,source=$HOME/.bash_history,target=/root/.bash_history \</span><br><span class="line">   ubuntu:17.10 \</span><br><span class="line">   bash</span><br><span class="line"></span><br><span class="line">root@2affd44b4667:/# history</span><br><span class="line">1  ls</span><br><span class="line">2  diskutil list</span><br></pre></td></tr></table></figure>
 
 <p>这样就可以记录在容器输入过的命令了。</p>
-<h1 id="6-使用网络"><a href="#6-使用网络" class="headerlink" title="6. 使用网络"></a>6. 使用网络</h1><p>6.1 外部访问容器</p>
-<p>容器中可以运行一些网络应用，要让外部也可以访问这些应用，可以通过 <code>-P</code> 或 <code>-p</code> 参数来指定端口映射。</p>
-<p>当使用 <code>-P</code> 标记时，Docker 会随机映射一个 <code>49000~49900</code> 的端口到内部容器开放的网络端口。</p>
-<p>使用 <code>docker container ls</code> 可以看到，本地主机的 49155 被映射到了容器的 5000 端口。此时访问本机的 49155 端口即可访问容器内 web 应用提供的界面。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d -P training/webapp python app.py</span><br><span class="line"></span><br><span class="line">$ docker container ls -l</span><br><span class="line">CONTAINER ID  IMAGE                   COMMAND       CREATED        STATUS        PORTS                    NAMES</span><br><span class="line">bc533791f3f5  training/webapp:latest  python app.py 5 seconds ago  Up 2 seconds  0.0.0.0:49155-&gt;5000/tcp  nostalgic_morse</span><br></pre></td></tr></table></figure>
-
-
-
-<p><code>-p</code> 则可以指定要映射的端口，并且，在一个指定端口上只可以绑定一个容器。支持的格式有 </p>
-<p><code>ip:hostPort:containerPort | ip::containerPort | hostPort:containerPort</code>。</p>
-<p>6.2 映射所有接口地址 </p>
-<p>使用 <code>hostPort:containerPort</code> 格式本地的 5000 端口映射到容器的 5000 端口，可以执行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d -p 5000:5000 training/webapp python app.py</span><br></pre></td></tr></table></figure>
-
-<p>此时默认会绑定本地所有接口上的所有地址。</p>
-<p>6.3 映射到指定地址的指定端口  </p>
-<p>可以使用 <code>ip:hostPort:containerPort</code> 格式指定映射使用一个特定地址，比如 localhost 地址 127.0.0.1</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d -p 127.0.0.1:5000:5000 training/webapp python app.py</span><br></pre></td></tr></table></figure>
-
-<p>6.4 映射到指定地址的任意端口</p>
-<p>使用 <code>ip::containerPort</code> 绑定 localhost 的任意端口到容器的 5000 端口，本地主机会自动分配一个端口。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d -p 127.0.0.1::5000 training/webapp python app.py</span><br></pre></td></tr></table></figure>
-
-<p>还可以使用 <code>udp</code> 标记来指定 <code>udp</code> 端口</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d -p 127.0.0.1:5000:5000/udp training/webapp python app.py</span><br></pre></td></tr></table></figure>
-
-<p>6.5 查看映射端口配置</p>
-<p> 使用 <code>docker port</code> 来查看当前映射的端口配置，也可以查看到绑定的地址</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ docker port nostalgic_morse 5000</span><br><span class="line">127.0.0.1:49155.</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>容器有自己的内部网络和 ip 地址（使用 <code>docker inspect</code> 可以获取所有的变量，Docker 还可以有一个可变的网络配置。）</li>
-<li><code>-p</code> 标记可以多次使用来绑定多个端口</li>
-</ul>
-<p>例如</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d \</span><br><span class="line">    -p 5000:5000 \</span><br><span class="line">    -p 3000:80 \</span><br><span class="line">    training/webapp \</span><br><span class="line">    python app.py</span><br></pre></td></tr></table></figure>
-
-<p>6.7 容器互联</p>
-<ul>
-<li><p>新建网络</p>
-<p>下面先创建一个新的 Docker 网络。</p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker network create -d bridge my-net</span><br></pre></td></tr></table></figure>
-
-<p><code>-d</code> 参数指定 Docker 网络类型，有 <code>bridge</code> <code>overlay</code>。其中 <code>overlay</code> 网络类型用于 <a href="https://yeasy.gitbooks.io/docker_practice/content/swarm_mode" target="_blank" rel="noopener">Swarm mode</a></p>
-<ul>
-<li>连接容器</li>
-</ul>
-<p>运行一个容器并连接到新建的 <code>my-net</code> 网络</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -it --rm --name busybox1 --network my-net busybox sh</span><br></pre></td></tr></table></figure>
-
-<p>打开新的终端，再运行一个容器并加入到 <code>my-net</code> 网络</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -it --rm --name busybox2 --network my-net busybox sh</span><br></pre></td></tr></table></figure>
-
-<p>再打开一个新的终端查看容器信息</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ docker container ls</span><br><span class="line"></span><br><span class="line">CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES</span><br><span class="line">b47060aca56b        busybox             &quot;sh&quot;                11 minutes ago      Up 11 minutes                           busybox2</span><br><span class="line">8720575823ec        busybox             &quot;sh&quot;                16 minutes ago      Up 16 minutes                           busybox1</span><br></pre></td></tr></table></figure>
-
-<p>下面通过 <code>ping</code> 来证明 <code>busybox1</code> 容器和 <code>busybox2</code> 容器建立了互联关系。</p>
-<p>在 <code>busybox1</code> 容器输入以下命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/ # ping busybox2</span><br><span class="line">PING busybox2 (172.19.0.3): 56 data bytes</span><br><span class="line">64 bytes from 172.19.0.3: seq=0 ttl=64 time=0.072 ms</span><br><span class="line">64 bytes from 172.19.0.3: seq=1 ttl=64 time=0.118 ms</span><br></pre></td></tr></table></figure>
-
-<p>用 ping 来测试连接 <code>busybox2</code> 容器，它会解析成 <code>172.19.0.3</code>。</p>
-<p>同理在 <code>busybox2</code> 容器执行 <code>ping busybox1</code>，也会成功连接到。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/ # ping busybox1</span><br><span class="line">PING busybox1 (172.19.0.2): 56 data bytes</span><br><span class="line">64 bytes from 172.19.0.2: seq=0 ttl=64 time=0.064 ms</span><br><span class="line">64 bytes from 172.19.0.2: seq=1 ttl=64 time=0.143 ms</span><br></pre></td></tr></table></figure>
-
-<p>这样，<code>busybox1</code> 容器和 <code>busybox2</code> 容器建立了互联关系。</p>
-<p>如果你有多个容器之间需要互相连接，推荐使用 <a href="https://yeasy.gitbooks.io/docker_practice/content/compose" target="_blank" rel="noopener">Docker Compose</a>。</p>
-<p>6.8 配置 DNS</p>
-<p> 如何自定义配置容器的主机名和 DNS 呢？秘诀就是 Docker 利用虚拟文件来挂载容器的 3 个相关配置文件。</p>
-<p>在容器中使用 <code>mount</code> 命令可以看到挂载信息：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ mount</span><br><span class="line">/dev/disk/by-uuid/1fec...ebdf on /etc/hostname type ext4 ...</span><br><span class="line">/dev/disk/by-uuid/1fec...ebdf on /etc/hosts type ext4 ...</span><br><span class="line">tmpfs on /etc/resolv.conf type tmpfs ...</span><br></pre></td></tr></table></figure>
-
-<p>这种机制可以让宿主主机 DNS 信息发生更新后，所有 Docker 容器的 DNS 配置通过 <code>/etc/resolv.conf</code>文件立刻得到更新。</p>
-<p>配置全部容器的 DNS ，也可以在 <code>/etc/docker/daemon.json</code> 文件中增加以下内容来设置。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;dns&quot; : [</span><br><span class="line">    &quot;114.114.114.114&quot;,</span><br><span class="line">    &quot;8.8.8.8&quot;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>如果用户想要手动指定容器的配置，可以在使用 <code>docker run</code> 命令启动容器时加入如下参数：</p>
-<p> <code>-h HOSTNAME</code> 或者 <code>--hostname=HOSTNAME</code> 设定容器的主机名，它会被写到容器内的 <code>/etc/hostname</code>和 <code>/etc/hosts</code>。但它在容器外部看不到，既不会在 <code>docker container ls</code> 中显示，也不会在其他的容器的 <code>/etc/hosts</code> 看到。</p>
-<p><code>--dns=IP_ADDRESS</code> 添加 DNS 服务器到容器的 <code>/etc/resolv.conf</code> 中，让容器用这个服务器来解析所有不在 <code>/etc/hosts</code> 中的主机名。</p>
-<p><code>--dns-search=DOMAIN</code> 设定容器的搜索域，当设定搜索域为 <code>.example.com</code> 时，在搜索一个名为 host 的主机时，DNS 不仅搜索 host，还会搜索 <code>host.example.com</code>。</p>
-<blockquote>
-<p>注意：如果在容器启动时没有指定最后两个参数，Docker 会默认用主机上的 <code>/etc/resolv.conf</code> 来配置容器。</p>
-</blockquote>
-<h1 id="7-高级网络配置-TODO"><a href="#7-高级网络配置-TODO" class="headerlink" title="7. 高级网络配置 TODO:"></a>7. 高级网络配置 TODO:</h1><h1 id="8-Docker-Compose-组成-项目"><a href="#8-Docker-Compose-组成-项目" class="headerlink" title="8. Docker Compose(组成) 项目"></a>8. Docker Compose(组成) 项目</h1><p>8.1 Compose 简介</p>
-<p><code>Compose</code> 项目是 Docker 官方的开源项目，负责实现对 Docker 容器集群的快速编排。</p>
-<p>在日常工作中，经常会碰到需要多个容器相互配合来完成某项任务的情况。例如要实现一个 Web 项目，除了 Web 服务容器本身，往往还需要再加上后端的数据库服务容器，甚至还包括负载均衡容器等。</p>
-<p><code>Compose</code> 恰好满足了这样的需求。它允许用户通过一个单独的 <code>docker-compose.yml</code> 模板文件（YAML 格式）来    定义一组相关联的应用容器为一个项目（project）。</p>
-<p><code>Compose</code> 中有两个重要的概念：</p>
-<ul>
-<li>服务 (<code>service</code>)：一个应用的容器，<em>实际上可以包括若干运行相同镜像的容器实例。</em></li>
-<li>项目 (<code>project</code>)：由一组关联的应用容器组成的一个完整业务单元，在 <code>docker-compose.yml</code> 文件中定义。</li>
-</ul>
-<p>一个项目可以由多个服务（容器）关联而成，<code>Compose</code> 面向项目进行管理。</p>
-<p>8.2 安装与卸载</p>
-<ul>
-<li><p><code>Compose</code> 可以通过 Python 的包管理工具 <code>pip</code> 进行安装</p>
-</li>
-<li><p>也可以直接下载编译好的二进制文件使用</p>
-</li>
-<li><p>甚至能够直接在 Docker 容器中运行</p>
-</li>
-</ul>
-<p>前两种方式是传统方式，适合本地环境下安装使用；最后一种方式则不破坏系统环境，更适合云计算场景。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose --version</span><br><span class="line">docker-compose version 1.21.0, build 5920eb0</span><br></pre></td></tr></table></figure>
-
-<p>8.3 Compose 命令说明使用</p>
-<p>对于 Compose 来说，大部分命令的对象既可以是项目本身，也可以指定为项目中的服务或者容器。如果没有特别的说明，命令对象将是项目，这意味着项目中所有的服务都会受到命令影响。</p>
-<p><code>docker-compose</code> 命令的基本的使用格式是</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose [-f=&lt;arg&gt;...] [options] [COMMAND] [ARGS...]</span><br></pre></td></tr></table></figure>
-
-
-
-<p>命令选项</p>
-<ul>
-<li><code>-f, --file FILE</code> 指定使用的 Compose 模板文件，默认为 <code>docker-compose.yml</code>，可以多次指定。</li>
-<li><code>-p, --project-name NAME</code> 指定项目名称，默认将使用所在目录名称作为项目名。</li>
-<li><code>--x-networking</code> 使用 Docker 的可拔插网络后端特性</li>
-<li><code>--x-network-driver DRIVER</code> 指定网络后端的驱动，默认为 <code>bridge</code></li>
-<li><code>--verbose</code> 输出更多调试信息。</li>
-<li><code>-v, --version</code> 打印版本并退出。</li>
-</ul>
-<p>命令使用说明</p>
-<p>8.1 <code>build</code> 构建（重新构建）项目中的服务容器</p>
-<p>格式为 <code>docker-compose build [options] [SERVICE...]</code>。</p>
-<p>服务容器一旦构建后，将会带上一个标记名，例如对于 web 项目中的一个 db 容器，可能是 web_db。</p>
-<p>可以随时在项目目录下运行 <code>docker-compose build</code> 来重新构建服务。</p>
-<p>选项包括：</p>
-<ul>
-<li><code>--force-rm</code> 删除构建过程中的临时容器。</li>
-<li><code>--no-cache</code> 构建镜像过程中不使用 cache（这将加长构建过程）。</li>
-<li><code>--pull</code> 始终尝试通过 pull 来获取更新版本的镜像。</li>
-</ul>
-<p>8.2 <code>config</code> 验证 Compose 文件格式是否正确，若正确则显示配置，若格式错误显示错误原因</p>
-<p>8.3 <code>down</code> 此命令将会停止 <code>up</code> 命令所启动的容器，并移除网络</p>
-<p>8.4 <code>exec</code> 进入指定的容器</p>
-<p>8.5 <code>help</code> 获得一个命令的帮助</p>
-<p>8.6 <code>images</code> 列出 Compose 文件中包含的镜像</p>
-<p>8.7 <code>kill</code> 通过发送 <code>SIGKILL</code> 信号来强制停止服务容器</p>
-<p>格式为 <code>docker-compose kill [options] [SERVICE...]</code>。</p>
-<p>支持通过 <code>-s</code> 参数来指定发送的信号，例如通过如下指令发送 <code>SIGINT</code> 信号。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose kill -s SIGINT</span><br></pre></td></tr></table></figure>
-
-<p>8.8 <code>logs</code> 查看服务容器的输出</p>
-<p>格式为 <code>docker-compose logs [options] [SERVICE...]</code>。</p>
-<p>默认情况下，docker-compose 将对不同的服务输出使用不同的颜色来区分。可以通过 <code>--no-color</code> 来关闭颜色。</p>
-<p>该命令在调试问题的时候十分有用。</p>
-<p>8.9 <code>pause</code> 暂停一个服务容器</p>
-<p>格式为 <code>docker-compose pause [SERVICE...]</code>。</p>
-<p>8.10 <code>port</code> 打印某个容器端口所映射的公共端口</p>
-<p>格式为 <code>docker-compose port [options] SERVICE PRIVATE_PORT</code>。</p>
-<p>选项：</p>
-<ul>
-<li><code>--protocol=proto</code> 指定端口协议，tcp（默认值）或者 udp。</li>
-<li><code>--index=index</code> 如果同一服务存在多个容器，指定命令对象容器的序号（默认为 1）。</li>
-</ul>
-<p>8.11 <code>ps</code> 列出项目中目前的所有容器</p>
-<p>格式为 <code>docker-compose ps [options] [SERVICE...]</code>。</p>
-<p>选项：</p>
-<ul>
-<li><code>-q</code> 只打印容器的 ID 信息。</li>
-</ul>
-<p>8.12 <code>pull</code> 拉取服务依赖的镜像</p>
-<p>格式为 <code>docker-compose pull [options] [SERVICE...]</code>。</p>
-<p>选项：</p>
-<ul>
-<li><code>--ignore-pull-failures</code> 忽略拉取镜像过程中的错误。</li>
-</ul>
-<p>8.13 <code>push</code> 推送服务依赖的镜像到 Docker 镜像仓库</p>
-<p>8.14 <code>restart</code> 重启项目中的服务</p>
-<p>格式为 <code>docker-compose restart [options] [SERVICE...]</code>。</p>
-<p>选项：</p>
-<ul>
-<li><code>-t, --timeout TIMEOUT</code> 指定重启前停止容器的超时（默认为 10 秒）。</li>
-</ul>
-<p>8.15 <code>rm</code> 删除所有（停止状态的）服务容器</p>
-<p>推荐先执行 <code>docker-compose stop</code> 命令来停止容器。</p>
-<p>格式为 <code>docker-compose rm [options] [SERVICE...]</code>。</p>
-<p>选项：</p>
-<ul>
-<li><code>-f, --force</code> 强制直接删除，包括非停止状态的容器。一般尽量不要使用该选项。</li>
-<li><code>-v</code> 删除容器所挂载的数据卷。</li>
-</ul>
-<p>8.16 <code>run</code> 在指定服务上执行一个命令</p>
-<p>格式为 <code>docker-compose run [options] [-p PORT...] [-e KEY=VAL...] SERVICE [COMMAND] [ARGS...]</code>。</p>
-<p>例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose run ubuntu ping docker.com</span><br></pre></td></tr></table></figure>
-
-<p>将会启动一个 ubuntu 服务容器，并执行 <code>ping docker.com</code> 命令。</p>
-<p>默认情况下，如果存在关联，则所有关联的服务将会自动被启动，除非这些服务已经在运行中。</p>
-<p>该命令类似启动容器后运行指定的命令，相关卷、链接等等都将会按照配置自动创建。</p>
-<p>两个不同点：</p>
-<ul>
-<li>给定命令将会覆盖原有的自动运行命令；</li>
-<li>不会自动创建端口，以避免冲突。</li>
-</ul>
-<p>如果不希望自动启动关联的容器，可以使用 <code>--no-deps</code> 选项，例如</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose run --no-deps web python manage.py shell</span><br></pre></td></tr></table></figure>
-
-<p>将不会启动 web 容器所关联的其它容器。</p>
-<p>选项：</p>
-<ul>
-<li><code>-d</code> 后台运行容器。</li>
-<li><code>--name NAME</code> 为容器指定一个名字。</li>
-<li><code>--entrypoint CMD</code> 覆盖默认的容器启动指令。</li>
-<li><code>-e KEY=VAL</code> 设置环境变量值，可多次使用选项来设置多个环境变量。</li>
-<li><code>-u, --user=&quot;&quot;</code> 指定运行容器的用户名或者 uid。</li>
-<li><code>--no-deps</code> 不自动启动关联的服务容器。</li>
-<li><code>--rm</code> 运行命令后自动删除容器，<code>d</code> 模式下将忽略。</li>
-<li><code>-p, --publish=[]</code> 映射容器端口到本地主机。</li>
-<li><code>--service-ports</code> 配置服务端口并映射到本地主机。</li>
-<li><code>-T</code> 不分配伪 tty，意味着依赖 tty 的指令将无法运行。</li>
-</ul>
-<p>8.17 <code>scale</code> 设置指定服务运行的容器个数</p>
-<p>格式为 <code>docker-compose scale [options] [SERVICE=NUM...]</code>。</p>
-<p>通过 <code>service=num</code> 的参数来设置数量。例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose scale web=3 db=2</span><br></pre></td></tr></table></figure>
-
-<p>将启动 3 个容器运行 web 服务，2 个容器运行 db 服务。</p>
-<p>一般的，当指定数目多于该服务当前实际运行容器，将新创建并启动容器；反之，将停止容器。</p>
-<p>选项：</p>
-<ul>
-<li><code>-t, --timeout TIMEOUT</code> 停止容器时候的超时（默认为 10 秒）。</li>
-</ul>
-<p>8.18 <code>start</code> 启动已经存在的服务容器</p>
-<p>格式为 <code>docker-compose start [SERVICE...]</code>。</p>
-<p>8.19 <code>stop</code> 停止已经处于运行状态的容器，但不删除它</p>
-<p>通过 <code>docker-compose start</code> 可以再次启动这些容器。</p>
-<p>格式为 <code>docker-compose stop [options] [SERVICE...]</code>。</p>
-<p>选项：</p>
-<ul>
-<li><code>-t, --timeout TIMEOUT</code> 停止容器时候的超时（默认为 10 秒）。</li>
-</ul>
-<p>8.20 <code>top</code> 查看各个服务容器内运行的进程</p>
-<p>8.21 <code>unpause</code> 恢复处于暂停状态中的服务</p>
-<p>格式为 <code>docker-compose unpause [SERVICE...]</code>。</p>
-<p>8.22 <code>up</code> 启动一个项目</p>
-<p>格式为 <code>docker-compose up [options] [SERVICE...]</code>。</p>
-<p>该命令十分强大，它将尝试自动完成包括构建镜像，（重新）创建服务，启动服务，并关联服务相关容器的一系列操作。</p>
-<p>链接的服务都将会被自动启动，除非已经处于运行状态。</p>
-<p>可以说，大部分时候都可以直接通过该命令来启动一个项目。</p>
-<p>默认情况，<code>docker-compose up</code> 启动的容器都在前台，控制台将会同时打印所有容器的输出信息，可以很方便进行调试。</p>
-<p>当通过 <code>Ctrl-C</code> 停止命令时，所有容器将会停止。</p>
-<p>如果使用 <code>docker-compose up -d</code>，将会在后台启动并运行所有的容器。一般推荐生产环境下使用该选项。</p>
-<p>默认情况，如果服务容器已经存在，<code>docker-compose up</code> 将会尝试停止容器，然后重新创建（保持使用 <code>volumes-from</code> 挂载的卷），以保证新启动的服务匹配 <code>docker-compose.yml</code> 文件的最新内容。如果用户不希望容器被停止并重新创建，可以使用 <code>docker-compose up --no-recreate</code>。这样将只会启动处于停止状态的容器，而忽略已经运行的服务。如果用户只想重新部署某个服务，可以使用 <code>docker-compose up --no-deps -d &lt;SERVICE_NAME&gt;</code> 来重新创建服务并后台停止旧服务，启动新服务，并不会影响到其所依赖的服务。</p>
-<p>选项：</p>
-<ul>
-<li><code>-d</code> 在后台运行服务容器。</li>
-<li><code>--no-color</code> 不使用颜色来区分不同的服务的控制台输出。</li>
-<li><code>--no-deps</code> 不启动服务所链接的容器。</li>
-<li><code>--force-recreate</code> 强制重新创建容器，不能与 <code>--no-recreate</code> 同时使用。</li>
-<li><code>--no-recreate</code> 如果容器已经存在了，则不重新创建，不能与 <code>--force-recreate</code> 同时使用。</li>
-<li><code>--no-build</code> 不自动构建缺失的服务镜像。</li>
-<li><code>-t, --timeout TIMEOUT</code> 停止容器时候的超时（默认为 10 秒）。</li>
-</ul>
-<p>8.23 <code>version</code> 打印版本信息</p>
-<p>格式为 <code>docker-compose version</code>。</p>
-<p>8.24 Compose 模板文件</p>
-<p>模板文件是使用 <code>Compose</code> 的核心，涉及到的指令关键字也比较多。大部分指令跟 <code>docker run</code> 相关参数的含义都是类似的。</p>
-<p>默认的模板文件名称为 <code>docker-compose.yml</code>，格式为 YAML 格式。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">version: &quot;3&quot;</span><br><span class="line"></span><br><span class="line">services:</span><br><span class="line">  webapp:</span><br><span class="line">    image: examples/web</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;80:80&quot;</span><br><span class="line">    volumes:</span><br><span class="line">      - &quot;/data&quot;</span><br></pre></td></tr></table></figure>
-
-<p>注意每个服务都必须通过 <code>image</code> 指令指定镜像或 <code>build</code> 指令（需要 Dockerfile）等来自动构建生成镜像。</p>
-<p>如果使用 <code>build</code> 指令，在 <code>Dockerfile</code> 中设置的选项(例如：<code>CMD</code>, <code>EXPOSE</code>, <code>VOLUME</code>, <code>ENV</code> 等) 将会自动被获取，无需在 <code>docker-compose.yml</code> 中再次设置。</p>
 
     </div>
 
@@ -1226,7 +962,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-基本概念"><span class="nav-number">1.</span> <span class="nav-text">0. 基本概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-使用镜像"><span class="nav-number">2.</span> <span class="nav-text">1. 使用镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#null"><span class="nav-number">2.0.0.1.</span> <span class="nav-text"></span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Dockerfile-定制镜像"><span class="nav-number">3.</span> <span class="nav-text">2. Dockerfile 定制镜像</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-操作容器"><span class="nav-number">4.</span> <span class="nav-text">3. 操作容器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-访问仓库"><span class="nav-number">5.</span> <span class="nav-text">4. 访问仓库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-数据管理"><span class="nav-number">6.</span> <span class="nav-text">5. 数据管理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-使用网络"><span class="nav-number">7.</span> <span class="nav-text">6. 使用网络</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-高级网络配置-TODO"><span class="nav-number">8.</span> <span class="nav-text">7. 高级网络配置 TODO:</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-Docker-Compose-组成-项目"><span class="nav-number">9.</span> <span class="nav-text">8. Docker Compose(组成) 项目</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-基本概念"><span class="nav-number">1.</span> <span class="nav-text">0. 基本概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-使用镜像"><span class="nav-number">2.</span> <span class="nav-text">1. 使用镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#null"><span class="nav-number">2.0.0.1.</span> <span class="nav-text"></span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Dockerfile-定制镜像"><span class="nav-number">3.</span> <span class="nav-text">2. Dockerfile 定制镜像</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-操作容器"><span class="nav-number">4.</span> <span class="nav-text">3. 操作容器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-访问仓库"><span class="nav-number">5.</span> <span class="nav-text">4. 访问仓库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-数据管理"><span class="nav-number">6.</span> <span class="nav-text">5. 数据管理</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -1348,12 +1084,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">669k</span>
+    <span title="站点总字数">660k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">10:08</span>
+    <span title="站点阅读时长">10:01</span>
 </div>
 
         
