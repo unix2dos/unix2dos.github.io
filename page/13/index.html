@@ -1345,7 +1345,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-23 16:48:53" itemprop="dateModified" datetime="2020-08-23T16:48:53+08:00">2020-08-23</time>
+                <time title="修改时间：2020-08-23 16:51:08" itemprop="dateModified" datetime="2020-08-23T16:51:08+08:00">2020-08-23</time>
               </span>
             
           
@@ -1419,12 +1419,12 @@
           <h1 id="0-基本概念"><a href="#0-基本概念" class="headerlink" title="0. 基本概念"></a>0. 基本概念</h1><ul>
 <li>镜像</li>
 </ul>
-<p>镜像包含操作系统完整的 <code>root</code> 文件系统，其体积往往是庞大的，因此在 Docker 设计时，就充分利用 <a href="https://en.wikipedia.org/wiki/Union_mount" target="_blank" rel="noopener">Union FS</a> 的技术，将其设计为分层存储的架构。所以严格来说，镜像并非是像一个 ISO 那样的打包文件，镜像只是一个虚拟的概念，其实际体现并非由一个文件组成，而是由一组文件系统组成，或者说，由多层文件系统联合组成。</p>
+<p>镜像包含操作系统完整的 <code>root</code> 文件系统，其体积往往是庞大的，因此在 Docker 设计时，就充分利用 Union FS 的技术，将其设计为分层存储的架构。所以严格来说，镜像并非是像一个 ISO 那样的打包文件，镜像只是一个虚拟的概念，其实际体现并非由一个文件组成，而是由一组文件系统组成，或者说，由多层文件系统联合组成。</p>
 <ul>
 <li>容器</li>
 </ul>
 <p>每一个容器运行时，是以镜像为基础层，在其上创建一个当前容器的存储层，我们可以称这个为容器运行时读写而准备的存储层为容器存储层。</p>
-<p>容器不应该向其存储层内写入任何数据，容器存储层要保持无状态化。所有的文件写入操作，都应该使用 <a href="https://yeasy.gitbooks.io/docker_practice/content/data_management/volume.html" target="_blank" rel="noopener">数据卷（Volume）</a>、或者绑定宿主目录，在这些位置的读写会跳过容器存储层，直接对宿主（或网络存储）发生读写，其性能和稳定性更高。</p>
+<p>容器不应该向其存储层内写入任何数据，容器存储层要保持无状态化。所有的文件写入操作，都应该使用 数据卷（Volume）、或者绑定宿主目录，在这些位置的读写会跳过容器存储层，直接对宿主（或网络存储）发生读写，其性能和稳定性更高。</p>
 <p>数据卷的生存周期独立于容器，容器消亡，数据卷不会消亡。因此，使用数据卷后，容器删除或者重新运行之后，数据却不会丢失。</p>
           <!--noindex-->
           
