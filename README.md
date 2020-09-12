@@ -207,6 +207,16 @@ Homepage URL 和 Authorization callback URL 都填写自己配置的域名
 
 
 
-### 7. 参考资料
+### 7. 证书更新
+
+**coding**
+
++ 暂停dns解析github 
++ coding申请证书
++ 再打开解析github
+
+**github**
+
+### 8. 参考资料
 
 + https://iuok.me/posts/3159684541/ 插件
