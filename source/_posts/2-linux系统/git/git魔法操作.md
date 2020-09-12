@@ -1,9 +1,13 @@
 ---
-title: "git常规操作"
-date: 2020-09-11 00:00:02
+title: git魔法操作
 tags:
-- git
-- linux
+  - git
+  - linux
+categories:
+  - 2-linux系统
+  - git
+abbrlink: 92ab0521
+date: 2020-09-12 00:00:02
 ---
 
 # 1. revert
@@ -35,6 +39,8 @@ git revert edaa22e
 * d38ece4 - add 1 (25 minutes ago) <liuwei>
 ```
 
+
+
 如果为了commit干净, 可以使用`reset --hard +  push -f `(除非你知道你在干什么)
 
 
@@ -51,6 +57,8 @@ rebase 算是git的一个黑魔法, 如果不会rebase, 别说会用git。
 
 移步:  https://www.liuvv.com/p/b1718ace.html
 
+
+
 ### 2.2 git pull --rebase
 
 当你在本地端的master分支开发时，你commit了一个小改变。同时其他人将他本周的修改推上了远地master分支。当你试着推上你的commit时，git会要求你先做git pull的动作。
@@ -65,13 +73,13 @@ rebase 算是git的一个黑魔法, 如果不会rebase, 别说会用git。
 
 # 3. 其他
 
-### 3.1 基础
+### 3.1 实用操作
 
 移步:  https://www.liuvv.com/p/42eae4e7.html
 
-### 3.2 cherrypick
+### 3.2 cherry-pick
 
-移步: 
+移步:  https://www.liuvv.com/p/6aa4bbd5.html
 
 ### 3.3 blame
 

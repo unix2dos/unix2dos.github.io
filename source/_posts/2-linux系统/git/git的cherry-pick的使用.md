@@ -1,9 +1,13 @@
 ---
-title: "git的cherry-pick的使用"
-date: 2020-09-11 00:00:00
+title: git的cherry-pick的使用
 tags:
-- git
-- linux
+  - git
+  - linux
+categories:
+  - 2-linux系统
+  - git
+abbrlink: 6aa4bbd5
+date: 2020-09-12 00:00:01
 ---
 
 对于多分支的代码库，将代码从一个分支转移到另一个分支是常见需求。
@@ -28,7 +32,7 @@ $ git cherry-pick <commitHash>
 
 
 
-A分支log:
++ A分支log:
 
 ```ini
 * cf976d8 - (HEAD -> master, origin/master, origin/HEAD) add 2 (2 minutes ago) <liuwei>
@@ -36,13 +40,13 @@ A分支log:
 * 73a2b7f - (cherry) rm citycode (4 minutes ago) <liuwei>
 ```
 
-B分支操作
++ B分支操作
 
 ```bash
 git cherry-pick 07444e6
 ```
 
-然后看log:
++ 然后再看B分支log:
 
 ```ini
 * d38ece4 - (HEAD -> cherry) add 1 (11 seconds ago) <liuwei>
@@ -59,9 +63,7 @@ git cherry-pick命令的参数，不一定是提交的哈希值，分支名也�
 $ git cherry-pick feature
 ```
 
-上面代码表示将feature分支的最近一次提交，转移到当前分支。
-
-注意是一次提交(commit), 不是所有的提交。
+上面代码表示将feature分支的最近一次提交，转移到当前分支。!!!注意是一次提交(commit), 不是所有的提交。!!!
 
 
 
@@ -140,9 +142,9 @@ merge 分析：M3(`berry`) 和 F3(`apple`) 的最近公共祖先是 A(`apple`)�
 
 
 
-### 3.1 总结
+### 3.1 经验
 
-如果你的两个分支是两个单独的分支，永远不会相互 merge，那么才可以使用 cherry-pick。
+如果你的两个分支是两个单独的分支，永远不会相互 merge，那么才使用 cherry-pick。
 
 
 
@@ -151,5 +153,3 @@ merge 分析：M3(`berry`) 和 F3(`apple`) 的最近公共祖先是 A(`apple`)�
 
 + https://www.ruanyifeng.com/blog/2020/04/git-cherry-pick.html
 + https://imliyan.com/blogs/article/%E5%81%9C%E6%AD%A2%20cherry-pick%EF%BC%8C%E5%BC%80%E5%A7%8B%20merge/
-
-
