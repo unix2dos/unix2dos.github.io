@@ -56,7 +56,7 @@
 </script>
 
   <meta name="description" content="编译平台准备工作: 下载arm-none-linux-gnueabi-gcc  下载transmission-2.94  新建ARM文件夹  解压arm-none-linux-gnueabi-gcc和transmission-2.94到ARM文件夹  设置编译平台环境变量 123export PATH=&quot;/root/ARM/external-toolchain/bin:$PATH&quot;export c">
-<meta name="keywords" content="arm,linux,transmission,bt">
+<meta name="keywords" content="linux,arm,bt,transmission">
 <meta property="og:type" content="article">
 <meta property="og:title" content="交叉编译arm-transmission-2.94">
 <meta property="og:url" content="https://unix2dos.github.io/p/73da9612.html">
@@ -408,7 +408,7 @@
 <h4 id="5-libcap"><a href="#5-libcap" class="headerlink" title="5. libcap"></a>5. libcap</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-2.24.tar.xz </span><br><span class="line">make prefix=/root/ARM/opt/  BUILD_CC=gcc  CC="$&#123;cross&#125;gcc" AR="$&#123;cross&#125;ar" RANLIB="$&#123;cross&#125;ranlib" LD="$&#123;cross&#125;ld"</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
 
 <p>make不成功修改文件:</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vi libcap/cap_file.c</span><br><span class="line"></span><br><span class="line"><span class="meta">-#</span>ifdef VFS_CAP_U32</span><br><span class="line">+#if defined (VFS_CAP_U32) &amp;&amp; defined (XATTR_NAME_CAPS)</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vi libcap/cap_file.c</span><br><span class="line"></span><br><span class="line"><span class="meta">-#</span><span class="bash">ifdef VFS_CAP_U32</span></span><br><span class="line">+#if defined (VFS_CAP_U32) &amp;&amp; defined (XATTR_NAME_CAPS)</span><br></pre></td></tr></table></figure>
 
 <h4 id="6-glibc-没有成功…"><a href="#6-glibc-没有成功…" class="headerlink" title="6. glibc(没有成功….)"></a>6. glibc(没有成功….)</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">wget http://ftp.gnome.org/pub/gnome/sources/glib/2.52/glib-2.52.3.tar.xz</span><br><span class="line"></span><br><span class="line">export glib_cv_stack_grows=no; \</span><br><span class="line">export glib_cv_uscore=no; \</span><br><span class="line">export ac_cv_func_posix_getpwuid_r=no; \</span><br><span class="line">export ac_cv_func_posix_getgrgid_r=no; \</span><br><span class="line">CFLAGS=-I/root/ARM/opt/include \</span><br><span class="line">LDFLAGS=-L/root/ARM/opt/lib \</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line">./configure --host=arm-none-linux-gnueabi --prefix=/root/ARM/opt/ --disable-libmount</span><br></pre></td></tr></table></figure>
 
@@ -450,13 +450,13 @@
           
           <div class="post-tags">
             
-              <a href="/tags/arm/" rel="tag"># arm</a>
-            
               <a href="/tags/linux/" rel="tag"># linux</a>
             
-              <a href="/tags/transmission/" rel="tag"># transmission</a>
+              <a href="/tags/arm/" rel="tag"># arm</a>
             
               <a href="/tags/bt/" rel="tag"># bt</a>
+            
+              <a href="/tags/transmission/" rel="tag"># transmission</a>
             
           </div>
         
