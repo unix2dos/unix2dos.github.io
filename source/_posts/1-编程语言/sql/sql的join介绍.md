@@ -59,7 +59,7 @@ There are 4 different types of Oracle joins:
 
 **Examples**
 
-```sql
+```
 A    B
 -    -
 1    3
@@ -70,7 +70,7 @@ A    B
 
 **Inner join**
 
-```sql
+```
 select * from a INNER JOIN b on a.a = b.b;
 select a.*, b.*  from a,b where a.a = b.b;
 
@@ -82,7 +82,7 @@ a | b
 
 **Left outer join**
 
-```sql
+```
 select * from a LEFT OUTER JOIN b on a.a = b.b;
 select a.*, b.*  from a,b where a.a = b.b(+);
 
@@ -96,7 +96,7 @@ a |  b
 
 **Right outer join**
 
-```sql
+```
 select * from a RIGHT OUTER JOIN b on a.a = b.b;
 select a.*, b.*  from a,b where a.a(+) = b.b;
 
@@ -112,7 +112,7 @@ null |  6
 
 **Full outer join**
 
-```sql
+```
 select * from a FULL OUTER JOIN b on a.a = b.b;
 
  a   |  b
@@ -142,7 +142,7 @@ null |    5
 
 ### 3.2 inner join, 多表连查
 
-```sql
+```
 SELECT * FROM
 table a INNER JOIN table b
 ON a.id = b.id;
@@ -150,7 +150,7 @@ ON a.id = b.id;
 
 vs
 
-```sql
+```
 SELECT a.*, b.*
 FROM table a, table b
 WHERE a.id = b.id;
@@ -187,7 +187,7 @@ WHERE a.id = b.id;
 
 所以我们要注意：在使用Left (right) join的时候，一定要在先给出尽可能多的匹配满足条件，减少Where的执行。如：
 
-```sql
+```
 select * from A
 inner join B on B.name = A.name
 left join C on C.name = B.name
@@ -206,7 +206,7 @@ left join D on D.id = C.id and D.status=1
 
 **Example**
 
-```sql
+```
     1. documents:
      | id    | name        |
      --------|-------------|
@@ -231,7 +231,7 @@ left join D on D.id = C.id and D.status=1
 
 **ON**
 
-```sql
+```
 SELECT documents.name, downloads.id FROM documents LEFT OUTER JOIN downloads
 ON documents.id = downloads.document_id
 AND username = 'sandeep'
@@ -261,7 +261,7 @@ AND username = 'sandeep'
 
 **WHERE**
 
-```sql
+```
  SELECT documents.name, downloads.id FROM documents LEFT OUTER JOIN downloads
  ON documents.id = downloads.document_id
  WHERE username = 'sandeep'
@@ -300,13 +300,13 @@ AND username = 'sandeep'
 
 Cross join
 
-```sql
+```
 select * from table1 cross join table2 where table1.id = table2.fk_id
 ```
 
 Inner join
 
-```sql
+```
 select * from table1 join table2 on table1.id = table2.fk_id
 ```
 
