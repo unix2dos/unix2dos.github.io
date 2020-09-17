@@ -1,59 +1,24 @@
 <!DOCTYPE html>
-
-
-
-
-
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 3.9.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=7.4.0">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.4.0">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=7.4.0">
-  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+<link rel="stylesheet" href="/css/main.css">
 
 
-<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
-
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Gemini',
-    version: '7.4.0',
-    exturl: false,
-    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
-    copycode: {"enable":false,"show_result":false,"style":null},
-    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
-    bookmark: {"enable":false,"color":"#222","save":"auto"},
-    fancybox: false,
-    mediumzoom: false,
-    lazyload: false,
-    pangu: false,
-    algolia: {
-      appID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    },
-    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
-    path: 'search.json',
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    translation: {
-      copy_button: '复制',
-      copy_success: '复制成功',
-      copy_failure: '复制失败'
-    },
-    sidebarPadding: 40
-  };
-</script>
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"unix2dos.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false,"dimmer":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
+  </script>
 
   <meta name="description" content="Never Give Up">
 <meta property="og:type" content="website">
@@ -65,24 +30,22 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Levon&#39;s Blog">
 <meta name="twitter:description" content="Never Give Up">
-  <link rel="canonical" href="https://unix2dos.github.io/page/4/">
+
+<link rel="canonical" href="https://unix2dos.github.io/page/4/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome: true,
-    isPost: false,
-    isPage: false,
-    isArchive: false
+    isHome : true,
+    isPost : false,
+    lang   : 'zh-CN'
   };
 </script>
 
   <title>Levon's Blog</title>
   
-
-
 
 
 
@@ -101,7 +64,6 @@
   .use-motion .post-body,
   .use-motion .collection-header { opacity: initial; }
 
-  .use-motion .logo,
   .use-motion .site-title,
   .use-motion .site-subtitle {
     opacity: initial;
@@ -115,112 +77,95 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+<body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
-  <div class="site-meta">
-
-    <div>
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Levon's Blog</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
-        <h1 class="site-subtitle" itemprop="description">微信:  L6241425</h1>
-      
   </div>
 
-  <div class="site-nav-toggle">
-    <button aria-label="切换导航栏">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Levon's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">微信:  L6241425</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
   </div>
 </div>
 
 
+
+
 <nav class="site-nav">
-  
-  <ul id="menu" class="menu">
-      
-      
-      
-        
+  <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
-      
-    
 
-    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+    <a href="/" rel="section"><i class="home fa-fw"></i>首页</a>
 
   </li>
-      
-      
-      
-        
         <li class="menu-item menu-item-archives">
-      
-    
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>时光</a>
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a>
 
   </li>
-      
-      
-      
-        
         <li class="menu-item menu-item-categories">
-      
-    
 
-    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a>
 
   </li>
-      
-      
-      
-        
         <li class="menu-item menu-item-tags">
-      
-    
 
-    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a>
 
   </li>
       <li class="menu-item menu-item-search">
-        <a href="javascript:;" class="popup-trigger">
-        
-          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
       </li>
-    
   </ul>
-
 </nav>
-  <div class="site-search">
+
+
+
+  <div class="search-pop-overlay">
     <div class="popup search-popup">
-    <div class="search-header">
+        <div class="search-header">
   <span class="search-icon">
     <i class="fa fa-search"></i>
   </span>
   <div class="search-input-container">
-    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+    <input autocomplete="off" autocapitalize="off"
            placeholder="搜索..." spellcheck="false"
-           type="text" id="search-input">
+           type="search" class="search-input">
   </div>
   <span class="popup-btn-close">
     <i class="fa fa-times-circle"></i>
   </span>
 </div>
-<div id="search-result"></div>
-
-</div>
-<div class="search-pop-overlay"></div>
-
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
   </div>
+</div>
+
+    </div>
+  </div>
+
 </div>
     </header>
 
@@ -231,25 +176,23 @@
   </div>
 
 
-    <main id="main" class="main">
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
-            
+          
 
-          <div id="content" class="content">
+          <div class="content index posts-expand">
             
-  <div id="posts" class="posts-expand">
-        <article itemscope itemtype="http://schema.org/Article">
+      
   
   
-  
-  <div class="post-block home">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/3160c079.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
       <meta itemprop="name" content="Levon">
       <meta itemprop="description" content="Never Give Up">
-      <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -257,94 +200,69 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/p/3160c079.html" class="post-title-link" itemprop="url">文件大小和网速的单位</a>
           
+            <a href="/p/3160c079.html" class="post-title-link" itemprop="url">文件大小和网速的单位</a>
         </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              
-                
-              
-
               <time title="创建时间：2019-11-30 21:11:46" itemprop="dateCreated datePublished" datetime="2019-11-30T21:11:46+08:00">2019-11-30</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
                 <time title="修改时间：2020-08-29 22:42:39" itemprop="dateModified" datetime="2020-08-29T22:42:39+08:00">2020-08-29</time>
               </span>
-            
-          
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
+                <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/3-计算机系统/" itemprop="url" rel="index"><span itemprop="name">3-计算机系统</span></a></span>
-
-                
-                
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/3-计算机系统/" itemprop="url" rel="index"><span itemprop="name">3-计算机系统</span></a>
+                </span>
                   ，
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/3-计算机系统/计算机基础/" itemprop="url" rel="index"><span itemprop="name">计算机基础</span></a></span>
-
-                
-                
-              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/3-计算机系统/计算机基础/" itemprop="url" rel="index"><span itemprop="name">计算机基础</span></a>
+                </span>
             </span>
-          
 
           
   
   <span class="post-meta-item">
     
       <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
+        <i class="far fa-comment"></i>
       </span>
-        
-      
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/p/3160c079.html#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/3160c079.html" itemprop="commentCount"></span></a>
+    <a title="disqus" href="/p/3160c079.html#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/3160c079.html" itemprop="commentCount"></span>
+    </a>
   </span>
   
-  
-          <br>
+  <br>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
+                <i class="far fa-file-word"></i>
               </span>
-              
                 <span class="post-meta-item-text">本文字数：</span>
-              
               <span>802</span>
             </span>
-          
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
+                <i class="far fa-clock"></i>
               </span>
-              
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              
               <span>1 分钟</span>
             </span>
-          
 
         </div>
       </header>
@@ -357,13 +275,11 @@
       
           <h3 id="1-比特"><a href="#1-比特" class="headerlink" title="1. 比特"></a>1. 比特</h3><p>计算机发出的信号都是数字形式的, 比特(bit)来源于 <code>binary digit</code>, 意思是一个二进制数字. 因此一个比特就是二进制数字中的一个1 或 0.</p>
           <!--noindex-->
-          
             <div class="post-button">
               <a class="btn" href="/p/3160c079.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
-          
           <!--/noindex-->
         
       
@@ -373,27 +289,23 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-        <article itemscope itemtype="http://schema.org/Article">
+      
   
   
-  
-  <div class="post-block home">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/74b41bb2.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
       <meta itemprop="name" content="Levon">
       <meta itemprop="description" content="Never Give Up">
-      <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -401,94 +313,69 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/p/74b41bb2.html" class="post-title-link" itemprop="url">goproxy的部署实践</a>
           
+            <a href="/p/74b41bb2.html" class="post-title-link" itemprop="url">goproxy的部署实践</a>
         </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              
-                
-              
-
               <time title="创建时间：2019-11-29 21:11:46" itemprop="dateCreated datePublished" datetime="2019-11-29T21:11:46+08:00">2019-11-29</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
                 <time title="修改时间：2020-08-29 22:42:37" itemprop="dateModified" datetime="2020-08-29T22:42:37+08:00">2020-08-29</time>
               </span>
-            
-          
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
+                <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/1-编程语言/" itemprop="url" rel="index"><span itemprop="name">1-编程语言</span></a></span>
-
-                
-                
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-编程语言/" itemprop="url" rel="index"><span itemprop="name">1-编程语言</span></a>
+                </span>
                   ，
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/1-编程语言/golang/" itemprop="url" rel="index"><span itemprop="name">golang</span></a></span>
-
-                
-                
-              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-编程语言/golang/" itemprop="url" rel="index"><span itemprop="name">golang</span></a>
+                </span>
             </span>
-          
 
           
   
   <span class="post-meta-item">
     
       <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
+        <i class="far fa-comment"></i>
       </span>
-        
-      
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/p/74b41bb2.html#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/74b41bb2.html" itemprop="commentCount"></span></a>
+    <a title="disqus" href="/p/74b41bb2.html#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/74b41bb2.html" itemprop="commentCount"></span>
+    </a>
   </span>
   
-  
-          <br>
+  <br>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
+                <i class="far fa-file-word"></i>
               </span>
-              
                 <span class="post-meta-item-text">本文字数：</span>
-              
               <span>2.4k</span>
             </span>
-          
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
+                <i class="far fa-clock"></i>
               </span>
-              
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              
               <span>2 分钟</span>
             </span>
-          
 
         </div>
       </header>
@@ -502,13 +389,11 @@
           <h3 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h3><p>在大陆地区我们无法直接通过 <code>go get</code> 命令获取到一些第三方包，最常见的就是 <code>golang.org/x</code> 下面的各种优秀的包. 解决方案如下:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># go.1.12.x</span></span><br><span class="line"><span class="built_in">export</span> GO111MODULE=on</span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://goproxy.cn</span><br><span class="line"></span><br><span class="line"><span class="comment"># go1.13.x</span></span><br><span class="line">go env -w GOPROXY=https://goproxy.cn,direct</span><br><span class="line">go env -w GOPRIVATE=*.corp.example.com </span><br><span class="line"></span><br><span class="line"><span class="comment">#GOPRIVATE=*.corp.example.com 表示所有模块路径以 corp.example.com 的下一级域名 (如 team1.corp.example.com) 为前缀的模块版本都将不经过 Go module proxy 和 Go checksum database，需要注意的是不包括 corp.example.com 本身。</span></span><br></pre></td></tr></table></figure>
           <!--noindex-->
-          
             <div class="post-button">
               <a class="btn" href="/p/74b41bb2.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
-          
           <!--/noindex-->
         
       
@@ -518,27 +403,23 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-        <article itemscope itemtype="http://schema.org/Article">
+      
   
   
-  
-  <div class="post-block home">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/48fcb916.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
       <meta itemprop="name" content="Levon">
       <meta itemprop="description" content="Never Give Up">
-      <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -546,94 +427,69 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/p/48fcb916.html" class="post-title-link" itemprop="url">【转载】如何超过大多数人</a>
           
+            <a href="/p/48fcb916.html" class="post-title-link" itemprop="url">【转载】如何超过大多数人</a>
         </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              
-                
-              
-
               <time title="创建时间：2019-11-27 21:11:46" itemprop="dateCreated datePublished" datetime="2019-11-27T21:11:46+08:00">2019-11-27</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
                 <time title="修改时间：2020-08-29 22:42:39" itemprop="dateModified" datetime="2020-08-29T22:42:39+08:00">2020-08-29</time>
               </span>
-            
-          
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
+                <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/5-随笔/" itemprop="url" rel="index"><span itemprop="name">5-随笔</span></a></span>
-
-                
-                
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/5-随笔/" itemprop="url" rel="index"><span itemprop="name">5-随笔</span></a>
+                </span>
                   ，
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/5-随笔/思考/" itemprop="url" rel="index"><span itemprop="name">思考</span></a></span>
-
-                
-                
-              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/5-随笔/思考/" itemprop="url" rel="index"><span itemprop="name">思考</span></a>
+                </span>
             </span>
-          
 
           
   
   <span class="post-meta-item">
     
       <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
+        <i class="far fa-comment"></i>
       </span>
-        
-      
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/p/48fcb916.html#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/48fcb916.html" itemprop="commentCount"></span></a>
+    <a title="disqus" href="/p/48fcb916.html#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/48fcb916.html" itemprop="commentCount"></span>
+    </a>
   </span>
   
-  
-          <br>
+  <br>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
+                <i class="far fa-file-word"></i>
               </span>
-              
                 <span class="post-meta-item-text">本文字数：</span>
-              
               <span>6k</span>
             </span>
-          
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
+                <i class="far fa-clock"></i>
               </span>
-              
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              
               <span>5 分钟</span>
             </span>
-          
 
         </div>
       </header>
@@ -647,13 +503,11 @@
           <p>当你看到这篇文章的标题，你一定对这篇文章产生了巨大的兴趣，因为你的潜意识在告诉你，这是一本人生的“武林秘籍”，而且还是左耳朵写的，一定有干货满满，只要读完，一定可以练就神功并找到超过大多数人的快车道和捷径……然而…… 当你看到我这样开篇时，你一定会觉得我马上就要有个转折，告诉你这是不可能的，一切都需要付出和努力……然而，你错了，这篇文章还真就是一篇“秘籍”，只要你把这些“秘籍”用起来，你就一定可以超过大多数人。而且，这篇文章只有我这个“人生导师”可以写得好。毕竟，我的生命过到了十六进制2B的年纪，踏入这个社会已超过20年，舍我其谁呢？！</p>
 <p>P.S. 这篇文章借鉴于《<a href="https://coolshell.cn/articles/4758.html" target="_blank" rel="noopener">如何写出无法维护的代码</a>》一文的风格……嘿嘿</p>
           <!--noindex-->
-          
             <div class="post-button">
               <a class="btn" href="/p/48fcb916.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
-          
           <!--/noindex-->
         
       
@@ -663,27 +517,23 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-        <article itemscope itemtype="http://schema.org/Article">
+      
   
   
-  
-  <div class="post-block home">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/a84d9911.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
       <meta itemprop="name" content="Levon">
       <meta itemprop="description" content="Never Give Up">
-      <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -691,94 +541,69 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/p/a84d9911.html" class="post-title-link" itemprop="url">openvpn搭建虚拟局域网</a>
           
+            <a href="/p/a84d9911.html" class="post-title-link" itemprop="url">openvpn搭建虚拟局域网</a>
         </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              
-                
-              
-
               <time title="创建时间：2019-11-23 16:11:40" itemprop="dateCreated datePublished" datetime="2019-11-23T16:11:40+08:00">2019-11-23</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
                 <time title="修改时间：2020-08-29 22:42:38" itemprop="dateModified" datetime="2020-08-29T22:42:38+08:00">2020-08-29</time>
               </span>
-            
-          
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
+                <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/2-linux系统/" itemprop="url" rel="index"><span itemprop="name">2-linux系统</span></a></span>
-
-                
-                
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/2-linux系统/" itemprop="url" rel="index"><span itemprop="name">2-linux系统</span></a>
+                </span>
                   ，
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/2-linux系统/系统/" itemprop="url" rel="index"><span itemprop="name">系统</span></a></span>
-
-                
-                
-              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/2-linux系统/系统/" itemprop="url" rel="index"><span itemprop="name">系统</span></a>
+                </span>
             </span>
-          
 
           
   
   <span class="post-meta-item">
     
       <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
+        <i class="far fa-comment"></i>
       </span>
-        
-      
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/p/a84d9911.html#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/a84d9911.html" itemprop="commentCount"></span></a>
+    <a title="disqus" href="/p/a84d9911.html#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/a84d9911.html" itemprop="commentCount"></span>
+    </a>
   </span>
   
-  
-          <br>
+  <br>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
+                <i class="far fa-file-word"></i>
               </span>
-              
                 <span class="post-meta-item-text">本文字数：</span>
-              
               <span>4k</span>
             </span>
-          
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
+                <i class="far fa-clock"></i>
               </span>
-              
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              
               <span>4 分钟</span>
             </span>
-          
 
         </div>
       </header>
@@ -792,13 +617,11 @@
           <h3 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h3><p>OpenVPN 是一个健壮的、高度灵活的 <a href="https://en.wikipedia.org/wiki/VPN" target="_blank" rel="noopener">VPN</a> 守护进程。它支持 <a href="https://en.wikipedia.org/wiki/SSL/TLS" target="_blank" rel="noopener">SSL/TLS</a> 安全、<a href="https://en.wikipedia.org/wiki/Bridging_(networking)" target="_blank" rel="noopener">Ethernet bridging</a>、经由<a href="https://en.wikipedia.org/wiki/Proxy_server" target="_blank" rel="noopener">代理</a>的 <a href="https://en.wikipedia.org/wiki/Transmission_Control_Protocol" target="_blank" rel="noopener">TCP</a> 或 <a href="https://en.wikipedia.org/wiki/User_Datagram_Protocol" target="_blank" rel="noopener">UDP</a> <a href="https://en.wikipedia.org/wiki/Tunneling_protocol" target="_blank" rel="noopener">隧道</a>和 <a href="https://en.wikipedia.org/wiki/Network_address_translation" target="_blank" rel="noopener">NAT</a>。另外，它也支持动态 IP 地址以及 <a href="https://en.wikipedia.org/wiki/Dynamic_Host_Configuration_Protocol" target="_blank" rel="noopener">DHCP</a>，可伸缩性足以支持数百或数千用户的使用场景，同时可移植至大多数主流操作系统平台上。</p>
 <h5 id="安装openvpn"><a href="#安装openvpn" class="headerlink" title="安装openvpn"></a>安装openvpn</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install openvpn</span><br></pre></td></tr></table></figure>
           <!--noindex-->
-          
             <div class="post-button">
               <a class="btn" href="/p/a84d9911.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
-          
           <!--/noindex-->
         
       
@@ -808,27 +631,23 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-        <article itemscope itemtype="http://schema.org/Article">
+      
   
   
-  
-  <div class="post-block home">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/4cf47ff4.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
       <meta itemprop="name" content="Levon">
       <meta itemprop="description" content="Never Give Up">
-      <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -836,94 +655,69 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/p/4cf47ff4.html" class="post-title-link" itemprop="url">Makefile的编写规则</a>
           
+            <a href="/p/4cf47ff4.html" class="post-title-link" itemprop="url">Makefile的编写规则</a>
         </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              
-                
-              
-
               <time title="创建时间：2019-11-21 21:11:46" itemprop="dateCreated datePublished" datetime="2019-11-21T21:11:46+08:00">2019-11-21</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
                 <time title="修改时间：2020-08-29 22:42:38" itemprop="dateModified" datetime="2020-08-29T22:42:38+08:00">2020-08-29</time>
               </span>
-            
-          
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
+                <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/2-linux系统/" itemprop="url" rel="index"><span itemprop="name">2-linux系统</span></a></span>
-
-                
-                
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/2-linux系统/" itemprop="url" rel="index"><span itemprop="name">2-linux系统</span></a>
+                </span>
                   ，
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/2-linux系统/shell/" itemprop="url" rel="index"><span itemprop="name">shell</span></a></span>
-
-                
-                
-              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/2-linux系统/shell/" itemprop="url" rel="index"><span itemprop="name">shell</span></a>
+                </span>
             </span>
-          
 
           
   
   <span class="post-meta-item">
     
       <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
+        <i class="far fa-comment"></i>
       </span>
-        
-      
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/p/4cf47ff4.html#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/4cf47ff4.html" itemprop="commentCount"></span></a>
+    <a title="disqus" href="/p/4cf47ff4.html#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/4cf47ff4.html" itemprop="commentCount"></span>
+    </a>
   </span>
   
-  
-          <br>
+  <br>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
+                <i class="far fa-file-word"></i>
               </span>
-              
                 <span class="post-meta-item-text">本文字数：</span>
-              
               <span>8.4k</span>
             </span>
-          
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
+                <i class="far fa-clock"></i>
               </span>
-              
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              
               <span>8 分钟</span>
             </span>
-          
 
         </div>
       </header>
@@ -941,13 +735,11 @@
 <p>“目标”是必需的，不可省略；”前置条件”和”命令”都是可选的，但是两者之中必须至少存在一个。</p>
 <p>每条规则就明确两件事：构建目标的前置条件是什么，以及如何构建。</p>
           <!--noindex-->
-          
             <div class="post-button">
               <a class="btn" href="/p/4cf47ff4.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
-          
           <!--/noindex-->
         
       
@@ -957,27 +749,23 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-        <article itemscope itemtype="http://schema.org/Article">
+      
   
   
-  
-  <div class="post-block home">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/bb1dd10.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
       <meta itemprop="name" content="Levon">
       <meta itemprop="description" content="Never Give Up">
-      <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -985,94 +773,69 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/p/bb1dd10.html" class="post-title-link" itemprop="url">分布式事务和分布式锁</a>
           
+            <a href="/p/bb1dd10.html" class="post-title-link" itemprop="url">分布式事务和分布式锁</a>
         </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              
-                
-              
-
               <time title="创建时间：2019-11-07 00:00:00" itemprop="dateCreated datePublished" datetime="2019-11-07T00:00:00+08:00">2019-11-07</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
                 <time title="修改时间：2020-08-29 22:42:38" itemprop="dateModified" datetime="2020-08-29T22:42:38+08:00">2020-08-29</time>
               </span>
-            
-          
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
+                <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/3-计算机系统/" itemprop="url" rel="index"><span itemprop="name">3-计算机系统</span></a></span>
-
-                
-                
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/3-计算机系统/" itemprop="url" rel="index"><span itemprop="name">3-计算机系统</span></a>
+                </span>
                   ，
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/3-计算机系统/分布式/" itemprop="url" rel="index"><span itemprop="name">分布式</span></a></span>
-
-                
-                
-              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/3-计算机系统/分布式/" itemprop="url" rel="index"><span itemprop="name">分布式</span></a>
+                </span>
             </span>
-          
 
           
   
   <span class="post-meta-item">
     
       <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
+        <i class="far fa-comment"></i>
       </span>
-        
-      
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/p/bb1dd10.html#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/bb1dd10.html" itemprop="commentCount"></span></a>
+    <a title="disqus" href="/p/bb1dd10.html#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/bb1dd10.html" itemprop="commentCount"></span>
+    </a>
   </span>
   
-  
-          <br>
+  <br>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
+                <i class="far fa-file-word"></i>
               </span>
-              
                 <span class="post-meta-item-text">本文字数：</span>
-              
               <span>3.7k</span>
             </span>
-          
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
+                <i class="far fa-clock"></i>
               </span>
-              
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              
               <span>3 分钟</span>
             </span>
-          
 
         </div>
       </header>
@@ -1087,13 +850,11 @@
 <h3 id="0-1-一致性问题"><a href="#0-1-一致性问题" class="headerlink" title="0.1 一致性问题"></a>0.1 一致性问题</h3><p>一致性问题就是相互独立的节点之间如何达成一项决议的问题。</p>
 <p>分布式系统中，进行数据库事务提交(commit transaction)、Leader选举、序列号生成等都会遇到一致性问题。</p>
           <!--noindex-->
-          
             <div class="post-button">
               <a class="btn" href="/p/bb1dd10.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
-          
           <!--/noindex-->
         
       
@@ -1103,27 +864,23 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-        <article itemscope itemtype="http://schema.org/Article">
+      
   
   
-  
-  <div class="post-block home">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/6fa8633a.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
       <meta itemprop="name" content="Levon">
       <meta itemprop="description" content="Never Give Up">
-      <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1131,94 +888,69 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/p/6fa8633a.html" class="post-title-link" itemprop="url">docker中使用mongodb</a>
           
+            <a href="/p/6fa8633a.html" class="post-title-link" itemprop="url">docker中使用mongodb</a>
         </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              
-                
-              
-
               <time title="创建时间：2019-10-19 12:57:46" itemprop="dateCreated datePublished" datetime="2019-10-19T12:57:46+08:00">2019-10-19</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
                 <time title="修改时间：2020-08-29 22:42:38" itemprop="dateModified" datetime="2020-08-29T22:42:38+08:00">2020-08-29</time>
               </span>
-            
-          
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
+                <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/2-linux系统/" itemprop="url" rel="index"><span itemprop="name">2-linux系统</span></a></span>
-
-                
-                
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/2-linux系统/" itemprop="url" rel="index"><span itemprop="name">2-linux系统</span></a>
+                </span>
                   ，
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/2-linux系统/docker/" itemprop="url" rel="index"><span itemprop="name">docker</span></a></span>
-
-                
-                
-              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/2-linux系统/docker/" itemprop="url" rel="index"><span itemprop="name">docker</span></a>
+                </span>
             </span>
-          
 
           
   
   <span class="post-meta-item">
     
       <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
+        <i class="far fa-comment"></i>
       </span>
-        
-      
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/p/6fa8633a.html#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/6fa8633a.html" itemprop="commentCount"></span></a>
+    <a title="disqus" href="/p/6fa8633a.html#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/6fa8633a.html" itemprop="commentCount"></span>
+    </a>
   </span>
   
-  
-          <br>
+  <br>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
+                <i class="far fa-file-word"></i>
               </span>
-              
                 <span class="post-meta-item-text">本文字数：</span>
-              
               <span>805</span>
             </span>
-          
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
+                <i class="far fa-clock"></i>
               </span>
-              
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              
               <span>1 分钟</span>
             </span>
-          
 
         </div>
       </header>
@@ -1231,13 +963,11 @@
       
           <h3 id="1-安装"><a href="#1-安装" class="headerlink" title="1. 安装"></a>1. 安装</h3><h5 id="1-1-安装-mongodb"><a href="#1-1-安装-mongodb" class="headerlink" title="1.1 安装 mongodb"></a>1.1 安装 mongodb</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mkdir ~/data</span><br><span class="line"></span><br><span class="line">sudo docker pull mongo:latest </span><br><span class="line"></span><br><span class="line"><span class="comment"># 一定要把数据卷暴露出去, 这样方便数据迁移</span></span><br><span class="line">sudo docker run -d -p 27017:27017 --name mongo -v /home/liuwei/data:/data/db mongo:latest</span><br><span class="line"></span><br><span class="line">sudo docker <span class="built_in">exec</span> -it mongo mongo</span><br></pre></td></tr></table></figure>
           <!--noindex-->
-          
             <div class="post-button">
               <a class="btn" href="/p/6fa8633a.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
-          
           <!--/noindex-->
         
       
@@ -1247,27 +977,23 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-        <article itemscope itemtype="http://schema.org/Article">
+      
   
   
-  
-  <div class="post-block home">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/331c471e.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
       <meta itemprop="name" content="Levon">
       <meta itemprop="description" content="Never Give Up">
-      <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1275,94 +1001,69 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/p/331c471e.html" class="post-title-link" itemprop="url">docker-compose的一次实践</a>
           
+            <a href="/p/331c471e.html" class="post-title-link" itemprop="url">docker-compose的一次实践</a>
         </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              
-                
-              
-
               <time title="创建时间：2019-10-19 12:11:46" itemprop="dateCreated datePublished" datetime="2019-10-19T12:11:46+08:00">2019-10-19</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
                 <time title="修改时间：2020-08-29 22:42:38" itemprop="dateModified" datetime="2020-08-29T22:42:38+08:00">2020-08-29</time>
               </span>
-            
-          
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
+                <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/2-linux系统/" itemprop="url" rel="index"><span itemprop="name">2-linux系统</span></a></span>
-
-                
-                
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/2-linux系统/" itemprop="url" rel="index"><span itemprop="name">2-linux系统</span></a>
+                </span>
                   ，
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/2-linux系统/docker/" itemprop="url" rel="index"><span itemprop="name">docker</span></a></span>
-
-                
-                
-              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/2-linux系统/docker/" itemprop="url" rel="index"><span itemprop="name">docker</span></a>
+                </span>
             </span>
-          
 
           
   
   <span class="post-meta-item">
     
       <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
+        <i class="far fa-comment"></i>
       </span>
-        
-      
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/p/331c471e.html#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/331c471e.html" itemprop="commentCount"></span></a>
+    <a title="disqus" href="/p/331c471e.html#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/331c471e.html" itemprop="commentCount"></span>
+    </a>
   </span>
   
-  
-          <br>
+  <br>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
+                <i class="far fa-file-word"></i>
               </span>
-              
                 <span class="post-meta-item-text">本文字数：</span>
-              
               <span>2.1k</span>
             </span>
-          
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
+                <i class="far fa-clock"></i>
               </span>
-              
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              
               <span>2 分钟</span>
             </span>
-          
 
         </div>
       </header>
@@ -1380,13 +1081,11 @@
 <li><code>docker-compose</code> 命令行工具</li>
 </ul>
           <!--noindex-->
-          
             <div class="post-button">
               <a class="btn" href="/p/331c471e.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
-          
           <!--/noindex-->
         
       
@@ -1396,27 +1095,23 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-        <article itemscope itemtype="http://schema.org/Article">
+      
   
   
-  
-  <div class="post-block home">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/da64728.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
       <meta itemprop="name" content="Levon">
       <meta itemprop="description" content="Never Give Up">
-      <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1424,94 +1119,69 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/p/da64728.html" class="post-title-link" itemprop="url">curl命令的使用总结</a>
           
+            <a href="/p/da64728.html" class="post-title-link" itemprop="url">curl命令的使用总结</a>
         </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              
-                
-              
-
               <time title="创建时间：2019-10-19 11:11:46" itemprop="dateCreated datePublished" datetime="2019-10-19T11:11:46+08:00">2019-10-19</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
                 <time title="修改时间：2020-08-29 22:42:38" itemprop="dateModified" datetime="2020-08-29T22:42:38+08:00">2020-08-29</time>
               </span>
-            
-          
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
+                <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/2-linux系统/" itemprop="url" rel="index"><span itemprop="name">2-linux系统</span></a></span>
-
-                
-                
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/2-linux系统/" itemprop="url" rel="index"><span itemprop="name">2-linux系统</span></a>
+                </span>
                   ，
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/2-linux系统/命令/" itemprop="url" rel="index"><span itemprop="name">命令</span></a></span>
-
-                
-                
-              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/2-linux系统/命令/" itemprop="url" rel="index"><span itemprop="name">命令</span></a>
+                </span>
             </span>
-          
 
           
   
   <span class="post-meta-item">
     
       <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
+        <i class="far fa-comment"></i>
       </span>
-        
-      
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/p/da64728.html#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/da64728.html" itemprop="commentCount"></span></a>
+    <a title="disqus" href="/p/da64728.html#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/da64728.html" itemprop="commentCount"></span>
+    </a>
   </span>
   
-  
-          <br>
+  <br>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
+                <i class="far fa-file-word"></i>
               </span>
-              
                 <span class="post-meta-item-text">本文字数：</span>
-              
               <span>2k</span>
             </span>
-          
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
+                <i class="far fa-clock"></i>
               </span>
-              
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              
               <span>2 分钟</span>
             </span>
-          
 
         </div>
       </header>
@@ -1528,13 +1198,11 @@
 <p>如果要把这个网页保存下来，可以使用<code>-o</code>参数，这就相当于使用wget命令了。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -o [文件名] www.sina.com</span><br></pre></td></tr></table></figure>
           <!--noindex-->
-          
             <div class="post-button">
               <a class="btn" href="/p/da64728.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
-          
           <!--/noindex-->
         
       
@@ -1544,27 +1212,23 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-        <article itemscope itemtype="http://schema.org/Article">
+      
   
   
-  
-  <div class="post-block home">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/1dd7dc05.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
       <meta itemprop="name" content="Levon">
       <meta itemprop="description" content="Never Give Up">
-      <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1572,94 +1236,69 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/p/1dd7dc05.html" class="post-title-link" itemprop="url">近期博客的折腾命运</a>
           
+            <a href="/p/1dd7dc05.html" class="post-title-link" itemprop="url">近期博客的折腾命运</a>
         </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              
-                
-              
-
               <time title="创建时间：2019-10-08 15:18:00" itemprop="dateCreated datePublished" datetime="2019-10-08T15:18:00+08:00">2019-10-08</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
                 <time title="修改时间：2020-08-29 22:42:39" itemprop="dateModified" datetime="2020-08-29T22:42:39+08:00">2020-08-29</time>
               </span>
-            
-          
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
+                <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/5-随笔/" itemprop="url" rel="index"><span itemprop="name">5-随笔</span></a></span>
-
-                
-                
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/5-随笔/" itemprop="url" rel="index"><span itemprop="name">5-随笔</span></a>
+                </span>
                   ，
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/5-随笔/个人记录/" itemprop="url" rel="index"><span itemprop="name">个人记录</span></a></span>
-
-                
-                
-              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/5-随笔/个人记录/" itemprop="url" rel="index"><span itemprop="name">个人记录</span></a>
+                </span>
             </span>
-          
 
           
   
   <span class="post-meta-item">
     
       <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
+        <i class="far fa-comment"></i>
       </span>
-        
-      
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/p/1dd7dc05.html#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/1dd7dc05.html" itemprop="commentCount"></span></a>
+    <a title="disqus" href="/p/1dd7dc05.html#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/1dd7dc05.html" itemprop="commentCount"></span>
+    </a>
   </span>
   
-  
-          <br>
+  <br>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
+                <i class="far fa-file-word"></i>
               </span>
-              
                 <span class="post-meta-item-text">本文字数：</span>
-              
               <span>689</span>
             </span>
-          
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
+                <i class="far fa-clock"></i>
               </span>
-              
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              
               <span>1 分钟</span>
             </span>
-          
 
         </div>
       </header>
@@ -1674,13 +1313,11 @@
 <h3 id="2-折腾过程"><a href="#2-折腾过程" class="headerlink" title="2. 折腾过程"></a>2. 折腾过程</h3><p>takedown后一脸懵逼, 在网上查询的解决方案基本都是给github发邮件, 请求删除仓库或者再给一次宽限24小时的处理时间. </p>
 <p>于是我试着发了一封邮件, 没想到10天后才得到回复 (这效率<del>~</del>). 回复的时间还在十一假期内, 虽然又给我了24小时处理, 又被我完美错过了.(!!!!!一定要定期查看邮件)</p>
           <!--noindex-->
-          
             <div class="post-button">
               <a class="btn" href="/p/1dd7dc05.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
-          
           <!--/noindex-->
         
       
@@ -1690,17 +1327,13 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-  </div>
 
   
   <nav class="pagination">
@@ -1708,18 +1341,39 @@
   </nav>
 
 
+
           </div>
           
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
 
         </div>
           
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
   </div>
 
   <aside class="sidebar">
@@ -1741,96 +1395,47 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image"
-      src="/images/avatar.jpg"
-      alt="Levon">
+    <img class="site-author-image" itemprop="image" alt="Levon"
+      src="/images/avatar.jpg">
   <p class="site-author-name" itemprop="name">Levon</p>
   <div class="site-description" itemprop="description">Never Give Up</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
-        
           <a href="/archives/">
         
           <span class="site-state-item-count">171</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
-    
-      
-      
       <div class="site-state-item site-state-categories">
-        
-          
             <a href="/categories/">
           
-        
         <span class="site-state-item-count">40</span>
-        <span class="site-state-item-name">分类</span>
-        </a>
+        <span class="site-state-item-name">分类</span></a>
       </div>
-    
-      
-      
       <div class="site-state-item site-state-tags">
-        
-          
             <a href="/tags/">
           
-        
         <span class="site-state-item-count">97</span>
-        <span class="site-state-item-name">标签</span>
-        </a>
+        <span class="site-state-item-name">标签</span></a>
       </div>
-    
   </nav>
 </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-      
-      
-        
-      
-      
-        
-      
-        <a href="https://github.com/unix2dos" title="GitHub &rarr; https://github.com/unix2dos" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+        <a href="https://github.com/unix2dos" title="GitHub → https://github.com/unix2dos" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
       </span>
-    
       <span class="links-of-author-item">
-      
-      
-        
-      
-      
-        
-      
-        <a href="mailto:levonfly@gmail.com" title="E-Mail &rarr; mailto:levonfly@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+        <a href="mailto:levonfly@gmail.com" title="E-Mail → mailto:levonfly@gmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
       </span>
-    
       <span class="links-of-author-item">
-      
-      
-        
-      
-      
-        
-      
-        <a href="https://twitter.com/levonfly" title="Twitter &rarr; https://twitter.com/levonfly" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+        <a href="https://twitter.com/levonfly" title="Twitter → https://twitter.com/levonfly" rel="noopener" target="_blank"><i class="twitter fa-fw"></i>Twitter</a>
       </span>
-    
       <span class="links-of-author-item">
-      
-      
-        
-      
-      
-        
-      
-        <a href="https://weibo.com/l6241425" title="Weibo &rarr; https://weibo.com/l6241425" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+        <a href="https://weibo.com/l6241425" title="Weibo → https://weibo.com/l6241425" rel="noopener" target="_blank"><i class="weibo fa-fw"></i>Weibo</a>
       </span>
-    
   </div>
 
 
@@ -1845,16 +1450,23 @@
       </div>
     </main>
 
-    <footer id="footer" class="footer">
+    <footer class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
-  <span class="with-love" id="animate">
-    <i class="fa fa-user"></i>
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Levon</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
-      <i class="fa fa-area-chart"></i>
+      <i class="fa fa-chart-area"></i>
     </span>
     <span title="站点总字数">691k</span>
     <span class="post-meta-divider">|</span>
@@ -1863,6 +1475,8 @@
     </span>
     <span title="站点阅读时长">10:28</span>
 </div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
 
         
 
@@ -1873,47 +1487,51 @@
 
 
 
-
-
-
-
-        
       </div>
     </footer>
   </div>
 
   
-  <script src="/lib/anime.min.js?v=3.1.0"></script>
-  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
-<script src="/js/schemes/pisces.js?v=7.4.0"></script>
-
-<script src="/js/next-boot.js?v=7.4.0"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
 
 
 
   
   <script>
     (function(){
-      var bp = document.createElement('script');
-      var curProtocol = window.location.protocol.split(':')[0];
-      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(bp, s);
-    })();
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
   </script>
 
 
 
 
-
-
-
-
-  <script src="/js/local-search.js?v=7.4.0"></script>
-
-
+  <script src="/js/local-search.js"></script>
 
 
 
@@ -1929,8 +1547,16 @@
   
 
   
-
-  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'https://unix2dos.github.io/page/4/',]
+      });
+      });
+  </script>
 
 <script>
   function loadCount() {
