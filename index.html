@@ -284,7 +284,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-18 00:20:01" itemprop="dateModified" datetime="2020-09-18T00:20:01+08:00">2020-09-18</time>
+                <time title="修改时间：2020-09-18 00:24:22" itemprop="dateModified" datetime="2020-09-18T00:24:22+08:00">2020-09-18</time>
               </span>
             
           
@@ -358,145 +358,15 @@
           <h1 id="1-join类型"><a href="#1-join类型" class="headerlink" title="1.  join类型"></a>1.  join类型</h1><p>在关系代数中，连接运算是由一个笛卡尔积运算和一个选取运算构成的。首先用笛卡尔积完成对两个数据集合的乘运算，然后对生成的结果集合进行选取运算，确保只把分别来自两个数据集合并且具有重叠部分的行合并在一起。</p>
 <p>连接的全部意义在于在水平方向上合并两个数据集合（通常是表），并产生一个新的结果集合，其方法是将一个数据源中的行于另一个数据源中和它匹配的行组合成一个新元组。</p>
 <p>SQL提供了多种类型的连接方式，它们之间的区别在于：从相互交叠的不同数据集合中选择用于连接的行时所采用的方法不同。</p>
-<h3 id="1-1-join分类"><a href="#1-1-join分类" class="headerlink" title="1.1  join分类"></a>1.1  join分类</h3><table>
-<thead>
-<tr>
-<th>连接类型</th>
-<th>连接种类</th>
-<th>定义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Inner Join</td>
-<td>Inner Join</td>
-<td>内连接是最常见的一种连接，它也被称为普通连接，只连接匹配的行（仅对满足连接条件的CROSS中的列）。它又分为等值连接（连接条件运算符为”=”）和不等值连接（连接条件运算符不为”=”，例如between…and）。</td>
-</tr>
-<tr>
-<td>Outer Join</td>
-<td>Full Outer Join</td>
-<td>FULL JOIN 会从左表 和右表 那里返回所有的行。如果其中一个表的数据行在另一个表中没有匹配的行，那么对面的数据用NULL代替。</td>
-</tr>
-<tr>
-<td>Outer Join</td>
-<td>Left Outer Join</td>
-<td>LEFT JOIN返回左表的全部行和右表满足ON条件的行，如果左表的行在右表中没有匹配，那么这一行右表中对应数据用NULL代替。</td>
-</tr>
-<tr>
-<td>Outer Join</td>
-<td>Right Outer Join</td>
-<td>RIGHT JOIN返回右表的全部行和左表满足ON条件的行，如果右表的行在左表中没有匹配，那么这一行左表中对应数据用NULL代替。</td>
-</tr>
-<tr>
-<td>Cross Join</td>
-<td>Cross Join</td>
-<td>CROSS对两个表执行笛卡尔乘积。它为左表行和右表行的每种可能的组合返回一行。返回（左表行数*右表行数）行的表。</td>
-</tr>
-<tr>
-<td>其他</td>
-<td>自然连接</td>
-<td>自然连接是一种特殊的等值连接,在连接条件中使用等于(=)运算符比较被连接列的列值，但它使用选择列表指出查询结果集合中所包括的列，并删除连接表中的重复列。</td>
-</tr>
-<tr>
-<td>其他</td>
-<td>自连接</td>
-<td>某个表和其自身连接，常用在同一表内不同数据间对同一列的比较</td>
-</tr>
-</tbody></table>
-<h3 id><a href="#" class="headerlink" title></a></h3><h3 id="1-2-常见分类"><a href="#1-2-常见分类" class="headerlink" title="1.2 常见分类"></a>1.2 常见分类</h3><p>There are 4 different types of Oracle joins:</p>
-<ul>
-<li>Oracle INNER JOIN (or sometimes called simple join)</li>
-<li>Oracle LEFT OUTER JOIN (or sometimes called LEFT JOIN)</li>
-<li>Oracle RIGHT OUTER JOIN (or sometimes called RIGHT JOIN)</li>
-<li>Oracle FULL OUTER JOIN (or sometimes called FULL JOIN)</li>
-</ul>
-<h3 id="1-3-注意事项"><a href="#1-3-注意事项" class="headerlink" title="1.3 注意事项"></a>1.3 注意事项</h3><ul>
-<li>LEFT JOIN and LEFT OUTER JOIN 完全一样</li>
-<li>RIGHT JOIN and RIGHT OUTER JOIN 完全一样</li>
-<li>JOIN 默认情况下是 INNER JOIN</li>
-<li>对于INNER JOIN，顺序无关紧要, 对于（LEFT，RIGHT或FULL）OUTER JOIN，顺序很重要</li>
-</ul>
-<h1 id="2-join使用"><a href="#2-join使用" class="headerlink" title="2. join使用"></a>2. join使用</h1><p><strong>Examples</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">A    B</span><br><span class="line">-    -</span><br><span class="line">1    3</span><br><span class="line">2    4</span><br><span class="line">3    5</span><br><span class="line">4    6</span><br></pre></td></tr></table></figure>
-
-<p><strong>Inner join</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">select * from a INNER JOIN b on a.a = b.b;</span><br><span class="line">select a.*, b.*  from a,b where a.a = b.b;</span><br><span class="line"></span><br><span class="line">a | b</span><br><span class="line">--+--</span><br><span class="line">3 | 3</span><br><span class="line">4 | 4</span><br></pre></td></tr></table></figure>
-
-<p><strong>Left outer join</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">select * from a LEFT OUTER JOIN b on a.a = b.b;</span><br><span class="line">select a.*, b.*  from a,b where a.a = b.b(+);</span><br><span class="line"></span><br><span class="line">a |  b</span><br><span class="line">--+-----</span><br><span class="line">1 | null</span><br><span class="line">2 | null</span><br><span class="line">3 |    3</span><br><span class="line">4 |    4</span><br></pre></td></tr></table></figure>
-
-<p><strong>Right outer join</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">select * from a RIGHT OUTER JOIN b on a.a = b.b;</span><br><span class="line">select a.*, b.*  from a,b where a.a(+) = b.b;</span><br><span class="line"></span><br><span class="line">a    |  b</span><br><span class="line">-----+----</span><br><span class="line">3    |  3</span><br><span class="line">4    |  4</span><br><span class="line">null |  5</span><br><span class="line">null |  6</span><br></pre></td></tr></table></figure>
-
-<p><strong>Full outer join</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">select * from a FULL OUTER JOIN b on a.a = b.b;</span><br><span class="line"></span><br><span class="line"> a   |  b</span><br><span class="line">-----+-----</span><br><span class="line">   1 | null</span><br><span class="line">   2 | null</span><br><span class="line">   3 |    3</span><br><span class="line">   4 |    4</span><br><span class="line">null |    6</span><br><span class="line">null |    5</span><br></pre></td></tr></table></figure>
-
-<h1 id="3-join区别"><a href="#3-join区别" class="headerlink" title="3. join区别"></a>3. join区别</h1><h3 id="3-1-inner-join-outer-join"><a href="#3-1-inner-join-outer-join" class="headerlink" title="3.1 inner join, outer join"></a>3.1 inner join, outer join</h3><ul>
-<li>An inner join of A and B gives the result of A intersect B</li>
-<li>An outer join of A and B gives the results of A union B</li>
-</ul>
-<p><img src="/p/289dcf0b/1.png" alt="1"></p>
-<h3 id="3-2-inner-join-多表连查"><a href="#3-2-inner-join-多表连查" class="headerlink" title="3.2 inner join, 多表连查"></a>3.2 inner join, 多表连查</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM</span><br><span class="line">table a INNER JOIN table b</span><br><span class="line">ON a.id = b.id;</span><br></pre></td></tr></table></figure>
-
-<p>vs</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT a.*, b.*</span><br><span class="line">FROM table a, table b</span><br><span class="line">WHERE a.id = b.id;</span><br></pre></td></tr></table></figure>
-
-<p>多表连查, 带 where 条件的一般又称为隐式内连接,  在性能方面，它们是完全相同的。</p>
-<h3 id="3-3-left-join-多表连查"><a href="#3-3-left-join-多表连查" class="headerlink" title="3.3  left join, 多表连查"></a>3.3  left join, 多表连查</h3><p>实际项目中, 最常用的两种方式.</p>
-<ul>
-<li>left join 就是 left outer join, 一般会产生 null</li>
-<li>多表查询加 where, 可以理解为 inner join</li>
-</ul>
-<h3 id="3-4-on-where"><a href="#3-4-on-where" class="headerlink" title="3.4 on, where"></a>3.4 on, where</h3><ul>
-<li><p>对于inner joins, 无关紧要</p>
-</li>
-<li><p>对于 outer joins, 先 on 后 where</p>
-<ul>
-<li><p><code>ON</code> clause - <strong>Before</strong> joining.    在join之前将被过滤,  有些结果可能为null（因为outer join）。</p>
-</li>
-<li><p><code>WHERE</code> clause: <strong>After</strong> joining.   在join之后过滤记录, 一般可以过滤掉 null。</p>
-</li>
-</ul>
-</li>
-</ul>
-<p>“A LEFT JOIN B ON 条件表达式” 中的ON用来决定如何从 B 表中检索数据行。如果 B 表中没有任何一行数据匹配 ON 的条件,将会额外生成一行所有列为 NULL 的数据。仅在匹配阶段完成以后，WHERE 子句条件才会被使用。它将从匹配阶段产生的数据中检索过滤。</p>
-<p>所以我们要注意：在使用Left (right) join的时候，一定要在先给出尽可能多的匹配满足条件，减少Where的执行。如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">select * from A</span><br><span class="line">inner join B on B.name = A.name</span><br><span class="line">left join C on C.name = B.name</span><br><span class="line">left join D on D.id = C.id</span><br><span class="line">where C.status&gt;1 and D.status=1;</span><br><span class="line"></span><br><span class="line">--可以优化成:</span><br><span class="line"></span><br><span class="line">select * from A</span><br><span class="line">inner join B on B.name = A.name</span><br><span class="line">left join C on C.name = B.name and C.status&gt;1</span><br><span class="line">left join D on D.id = C.id and D.status=1</span><br></pre></td></tr></table></figure>
-
-<p><strong>Example</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">1. documents:</span><br><span class="line"> | id    | name        |</span><br><span class="line"> --------|-------------|</span><br><span class="line"> | 1     | Document1   |</span><br><span class="line"> | 2     | Document2   |</span><br><span class="line"> | 3     | Document3   |</span><br><span class="line"> | 4     | Document4   |</span><br><span class="line"> | 5     | Document5   |</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">2. downloads:</span><br><span class="line"> | id   | document_id   | username |</span><br><span class="line"> |------|---------------|----------|</span><br><span class="line"> | 1    | 1             | sandeep  |</span><br><span class="line"> | 2    | 1             | simi     |</span><br><span class="line"> | 3    | 2             | sandeep  |</span><br><span class="line"> | 4    | 2             | reya     |</span><br><span class="line"> | 5    | 3             | simi     |</span><br></pre></td></tr></table></figure>
-
-<p><strong>ON</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">SELECT documents.name, downloads.id FROM documents LEFT OUTER JOIN downloads</span><br><span class="line">ON documents.id = downloads.document_id</span><br><span class="line">AND username = &apos;sandeep&apos;</span><br><span class="line"></span><br><span class="line">中间表:</span><br><span class="line">    | id(from documents) | name         | id (from downloads) | document_id | username |</span><br><span class="line">    |--------------------|--------------|---------------------|-------------|----------|</span><br><span class="line">    | 1                  | Document1    | 1                   | 1           | sandeep  |</span><br><span class="line">    | 2                  | Document2    | 3                   | 2           | sandeep  |</span><br><span class="line">    | 3                  | Document3    | NULL                | NULL        | NULL     |</span><br><span class="line">    | 4                  | Document4    | NULL                | NULL        | NULL     |</span><br><span class="line">    | 5                  | Document5    | NULL                | NULL        | NULL     |</span><br><span class="line"></span><br><span class="line">注意“ documents”中不符合这两个条件的行是如何用“ NULL”值填充的。</span><br><span class="line"></span><br><span class="line">最终:</span><br><span class="line">   | name       | id   |</span><br><span class="line">   |------------|------|</span><br><span class="line">   |  Document1 | 1    |</span><br><span class="line">   |  Document2 | 3    | </span><br><span class="line">   |  Document3 | NULL |</span><br><span class="line">   |  Document4 | NULL | </span><br><span class="line">   |  Document5 | NULL |</span><br></pre></td></tr></table></figure>
-
-<p><strong>WHERE</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"> SELECT documents.name, downloads.id FROM documents LEFT OUTER JOIN downloads</span><br><span class="line"> ON documents.id = downloads.document_id</span><br><span class="line"> WHERE username = &apos;sandeep&apos;</span><br><span class="line"></span><br><span class="line"> 先 on 产生中间表:</span><br><span class="line"></span><br><span class="line">    | id(from documents) | name         | id (from downloads) | document_id | username |</span><br><span class="line">    |--------------------|--------------|---------------------|-------------|----------|</span><br><span class="line">    | 1                  | Document1    | 1                   | 1           | sandeep  |</span><br><span class="line">    | 1                  | Document1    | 2                   | 1           | simi     |</span><br><span class="line">    | 2                  | Document2    | 3                   | 2           | sandeep  |</span><br><span class="line">    | 2                  | Document2    | 4                   | 2           | reya     |</span><br><span class="line">    | 3                  | Document3    | 5                   | 3           | simi     |</span><br><span class="line">    | 4                  | Document4    | NULL                | NULL        | NULL     |</span><br><span class="line">    | 5                  | Document5    | NULL                | NULL        | NULL     |</span><br><span class="line"></span><br><span class="line">最终结果:</span><br><span class="line"></span><br><span class="line">   | name         | id |</span><br><span class="line">   |--------------|----|</span><br><span class="line">   | Document1    | 1  |</span><br><span class="line">   | Document2    | 3  |</span><br></pre></td></tr></table></figure>
-
-<h1 id="4-cross-join"><a href="#4-cross-join" class="headerlink" title="4. cross join"></a>4. cross join</h1><h3 id="4-1-cross-join-inner-join"><a href="#4-1-cross-join-inner-join" class="headerlink" title="4.1 cross join , inner join"></a>4.1 cross join , inner join</h3><p>交叉联接不会合并行，如果每个表中有100行且一一匹配，则会得到10000个结果，在相同情况下，Innerjoin将仅返回100行。</p>
-<p>这两个示例将返回相同的结果：</p>
-<p>Cross join</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from table1 cross join table2 where table1.id = table2.fk_id</span><br></pre></td></tr></table></figure>
-
-<p>Inner join</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from table1 join table2 on table1.id = table2.fk_id</span><br></pre></td></tr></table></figure>
-
-<p>Use the last method</p>
-<h3 id="4-2-cross-join-full-outer-join"><a href="#4-2-cross-join-full-outer-join" class="headerlink" title="4.2 cross join, full outer join"></a>4.2 cross join, full outer join</h3><p>交叉联接会在两个表之间产生笛卡尔乘积，并返回所有行的所有可能组合。 它没有on子句，因为您只是将所有内容连接到所有内容。</p>
-<p>使用空表（或结果集）的交叉联接会导致空表（M x N；因此M x 0 = 0)</p>
-<p>完全外部联接是左外部联接和右外部联接的组合。 它返回两个表中与查询的where子句匹配的所有行，并且在无法满足这些行的打开条件的情况下，它将为未填充的字段放入空值。</p>
-<p>完全外部联接将始终具有行，除非M和N均为0。</p>
-<h3 id="4-3-mysql-中cross-join"><a href="#4-3-mysql-中cross-join" class="headerlink" title="4.3 mysql 中cross join"></a>4.3 mysql 中cross join</h3><p>在Mysql中,cross join ,inner join和 join所实现的功能是一样的。因此在MYSQL的官方文档中，指明了三者是等价的关系。</p>
-<p><a href="https://dev.mysql.com/doc/refman/5.7/en/join.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/5.7/en/join.html</a></p>
-<p>In MySQL, JOIN, CROSS JOIN, and INNER JOIN are syntactic equivalents (they can replace each other). In standard SQL, they are not equivalent. INNER JOIN is used with an ON clause, CROSS JOIN is used otherwise.</p>
-<h1 id="5-参考资料"><a href="#5-参考资料" class="headerlink" title="5. 参考资料"></a>5. 参考资料</h1><ul>
-<li><a href="https://blog.csdn.net/u012861978/article/details/52203818" target="_blank" rel="noopener">https://blog.csdn.net/u012861978/article/details/52203818</a></li>
-<li><a href="https://stackoverflow.com/a/38578" target="_blank" rel="noopener">https://stackoverflow.com/a/38578</a></li>
-<li><a href="https://stackoverflow.com/a/17759769" target="_blank" rel="noopener">https://stackoverflow.com/a/17759769</a></li>
-<li><a href="https://stackoverflow.com/questions/3228871" target="_blank" rel="noopener">https://stackoverflow.com/questions/3228871</a></li>
-<li><a href="https://stackoverflow.com/questions/44917" target="_blank" rel="noopener">https://stackoverflow.com/questions/44917</a></li>
-<li><a href="https://stackoverflow.com/a/28719292" target="_blank" rel="noopener">https://stackoverflow.com/a/28719292</a></li>
-<li><a href="https://stackoverflow.com/a/20981676" target="_blank" rel="noopener">https://stackoverflow.com/a/20981676</a></li>
-</ul>
-
+          <!--noindex-->
+          
+            <div class="post-button">
+              <a class="btn" href="/p/289dcf0b.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
         
       
     </div>
