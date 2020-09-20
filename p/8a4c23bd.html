@@ -23,14 +23,14 @@
   <meta name="description" content="mysql 使用 explain + sql 语句 来查看执行计划，执行结果有以下字段，具体描述如下：">
 <meta name="keywords" content="mysql">
 <meta property="og:type" content="article">
-<meta property="og:title" content="mysql用explain分析查询语句">
+<meta property="og:title" content="mysql用explain查看执行计划">
 <meta property="og:url" content="https://unix2dos.github.io/p/8a4c23bd.html">
 <meta property="og:site_name" content="Levon&#39;s Blog">
 <meta property="og:description" content="mysql 使用 explain + sql 语句 来查看执行计划，执行结果有以下字段，具体描述如下：">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-08-29T14:42:38.210Z">
+<meta property="og:updated_time" content="2020-09-20T01:51:50.663Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mysql用explain分析查询语句">
+<meta name="twitter:title" content="mysql用explain查看执行计划">
 <meta name="twitter:description" content="mysql 使用 explain + sql 语句 来查看执行计划，执行结果有以下字段，具体描述如下：">
 
 <link rel="canonical" href="https://unix2dos.github.io/p/8a4c23bd.html">
@@ -46,7 +46,7 @@
   };
 </script>
 
-  <title>mysql用explain分析查询语句 | Levon's Blog</title>
+  <title>mysql用explain查看执行计划 | Levon's Blog</title>
   
 
 
@@ -203,7 +203,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          mysql用explain分析查询语句
+          mysql用explain查看执行计划
         </h1>
 
         <div class="post-meta">
@@ -220,7 +220,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-29 22:42:38" itemprop="dateModified" datetime="2020-08-29T22:42:38+08:00">2020-08-29</time>
+                <time title="修改时间：2020-09-20 09:51:50" itemprop="dateModified" datetime="2020-09-20T09:51:50+08:00">2020-09-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -243,10 +243,10 @@
       <span class="post-meta-item-icon">
         <i class="far fa-comment"></i>
       </span>
-      <span class="post-meta-item-text">Disqus：</span>
+      <span class="post-meta-item-text">Valine：</span>
     
-    <a title="disqus" href="/p/8a4c23bd.html#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="p/8a4c23bd.html" itemprop="commentCount"></span>
+    <a title="valine" href="/p/8a4c23bd.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/p/8a4c23bd.html" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -288,7 +288,7 @@
 </thead>
 <tbody><tr>
 <td align="left">id</td>
-<td align="left">id相同，执行顺序由上至下；id不同，id的序号会递增，id值越大优先级越高，越先被执行</td>
+<td align="left">id相同，执行顺序由上至下；<br>id不同，id的序号会递增，id值越大优先级越高，越先被执行<br>id为<code>null</code>时表示一个结果集，不需要使用它查询，常出现在包含<code>union</code>等查询语句中。</td>
 </tr>
 <tr>
 <td align="left">select_type</td>
@@ -335,22 +335,42 @@
 <td align="left">这个字段表示存储引擎返回的数据在server层过滤后，剩下多少满足查询的记录数量的比例，注意是百分比，不是具体记录数。</td>
 </tr>
 </tbody></table>
-<h3 id="1-1-select-type"><a href="#1-1-select-type" class="headerlink" title="1.1 select_type"></a>1.1 select_type</h3><ul>
-<li><p>SIMPLE, 表示此查询不包含 UNION 查询或子查询</p>
-</li>
-<li><p>PRIMARY, 表示此查询是最外层的查询</p>
-</li>
-<li><p>UNION, 表示此查询是 UNION 的第二或随后的查询</p>
-</li>
-<li><p>DEPENDENT UNION, UNION 中的第二个或后面的查询语句, 取决于外面的查询</p>
-</li>
-<li><p>UNION RESULT, UNION 的结果</p>
-</li>
-<li><p>SUBQUERY, 子查询中的第一个 SELECT</p>
-</li>
-<li><p>DEPENDENT SUBQUERY: 子查询中的第一个 SELECT, 取决于外面的查询. 即子查询依赖于外层查询的结果.</p>
-</li>
-</ul>
+<h3 id="1-1-select-type"><a href="#1-1-select-type" class="headerlink" title="1.1 select_type"></a>1.1 select_type</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SIMPLE</td>
+<td>不包含 UNION 查询或子查询</td>
+</tr>
+<tr>
+<td>PRIMARY</td>
+<td>包含子查询最外层查询就显示为 <code>PRIMARY</code></td>
+</tr>
+<tr>
+<td>SUBQUERY</td>
+<td>子查询中的第一个 SELECT</td>
+</tr>
+<tr>
+<td>DEPENDENT SUBQUERY</td>
+<td>子查询中的第一个 SELECT, 取决于外面的查询. 即子查询依赖于外层查询的结果.</td>
+</tr>
+<tr>
+<td>UNION</td>
+<td>UNION 的第二或随后的查询</td>
+</tr>
+<tr>
+<td>DEPENDENT UNION</td>
+<td>UNION 中的第二个或后面的查询语句, 取决于外面的查询</td>
+</tr>
+<tr>
+<td>UNION RESULT</td>
+<td>UNION 的结果</td>
+</tr>
+</tbody></table>
 <h3 id="1-2-type"><a href="#1-2-type" class="headerlink" title="1.2 type"></a>1.2 type</h3><p><code>type</code> 字段比较重要, 它提供了判断查询是否高效的重要依据依据. 通过 <code>type</code> 字段, 我们判断此次查询是 <code>全表扫描</code> 还是 <code>索引扫描</code> 等</p>
 <p>从上到下性能从低到高排列:</p>
 <ul>
@@ -749,13 +769,7 @@
 
           </div>
           
-    
-  <div class="comments">
-    <div id="disqus_thread">
-      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-    </div>
-  </div>
-  
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -886,7 +900,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">10:28</span>
+    <span title="站点阅读时长">10:29</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
@@ -961,35 +975,33 @@
 
   
 
+
 <script>
-  function loadCount() {
-    var d = document, s = d.createElement('script');
-    s.src = 'https://levonfly.disqus.com/count.js';
-    s.id = 'dsq-count-scr';
-    (d.head || d.body).appendChild(s);
-  }
-  // defer loading until the whole page loading is completed
-  window.addEventListener('load', loadCount, false);
-</script>
-<script>
-  var disqus_config = function() {
-    this.page.url = "https://unix2dos.github.io/p/8a4c23bd.html";
-    this.page.identifier = "p/8a4c23bd.html";
-    this.page.title = "mysql用explain分析查询语句";
-    };
-  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
-    if (window.DISQUS) {
-      DISQUS.reset({
-        reload: true,
-        config: disqus_config
-      });
-    } else {
-      var d = document, s = d.createElement('script');
-      s.src = 'https://levonfly.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', '' + +new Date());
-      (d.head || d.body).appendChild(s);
-    }
-  });
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'Y4ry1QHkYxVXKLQBrx6LJXld-gzGzoHsz',
+      appKey     : 'TXITOypSvI7JO61NI8EG5exk',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
 </script>
 
 </body>
