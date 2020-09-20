@@ -5,7 +5,7 @@
 # Site
 title: Levon's Blog
 subtitle: "微信:  L6241425"
-description: Never Give Up
+description: 你以前那头型呢..你得支棱起来啊
 keywords:
 author: Levon
 language: zh-CN
@@ -283,8 +283,8 @@ menu_settings:
 # Schemes
 #scheme: Muse
 #scheme: Mist
-#scheme: Pisces
-scheme: Gemini
+scheme: Pisces
+#scheme: Gemini
 
 
 # ---------------------------------------------------------------
@@ -433,7 +433,7 @@ post_meta:
   updated_at:
     enable: false
     another_day: false
-  categories: false
+  categories: true
 
 # Post wordcount display settings
 # Dependencies: https://github.com/theme-next/hexo-symbols-count-time
