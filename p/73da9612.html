@@ -17,11 +17,11 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"unix2dos.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false,"dimmer":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
+    var CONFIG = {"hostname":"unix2dos.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false,"dimmer":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
   </script>
 
   <meta name="description" content="编译平台准备工作: 下载arm-none-linux-gnueabi-gcc  下载transmission-2.94  新建ARM文件夹  解压arm-none-linux-gnueabi-gcc和transmission-2.94到ARM文件夹  设置编译平台环境变量 123export PATH=&quot;/root/ARM/external-toolchain/bin:$PATH&quot;export c">
-<meta name="keywords" content="linux,bt,transmission,arm">
+<meta name="keywords" content="linux,arm,transmission,bt">
 <meta property="og:type" content="article">
 <meta property="og:title" content="交叉编译arm-transmission-2.94">
 <meta property="og:url" content="https://unix2dos.github.io/p/73da9612.html">
@@ -217,6 +217,19 @@
 
               <time title="创建时间：2018-10-08 17:02:00" itemprop="dateCreated datePublished" datetime="2018-10-08T17:02:00+08:00">2018-10-08</time>
             </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/3-计算机系统/" itemprop="url" rel="index"><span itemprop="name">3-计算机系统</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/3-计算机系统/BitTorrent/" itemprop="url" rel="index"><span itemprop="name">BitTorrent</span></a>
+                </span>
+            </span>
 
           
             <span id="/p/73da9612.html" class="post-meta-item leancloud_visitors" data-flag-title="交叉编译arm-transmission-2.94" title="阅读次数">
@@ -349,9 +362,9 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/linux/" rel="tag"># linux</a>
-              <a href="/tags/bt/" rel="tag"># bt</a>
-              <a href="/tags/transmission/" rel="tag"># transmission</a>
               <a href="/tags/arm/" rel="tag"># arm</a>
+              <a href="/tags/transmission/" rel="tag"># transmission</a>
+              <a href="/tags/bt/" rel="tag"># bt</a>
           </div>
 
         
@@ -524,7 +537,7 @@
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 <script src="/js/utils.js"></script><script src="/js/motion.js"></script>
-<script src="/js/schemes/pisces.js"></script>
+<script src="/js/schemes/muse.js"></script>
 <script src="/js/next-boot.js"></script>
 
 
