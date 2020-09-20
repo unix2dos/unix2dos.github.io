@@ -21,7 +21,7 @@
   </script>
 
   <meta name="description" content="编译平台准备工作: 下载arm-none-linux-gnueabi-gcc  下载transmission-2.94  新建ARM文件夹  解压arm-none-linux-gnueabi-gcc和transmission-2.94到ARM文件夹  设置编译平台环境变量 123export PATH=&quot;/root/ARM/external-toolchain/bin:$PATH&quot;export c">
-<meta name="keywords" content="linux,arm,bt,transmission">
+<meta name="keywords" content="linux,bt,transmission,arm">
 <meta property="og:type" content="article">
 <meta property="og:title" content="交叉编译arm-transmission-2.94">
 <meta property="og:url" content="https://unix2dos.github.io/p/73da9612.html">
@@ -217,13 +217,6 @@
 
               <time title="创建时间：2018-10-08 17:02:00" itemprop="dateCreated datePublished" datetime="2018-10-08T17:02:00+08:00">2018-10-08</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-29 22:42:38" itemprop="dateModified" datetime="2020-08-29T22:42:38+08:00">2020-08-29</time>
-              </span>
 
           
             <span id="/p/73da9612.html" class="post-meta-item leancloud_visitors" data-flag-title="交叉编译arm-transmission-2.94" title="阅读次数">
@@ -246,21 +239,7 @@
     </a>
   </span>
   
-  <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>5.1k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
-            </span>
+  
 
         </div>
       </header>
@@ -333,7 +312,7 @@
     
     
         <div class="reward-container">
-  <div>坚持原创技术分享，您的支持将鼓励我继续创作, 一个耿直的笑脸~</div>
+  <div>您打赏的一小步，维安钱包提现的一大步( •̀ ω •́ )</div>
   <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
     打赏
   </button>
@@ -356,9 +335,9 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/linux/" rel="tag"># linux</a>
-              <a href="/tags/arm/" rel="tag"># arm</a>
               <a href="/tags/bt/" rel="tag"># bt</a>
               <a href="/tags/transmission/" rel="tag"># transmission</a>
+              <a href="/tags/arm/" rel="tag"># arm</a>
           </div>
 
         
@@ -433,7 +412,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#编译平台准备工作"><span class="nav-number">1.</span> <span class="nav-text">编译平台准备工作:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#目标平台开始编译"><span class="nav-number">2.</span> <span class="nav-text">目标平台开始编译:</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-transmission"><span class="nav-number">2.1.</span> <span class="nav-text">1. transmission</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-libevent"><span class="nav-number">2.2.</span> <span class="nav-text">2. libevent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-libcurl"><span class="nav-number">2.3.</span> <span class="nav-text">3. libcurl</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-openssl"><span class="nav-number">2.4.</span> <span class="nav-text">4. openssl</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-zlib"><span class="nav-number">2.5.</span> <span class="nav-text">5. zlib</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#目标平台执行transmission的环境变量-忽略"><span class="nav-number">3.</span> <span class="nav-text">目标平台执行transmission的环境变量(忽略)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TODO-编译systemd"><span class="nav-number">4.</span> <span class="nav-text">TODO: 编译systemd</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-libkmod"><span class="nav-number">4.1.</span> <span class="nav-text">1. libkmod</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-libffi"><span class="nav-number">4.2.</span> <span class="nav-text">2. libffi</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-pcre"><span class="nav-number">4.3.</span> <span class="nav-text">3. pcre</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-libattr"><span class="nav-number">4.4.</span> <span class="nav-text">4. libattr</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-libcap"><span class="nav-number">4.5.</span> <span class="nav-text">5. libcap</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-glibc-没有成功…"><span class="nav-number">4.6.</span> <span class="nav-text">6. glibc(没有成功….)</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#编译平台准备工作"><span class="nav-text">编译平台准备工作:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#目标平台开始编译"><span class="nav-text">目标平台开始编译:</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-transmission"><span class="nav-text">1. transmission</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-libevent"><span class="nav-text">2. libevent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-libcurl"><span class="nav-text">3. libcurl</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-openssl"><span class="nav-text">4. openssl</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-zlib"><span class="nav-text">5. zlib</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#目标平台执行transmission的环境变量-忽略"><span class="nav-text">目标平台执行transmission的环境变量(忽略)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TODO-编译systemd"><span class="nav-text">TODO: 编译systemd</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-libkmod"><span class="nav-text">1. libkmod</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-libffi"><span class="nav-text">2. libffi</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-pcre"><span class="nav-text">3. pcre</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-libattr"><span class="nav-text">4. libattr</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-libcap"><span class="nav-text">5. libcap</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-glibc-没有成功…"><span class="nav-text">6. glibc(没有成功….)</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
