@@ -7,7 +7,7 @@ categories: []
 date: 2016-12-01 17:54:46
 ---
 
-### 1. 安装hexo
+# 1. 安装hexo
 
 + 安装node.js
 + 安装hexo
@@ -21,7 +21,7 @@ date: 2016-12-01 17:54:46
 
 <!-- more -->
 
-### 2. hexo配置
+# 2. hexo配置
 
 + 因为主站有个配置, 主题也有个配置, 建议两个配置合并一起, 需要Hexo版本在 3 以上
 
@@ -38,7 +38,7 @@ date: 2016-12-01 17:54:46
 
 
 
-### 3. github pages + 绑定域名
+# 3. 绑定域名
 
 + 为自己的 github 生成一个公钥私钥对
 
@@ -55,28 +55,7 @@ www      CNAME           unix2dos.github.io.
 
 
 
-### 4. 常用命令
-
-```html
-hexo clean --config source/_data/next.yml && hexo g -d --config source/_data/next.yml
-
----
-title: ""
-date: 2018-05-19 17:54:46
-tags:
-- golang
-- linux
----
-
-<!-- more -->
-
-
-![1](Kademlia_DHT_KRPC_BitTorrent协议/1.png)
-```
-
-
-
-### 5. 同步hexo
+# 4. hexo插件
 
 ```shell
 npm install hexo --save
@@ -187,36 +166,61 @@ Homepage URL 和 Authorization callback URL 都填写自己配置的域名
 
 
 
-### 6. 问题解决方案
+# 5. 问题解决方案
 
-1. 生成页面如果空白的话, 换个主题再重新生成一次
+### 5.1 生成空白页
 
-2. WARN  No layout
++ 生成页面如果空白的话, 换个主题再重新生成一次
++ 更新下主题仓库
 
-   看看主题里面究竟有没有东西,文件夹名字和主题是否对应
-   
-3. 使用链接持久后图片无法显示(https://github.com/rozbo/hexo-abbrlink/issues/19)
+### 5.2  WARN No layout
 
-   ```javascript
-   # vi node_modules/hexo-asset-image/index.js     #24行
-   
-   // var endPos = link.length-1; // 换成下面的这句话
-   var endPos = link.length-5; //因为我的permalink: p/:abbrlink.html,  这里要改成-5
-   ```
-   
+看看主题里面究竟有没有东西,文件夹名字和主题是否对应
 
+### 5.3 使用链接持久后图片无法显示
 
++ https://github.com/rozbo/hexo-abbrlink/issues/19
 
-### 7. 证书更新
+```javascript
+# vi node_modules/hexo-asset-image/index.js     #24行
 
-**coding**
+// var endPos = link.length-1; // 换成下面的这句话
+var endPos = link.length-5; //因为我的permalink: p/:abbrlink.html,  这里要改成-5
+```
+
+### 5.4 证书更新
+
+1. coding
 
 + 暂停dns解析github 
 + coding申请证书
 + 再打开解析github
 
-**github**
+2. github
 
-### 8. 参考资料
+### 5.5 主题更新
 
-+ https://iuok.me/posts/3159684541/ 插件
++ fork 到自己github, 用新的分支, 修改了一些language
++ 定期同步最新的仓库主题
+
+
+
+# 6. 常用命令
+
+```html
+hexo clean --config source/_data/next.yml && hexo g -d --config source/_data/next.yml
+
+---
+title: ""
+date: 2018-05-19 17:54:46
+tags:
+- golang
+- linux
+---
+
+<!-- more -->
+
+
+![1](Kademlia_DHT_KRPC_BitTorrent协议/1.png)
+```
+
