@@ -1,5 +1,5 @@
 ---
-title: mysql用explain分析查询语句
+title: mysql用explain查看执行计划
 tags:
   - mysql
 categories:
@@ -18,7 +18,7 @@ mysql 使用 `explain + sql 语句` 来查看执行计划，执行结果有以�
 
 | 字段          | 描述                                                         |
 | :------------ | :----------------------------------------------------------- |
-| id            | id相同，执行顺序由上至下；id不同，id的序号会递增，id值越大优先级越高，越先被执行 |
+| id            | id相同，执行顺序由上至下；<br/>id不同，id的序号会递增，id值越大优先级越高，越先被执行<br/>id为`null`时表示一个结果集，不需要使用它查询，常出现在包含`union`等查询语句中。 |
 | select_type   | 主要是用于区别普通查询、联合查询、子查询等的复杂查询         |
 | table         | 当前执行的表                                                 |
 | type          | 访问类型                                                     |
@@ -33,19 +33,15 @@ mysql 使用 `explain + sql 语句` 来查看执行计划，执行结果有以�
 
 ### 1.1 select_type
 
-- SIMPLE, 表示此查询不包含 UNION 查询或子查询
-
-- PRIMARY, 表示此查询是最外层的查询
-
-- UNION, 表示此查询是 UNION 的第二或随后的查询
-
-- DEPENDENT UNION, UNION 中的第二个或后面的查询语句, 取决于外面的查询
-
-- UNION RESULT, UNION 的结果
-
-- SUBQUERY, 子查询中的第一个 SELECT
-
-- DEPENDENT SUBQUERY: 子查询中的第一个 SELECT, 取决于外面的查询. 即子查询依赖于外层查询的结果.
+| 类型               | 解释                                                         |
+| ------------------ | ------------------------------------------------------------ |
+| SIMPLE             | 不包含 UNION 查询或子查询                                    |
+| PRIMARY            | 包含子查询最外层查询就显示为 `PRIMARY`                       |
+| SUBQUERY           | 子查询中的第一个 SELECT                                      |
+| DEPENDENT SUBQUERY | 子查询中的第一个 SELECT, 取决于外面的查询. 即子查询依赖于外层查询的结果. |
+| UNION              | UNION 的第二或随后的查询                                     |
+| DEPENDENT UNION    | UNION 中的第二个或后面的查询语句, 取决于外面的查询           |
+| UNION RESULT       | UNION 的结果                                                 |
 
 
 

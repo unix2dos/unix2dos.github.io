@@ -52,6 +52,8 @@ There are 4 different types of Oracle joins:
 + RIGHT JOIN and RIGHT OUTER JOIN 完全一样
 + JOIN 默认情况下是 INNER JOIN
 + 对于INNER JOIN，顺序无关紧要, 对于（LEFT，RIGHT或FULL）OUTER JOIN，顺序很重要
++ Mysql  不支持 full join
++ Mysql中,cross join ,inner join和 join所实现的功能是一样的。
 
 
 
@@ -288,6 +290,16 @@ AND username = 'sandeep'
 
 
 
+### 3.5 mysql 实现 full join
+
+```sql
+SELECT * FROM t1
+LEFT JOIN t2 ON t1.id = t2.id
+UNION
+SELECT * FROM t1
+RIGHT JOIN t2 ON t1.id = t2.id
+```
+
 
 
 # 4. cross join
@@ -347,3 +359,4 @@ In MySQL, JOIN, CROSS JOIN, and INNER JOIN are syntactic equivalents (they can r
 + https://stackoverflow.com/questions/44917
 + https://stackoverflow.com/a/28719292
 + https://stackoverflow.com/a/20981676
++ https://stackoverflow.com/a/4796911
