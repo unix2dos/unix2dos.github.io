@@ -203,7 +203,17 @@ var endPos = link.length-5; //因为我的permalink: p/:abbrlink.html,  这里�
 + fork 到自己github, 用新的分支, 修改了一些language
 + 定期同步最新的仓库主题
 
+### 5.6 备案
 
++ ICP备案
+
+  云服务器进行 ICP 备案
+
++ 公安备案
+
+  http://www.beian.gov.cn/portal/index.do
+
+  
 
 # 6. 常用命令
 

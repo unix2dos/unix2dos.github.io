@@ -25,6 +25,7 @@
     "hexo-renderer-marked": "^2.0.0",
     "hexo-renderer-stylus": "^0.3.3",
     "hexo-server": "^0.2.2",
-    "hexo-symbols-count-time": "^0.6.2"
+    "hexo-symbols-count-time": "^0.6.2",
+    "valine": "^1.4.14"
   }
 }
