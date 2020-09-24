@@ -1,9 +1,13 @@
 ---
-title: "sql常见基础知识"
-date: 2020-09-23 20:00:00
+title: sql常见基础知识
 tags:
-- sql
-- mysql
+  - sql
+  - mysql
+categories:
+  - 1-编程语言
+  - sql
+abbrlink: ab5fc61f
+date: 2020-09-23 20:00:00
 ---
 
 
