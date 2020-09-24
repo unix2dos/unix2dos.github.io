@@ -1,4 +1,358 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><meta name="generator" content="Hexo 3.9.0"><link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico"><link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico"><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico"><link rel="mask-icon" href="/images/logo.svg" color="#222"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"><script id="hexo-configurations">var NexT=window.NexT||{},CONFIG={hostname:"unix2dos.github.io",root:"/",scheme:"Pisces",version:"7.8.0",exturl:!1,sidebar:{position:"left",display:"post",padding:18,offset:12,onmobile:!1,dimmer:!1},copycode:{enable:!1,show_result:!1,style:null},back2top:{enable:!0,sidebar:!1,scrollpercent:!1},bookmark:{enable:!1,color:"#222",save:"auto"},fancybox:!1,mediumzoom:!1,lazyload:!0,pangu:!1,comments:{style:"tabs",active:null,storage:!0,lazyload:!1,nav:null},algolia:{hits:{per_page:10},labels:{input_placeholder:"Search for Posts",hits_empty:"We didn't find any results for the search: ${query}",hits_stats:"${hits} results found in ${time} ms"}},localsearch:{enable:!0,trigger:"auto",top_n_per_article:1,unescape:!1,preload:!1},motion:{enable:!0,async:!1,transition:{post_block:"fadeIn",post_header:"slideDownIn",post_body:"slideDownIn",coll_header:"slideLeftIn",sidebar:"slideUpIn"}},path:"search.json"}</script><meta name="description" content="音频基础当前，我们所说的音频，都是数字音频。数字音频由采样频率、采样精度、声音通道数三个部分组成。采样频率：既采样率，指记录声音时每秒的采样个数，它用赫兹(Hz)来表示。采样精度：指记录声音的动态范围，它以位(Bit)为单位。声音通道：既声道数（1-8个）。采样率根据使用类型不同大概有以下几种（k既千位符号，1khz=1000hz）：8khz：电话等使用，对于记录人声已经足够使用。22.05khz"><meta name="keywords" content="音频"><meta property="og:type" content="article"><meta property="og:title" content="音频基础"><meta property="og:url" content="https://unix2dos.github.io/p/279c3cd4.html"><meta property="og:site_name" content="Levon&#39;s Blog"><meta property="og:description" content="音频基础当前，我们所说的音频，都是数字音频。数字音频由采样频率、采样精度、声音通道数三个部分组成。采样频率：既采样率，指记录声音时每秒的采样个数，它用赫兹(Hz)来表示。采样精度：指记录声音的动态范围，它以位(Bit)为单位。声音通道：既声道数（1-8个）。采样率根据使用类型不同大概有以下几种（k既千位符号，1khz=1000hz）：8khz：电话等使用，对于记录人声已经足够使用。22.05khz"><meta property="og:locale" content="zh-CN"><meta property="og:updated_time" content="2020-08-29T14:42:39.201Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="音频基础"><meta name="twitter:description" content="音频基础当前，我们所说的音频，都是数字音频。数字音频由采样频率、采样精度、声音通道数三个部分组成。采样频率：既采样率，指记录声音时每秒的采样个数，它用赫兹(Hz)来表示。采样精度：指记录声音的动态范围，它以位(Bit)为单位。声音通道：既声道数（1-8个）。采样率根据使用类型不同大概有以下几种（k既千位符号，1khz=1000hz）：8khz：电话等使用，对于记录人声已经足够使用。22.05khz"><link rel="canonical" href="https://unix2dos.github.io/p/279c3cd4.html"><script id="page-configurations">CONFIG.page={sidebar:"",isHome:!1,isPost:!0,lang:"zh-CN"}</script><title>音频基础 | Levon's Blog</title><noscript><style>.sidebar-inner,.use-motion .brand,.use-motion .collection-header,.use-motion .comments,.use-motion .menu-item,.use-motion .pagination,.use-motion .post-block,.use-motion .post-body,.use-motion .post-header{opacity:initial}.use-motion .site-subtitle,.use-motion .site-title{opacity:initial;top:initial}.use-motion .logo-line-before i{left:initial}.use-motion .logo-line-after i{right:initial}</style></noscript></head><body itemscope itemtype="http://schema.org/WebPage"><div class="container use-motion"><div class="headband"></div><header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-brand-container"><div class="site-nav-toggle"><div class="toggle" aria-label="切换导航栏"><span class="toggle-line toggle-line-first"></span> <span class="toggle-line toggle-line-middle"></span> <span class="toggle-line toggle-line-last"></span></div></div><div class="site-meta"><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span><h1 class="site-title">Levon's Blog</h1><span class="logo-line-after"><i></i></span></a><p class="site-subtitle" itemprop="description">微信: L6241425</p></div><div class="site-nav-right"><div class="toggle popup-trigger"><i class="fa fa-search fa-fw fa-lg"></i></div></div></div><nav class="site-nav"><ul id="menu" class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>日志</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-search"><a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索</a></li></ul></nav><div class="search-pop-overlay"><div class="popup search-popup"><div class="search-header"><span class="search-icon"><i class="fa fa-search"></i></span><div class="search-input-container"><input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input"></div><span class="popup-btn-close"><i class="fa fa-times-circle"></i></span></div><div id="search-result"><div id="no-result"><i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i></div></div></div></div></div></header><div class="back-to-top"><i class="fa fa-arrow-up"></i> <span>0%</span></div><a href="https://github.com/unix2dos" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin:130px 106px" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><main class="main"><div class="main-inner"><div class="content-wrap"><div class="content post posts-expand"><article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN"><link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/279c3cd4.html"><span hidden itemprop="author" itemscope itemtype="http://schema.org/Person"><meta itemprop="image" content="/images/avatar.jpg"><meta itemprop="name" content="Levon"><meta itemprop="description" content="你以前那头型呢..你得支棱起来啊"></span><span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><meta itemprop="name" content="Levon's Blog"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">音频基础</h1><div class="post-meta"><span class="post-meta-item"><span class="post-meta-item-icon"><i class="far fa-calendar"></i> </span><span class="post-meta-item-text">发表于</span> <time title="创建时间：2017-11-29 17:54:46" itemprop="dateCreated datePublished" datetime="2017-11-29T17:54:46+08:00">2017-11-29</time> </span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="far fa-calendar-check"></i> </span><span class="post-meta-item-text">更新于</span> <time title="修改时间：2020-08-29 22:42:39" itemprop="dateModified" datetime="2020-08-29T22:42:39+08:00">2020-08-29</time> </span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="far fa-folder"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/3-计算机系统/" itemprop="url" rel="index"><span itemprop="name">3-计算机系统</span></a> </span>， <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/3-计算机系统/计算机基础/" itemprop="url" rel="index"><span itemprop="name">计算机基础</span></a> </span></span><span id="/p/279c3cd4.html" class="post-meta-item leancloud_visitors" data-flag-title="音频基础" title="阅读次数"><span class="post-meta-item-icon"><i class="fa fa-eye"></i> </span><span class="post-meta-item-text">阅读次数：</span> <span class="leancloud-visitors-count"></span> </span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="far fa-comment"></i> </span><span class="post-meta-item-text">Valine：</span> <a title="valine" href="/p/279c3cd4.html#valine-comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/p/279c3cd4.html" itemprop="commentCount"></span></a></span><br><span class="post-meta-item" title="本文字数"><span class="post-meta-item-icon"><i class="far fa-file-word"></i> </span><span class="post-meta-item-text">本文字数：</span> <span>1k</span> </span><span class="post-meta-item" title="阅读时长"><span class="post-meta-item-icon"><i class="far fa-clock"></i> </span><span class="post-meta-item-text">阅读时长 &asymp;</span> <span>1 分钟</span></span></div></header><div class="post-body" itemprop="articleBody"><h3 id="音频基础"><a href="#音频基础" class="headerlink" title="音频基础"></a>音频基础</h3><p>当前，我们所说的音频，都是数字音频。数字音频由采样频率、采样精度、声音通道数三个部分组成。</p><p>采样频率：既采样率，指记录声音时每秒的采样个数，它用赫兹(Hz)来表示。<br>采样精度：指记录声音的动态范围，它以位(Bit)为单位。<br>声音通道：既声道数（1-8个）。</p><p>采样率根据使用类型不同大概有以下几种（k既千位符号，1khz=1000hz）：<br>8khz：电话等使用，对于记录人声已经足够使用。<br>22.05khz：广播使用频率。<br>44.1kb：音频CD。<br>48khz：DVD、数字电视中使用。<br>96khz-192khz：DVD-Audio、蓝光高清等使用。</p><p>采样精度常用范围为8bit-32bit，而CD中一般都使用16bit。</p><a id="more"></a><p>音频的比特率，实际上就是压缩比例。<br>但比特率本身并不对文件的质量有直接影响，例如我们把128kb的文件作为源文件，即使转换成320kb的文件，其音质依然不会比128kb好。<br>那么比特率中的数字和字母到底是什么意思呢？首先看128k的全称“128kbps”，我们试着分解一下：128是数字，k是千位符，b是单位，s是秒，ps其实就是“/s”。这样来看，128kbps就是128kb/s。也就是每秒128kb。</p><h3 id="speex格式录音参数"><a href="#speex格式录音参数" class="headerlink" title="speex格式录音参数:"></a>speex格式录音参数:</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">quality = 9  	                       		//speex质量,值越大质量越好,文件越大  open()的参数</span><br><span class="line">speex_version = &quot;speex-1.2rc&quot;      //speex版本</span><br><span class="line">ospeex_version_id = 1 			//speex版本id</span><br><span class="line">header_size = 80 	 			//speex头信息大小</span><br><span class="line">rate = 16000					//采样率大小</span><br><span class="line">mode = 1			 			//mode  0是窄带模式, 1是宽带模式 (0=NB, 1=WB, 2=UWB)</span><br><span class="line">bitrate = -1 		 			//比特率</span><br><span class="line">frame_size = 320   	 			//缓冲区大小  窄带对应160, 宽带对应320  (NB=160, WB=320, UWB=640)</span><br><span class="line">vbr = 1						//是否使用可变比特率</span><br><span class="line">nframes  = 1 					// 每帧的speex包的数量</span><br><span class="line">channels =1    			        //音频输入的声道 	1是单声道，2是立体声</span><br></pre></td></tr></table></figure></div><div class="reward-container"><div>您打赏的一小步，维安钱包提现的一大步( •̀ ω •́ )</div><button onclick='var qr=document.getElementById("qr");qr.style.display="none"===qr.style.display?"block":"none"'>打赏</button><div id="qr" style="display:none"><div style="display:inline-block"><img src="/images/wechatpay.jpg" alt="Levon 微信支付"><p>微信支付</p></div><div style="display:inline-block"><img src="/images/alipay.jpg" alt="Levon 支付宝"><p>支付宝</p></div></div></div><footer class="post-footer"><div class="post-tags"><a href="/tags/音频/" rel="tag"># 音频</a></div><div class="post-nav"><div class="post-nav-item"><a href="/p/ebfb97d0.html" rel="prev" title="字符编码"><i class="fa fa-chevron-left"></i> 字符编码</a></div><div class="post-nav-item"><a href="/p/eb2c6f22.html" rel="next" title="区块链基础">区块链基础 <i class="fa fa-chevron-right"></i></a></div></div></footer></article></div><div class="comments" id="valine-comments"></div><script>window.addEventListener('tabs:register', () => {
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"unix2dos.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false,"dimmer":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
+  </script>
+
+  <meta name="description" content="音频基础当前，我们所说的音频，都是数字音频。数字音频由采样频率、采样精度、声音通道数三个部分组成。 采样频率：既采样率，指记录声音时每秒的采样个数，它用赫兹(Hz)来表示。采样精度：指记录声音的动态范围，它以位(Bit)为单位。声音通道：既声道数（1-8个）。 采样率根据使用类型不同大概有以下几种（k既千位符号，1khz=1000hz）：8khz：电话等使用，对于记录人声已经足够使用。22.05k">
+<meta name="keywords" content="音频">
+<meta property="og:type" content="article">
+<meta property="og:title" content="音频基础">
+<meta property="og:url" content="https://unix2dos.github.io/p/279c3cd4.html">
+<meta property="og:site_name" content="Levon&#39;s Blog">
+<meta property="og:description" content="音频基础当前，我们所说的音频，都是数字音频。数字音频由采样频率、采样精度、声音通道数三个部分组成。 采样频率：既采样率，指记录声音时每秒的采样个数，它用赫兹(Hz)来表示。采样精度：指记录声音的动态范围，它以位(Bit)为单位。声音通道：既声道数（1-8个）。 采样率根据使用类型不同大概有以下几种（k既千位符号，1khz=1000hz）：8khz：电话等使用，对于记录人声已经足够使用。22.05k">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-08-29T14:42:39.201Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="音频基础">
+<meta name="twitter:description" content="音频基础当前，我们所说的音频，都是数字音频。数字音频由采样频率、采样精度、声音通道数三个部分组成。 采样频率：既采样率，指记录声音时每秒的采样个数，它用赫兹(Hz)来表示。采样精度：指记录声音的动态范围，它以位(Bit)为单位。声音通道：既声道数（1-8个）。 采样率根据使用类型不同大概有以下几种（k既千位符号，1khz=1000hz）：8khz：电话等使用，对于记录人声已经足够使用。22.05k">
+
+<link rel="canonical" href="https://unix2dos.github.io/p/279c3cd4.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>音频基础 | Levon's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Levon's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">微信:  L6241425</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>日志</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/unix2dos" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://unix2dos.github.io/p/279c3cd4.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Levon">
+      <meta itemprop="description" content="你以前那头型呢..你得支棱起来啊">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Levon's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          音频基础
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-11-29 17:54:46" itemprop="dateCreated datePublished" datetime="2017-11-29T17:54:46+08:00">2017-11-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-29 22:42:39" itemprop="dateModified" datetime="2020-08-29T22:42:39+08:00">2020-08-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/3-计算机系统/" itemprop="url" rel="index"><span itemprop="name">3-计算机系统</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/3-计算机系统/计算机基础/" itemprop="url" rel="index"><span itemprop="name">计算机基础</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/p/279c3cd4.html" class="post-meta-item leancloud_visitors" data-flag-title="音频基础" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/p/279c3cd4.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/p/279c3cd4.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="音频基础"><a href="#音频基础" class="headerlink" title="音频基础"></a>音频基础</h3><p>当前，我们所说的音频，都是数字音频。数字音频由采样频率、采样精度、声音通道数三个部分组成。</p>
+<p>采样频率：既采样率，指记录声音时每秒的采样个数，它用赫兹(Hz)来表示。<br>采样精度：指记录声音的动态范围，它以位(Bit)为单位。<br>声音通道：既声道数（1-8个）。</p>
+<p>采样率根据使用类型不同大概有以下几种（k既千位符号，1khz=1000hz）：<br>8khz：电话等使用，对于记录人声已经足够使用。<br>22.05khz：广播使用频率。<br>44.1kb：音频CD。<br>48khz：DVD、数字电视中使用。<br>96khz-192khz：DVD-Audio、蓝光高清等使用。</p>
+<p>采样精度常用范围为8bit-32bit，而CD中一般都使用16bit。</p>
+<a id="more"></a>
+
+
+<p>音频的比特率，实际上就是压缩比例。<br>但比特率本身并不对文件的质量有直接影响，例如我们把128kb的文件作为源文件，即使转换成320kb的文件，其音质依然不会比128kb好。<br>那么比特率中的数字和字母到底是什么意思呢？首先看128k的全称“128kbps”，我们试着分解一下：128是数字，k是千位符，b是单位，s是秒，ps其实就是“/s”。这样来看，128kbps就是128kb/s。也就是每秒128kb。</p>
+<h3 id="speex格式录音参数"><a href="#speex格式录音参数" class="headerlink" title="speex格式录音参数:"></a>speex格式录音参数:</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">quality = 9  	                       		//speex质量,值越大质量越好,文件越大  open()的参数</span><br><span class="line">speex_version = &quot;speex-1.2rc&quot;      //speex版本</span><br><span class="line">ospeex_version_id = 1 			//speex版本id</span><br><span class="line">header_size = 80 	 			//speex头信息大小</span><br><span class="line">rate = 16000					//采样率大小</span><br><span class="line">mode = 1			 			//mode  0是窄带模式, 1是宽带模式 (0=NB, 1=WB, 2=UWB)</span><br><span class="line">bitrate = -1 		 			//比特率</span><br><span class="line">frame_size = 320   	 			//缓冲区大小  窄带对应160, 宽带对应320  (NB=160, WB=320, UWB=640)</span><br><span class="line">vbr = 1						//是否使用可变比特率</span><br><span class="line">nframes  = 1 					// 每帧的speex包的数量</span><br><span class="line">channels =1    			        //音频输入的声道 	1是单声道，2是立体声</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>您打赏的一小步，维安钱包提现的一大步( •̀ ω •́ )</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="Levon 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="Levon 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/音频/" rel="tag"># 音频</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/p/ebfb97d0.html" rel="prev" title="字符编码">
+      <i class="fa fa-chevron-left"></i> 字符编码
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/p/eb2c6f22.html" rel="next" title="区块链基础">
+      区块链基础 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
     let { activeClass } = CONFIG.comments;
     if (CONFIG.comments.storage) {
       activeClass = localStorage.getItem('comments_active') || activeClass;
@@ -16,7 +370,185 @@
       let commentClass = event.target.classList[1];
       localStorage.setItem('comments_active', commentClass);
     });
-  }</script></div><div class="toggle sidebar-toggle"><span class="toggle-line toggle-line-first"></span> <span class="toggle-line toggle-line-middle"></span> <span class="toggle-line toggle-line-last"></span></div><aside class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc">文章目录</li><li class="sidebar-nav-overview">站点概览</li></ul><div class="post-toc-wrap sidebar-panel"><div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#音频基础"><span class="nav-text">音频基础</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#speex格式录音参数"><span class="nav-text">speex格式录音参数:</span></a></li></ol></div></div><div class="site-overview-wrap sidebar-panel"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" alt="Levon" src="/images/avatar.jpg"><p class="site-author-name" itemprop="name">Levon</p><div class="site-description" itemprop="description">你以前那头型呢..你得支棱起来啊</div></div><div class="site-state-wrap motion-element"><nav class="site-state"><div class="site-state-item site-state-posts"><a href="/archives/"><span class="site-state-item-count">172</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories/"><span class="site-state-item-count">40</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags/"><span class="site-state-item-count">97</span> <span class="site-state-item-name">标签</span></a></div></nav></div><div class="links-of-author motion-element"><span class="links-of-author-item"><a href="https://github.com/unix2dos" title="GitHub → https://github.com/unix2dos" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a> </span><span class="links-of-author-item"><a href="mailto:levonfly@gmail.com" title="E-Mail → mailto:levonfly@gmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a> </span><span class="links-of-author-item"><a href="https://twitter.com/levonfly" title="Twitter → https://twitter.com/levonfly" rel="noopener" target="_blank"><i class="twitter fa-fw"></i>Twitter</a> </span><span class="links-of-author-item"><a href="https://weibo.com/l6241425" title="Weibo → https://weibo.com/l6241425" rel="noopener" target="_blank"><i class="weibo fa-fw"></i>Weibo</a></span></div></div></div></aside><div id="sidebar-dimmer"></div></div></main><footer class="footer"><div class="footer-inner"><div class="beian"><a href="https://beian.miit.gov.cn" rel="noopener" target="_blank">京ICP备20000727号 </a><img src="/images/beian.png" style="display:inline-block"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=11010502039978" rel="noopener" target="_blank">京公网安备11010502039978号</a></div><div class="copyright">&copy; <span itemprop="copyrightYear">2020</span> <span class="with-love"><i class="fa fa-heart"></i> </span><span class="author" itemprop="copyrightHolder">Levon</span></div></div></footer></div><script src="/lib/anime.min.js"></script><script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script><script src="/lib/velocity/velocity.min.js"></script><script src="/lib/velocity/velocity.ui.min.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/pisces.js"></script><script src="/js/next-boot.js"></script><script>!function(){var e,t,o,n,r,a=document.getElementsByTagName("link");if(0<a.length)for(i=0;i<a.length;i++)"canonical"==a[i].rel.toLowerCase()&&a[i].href&&(e=a[i].href);t=e?e.split(":")[0]:window.location.protocol.split(":")[0],e=e||window.location.href,window,n=e,r=document.referrer,/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi.test(n)||(o="https"===String(t).toLowerCase()?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif",r?(o+="?r="+encodeURIComponent(document.referrer),n&&(o+="&l="+n)):n&&(o+="?l="+n),(new Image).src=o)}()</script><script src="/js/local-search.js"></script><script>NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#音频基础"><span class="nav-text">音频基础</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#speex格式录音参数"><span class="nav-text">speex格式录音参数:</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Levon"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Levon</p>
+  <div class="site-description" itemprop="description">你以前那头型呢..你得支棱起来啊</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">172</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">97</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/unix2dos" title="GitHub → https://github.com/unix2dos" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:levonfly@gmail.com" title="E-Mail → mailto:levonfly@gmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/levonfly" title="Twitter → https://twitter.com/levonfly" rel="noopener" target="_blank"><i class="twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/l6241425" title="Weibo → https://weibo.com/l6241425" rel="noopener" target="_blank"><i class="weibo fa-fw"></i>Weibo</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn" rel="noopener" target="_blank">京ICP备20000727号 </a>
+      <img src="/images/beian.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=11010502039978" rel="noopener" target="_blank">京公网安备11010502039978号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Levon</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
   NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
     var GUEST = ['nick', 'mail', 'link'];
     var guest = 'nick,mail,link';
@@ -29,7 +561,7 @@
       notify     : true,
       appId      : 'Y4ry1QHkYxVXKLQBrx6LJXld-gzGzoHsz',
       appKey     : 'TXITOypSvI7JO61NI8EG5exk',
-      placeholder: "留下你的脚印吧👣",
+      placeholder: "Just go go",
       avatar     : 'mm',
       meta       : guest,
       pageSize   : '10' || 10,
@@ -40,4 +572,8 @@
       serverURLs : ''
     });
   }, window.Valine);
-});</script></body></html>
+});
+</script>
+
+</body>
+</html>
