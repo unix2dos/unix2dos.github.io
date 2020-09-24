@@ -154,15 +154,13 @@ search:
 local_search:
 	enable: true
   
-
-5.  gittalk评论系统(禁止使用, 建议使用 disqus)
-
-https://github.com/theme-next/hexo-theme-next/pull/464
-https://asdfv1929.github.io/2018/01/20/gitalk/
-https://github.com/settings/developers
-
-Homepage URL 和 Authorization callback URL 都填写自己配置的域名
 ```
+
+
+
+### 4.1 置顶
+
+https://github.com/netcan/hexo-generator-index-pin-top
 
 
 
