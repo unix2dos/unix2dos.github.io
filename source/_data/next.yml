@@ -473,8 +473,8 @@ reward_settings:
   # If true, reward would be displayed in every article by default.
   # You can show or hide reward in a specific article throuth `reward: true | false` in Front-matter.
   enable: true
-  animation: false
-  comment: 您打赏的一小步，维安钱包提现的一大步( •̀ ω •́ )
+  animation: true
+  comment: 您打赏的一小步, 钱多了是吗? ( •̀ ω •́ )
 
 reward:
   wechatpay: /images/wechatpay.jpg
@@ -558,7 +558,7 @@ font:
   enable: false
 
   # Uri of fonts host, e.g. //fonts.googleapis.com (Default).
-  host:
+  host: //fonts.lug.ustc.edu.cn
 
   # Font options:
   # `external: true` will load this font family from `host` above.
@@ -746,7 +746,7 @@ valine:
   appkey: TXITOypSvI7JO61NI8EG5exk # your leancloud application appkey
   notify: true # mail notifier, See: https://github.com/xCss/Valine/wiki
   verify: false # Verification code
-  placeholder: Just go go # comment box placeholder
+  placeholder: 留下您的小脚丫吧~  # comment box placeholder
   avatar: mm # gravatar style
   guest_info: nick,mail,link # custom comment header
   pageSize: 10 # pagination size
@@ -1318,3 +1318,24 @@ vendors:
 css: css
 js: js
 images: images
+
+
+neat_enable: true
+neat_html:
+  enable: true
+  exclude:
+    - '**/baidu*.html'
+    - '**/google*.html'
+neat_css:
+  enable: true
+  exclude:
+    - '**/*.min.css'
+neat_js:
+  enable: true
+  mangle: true
+  output:
+  compress:
+  exclude:
+    - '**/*.min.js'
+    - '**/jquery.fancybox.pack.js'
+    - '**/index.js'
