@@ -162,6 +162,16 @@ local_search:
 
 https://github.com/netcan/hexo-generator-index-pin-top
 
+打开：`themes/next/layout/_macro` 目录下的`post.swig`文件，定位到`<div class="post-meta">`标签下，插入如下代码：
+
+```html
+{% if post.top %}
+  <i class="fa fa-thumb-tack"></i>
+  <font color=7D26CD>置顶</font>
+  <span class="post-meta-divider">|</span>
+{% endif %}
+```
+
 
 
 # 5. 问题解决方案
