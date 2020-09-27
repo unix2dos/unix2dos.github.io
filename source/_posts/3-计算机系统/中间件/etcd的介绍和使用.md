@@ -1,9 +1,13 @@
 ---
-title: "etcd的介绍和使用"
-date: 2020-09-25 00:00:00
+title: etcd的介绍和使用
 tags:
-- golang
-- etcd
+  - golang
+  - etcd
+categories:
+  - 3-计算机系统
+  - 中间件
+abbrlink: c0b47ece
+date: 2020-09-25 00:00:00
 ---
 
 
