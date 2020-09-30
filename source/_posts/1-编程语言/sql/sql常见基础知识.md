@@ -223,8 +223,40 @@ Same IO, same plan, the works
 
 
 
-# 5. 参考资料
+# 5. 索引条件下推优化
+
+索引条件下推优化（Index Condition Pushdown (ICP) ）是MySQL5.6添加的，索引条件下推优化可以减少存储引擎查询基础表的次数，也可以减少MySQL服务器从存储引擎接收数据的次数。
+
+索引下推优化是默认开启的，可以通过下面的脚本控制开关。
+
+```sql
+SET optimizer_switch = 'index_condition_pushdown=off';  
+SET optimizer_switch = 'index_condition_pushdown=on';
+```
+
+在开始之前先先准备一张用户表(user)，其中主要几个字段有：id、name、age、address。建立联合索引（name，age）。
+
+```sql
+SELECT * from user where name like '刘%'
+```
+
+根据 "最佳左前缀" 的原则，这里使用了联合索引（name，age）进行了查询，性能要比全表扫描肯定要高。
+
+问题来了，如果有其他的条件呢？假设又有一个需求，要求匹配姓名第一个字为陈，年龄为20岁的用户，此时的sql语句如下：
+
+```sql
+SELECT * from user where name like '刘%' and age=20
+```
+
+5.6之前的版本是没有索引下推这个优化,  会忽略age这个字段，直接通过name进行查询，在(name,age)这课树上查找到了两个结果，然后拿着取到的id值一次次的回表查询，因此这个过程需要回表两次。
+
+5.6版本添加了索引下推这个优化, 并没有忽略age这个字段，而是在索引内部就判断了age是否等于20，对于不等于20的记录直接跳过，因此在(name,age)这棵索引树中只匹配到了一个记录，此时拿着这个id去主键索引树中回表查询全部数据，这个过程只需要回表一次。
+
+
+
+# 6. 参考资料
 
 + https://dev.mysql.com/doc/refman/8.0/en/numeric-type-syntax.html
 + https://dev.mysql.com/doc/refman/8.0/en/char.html
 + https://stackoverflow.com/a/3003533
++ https://dev.mysql.com/doc/refman/8.0/en/index-condition-pushdown-optimization.html
