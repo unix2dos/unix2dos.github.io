@@ -223,17 +223,7 @@ Same IO, same plan, the works
 
 
 
-# 5. TODO:
-
-索引下推
-
-开窗函数
-
-子查询效率问题
-
-
-
-# 6. 参考资料
+# 5. 参考资料
 
 + https://dev.mysql.com/doc/refman/8.0/en/numeric-type-syntax.html
 + https://dev.mysql.com/doc/refman/8.0/en/char.html

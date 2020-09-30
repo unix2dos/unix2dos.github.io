@@ -14,7 +14,7 @@ date: 2018-10-08 17:02:00
 
 
 
-### 编译平台准备工作:
+# 1. 编译平台准备工作
 
 1. 下载arm-none-linux-gnueabi-gcc
 
@@ -38,9 +38,9 @@ date: 2018-10-08 17:02:00
 
 
 
-### 目标平台开始编译:
+# 2. 目标平台开始编译
 
-#### 1. transmission
+### 2.1 transmission
 
 ```shell
 ./configure --host="arm-none-linux-gnueabi" --prefix=/usr/local --without-gtk --without-systemd_daemon  --disable-mac --enable-utp --disable-nls  --enable-utp --enable-lightweight --disable-cli --enable-daemon  PKG_CONFIG="/usr/bin/pkg-config" PKG_CONFIG_PATH="/root/ARM/opt/lib/pkgconfig"
@@ -72,7 +72,7 @@ make install DESTDIR=/root/transmission/a(绝对路径)
 
 
 
-#### 2. libevent
+### 2.2 libevent
 
 ```shell
 wget https://github.com/downloads/libevent/libevent/libevent-2.0.21-stable.tar.gz
@@ -85,7 +85,7 @@ make install
 
 
 
-#### 3. libcurl
+### 2.3 libcurl
 
 ```shell
 wget https://curl.haxx.se/download/curl-7.61.1.tar.gz
@@ -103,7 +103,7 @@ make install
 
 
 
-#### 4. openssl
+### 2.4 openssl
 
 ```shell
 wget https://www.openssl.org/source/openssl-1.1.1.tar.gz
@@ -117,7 +117,7 @@ make install
 
 
 
-#### 5. zlib
+### 2.5 zlib
 
 ```shell
 wget http://zlib.net/zlib-1.2.11.tar.gz
@@ -131,27 +131,9 @@ make install
 
 
 
+# 3. 编译systemd
 
-
-### 目标平台执行transmission的环境变量(忽略)
-
-```shell
-export PATH=/dev/opt/bin:$PATH
-export LD_LIBRARY_PATH=/dev/opt/lib:$LD_LIBRARY_PATH
-export CURL_CA_BUNDLE=/mnt/Sync2/ca.crt
-export TR_CURL_SSL_CERT=/mnt/Sync2/cert.pem
-export TR_CURL_SSL_CERT=/mnt/Sync2/cert.pem
-export TR_CURL_SSL_KEY=/mnt/Sync2/key.pem
-export STNOUPGRADE=1
-```
-
-
-
-
-
-### TODO: 编译systemd
-
-可以参考 https://wiki.beyondlogic.org/index.php?title=Cross_Compiling_SystemD_for_ARM
+参考: https://wiki.beyondlogic.org/index.php?title=Cross_Compiling_SystemD_for_ARM
 
 #### 1. libkmod
 
@@ -226,3 +208,26 @@ LDFLAGS=-L/root/ARM/opt/lib \
 ./configure --host=arm-none-linux-gnueabi --prefix=/root/ARM/opt/ --disable-libmount
 ```
 
+
+
+# 4. 目标平台运行
+
++ systemd编译失败, 可在编译transmission的时候去掉systemd
+
++ 目标平台执行transmission的环境变量(可忽略)
+
+```shell
+export PATH=/dev/opt/bin:$PATH
+export LD_LIBRARY_PATH=/dev/opt/lib:$LD_LIBRARY_PATH
+export CURL_CA_BUNDLE=/mnt/Sync2/ca.crt
+export TR_CURL_SSL_CERT=/mnt/Sync2/cert.pem
+export TR_CURL_SSL_CERT=/mnt/Sync2/cert.pem
+export TR_CURL_SSL_KEY=/mnt/Sync2/key.pem
+export STNOUPGRADE=1
+```
+
+
+
+# 5. 参考资料
+
++ https://wiki.beyondlogic.org/index.php?title=Cross_Compiling_SystemD_for_ARM

@@ -12,7 +12,7 @@ date: 2019-08-31 10:38:46
 
 
 
-### 0. 前言
+# 0. 前言
 
 网络爬虫（又被称为网页蜘蛛，网络机器人，在FOAF社区中间，更经常的称为网页追逐者），是一种按照一定的规则，自动的抓取万维网信息的程序或者脚本。
 
@@ -20,7 +20,7 @@ date: 2019-08-31 10:38:46
 
 <!-- more -->
 
-### 1. 网络请求(requests)
+# 1. 网络请求(requests)
 
  python网络请求主要有 `urllib` 和 `requests`  库, 墙裂推荐`requests`
 
@@ -43,7 +43,7 @@ with open('image.png','wb') as f:
 
 
 
-### 2. 数据提取 (pyquery)
+# 2. 数据提取 (pyquery)
 
 一般我们请求的数据主要分以下几类:
 
@@ -57,7 +57,7 @@ with open('image.png','wb') as f:
 
 > 对html/xml 处理的库主要有以下几种:
 
-##### 2.1 beautifulsoup
+### 2.1 beautifulsoup
 
 ```bash
 pip install beautifulsoup4
@@ -65,7 +65,7 @@ pip install beautifulsoup4
 
 beautiful Soup将复杂HTML文档转换成一个复杂的树形结构,每个节点都是Python对象
 
-##### 2.2 lxml
+### 2.2 lxml
 
 lxml 使用的是 xpath 技术
 
@@ -73,7 +73,7 @@ lxml 使用的是 xpath 技术
 pip install lxml
 ```
 
-##### 2.3  lxml, beautifulSoup 对比
+### 2.3  lxml, beautifulSoup 对比
 
 BeautifulSoup是一个库，而XPath是一种技术，python中最常用的XPath库是lxml，因此，这里就拿lxml来和BeautifulSoup做比较吧.
 
@@ -95,7 +95,7 @@ title = soup.select('.content div.title h3')
 title = tree.xpath("//*[@class='content']/div[@class='content']/h3")
 ```
 
-##### 2.4. pyquery 
+### 2.4. pyquery 
 
 pyquery 可让你用 jQuery 的语法来对 html/xml 进行操作。这和 jQuery 十分类似。这个库不是（至少还不是）一个可以和 JavaScript交互的代码库，它只是非常像 jQuery API 而已。
 
@@ -126,7 +126,7 @@ pip install pyquery
 
 
 
-### 3. 无头浏览器(pyppeteer)
+# 3. 无头浏览器(pyppeteer)
 
 以前写爬虫，遇到需要登录的页面，一般都是通过chrome的检查元素，查看登录需要的参数和加密方法，如果网站的加密非常复杂，例如登录qq的，就会很蛋疼。
 
@@ -134,7 +134,7 @@ pip install pyquery
 
 
 
-##### 3.1 PhantomJS(暂停开发)
+### 3.1 PhantomJS(暂停开发)
 
 ```
 serWarning: Selenium support for PhantomJS has been deprecated, please use headless versions of Chrome or Firefox instead
@@ -160,7 +160,7 @@ phantomjs -v
 
 
 
-##### 3.2. selenium
+### 3.2. selenium
 
 selenium 是什么？一句话，自动化测试工具。它支持各种浏览器，包括 Chrome，Safari，Firefox 等主流界面式浏览器。换句话说叫 Selenium 支持这些浏览器驱动。话说回来，PhantomJS不也是一个浏览器吗，那么 Selenium 支持不？答案是肯定的，这样二者便可以实现无缝对接了。有人问，为什么不直接用浏览器而用一个没界面的 PhantomJS 呢？答案是：效率高！
 
@@ -191,7 +191,7 @@ kw.send_keys("Selenium", Keys.RETURN)
 
 
 
-##### 3.3. pyppeteer 
+### 3.3. pyppeteer 
 
 pyppeteer 是依赖于 chromium 这个浏览器来运行的,  并且是基于 python 的新特性 async 实现的，所以它的一些执行也支持异步操作，效率相对于 selenium 来说也提高了。
 
@@ -217,11 +217,9 @@ asyncio.get_event_loop().run_until_complete(main())
 
 
 
-### 4. 爬虫框架
+# 4. 爬虫框架
 
-
-
-##### 4.1 pyspider
+### 4.1 pyspider
 
 pyspider上手更简单，操作更加简便，因为它增加了 WEB 界面，写爬虫迅速，集成了phantomjs，可以用来抓取js渲染的页面。
 
@@ -234,7 +232,7 @@ pip install pyspider
 
 
 
-##### 4.2 scrapy
+### 4.2 scrapy
 
 ```bash
 pip install Scrapy
@@ -244,19 +242,7 @@ scrapy自定义程度高，比 PySpider更底层一些，适合学习研究，�
 
 
 
-### 5. 爬虫其他(TODO)
-
-##### 5.1 多线程
-
- thread 库
-
-##### 5.2 多进程
-
-multiprocessing 库
-
-
-
-### 6. 参考资料
+# 5. 参考资料
 
 + https://cuiqingcai.com/1052.html
 + https://cuiqingcai.com/6942.html
