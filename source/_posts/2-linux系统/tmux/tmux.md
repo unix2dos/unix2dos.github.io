@@ -19,7 +19,7 @@ tmux是一款优秀的终端复用软件，它比Screen更加强大。 tmux之�
 
 <!-- more -->
 
-+ 上下效果图
++ 先上效果图
 
 ![1](tmux/1.png)
 
@@ -151,6 +151,31 @@ tmux kill-server  #关闭服务器，所有的会话都将关闭
 
 
 
+### 2.6 tmux 复制模式
+
+```bash
+vi ~/.tmux.conf.local
+
+# 打开下面的配置
+set -g mode-keys vi
+```
+
+例如我的控制键为：C-a
+
+1、 C-a [ 进入复制模式
+
+2、 参考上表移动鼠标到要复制的区域，移动鼠标时可用vim的搜索功能"/","?"
+
+3、 空格键开始选择复制区域
+
+4、 选择完成后安enter键退出
+
+5、 C-a ] 粘贴
+
+如果用iterm2, 建议直接使用它的复制模式, 但用vi的搜索等操作还是很实用的
+
+
+
 # 3. 配置
 
 ### 3.1 tmux 配置
@@ -211,10 +236,16 @@ You're good to go! The plugin was cloned to ~/.tmux/plugins/ dir and sourced.
 
   #左边状态栏精简
   tmux_conf_theme_status_left=' ❐ #S '  
+  
   # 右边显示天气, 和week of year
-  tmux_conf_theme_status_right='#{prefix}#{pairing}#{synchronized} | %Y-%m-%d | %H:%M:%S | w-#(echo $(((%j/7)+(%j%7>0)))) , %a'
-  # 前缀显示emoji
+  tmux_conf_theme_status_right='#{prefix}#{pairing}#{synchronized} | #(ipconfig getifaddr en0) | week-#(date +%V)'
+  
+  # 前缀显示 emoji
   tmux_conf_theme_prefix='🍎 🍐 🍊 🍋 🍌 🍉 '
+ 
+  # 复制模式 vi
+  set -g mode-keys vi
+  
   # 状态栏放到上面
   set -g status-position top
 
