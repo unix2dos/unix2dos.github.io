@@ -134,7 +134,7 @@ key_len 的计算规则如下:
 ### 1.4 Extra
 
 + Using filesort
-  当 Extra 中有 `Using filesort` 时, 表示 MySQL 需额外的排序操作, 不能通过索引顺序达到排序效果. 一般有 `Using filesort`, 都建议优化去掉, 因为这样的查询 CPU 资源消耗大.
+  当 Extra 中有 Using filesort 时, 表示 MySQL 需额外的排序操作, 不能通过索引顺序达到排序效果. 一般有 Using filesort, 都建议优化去掉, 因为这样的查询 CPU 资源消耗大.
 
 + Using index
 
@@ -146,57 +146,6 @@ key_len 的计算规则如下:
 
 
 
-### 1.5 构建数据
-
-```sql
-CREATE TABLE `user_info` (
-  `id`   BIGINT(20)  NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(50) NOT NULL DEFAULT '',
-  `age`  INT(11)              DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `name_index` (`name`)
-)
-  ENGINE = InnoDB
-  DEFAULT CHARSET = utf8
-
-INSERT INTO user_info (name, age) VALUES ('xys', 20);
-INSERT INTO user_info (name, age) VALUES ('a', 21);
-INSERT INTO user_info (name, age) VALUES ('b', 23);
-INSERT INTO user_info (name, age) VALUES ('c', 50);
-INSERT INTO user_info (name, age) VALUES ('d', 15);
-INSERT INTO user_info (name, age) VALUES ('e', 20);
-INSERT INTO user_info (name, age) VALUES ('f', 21);
-INSERT INTO user_info (name, age) VALUES ('g', 23);
-INSERT INTO user_info (name, age) VALUES ('h', 50);
-INSERT INTO user_info (name, age) VALUES ('i', 15);
-
-
-CREATE TABLE `order_info` (
-  `id`           BIGINT(20)  NOT NULL AUTO_INCREMENT,
-  `user_id`      BIGINT(20)           DEFAULT NULL,
-  `product_name` VARCHAR(50) NOT NULL DEFAULT '',
-  `productor`    VARCHAR(30)          DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `user_product_detail_index` (`user_id`, `product_name`, `productor`)
-)
-  ENGINE = InnoDB
-  DEFAULT CHARSET = utf8
-
-INSERT INTO order_info (user_id, product_name, productor) VALUES (1, 'p1', 'WHH');
-INSERT INTO order_info (user_id, product_name, productor) VALUES (1, 'p2', 'WL');
-INSERT INTO order_info (user_id, product_name, productor) VALUES (1, 'p1', 'DX');
-INSERT INTO order_info (user_id, product_name, productor) VALUES (2, 'p1', 'WHH');
-INSERT INTO order_info (user_id, product_name, productor) VALUES (2, 'p5', 'WL');
-INSERT INTO order_info (user_id, product_name, productor) VALUES (3, 'p3', 'MA');
-INSERT INTO order_info (user_id, product_name, productor) VALUES (4, 'p1', 'WHH');
-INSERT INTO order_info (user_id, product_name, productor) VALUES (6, 'p1', 'WHH');
-INSERT INTO order_info (user_id, product_name, productor) VALUES (9, 'p8', 'TE');
-```
-
-
-
-
-
 # 2. 测试
 
 ```bash
@@ -205,14 +154,18 @@ docker run -d --name mysql-explain -e MYSQL_ROOT_PASSWORD=123456 mysql # 创建�
 docker exec -it mysql-explain mysql -u root -p  # 输入密码, 进入操作
 ```
 
+
+
 ### 2.1 数据初始化
 
 新建测试表，插入 10w 数据：
 
 ```sql
+-- 创建库
 CREATE DATABASE test1;
 use test1;
 
+-- 创建表
 CREATE TABLE `test` (  
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `a` int(11) NOT NULL,
@@ -233,16 +186,18 @@ COMMIT; END $
 CALL batchInsert();  
 
 
-select count(*) from test;
 -- 得到100000
+select count(*) from test;
 ```
 
-### 2.2 全表查询
+
+
+### 2.2 没有索引
 
 目前默认只有一个主键索引，我们分析下全表查询：
 
-```
-mysql> explain select * from test;  
+```sql
+explain select * from test;  
 ```
 
 | id   | select_type | table | type | possible_keys | key  | key_len | ref  | rows   | Extra | partitions | filtered |
@@ -251,108 +206,298 @@ mysql> explain select * from test;
 
 其中 `type` 值为 ALL，表示全表扫描了，我们看到 `rows` 这个字段显示有 100098 条，实际上我们一共才 10w 条数据，说明这个字段只是 mysql 的一个预估，不总是准确的。
 
-### 2.3 索引查询
 
-接下来我们分别给字段 a 和 b 添加普通索引。
 
-```
-mysql> alter table test add index idx_a(a);  
-mysql> alter table test add index idx_b(b);  
-```
+### 2.3 单个字段索引
 
-看下下面这条 sql：
+我们给字段 a 添加普通索引。
 
-```
-mysql> explain select * from test where a > 10000;  
+```sql
+alter table test add index idx_a(a);  
 ```
 
-| id   | select_type | table | type | possible_keys | key  | key_len | ref  | rows   | Extra       | filtered | partitions |
-| :--- | :---------- | :---- | :--- | :------------ | :--- | :------ | :--- | :----- | :---------- | -------- | ---------- |
-| 1    | SIMPLE      | test  | ALL  | idx_a         | NULL | NULL    | NULL | 100098 | Using where | 50.00    | NULL       |
-
-我们发现 `type` 竟然不是 index, 刚刚不是给字段 a 添加索引了么？还有 `possible_keys` 也显示了有 idx_a，但是 `key` 显示 null，表示实际上不会使用任何索引，这是为什么呢？
-
-这是因为 select * 的话还需要回到主键索引上查找 b 字段，这个过程叫`回表`。
-
-这条语句会从索引中查出 9w 条数据，也就是说这 9w 条数据都需要`回表`操作，全表扫描都才 10w 条数据，所以在 mysql 最后的决策是还不如直接全表扫描得了，至少还免去了回表过程了。
 
 
+##### 2.3.1 where 索引
 
-```
-mysql> explain select a from test where a > 10000;  
++ 走 a 索引树,  虽1行也要回表。
+
+```sql
+explain select * from test where a = 10000;     
 ```
 
-| id   | select_type | table | type  | possible_keys | key   | key_len | ref  | rows  | Extra                         | filtered | partitions |
-| :--- | :---------- | :---- | :---- | :------------ | :---- | :------ | :--- | :---- | :---------------------------- | -------- | ---------- |
-| 1    | SIMPLE      | test  | range | idx_a         | idx_a | 4       | NULL | 50049 | Using where;<br/> Using index | 100.00   | NULL       |
-
-注意这次 `Extra` 的值为 Using where; Using index，表示查询用到了索引，且要查询的字段在索引中就能拿到，所以不需要回表，显然这种效率比上面的要高，这也是日常开发中不建议写 select * 的原因，尽量只查询业务所需的字段。
+| id   | select_type | table | type | possible_keys | key   | key_len | ref   | rows | Extra | filtered |
+| :--- | :---------- | :---- | :--- | :------------ | :---- | :------ | :---- | :--- | :---- | -------- |
+| 1    | SIMPLE      | test  | ref  | idx_a         | idx_a | 4       | const | 1    | NULL  | 100      |
 
 
 
-当然，最后决策是否用索引不是固定的，mysql 会比较各种查询的代价，我们把上面的 sql 中 where 条件再稍微改造一下。
++ 不走索引, 因为这条语句会从索引中查出 9w 条数据，全表扫描都才 10w 条数据，所以 mysql 决策是还不如直接全表扫描得了。
 
-```
-mysql> explain select * from test where a > 90000;  
+```sql
+explain select * from test where a > 10000;  
 ```
 
-| id   | select_type | table | type  | possible_keys | key   | key_len | ref  | rows  | Extra                 | filtered | partitions |
-| :--- | :---------- | :---- | :---- | :------------ | :---- | :------ | :--- | :---- | :-------------------- | -------- | ---------- |
-| 1    | SIMPLE      | test  | range | idx_a         | idx_a | 4       | NULL | 10000 | Using index condition | 100.00   | NULL       |
+| id   | select_type | table | type | possible_keys | key  | key_len | ref  | rows   | Extra       | filtered |
+| :--- | :---------- | :---- | :--- | :------------ | :--- | :------ | :--- | :----- | :---------- | -------- |
+| 1    | SIMPLE      | test  | ALL  | idx_a         | NULL | NULL    | NULL | 100098 | Using where | 50.00    |
 
-再看这次 `type` 为 range 了，`key` 为 a_index，表示使用了 a 索引，如我们所愿了。这是因为满足这次索引中查出只有 10000 条数据，mysql 认为 10000 条数据就算回表也要比全表扫描的代价低，因而决定查索引。
 
-还有一点就是这次 `Extra` 字段中值为 Using index condition，这是指条件过滤的时候用到了索引，但因为是 select * ，所以还是需要回表。
 
-上面两条查询说明 mysql 会比较 `索引 + 回表` 和 `直接全表扫描`的查询性能，选择其中更好的作为最后的查询方式，这就是 mysql 优化器的作用了。
++ 使用了 a 索引树, 因为满足索引只有 10000 条数据，mysql 认为 10000 条数据就算回表也要比全表扫描的代价低，因而决定查索引，但还是需要回表。
 
-### 2.4 排序查询
-
-再来看一个带排序的查询。
-
-```
-mysql> explain select a from test where a > 90000 order by b;  
+```sql
+explain select * from test where a > 90000;  
 ```
 
-| id   | select_type | table | type  | possible_keys | key   | key_len | ref  | rows  | Extra                                      | filtered | partitions |
-| :--- | :---------- | :---- | :---- | :------------ | :---- | :------ | :--- | :---- | :----------------------------------------- | -------- | ---------- |
-| 1    | SIMPLE      | test  | range | idx_a         | idx_a | 4       | NULL | 10000 | Using index condition;<br/> Using filesort | 100.00   | NULL       |
+| id   | select_type | table | type  | possible_keys | key   | key_len | ref  | rows  | Extra                 | filtered |
+| :--- | :---------- | :---- | :---- | :------------ | :---- | :------ | :--- | :---- | :-------------------- | -------- |
+| 1    | SIMPLE      | test  | range | idx_a         | idx_a | 4       | NULL | 10000 | Using index condition | 100.00   |
 
-我们知道索引本来就是有序带，但这个 `Extra` 中返回了一个 Using filesort，说明无法利用索引完成排序，需要从内存或磁盘进行排序，具体哪种排序 explain 是没有体现的。 
 
-总之，这种情况也是需要优化的，尽量能利用索引的有序性，比如下面：
 
-```
-mysql> explain select a from test where a > 90000 order by a;
-```
++ 只select 索引字段, 注意这次 Extra 的值为 `Using where; Using index`，表示查询用到了索引，且要查询的字段在索引中就能拿到，所以不需要回表。显然这种效率比上面的要高，这也是日常开发中不建议写 select * 的原因，尽量只查询业务所需的字段。
 
-| id   | select_type | table | type  | possible_keys | key   | key_len | ref  | rows | Extra                         | filtered | partitions |
-| :--- | :---------- | :---- | :---- | :------------ | :---- | :------ | :--- | :--- | :---------------------------- | -------- | ---------- |
-| 1    | SIMPLE      | test  | range | idx_a         | idx_a | 4       | NULL | 9999 | Using where;<br/> Using index | 100.00   | NULL       |
-
-这次 `Extra` 值有 Using index 了，表示使用上了索引。
-
-### 2.5 复合索引
-
-我们再创建一个复合索引看看。
-
-```
-mysql> alter table test drop index idx_a;
-mysql> alter table test drop index idx_b;
-mysql> alter table test add index idx_a_b(a,b);  
+```sql
+explain select a from test where a > 10000;  
 ```
 
-看下之前的查询 
+| id   | select_type | table | type  | possible_keys | key   | key_len | ref  | rows  | Extra                    | filtered |
+| :--- | :---------- | :---- | :---- | :------------ | :---- | :------ | :--- | :---- | :----------------------- | -------- |
+| 1    | SIMPLE      | test  | range | idx_a         | idx_a | 4       | NULL | 50049 | Using where; Using index | 100.00   |
 
+
+
+##### 2.3.2 order by 索引
+
+order by 最好和 where 用同一个字段
+
+
+
++ 走 a 索引树, 不回表
+
+```sql
+explain select a from test where a > 90000 order by a;
 ```
-mysql> explain select * from test where a > 10000;
+
+| id   | select_type | table | type  | possible_keys | key   | key_len | ref  | rows  | Extra                    | filtered |
+| :--- | :---------- | :---- | :---- | :------------ | :---- | :------ | :--- | :---- | :----------------------- | -------- |
+| 1    | SIMPLE      | test  | range | idx_a         | idx_a | 4       | NULL | 10000 | Using where; Using index | 100.00   |
+
+
+
++ 走 a 索引树, 需要回表
+
+```sql
+explain select * from test where a > 90000 order by a;
+explain select b from test where a > 90000 order by a;
 ```
 
-| id   | select_type | table | type  | possible_keys | key     | key_len | ref  | rows  | Extra                         | filtered | partitions |
-| :--- | :---------- | :---- | :---- | :------------ | :------ | :------ | :--- | :---- | :---------------------------- | -------- | ---------- |
-| 1    | SIMPLE      | test  | range | idx_a_b       | idx_a_b | 4       | NULL | 50049 | Using where;<br/> Using index | 100.00   | NULL       |
+| id   | select_type | table | type  | possible_keys | key   | key_len | ref  | rows  | Extra                 | filtered |
+| :--- | :---------- | :---- | :---- | :------------ | :---- | :------ | :--- | :---- | :-------------------- | -------- |
+| 1    | SIMPLE      | test  | range | idx_a         | idx_a | 4       | NULL | 10000 | Using index condition | 100.00   |
 
-这条 sql 刚刚在没有创建复合索引的时候，是走的全表扫描，现在看 `Extra` 有 Using index，说明利用了覆盖索引，同样也免去了回表过程，即在 idx_a_b 索引上就能找出要查询的字段。
+
+
++ Extra中返回了一个 Using filesort，说明无法利用索引完成排序，需要从内存或磁盘进行排序。就算 b 有索引, 也无法避免, 因为也会走 a 的索引树。
+
+``` sql
+explain select a from test where a > 90000 order by b;  
+```
+
+| id   | select_type | table | type  | possible_keys | key   | key_len | ref  | rows  | Extra                                 | filtered |
+| :--- | :---------- | :---- | :---- | :------------ | :---- | :------ | :--- | :---- | :------------------------------------ | -------- |
+| 1    | SIMPLE      | test  | range | idx_a         | idx_a | 4       | NULL | 10000 | Using index condition; Using filesort | 100.00   |
+
+
+
+### 2.4 多个字段索引和复合索引
+
+##### 2.4.1 多个字段索引
+
+目前a, b 有自己的单个索引。
+
+```sql
+alter table test drop index idx_a_b;
+alter table test add index idx_a(a);  
+alter table test add index idx_b(b);
+```
+
+
++ 没走索引,是因为无论如何都需要回表, 如果把10000改成90000, 会变成走索引加回表.
+
+```sql
+explain select * from test where a > 10000;
+explain select a,b from test where a > 10000;
+explain select b from test where a > 10000;
+```
+
+| id   | select_type | table | type | possible_keys | key  | key_len | ref  | rows   | Extra       | filtered |
+| :--- | :---------- | :---- | :--- | :------------ | :--- | :------ | :--- | :----- | :---------- | -------- |
+| 1    | SIMPLE      | test  | ALL  | idx_a         | NULL | NULL    | NULL | 100098 | Using where | 50       |
+
+
+
++ 直接走a 的索引树, 不回表
+
+```sql
+explain select a from test where a > 10000;
+```
+
+| id   | select_type | table | type  | possible_keys | key   | key_len | ref  | rows  | Extra                    | filtered |
+| :--- | :---------- | :---- | :---- | :------------ | :---- | :------ | :--- | :---- | :----------------------- | -------- |
+| 1    | SIMPLE      | test  | range | idx_a         | idx_a | 4       | NULL | 50049 | Using where; Using index | 100      |
+
+
+
++ 走 b 的索引树更好,回表
+
+```sql
+explain select a,b from test where a > 90000 and b = 90000;
+```
+
+| id   | select_type | table | type | possible_keys | key   | key_len | ref   | rows | Extra       | filtered |
+| :--- | :---------- | :---- | :--- | :------------ | :---- | :------ | :---- | :--- | :---------- | -------- |
+| 1    | SIMPLE      | test  | ref  | idx_a,idx_b   | idx_b | 4       | const | 1    | Using where | 9.99     |
+
+
+
++ 走 a 的索引树更好,回表
+
+```sql
+explain select a,b from test where a = 90000 and b > 90000;
+```
+
+| id   | select_type | table | type | possible_keys | key   | key_len | ref   | rows | Extra       | filtered |
+| :--- | :---------- | :---- | :--- | :------------ | :---- | :------ | :---- | :--- | :---------- | -------- |
+| 1    | SIMPLE      | test  | ref  | idx_a,idx_b   | idx_a | 4       | const | 1    | Using where | 9.99     |
+
+
+
+##### 2.4.2 一个复合索引
+
+```sql
+alter table test drop index idx_a;
+alter table test drop index idx_b;
+alter table test add index idx_a_b(a,b);  
+```
+
+目前只有一个(a,b)复合索引
+
+
+
++ 走 (a,b) 的索引树, 不回表
+
+```sql
+explain select * from test where a > 10000;
+explain select a,b from test where a > 10000;
+explain select b from test where a > 10000;
+explain select a from test where a > 10000;
+```
+
+| id   | select_type | table | type  | possible_keys | key     | key_len | ref  | rows  | Extra                    | filtered |
+| :--- | :---------- | :---- | :---- | :------------ | :------ | :------ | :--- | :---- | :----------------------- | -------- |
+| 1    | SIMPLE      | test  | range | idx_a_b       | idx_a_b | 4       | NULL | 50049 | Using where; Using index | 100      |
+
+
+
++ 不满足最左匹配原则
+
+```sql
+explain select * from test where b > 10000;
+```
+
+| id   | select_type | table | type  | possible_keys | key     | key_len | ref  | rows   | Extra                    | filtered |
+| :--- | :---------- | :---- | :---- | :------------ | :------ | :------ | :--- | :----- | :----------------------- | -------- |
+| 1    | SIMPLE      | test  | index | NULL          | idx_a_b | 8       | NULL | 100098 | Using where; Using index | 33.33    |
+
+
+
++ 走 (a,b) 的索引树, 不回表, key_len=4
+
+```sql
+explain select a,b from test where a > 90000 and b = 90000;
+```
+
+| id   | select_type | table | type  | possible_keys | key     | key_len | ref  | rows  | Extra                    | filtered |
+| :--- | :---------- | :---- | :---- | :------------ | :------ | :------ | :--- | :---- | :----------------------- | -------- |
+| 1    | SIMPLE      | test  | range | idx_a_b       | idx_a_b | 4       | NULL | 18142 | Using where; Using index | 10       |
+
+
+
++ 走 (a,b) 的索引树, 不回表, key_len=8
+
+```sql
+explain select a,b from test where a = 90000 and b > 90000;
+```
+
+| id   | select_type | table | type  | possible_keys | key     | key_len | ref  | rows | Extra                    | filtered |
+| :--- | :---------- | :---- | :---- | :------------ | :------ | :------ | :--- | :--- | :----------------------- | -------- |
+| 1    | SIMPLE      | test  | range | idx_a_b       | idx_a_b | 8       | NULL | 1    | Using where; Using index | 100      |
+
+
+
+##### 2.4.3 普通索引和复合索引同时存在
+
+```sql
+alter table test add index idx_a(a); 
+alter table test add index idx_b(b);  
+alter table test add index idx_a_b(a,b);  
+```
+
+目前有2个普通索引,1个复合索引. 
+
+
+
++ 走 (a,b) 的索引树更好, 不回表
+
+```sql
+explain select * from test where a > 10000;
+explain select a,b from test where a > 10000;
+explain select b from test where a > 10000;
+```
+
+| id   | select_type | table | type  | possible_keys | key     | key_len | ref  | rows  | Extra                    | filtered |
+| :--- | :---------- | :---- | :---- | :------------ | :------ | :------ | :--- | :---- | :----------------------- | -------- |
+| 1    | SIMPLE      | test  | range | idx_a_b,idx_a | idx_a_b | 4       | NULL | 50049 | Using where; Using index | 100      |
+
+##### 
+
++ 走 a 的索引树更好, 不回表
+
+```sql
+explain select a from test where a > 10000;
+```
+
+| id   | select_type | table | type  | possible_keys | key   | key_len | ref  | rows  | Extra                    | filtered |
+| :--- | :---------- | :---- | :---- | :------------ | :---- | :------ | :--- | :---- | :----------------------- | -------- |
+| 1    | SIMPLE      | test  | range | idx_a_b,idx_a | idx_a | 4       | NULL | 50049 | Using where; Using index | 100      |
+
+##### 
+
++ 走 b 的索引树,  需要回表. 其实此时走复合索引更好, 所以不建议复合索引和普通索引一起用
+
+```sql
+explain select a,b from test where a > 90000 and b = 90000;
+```
+
+| id   | select_type | table | type | possible_keys       | key   | key_len | ref   | rows | Extra       | filtered |
+| :--- | :---------- | :---- | :--- | :------------------ | :---- | :------ | :---- | :--- | :---------- | -------- |
+| 1    | SIMPLE      | test  | ref  | idx_a_b,idx_a,idx_b | idx_b | 4       | const | 1    | Using where | 18.12    |
+
+
+
++ 走 (a,b) 的索引树, 不回表
+
+```sql
+explain select a,b from test where a = 90000 and b > 90000;
+```
+
+| id   | select_type | table | type  | possible_keys       | key     | key_len | ref  | rows | Extra                    | filtered |
+| :--- | :---------- | :---- | :---- | :------------------ | :------ | :------ | :--- | :--- | :----------------------- | -------- |
+| 1    | SIMPLE      | test  | range | idx_a_b,idx_a,idx_b | idx_a_b | 8       | NULL | 1    | Using where; Using index | 100      |
+
+
 
 # 3. 查看 sql 执行时间
 
@@ -363,7 +508,12 @@ show profiles;
 
 
 
-# 4. 参考资料
+# 4. 头脑风暴
+
++ order by 最好和 where 用同一个字段, 能有效避免 Using filesort
++ 尽量的扩展索引，不要新建索引。比如表中已经有a的索引，现在要加(a,b)的索引，那么只需要修改原来的索引即可。
+
+# 5. 参考资料
 
 + https://blog.souche.com/mysql-explain/
 + https://segmentfault.com/a/1190000008131735

@@ -37,3 +37,5 @@ APPStore 搜索自动切换输入法, 下载使用即可
 
 + https://www.zhihu.com/question/21466262
 + https://www.better365.cn/AutoSwitchInput.html
++ https://github.com/utatti/kawa
+

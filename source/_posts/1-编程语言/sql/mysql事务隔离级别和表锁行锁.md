@@ -171,4 +171,3 @@ InnoDB支持多粒度锁(multiple granularity locking)，它允许行级锁与�
 
 + [MySQL事务和锁机制详解](https://www.bilibili.com/video/BV1x54y1979n?from=search&seid=4833652458207423339)
 + https://www.wencst.com/archives/1521
-
