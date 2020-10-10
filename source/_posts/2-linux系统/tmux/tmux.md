@@ -7,7 +7,7 @@ tags:
 abbrlink: 29f1e79c
 categories:
   - 2-linux系统
-  - iterm2
+  - tmux
 date: 2019-07-02 08:22:46
 ---
 

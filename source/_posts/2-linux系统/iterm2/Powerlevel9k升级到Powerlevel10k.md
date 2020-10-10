@@ -12,9 +12,11 @@ date: 2020-05-23 12:23:01
 
 
 
-为什么升级？Powerlevel9k项目不再维护，10更快更强大（10-100倍的性能提升）。
+为什么升级？
 
-并且完美兼容Powerlevel9k, 以前的配置参数可以不用任何修改.
+Powerlevel9k项目不再维护，Powerlevel10k更快更强大（10-100倍的性能提升）。
+
+Powerlevel10k并且完美兼容Powerlevel9k, 以前的配置参数可以不用任何修改.
 
 <!-- more -->
 
@@ -48,12 +50,17 @@ POWERLEVEL9K_CONTEXT_DEFAULT_FOREGROUND='white'
 POWERLEVEL9K_PROMPT_ON_NEWLINE=true
 POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="%F{014}\u2570%F{cyan}\uF460%F{073}\uF460%F{109}\uF460%f "
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
-POWERLEVEL9K_NODE_VERSION_BACKGROUND="green"
+POWERLEVEL9K_NODE_VERSION_BACKGROUND="002"
 POWERLEVEL9K_NODE_VERSION_FOREGROUND="black"
-POWERLEVEL9K_GO_VERSION_BACKGROUND="red"
+POWERLEVEL9K_GO_VERSION_BACKGROUND="001"
 POWERLEVEL9K_GO_VERSION_FOREGROUND="black"
+POWERLEVEL9K_WIFI_BACKGROUND="003"
+POWERLEVEL9K_WIFI_FOREGROUND="black"
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon context ssh dir vcs)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status ip anaconda node_version go_version)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status proxy anaconda node_version go_version wifi)
+
+# 看颜色
+# for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}; done
 ```
 
 

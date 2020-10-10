@@ -1,5 +1,5 @@
 ---
-title: iterm2安装zsh配置常用插件
+title: iterm2配置zsh和常用插件
 tags:
   - linux
   - iterm2
@@ -56,18 +56,27 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 
 
 
-主题配置
++ 主题配置
 
 ```bash
 POWERLEVEL9K_MODE='nerdfont-complete'
-ZSH_THEME="powerlevel9k/powerlevel9k"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 POWERLEVEL9K_CONTEXT_TEMPLATE='%n'
 POWERLEVEL9K_CONTEXT_DEFAULT_FOREGROUND='white'
 POWERLEVEL9K_PROMPT_ON_NEWLINE=true
 POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="%F{014}\u2570%F{cyan}\uF460%F{073}\uF460%F{109}\uF460%f "
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon context battery dir vcs)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status time dir_writable ip public_ip ram load background_jobs)
+POWERLEVEL9K_NODE_VERSION_BACKGROUND="002"
+POWERLEVEL9K_NODE_VERSION_FOREGROUND="black"
+POWERLEVEL9K_GO_VERSION_BACKGROUND="001"
+POWERLEVEL9K_GO_VERSION_FOREGROUND="black"
+POWERLEVEL9K_WIFI_BACKGROUND="003"
+POWERLEVEL9K_WIFI_FOREGROUND="black"
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon context ssh dir vcs)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status proxy anaconda node_version go_version wifi)
+
+# 看颜色
+# for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}; done
 ```
 
 
@@ -140,6 +149,8 @@ plugins=(zsh-syntax-highlighting)
 
 # 3. 配色
 
+
+
 ### 3.1 配色项目
 
 ```bash
@@ -147,6 +158,8 @@ https://github.com/dracula/dracula-theme/ # 选用的这个!!!好看!!!支持各
 https://github.com/mbadolato/iTerm2-Color-Schemes # 这上面好多, 慢慢挑
 https://github.com/MartinSeeler/iterm2-material-design 
 ```
+
+
 
 ### 3.2 安装dracula
 
