@@ -211,9 +211,9 @@ KiB Swap:        0 total,        0 free,        0 used.  1040512 avail Mem
 
 
 
-# 3. 其他
+# 3. 系统设置
 
-### 设置linux时间和时区
+### 3.1 设置linux时间和时区
 
 ```bash
 # 设置时间
@@ -226,7 +226,17 @@ tzselect  #命令只告诉你选择的时区的写法，并不会生效。
 
 
 
-### 域名查询
+# 4. 辅助命令
+
+### 
+
+
+
+
+
+# 5. 其他
+
+### 5.1 域名查询
 
 ```bash
 host hostname [server]
