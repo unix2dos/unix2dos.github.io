@@ -183,11 +183,25 @@ FD用于描述指向文件的引用的抽象化概念。文件描述符在形式
 
 \6. 多路io复用
 
+
+
+
+
+阻塞IO模型，非阻塞IO模型，IO复用模型，信号驱动IO模型都是同步IO。
+
+epoll也是IO复用模型，应该是同步IO。
+
  
 
 # 7  NIO
 
+# 8. Aio
+
 # 8 NIO和多路io复用
+
+java nio的io模型是同步非阻塞，这里的同步异步指的是真正io操作（数据内核态用户态的拷贝）是否需要进程参与。
+
+而说java nio提供了异步处理，这个异步应该是指编程模型上的异步。基于reactor模式的事件驱动，事件处理器的注册和处理器的执行是异步的。
 
  
 
@@ -199,3 +213,8 @@ https://juejin.im/post/6844903782094995470
 
  https://www.zhihu.com/question/19732473/answer/117012135
 
+https://blog.csdn.net/Jailman/article/details/78498193
+
+https://www.cnblogs.com/dolphin0520/p/3916526.html
+
+https://colobu.com/2014/11/13/java-aio-introduction/
