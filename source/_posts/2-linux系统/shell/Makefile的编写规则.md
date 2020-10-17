@@ -1,5 +1,5 @@
 ---
-title: Makefile的编写规则
+title: makefile的编写规则
 tags:
   - makefile
 categories:

@@ -1,5 +1,5 @@
 ---
-title: Mysql中MyISAM和InnoDB区别
+title: mysql中myisam和innodb区别
 tags:
   - mysql
 categories:

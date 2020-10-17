@@ -1,5 +1,5 @@
 ---
-title: Mac破解资源软件收集
+title: mac破解资源软件收集
 tags:
   - software
   - linux

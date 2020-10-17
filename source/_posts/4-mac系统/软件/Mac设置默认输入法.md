@@ -1,5 +1,5 @@
 ---
-title: Mac设置默认输入法
+title: mac设置默认输入法
 tags:
   - mac
 categories:

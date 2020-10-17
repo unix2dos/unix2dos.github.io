@@ -6,7 +6,7 @@ tags:
 abbrlink: 6600d67c
 categories:
   - 2-linux系统
-  - iterm2
+  - zsh
 date: 2019-07-02 21:40:46
 ---
 

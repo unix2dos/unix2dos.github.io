@@ -4,7 +4,7 @@ tags: linux
 abbrlink: 937317d6
 categories:
   - 2-linux系统
-  - iterm2
+  - zsh
 date: 2019-08-13 22:19:41
 ---
 
@@ -12,9 +12,7 @@ shadowsocks是我们常用的代理工具，它使用socks5协议，而终端很
 
 
 
-
-
-### 1. 设置终端代理
+# 1. 设置终端代理
 
 最新的 [ShadowsocksX-NG](https://github.com/shadowsocks/ShadowsocksX-NG/releases/) 已经支持终端代理, 我们可以如下图复制得出:
 ```bash
@@ -40,20 +38,19 @@ alias ip='curl cip.cc' # 测试
 
 
 
-##### 1.1 http监听端口
+### 1.1 http监听端口
 
 ![1](为iterm2设置shadowsocks代理/2.png)
 
 
 
-##### 1.2 sockes5监听端口
+### 1.2 sockes5监听端口
 
 ![1](为iterm2设置shadowsocks代理/3.png)
 
 
 
-### 参考资料:
+# 2. 参考资料
 
 + https://droidyue.com/blog/2016/04/04/set-shadowsocks-proxy-for-terminal/
 + https://blog.naaln.com/2019/03/terminal-proxy/
-

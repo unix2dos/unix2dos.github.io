@@ -1,11 +1,11 @@
 ---
-title: Zsh主题Powerlevel9k升级到Powerlevel10k
+title: zsh主题powerlevel9k升级到powerlevel10k
 tags:
   - zsh
   - iterm2
 categories:
   - 2-linux系统
-  - iterm2
+  - zsh
 abbrlink: 4fd520f9
 date: 2020-05-23 12:23:01
 ---
