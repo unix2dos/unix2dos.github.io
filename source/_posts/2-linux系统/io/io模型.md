@@ -1,9 +1,13 @@
 ---
-title: "io模型"
-date: 2020-10-18 00:00:00
+title: io模型
 tags:
-- io
-- linux
+  - io
+  - linux
+categories:
+  - 2-linux系统
+  - io
+abbrlink: 9864e52a
+date: 2020-10-18 00:00:00
 ---
 
 # 1. IO 模型
@@ -90,11 +94,7 @@ epoll技术属于IO复用，IO复用属于同步IO，所以epoll属于同步IO�
 
 ![1](io模型/0.png)
 
-io 层次上来说: 阻塞和非阻塞都是同步, 因为recvfrom会将数据从kernel拷贝到用户内存中，这个时候进程是被block了，在这段时间内，进程是被block的。。
-
-![1](io模型/6.png)
-
-
+阻塞IO和非阻塞IO都是同步IO。
 
 
 
@@ -186,9 +186,8 @@ POSIX把I/O操作划分成两类：
 
 所以Unix的前四种I/O模型都是同步I/O, 只有最后一种才是异步I/O。
 
-即阻塞IO模型，非阻塞IO模型，IO复用模型，信号驱动IO模型都是同步IO。阻塞和非阻塞都是同步。
-
-
++ 阻塞IO模型，非阻塞IO模型，IO复用模型，信号驱动IO模型都是同步IO。 
++ 非阻塞之所以是同步, 是因为recvfrom会将数据从kernel拷贝到用户内存中，这个时候进程是被block了，在这段时间内，进程是被block的。
 
 ![1](io模型/6.png)
 
