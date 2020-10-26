@@ -557,18 +557,24 @@ Uncomplicated Firewall，简称 UFW，是Ubuntu系统上默认的防火墙组件
 
 
 
-### 9.3 云主机安全组和防火墙
+### 9.3 虚拟防火墙和安全组有什么差异
+
++ 云虚拟防火墙是互联网边界防火墙、VPC边界防火墙、主机边界防火墙的统称，为您提供互联网边界、VPC网络边界、ECS实例间的三重防护。
+
++ 安全组是ECS提供的虚拟主机防火墙，对ECS实例间的流量进行访问控制。
+
+结论: 
+
+1. 防火墙是在安全组之前生效的。
+
+2. 防火墙主要是做南北向的访问控制，作用范围是整个VPC，安全组主要是做东西向的访问控制，作用范围是虚拟机网卡，和防火墙形成互补的关系。
 
 ![1](iptables使用教程/99.png)
-
-参考:
-
-+ https://support-it.huawei.com/docs/zh-cn/hcs-6.5.0/vfw-type1/vfw_ug_000031.html
-
-+ https://zhuanlan.zhihu.com/p/86734727
 
 
 
 # 10. 参考资料
 
 + http://www.zsythink.net/archives/tag/iptables/page/2/
++ https://support-it.huawei.com/docs/zh-cn/hcs-6.5.0/vfw-type1/vfw_ug_000031.html
++ https://zhuanlan.zhihu.com/p/86734727
