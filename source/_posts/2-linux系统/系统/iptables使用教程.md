@@ -694,6 +694,127 @@ iptables -A INPUT -j DROP
 
 
 
+# 7. 自定义链
+
+当默认链中的规则非常多时，不方便我们管理。
+
+### 7.1 新建
+
+```bash
+iptables -N IN_WEB
+
+iptables -nvL
+Chain IN_WEB (0 references)
+ pkts bytes target     prot opt in     out     source               destination
+```
+
+
+
+### 7.2 添加规则
+
+```bash
+iptables -I IN_WEB -s 1.1.1.2 -j REJECT
+
+
+iptables -nvL IN_WEB
+Chain IN_WEB (0 references)
+ pkts bytes target     prot opt in     out     source               destination
+    0     0 REJECT     all  --  *      *       1.1.1.2              0.0.0.0/0            reject-with icmp-port-unreachable
+```
+
+
+
+### 7.3 增加引用
+
+现在，自定义链中已经有了一些规则，但是目前，这些规则无法匹配到任何报文，因为我们并没有在任何默认链中引用它。
+
+
+```bash
+iptables -I INPUT -p tcp -j IN_WEB
+
+
+iptables -nvL INPUT
+Chain INPUT (policy ACCEPT 7813 packets, 5921K bytes)
+ pkts bytes target     prot opt in     out     source               destination
+ 7614 5907K IN_WEB     tcp  --  *      *       0.0.0.0/0            0.0.0.0/0
+```
+
+之前的示例中，我们使用"-j"选项指定动作，而此处，我们将"动作"替换为了"自定义链"
+
+
+
+### 7.4 修改
+
+```bash
+iptables -E IN_WEB WEB
+```
+
+
+
+### 7.5 删除
+
+```bash
+iptables -X WEB
+#iptables: Too many links.
+```
+
+因为有引用, 无法删除
+
+```bash
+iptables -D  INPUT 1
+iptables -X WEB
+# iptables: Directory not empty.
+```
+
+因为有规则, 无法删除
+
+```bash
+iptables -F WEB
+iptables -X WEB
+
+# 删除成功
+```
+
+
+
+# 8. 网络防火墙
+
+网络防火墙的职责就是"过滤并转发"，要想"过滤"，只能在INPUT、OUTPUT、FORWARD三条链中实现，要想"转发"，报文则只会经过FORWARD链（发往本机的报文才会经过INPUT链）
+
+![1](iptables使用教程/2.png)
+
+iptables的角色变为"网络防火墙"时，规则只能定义在FORWARD链中。
+
+
+
+### 8.1 用例
+
+![1](iptables使用教程/3.png)
+
+上图中的主机A充当了"外部网络主机"的角色，A主机的IP地址为192.168.1.147，我们使用主机A访问内部网络中的主机C，但是需要主机B进行转发，主机B在转发报文时会进行过滤，以实现网络防火墙的功能。
+
+
+
+要配置转发，则需在FORWAED链中定义规则，所以，我们应该在filter表中的FORWARD链中配置规则。
+
+```bash
+iptables -nvL FORWARD
+Chain FORWARD (policy DROP 0 packets, 0 bytes)
+ pkts bytes target     prot opt in     out     source               destination
+```
+
+
+
+
+
+
+
+
+
+# 9. 动作
+
+
+
 
 
 # 8. 命令总结
