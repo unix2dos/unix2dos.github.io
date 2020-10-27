@@ -492,6 +492,139 @@ iptables -I INPUT -s 223.70.253.1 -i eth0 -p icmp -j DROP
 
 ### 4.5 匹配端口
 
+匹配端口属于扩展匹配条件, 需要依赖一些扩展模块.
+
+##### 4.5.1 端口 -m tcp
+
+选项--dport可以匹配报文的目标端口，--dport意为destination-port，即表示目标端口。与之前的选项不同，--dport前有两条"横杠"，而且，使用--dport选项时，必须事先指定了使用哪种协议，即必须先使用-p选项
+
+```bash
+iptables -I INPUT -s 1.1.1.2 -p tcp -m tcp --dport 22 -j DROP
+
+
+root@tencent:~# iptables -nvL INPUT
+Chain INPUT (policy ACCEPT 1631 packets, 1525K bytes)
+ pkts bytes target     prot opt in     out     source               destination
+    0     0 DROP       tcp  --  *      *       1.1.1.2              0.0.0.0/0            tcp dpt:22
+```
+
+
+
+在使用--dport之前，我们使用-m选项，指定了对应的扩展模块为tcp，也就是说，如果想要使用--dport这个扩展匹配条件，则必须依靠某个扩展模块完成，上例中，这个扩展模块就是tcp扩展模块，最终，我们使用的是tcp扩展模块中的dport扩展匹配条件。
+
++ -m tcp表示使用tcp扩展模块，--dport表示tcp扩展模块中的一个扩展匹配条件，可用于匹配报文的目标端口。
++ -p tcp与 -m tcp并不冲突，-p用于匹配报文的协议，-m 用于指定扩展模块的名称，正好，这个扩展模块也叫tcp。
+
+
+
+扩展匹配条件是可以取反的，同样是使用"!"进行取反，比如 "! --dport 22"，表示目标端口不是22的报文将会被匹配到。
+
+代表"源端口"的扩展匹配条件为--sport, 不管是--sport还是--dsport，都能够指定一个端口范围，比如，--dport 22:25表示目标端口为22到25之间的所有端口，即22端口、23端口、24端口、25端口
+
+
+
+##### 4.5.1 多个端口 -m multiport
+
+如果想要同时指定多个离散的端口，需要借助另一个扩展模块，"multiport"模块。
+
+```bash
+iptables -I INPUT -s 1.1.1.2 -p tcp -m multiport --dports 22,36,80 -j DROP
+
+root@tencent:~# iptables -nvL INPUT
+Chain INPUT (policy ACCEPT 184 packets, 109K bytes)
+ pkts bytes target     prot opt in     out     source               destination
+    0     0 DROP       tcp  --  *      *       1.1.1.2              0.0.0.0/0            multiport dports 22,36,80
+```
+
+
+
+# 5. 常用扩展
+
+### 5.1 iprange扩展模块
+
+使用iprange扩展模块可以指定"一段连续的IP地址范围"，用于匹配报文的源地址或者目标地址。
+
+```bash
+iptables -t filter -I INPUT -m iprange --src-range 192.168.1.127-192.168.1.146 -j DROP
+iptables -t filter -I OUTPUT -m iprange --dst-range 192.168.1.127-192.168.1.146 -j DROP
+iptables -t filter -I INPUT -m iprange ! --src-range 192.168.1.127-192.168.1.146 -j DROP
+```
+
+
+
+### 5.2 string扩展模块
+
+使用string扩展模块，可以指定要匹配的字符串，如果报文中包含对应的字符串，则符合匹配条件。
+
+--algo：用于指定匹配算法，可选的算法有bm与kmp，此选项为必须选项，我们不用纠结于选择哪个算法，但是我们必须指定一个。
+
+--string：用于指定需要匹配的字符串。
+
+```bash
+iptables -t filter -I INPUT -p tcp --sport 80 -m string --algo bm --string "OOXX" -j REJECT
+```
+
+
+
+### 5.3 time扩展模块
+
+我们可以通过time扩展模块，根据时间段区匹配报文，如果报文到达的时间在指定的时间范围以内，则符合匹配条件。
+
+--timestart：用于指定时间范围的开始时间，不可取反
+
+--timestop：用于指定时间范围的结束时间，不可取反
+
+--weekdays：用于指定"星期几"，可取反
+
+--monthdays：用于指定"几号"，可取反
+
+--datestart：用于指定日期范围的开始日期，不可取反
+
+--datestop：用于指定日期范围的结束时间，不可取反
+
+```bash
+iptables -t filter -I OUTPUT -p tcp --dport 80 -m time --timestart 09:00:00 --timestop 19:00:00 -j REJECT
+iptables -t filter -I OUTPUT -p tcp --dport 443 -m time --timestart 09:00:00 --timestop 19:00:00 -j REJECT
+iptables -t filter -I OUTPUT -p tcp --dport 80  -m time --weekdays 6,7 -j REJECT
+iptables -t filter -I OUTPUT -p tcp --dport 80  -m time --monthdays 22,23 -j REJECT
+iptables -t filter -I OUTPUT -p tcp --dport 80  -m time ! --monthdays 22,23 -j REJECT
+iptables -t filter -I OUTPUT -p tcp --dport 80  -m time --timestart 09:00:00 --timestop 18:00:00 --weekdays 6,7 -j REJECT
+iptables -t filter -I OUTPUT -p tcp --dport 80  -m time --weekdays 5 --monthdays 22,23,24,25,26,27,28 -j REJECT
+iptables -t filter -I OUTPUT -p tcp --dport 80  -m time --datestart 2017-12-24 --datestop 2017-12-27 -j REJECT
+```
+
+
+
+### 5.4 connlimit扩展模块
+
+使用connlimit扩展模块，可以限制每个IP地址同时链接到server端的链接数量，注意：我们不用指定IP，其默认就是针对"每个客户端IP"，即对单IP的并发连接数限制。
+
+--connlimit-above：单独使用此选项时，表示限制每个IP的链接数量。
+
+--connlimit-mask：此选项不能单独使用，在使用--connlimit-above选项时，配合此选项，则可以针对"某类IP段内的一定数量的IP"进行连接数量的限制
+
+```bash
+iptables -I INPUT -p tcp --dport 22 -m connlimit --connlimit-above 2 -j REJECT
+iptables -I INPUT -p tcp --dport 22 -m connlimit --connlimit-above 20 --connlimit-mask 24 -j REJECT
+iptables -I INPUT -p tcp --dport 22 -m connlimit --connlimit-above 10 --connlimit-mask 27 -j REJECT
+```
+
+
+
+### 5.5 limit扩展模块
+
+limit模块是对"报文到达速率"进行限制的。如果我想要限制单位时间内流入的包的数量，就能用limit模块。
+
+--limit-burst：类比"令牌桶"算法，此选项用于指定令牌桶中令牌的最大数量。
+
+--limit：类比"令牌桶"算法，此选项用于指定令牌桶中生成新令牌的频率，可用时间单位有second、minute 、hour、day。
+
+```bash
+#如下两条规则需配合使用
+iptables -t filter -I INPUT -p icmp -m limit --limit-burst 3 --limit 10/minute -j ACCEPT
+iptables -t filter -A INPUT -p icmp -j REJECT
+```
+
 
 
 
@@ -609,6 +742,107 @@ sudo apt-get install iptables-persistent
 sudo netfilter-persistent save
 sudo netfilter-persistent reload
 ```
+
+
+
+### 8.3 协议, 网卡匹配
+
+-p用于匹配报文的协议类型,可以匹配的协议类型tcp、udp、udplite、icmp、esp、ah、sctp等（centos7中还支持icmpv6、mh）。
+
+``` bash
+iptables -t filter -I INPUT -p tcp -s 192.168.1.146 -j ACCEPT
+iptables -t filter -I INPUT ! -p udp -s 192.168.1.146 -j ACCEPT
+```
+
+
+
+-i用于匹配报文是从哪个网卡接口流入本机的，由于匹配条件只是用于匹配报文流入的网卡，所以在OUTPUT链与POSTROUTING链中不能使用此选项。
+
+```bash
+iptables -t filter -I INPUT -p icmp -i eth4 -j DROP
+iptables -t filter -I INPUT -p icmp ! -i eth4 -j DROP
+```
+
+-o用于匹配报文将要从哪个网卡接口流出本机，于匹配条件只是用于匹配报文流出的网卡，所以在INPUT链与PREROUTING链中不能使用此选项。
+
+```bash
+iptables -t filter -I OUTPUT -p icmp -o eth4 -j DROP
+iptables -t filter -I OUTPUT -p icmp ! -o eth4 -j DROP
+```
+
+
+
+### 8.3 IP匹配
+
+-s用于匹配报文的源地址,可以同时指定多个源地址，每个IP之间用逗号隔开，也可以指定为一个网段。
+
+```bash
+iptables -t filter -I INPUT -s 192.168.1.111,192.168.1.118 -j DROP
+iptables -t filter -I INPUT -s 192.168.1.0/24 -j ACCEPT
+iptables -t filter -I INPUT ! -s 192.168.1.0/24 -j ACCEPT
+```
+
+-d用于匹配报文的目标地址,可以同时指定多个目标地址，每个IP之间用逗号隔开，也可以指定为一个网段。
+
+```bash
+iptables -t filter -I OUTPUT -d 192.168.1.111,192.168.1.118 -j DROP
+iptables -t filter -I INPUT -d 192.168.1.0/24 -j ACCEPT
+iptables -t filter -I INPUT ! -d 192.168.1.0/24 -j ACCEPT
+```
+
+
+
+### 8.4 端口匹配
+
++ tcp扩展模块
+
+  -p tcp -m tcp --sport 用于匹配tcp协议报文的源端口，可以使用冒号指定一个连续的端口范围
+
+  -p tcp -m tcp --dport 用于匹配tcp协议报文的目标端口，可以使用冒号指定一个连续的端口范围
+
+  ```bash
+  iptables -t filter -I OUTPUT -d 192.168.1.146 -p tcp -m tcp --sport 22 -j REJECT
+  iptables -t filter -I INPUT -s 192.168.1.146 -p tcp -m tcp --dport 22:25 -j REJECT
+  iptables -t filter -I INPUT -s 192.168.1.146 -p tcp -m tcp --dport :22 -j REJECT
+  iptables -t filter -I INPUT -s 192.168.1.146 -p tcp -m tcp --dport 80: -j REJECT
+  iptables -t filter -I OUTPUT -d 192.168.1.146 -p tcp -m tcp ! --sport 22 -j ACCEPT
+  ```
+
+  
+
++ multiport扩展模块
+
+  -p tcp -m multiport --sports 用于匹配报文的源端口，可以指定离散的多个端口号,端口之间用"逗号"隔开
+
+  -p udp -m multiport --dports 用于匹配报文的目标端口，可以指定离散的多个端口号，端口之间用"逗号"隔开
+
+  ```bash
+iptables -t filter -I OUTPUT -d 192.168.1.146 -p udp -m multiport --sports 137,138 -j REJECT
+  iptables -t filter -I INPUT -s 192.168.1.146 -p tcp -m multiport --dports 22,80 -j REJECT
+  iptables -t filter -I INPUT -s 192.168.1.146 -p tcp -m multiport ! --dports 22,80 -j REJECT
+  iptables -t filter -I INPUT -s 192.168.1.146 -p tcp -m multiport --dports 80:88 -j REJECT
+  iptables -t filter -I INPUT -s 192.168.1.146 -p tcp -m multiport --dports 22,80:88 -j REJECT
+  ```
+  
+  
+
+### 8.5 tcp头标志位匹配
+
+```bash
+#第一次握手
+iptables -t filter -I INPUT -p tcp -m tcp --dport 22 --tcp-flags SYN,ACK,FIN,RST,URG,PSH SYN -j REJECT
+#第二次握手
+iptables -t filter -I OUTPUT -p tcp -m tcp --sport 22 --tcp-flags SYN,ACK,FIN,RST,URG,PSH SYN,ACK -j REJECT
+#第一次握手
+iptables -t filter -I INPUT -p tcp -m tcp --dport 22 --tcp-flags ALL SYN -j REJECT
+#第二次握手
+iptables -t filter -I OUTPUT -p tcp -m tcp --sport 22 --tcp-flags ALL SYN,ACK -j REJECT
+
+#用于匹配tcp新建连接的请求报文,"第一次握手"
+iptables -t filter -I INPUT -p tcp -m tcp --dport 22 --syn -j REJECT
+```
+
+
 
 
 
