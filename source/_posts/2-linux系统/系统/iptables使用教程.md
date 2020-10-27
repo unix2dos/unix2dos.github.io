@@ -627,6 +627,73 @@ iptables -t filter -A INPUT -p icmp -j REJECT
 
 
 
+### 5.6 udp扩展
+
+udp扩展模块能用的匹配条件比较少，只有两个，就是--sport与--dport，即匹配报文的源端口与目标端口。
+
+```bash
+iptables -t filter -I INPUT -p udp -m udp --dport 137 -j ACCEPT
+iptables -t filter -I INPUT -p udp -m udp --dport 137:157 -j ACCEPT
+#可以结合multiport模块指定多个离散的端口
+```
+
+
+
+### 5.7 icmp扩展
+
+ICMP协议的全称为Internet Control Message Protocol，翻译为互联网控制报文协议，它主要用于探测网络上的主机是否可用，目标是否可达，网络是否通畅，路由是否可用等。
+
+ping命令使用的就是icmp协议。
+
+--icmp-type：匹配icmp报文的具体类型
+
+```bash
+iptables -t filter -I INPUT -p icmp -m icmp --icmp-type 8/0 -j REJECT
+iptables -t filter -I INPUT -p icmp --icmp-type 8 -j REJECT
+iptables -t filter -I OUTPUT -p icmp -m icmp --icmp-type 0/0 -j REJECT
+iptables -t filter -I OUTPUT -p icmp --icmp-type 0 -j REJECT
+iptables -t filter -I INPUT -p icmp --icmp-type "echo-request" -j REJECT
+```
+
+
+
+### 5.8 state扩展
+
+我们为了让"提供服务方"能够正常的"响应"我们的请求，于是在主机上开放了对应的端口(80, 22)，开放这些端口的同时，也出现了问题，别人利用这些开放的端口，"主动"的攻击我们，他们发送过来的报文并不是为了响应我们，而是为了主动攻击我们。
+
+对于state模块的连接而言，"连接"其中的报文可以分为5种状态，报文状态可以为NEW、ESTABLISHED、RELATED、INVALID、UNTRACKED。
+
+
+
++ 怎样判断报文是否是为了回应之前发出的报文?
+
+我们只要放行状态为ESTABLISHED的报文即可，因为如果报文的状态为ESTABLISHED，那么报文肯定是之前发出的报文的回应，如果你还不放心，可以将状态为RELATED或ESTABLISHED的报文都放行，这样，就表示只有回应我们的报文能够通过防火墙，如果是别人主动发送过来的新的报文，则无法通过防火墙。
+
+
+
+# 6. 黑白名单
+
+当链的默认策略设置为ACCEPT时，如果对应的链中没有配置任何规则，就表示接受所有的报文，如果对应的链中存在规则，但是这些规则没有匹配到报文，报文还是会被接受。
+
+链的默认策略为ACCEPT时，链中的规则对应的动作应该为DROP或者REJECT，表示只有匹配到规则的报文才会被拒绝，没有被规则匹配到的报文都会被默认接受，这就是"黑名单"机制。
+
+
+
+当链的默认策略设置为DROP时，如果对应的链中没有配置任何规则，就表示拒绝所有报文，如果对应的链中存在规则，但是这些规则没有匹配到报文，报文还是会被拒绝。
+
+当链的默认策略设置为DROP时，链中的规则对应的动作应该为ACCEPT，表示只有匹配到规则的报文才会被放行，没有被规则匹配到的报文都会被默认拒绝，这就是"白名单"机制。
+
+### 6.1 默认DROP的问题
+
+在对应的链中没有设置任何规则时，这样使用默认策略为DROP是非常不明智的，因为管理员也会把自己拒之门外，即使对应的链中存在放行规则，当我们不小心使用"iptables -F"清空规则时，放行规则被删除，则所有数据包都无法进入，这个时候就相当于给管理员挖了个坑，所以，我们如果想要使用"白名单"的机制，最好将链的默认策略保持为"ACCEPT"，然后将"拒绝所有请求"这条规则放在链的尾部，将"放行规则"放在前面，这样做，既能实现"白名单"机制，又能保证在规则被清空时，管理员还有机会连接到主机，示例如下。
+
+```bash
+iptables -I INPUT -s 192.168.1.111,192.168.1.118 -j DROP
+iptables -A INPUT -j DROP
+```
+
+
+
 
 
 # 8. 命令总结
