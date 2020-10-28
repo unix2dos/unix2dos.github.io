@@ -110,6 +110,8 @@ netfilter是Linux操作系统核心层内部的一个数据包处理模块，它
 
 
 
+![1](iptables使用教程/4.png)
+
 # 2. 规则
 
 规则是根据指定的匹配条件来尝试匹配每个流经此处的报文，一旦匹配成功，则由规则后面指定的处理动作进行处理；
@@ -795,31 +797,80 @@ iptables的角色变为"网络防火墙"时，规则只能定义在FORWARD链中
 
 
 
+### 8.2 配置
+
 要配置转发，则需在FORWAED链中定义规则，所以，我们应该在filter表中的FORWARD链中配置规则。
 
 ```bash
 iptables -nvL FORWARD
-Chain FORWARD (policy DROP 0 packets, 0 bytes)
+Chain FORWARD (policy ACCEPT 0 packets, 0 bytes)
  pkts bytes target     prot opt in     out     source               destination
+ 
+ 
+# 添加默认拒绝 
+iptables -A FORWARD -j REJECT
+
+
+# 添加转发规则
+iptables -I FORWARD -s 1.1.0.0/16 -p tcp -m tcp --dport 80 -j ACCEPT
+iptables -I FORWARD -d 1.1.0.0/16 -p tcp -m tcp --sport 80 -j ACCEPT
+
+
+iptables -nvL FORWARD
+Chain FORWARD (policy ACCEPT 0 packets, 0 bytes)
+ pkts bytes target     prot opt in     out     source               destination
+    0     0 ACCEPT     tcp  --  *      *       0.0.0.0/0            1.1.0.0/16           tcp spt:80
+    0     0 ACCEPT     tcp  --  *      *       1.1.0.0/16           0.0.0.0/0            tcp dpt:80
+    0     0 REJECT     all  --  *      *       0.0.0.0/0            0.0.0.0/0            reject-with icmp-port-unreachable
 ```
 
 
 
+当iptables作为"网络防火墙"时，在配置规则时，往往需要考虑"双向性"，也就是说，我们为了达成一个目的，往往需要两条规则才能完成。每次配置规则时都要考虑"双向"的问题, 可以考虑加下面的规则, 以后只加单向就可以了。
 
-
-
+```bash
+iptables -I FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
+```
 
 
 
 # 9. 动作
 
+之前用到的ACCEPT与DROP都属于基础动作。使用-j可以指定动作，比如-j ACCEPT, -j DROP, -j REJECT
+
+### 9.1 REJECT
+
+REJECT动作的常用选项为--reject-with
+
+使用--reject-with选项，可以设置提示信息，当对方被拒绝时，会提示对方为什么被拒绝。
+
+可用值如下
+
+icmp-net-unreachable
+
+icmp-host-unreachable
+
+icmp-port-unreachable,
+
+icmp-proto-unreachable
+
+icmp-net-prohibited
+
+icmp-host-pro-hibited
+
+icmp-admin-prohibited
+
+当不设置任何值时，默认值为icmp-port-unreachable。
+
+### 9.2 LOG
+
+使用LOG动作，可以将符合条件的报文的相关信息记录到日志中，但当前报文具体是被"接受"，还是被"拒绝"，都由后面的规则控制，换句话说，LOG动作只负责记录匹配到的报文的相关信息，不负责对报文的其他处理，如果想要对报文进行进一步的处理，可以在之后设置具体规则，进行进一步的处理。
 
 
 
+# 10. 命令总结
 
-# 8. 命令总结
-
-### 8.1 过滤查看
+### 10.1 过滤查看
 
 ```bash
 #查看对应表的所有规则，-t选项指定要操作的表，省略"-t 表名"时，默认表示操作filter表，-L表示列出规则，即查看规则
@@ -854,7 +905,7 @@ iptables --line -t filter -nvxL INPUT
 
 
 
-### 8.2 过滤增删存
+### 10.2 过滤增删存
 
 + 增加
 
@@ -980,7 +1031,7 @@ iptables -t filter -I INPUT ! -d 192.168.1.0/24 -j ACCEPT
 
 
 
-### 8.4 端口匹配
+### 10.4 端口匹配
 
 + tcp扩展模块
 
@@ -1014,7 +1065,7 @@ iptables -t filter -I OUTPUT -d 192.168.1.146 -p udp -m multiport --s
   
   
 
-### 8.5 tcp头标志位匹配
+### 10.5 tcp头标志位匹配
 
 ```bash
 #第一次握手
@@ -1032,11 +1083,39 @@ iptables -t filter -I INPUT -p tcp -m tcp --dport 22 --syn -j REJEC
 
 
 
+### 10.6 网络防火墙forward
+
+由于iptables此时的角色为"网络防火墙"，所以需要在filter表中的FORWARD链中设置规则。
+可以使用"白名单机制"，先添加一条默认拒绝的规则，然后再为需要放行的报文设置规则。
+配置规则时需要考虑"方向问题"，针对请求报文与回应报文，考虑报文的源地址与目标地址，源端口与目标端口等。
+
+```bash
+#示例为允许网络内主机访问网络外主机的web服务与sshd服务。
+iptables -A FORWARD -j REJECT
+iptables -I FORWARD -s 10.1.0.0/16 -p tcp --dport 80 -j ACCEPT
+iptables -I FORWARD -d 10.1.0.0/16 -p tcp --sport 80 -j ACCEPT
+iptables -I FORWARD -s 10.1.0.0/16 -p tcp --dport 22 -j ACCEPT
+iptables -I FORWARD -d 10.1.0.0/16 -p tcp --sport 22 -j ACCEPT
+```
 
 
-# 9. 问题总结
 
-### 9.1 firewalld 和 iptables 关系(Centos)
+可以使用state扩展模块，对上述规则进行优化，使用如下配置可以省略许多"回应报文放行规则"。
+
+```bash
+iptables -A FORWARD -j REJECT
+iptables -I FORWARD -s 10.1.0.0/16 -p tcp --dport 80 -j ACCEPT
+iptables -I FORWARD -s 10.1.0.0/16 -p tcp --dport 22 -j ACCEPT
+iptables -I FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
+```
+
+
+
+
+
+# 11. 问题总结
+
+### 11.1 firewalld 和 iptables 关系(Centos)
 
 ConterOS7.0以上使用的是firewall，ConterOS7.0以下使用的是iptables
 
@@ -1050,7 +1129,7 @@ firewalld跟iptables比起来至少有两大好处：
 
 firewalld跟iptables比起来，不好的地方是每个服务都需要去设置才能放行，因为默认是拒绝。而iptables里默认是每个服务是允许，需要拒绝的才去限制。
 
-### 9.2 ufw 和 iptables 关系(Ubuntu)
+### 11.2 ufw 和 iptables 关系(Ubuntu)
 
 Uncomplicated Firewall，简称 UFW，是Ubuntu系统上默认的防火墙组件。UFW是为轻量化配置iptables而开发的一款工具。UFW 提供一个非常友好的界面用于创建基于IPV4，IPV6的防火墙规则。UFW 在 Ubuntu 8.04 LTS 后的所有发行版中默认可用。
 
@@ -1060,7 +1139,7 @@ Uncomplicated Firewall，简称 UFW，是Ubuntu系统上默认的防火墙组件
 
 
 
-### 9.3 虚拟防火墙和安全组有什么差异
+### 11.3 虚拟防火墙和安全组有什么差异
 
 + 云虚拟防火墙是互联网边界防火墙、VPC边界防火墙、主机边界防火墙的统称，为您提供互联网边界、VPC网络边界、ECS实例间的三重防护。
 
@@ -1076,8 +1155,8 @@ Uncomplicated Firewall，简称 UFW，是Ubuntu系统上默认的防火墙组件
 
 
 
-# 10. 参考资料
+# 12. 参考资料
 
-+ http://www.zsythink.net/archives/tag/iptables/page/2/
++ http://www.zsythink.net/archives/tag/iptables/
 + https://support-it.huawei.com/docs/zh-cn/hcs-6.5.0/vfw-type1/vfw_ug_000031.html
 + https://zhuanlan.zhihu.com/p/86734727
