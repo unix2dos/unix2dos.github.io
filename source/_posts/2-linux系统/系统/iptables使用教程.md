@@ -779,7 +779,7 @@ iptables -X WEB
 
 
 
-# 8. 网络防火墙
+# 8. 网络防火墙(filter表forward链)
 
 网络防火墙的职责就是"过滤并转发"，要想"过滤"，只能在INPUT、OUTPUT、FORWARD三条链中实现，要想"转发"，报文则只会经过FORWARD链（发往本机的报文才会经过INPUT链）
 
@@ -868,9 +868,157 @@ icmp-admin-prohibited
 
 
 
-# 10. 命令总结
+### 9.3 SNAT(NAT表)
 
-### 10.1 过滤查看
+##### 9.3.1 NAT介绍
+
+内部网络的报文发送出去时，报文的源IP会被修改，也就是源地址转换：Source Network Address Translation，缩写为SNAT。
+
+外部网络的报文响应时，响应报文的目标IP会再次被修改，也就是目标地址转换：Destinationnetwork address translation，缩写为DNAT。
+
+整个过程被称为SNAT还是DNAT，取决于整个过程的前半段使用了SNAT还是DNAT。
+
+
+
+##### 9.3.2 操作
+
+```bash
+iptables -t nat -A POSTROUTING -s 10.1.0.0/16 -j SNAT --to-source 2.2.2.2
+
+iptables -t nat -nvL POSTROUTING
+Chain POSTROUTING (policy ACCEPT 357 packets, 21639 bytes)
+ pkts bytes target     prot opt in     out     source               destination
+    0     0 SNAT       all  --  *      *       10.1.0.0/16          0.0.0.0/0            to:2.2.2.2
+```
+
+如上图所示，上图中的规则表示将来自于10.1.0.0/16网段的报文的源地址改为公网IP地址(2.2.2.2)。
+
+
+
+1. "-t nat"表示操作nat表，我们之前一直在灌输一个概念，就是不同的表有不同的功能，filter表的功能是过滤，nat表的功能就是地址转换，所以我们需要在nat表中定义nat规则。
+
+2. "-A POSTROUTING"表示将SNAT规则添加到POSTROUTING链的末尾，在centos7中，SNAT规则只能存在于POSTROUTING链与INPUT链中，在centos6中，SNAT规则只能存在于POSTROUTING链中。
+
+3. 为什么SNAT规则必须定义在POSTROUTING链中，我们可以这样认为，POSTROUTING链是iptables中报文发出的最后一个"关卡"，我们应该在报文马上发出之前，修改报文的源地址，否则就再也没有机会修改报文的源地址了。
+
+4. 如果只是用于配置SNAT的话，我们并不用手动的进行DNAT设置，iptables会自动维护NAT表，并将响应报文的目标地址转换回来。
+
+
+
+### 9.4  DNAT(NAT表)
+
+公司只有一个公网IP，但是公司的内网中却有很多服务器提供各种服务，我们对外宣称，公司的公网IP上既提供了web服务，也提供了windows远程桌面，不管是访问web服务还是远程桌面，只要访问这个公网IP就行了，我们利用DNAT，将公网客户端发送过来的报文的目标地址与端口号做了映射，将访问web服务的报文转发到了内网中的C主机中，将访问远程桌面的报文转发到了内网中的D主机中。
+
+```bash
+iptables -t nat -I PREROUTING -d 2.2.2.2 -p tcp --dport 3389 -j DNAT --to-destination 10.1.0.6:3389
+
+
+iptables -t nat -vnL PREROUTING
+Chain PREROUTING (policy ACCEPT 2 packets, 68 bytes)
+ pkts bytes target     prot opt in     out     source               destination
+    0     0 DNAT       tcp  --  *      *       0.0.0.0/0            2.2.2.2.146        tcp dpt:3389 to:10.1.0.6:3389
+```
+
+
+
+1. "-t nat -I PREROUTING"表示在nat表中的PREROUTING链中配置DNAT规则，DNAT规则只配置在PREROUTING链与OUTPUT链中。
+
+2. "-d 2.2.2.2 -p tcp --dport 3389"表示报文的目标地址为公司的公网IP地址，目标端口为tcp的3389号端口，而我们知道，windows远程桌面使用的默认端口号就是3389，当外部主机访问公司公网IP的3389号端口时，报文则符合匹配条件。
+
+3. "-j DNAT --to-destination 10.1.0.6:3389"表示将符合条件的报文进行DNAT，也就是目标地址转换，将符合条件的报文的目标地址与目标端口修改为10.1.0.6:3389，"--to-destination"就是动作DNAT的常用选项。
+
+   那么综上所述，当外网主机访问公司公网IP(2.2.2.2)的3389时，其报文的目标地址与端口将会被映射到10.1.0.6:3389上。
+
+4. 理论上只要完成上述DNAT配置规则即可，但是在测试时，只配置DNAT规则后，并不能正常DNAT，经过测试发现，将相应的SNAT规则同时配置后，即可正常DNAT，于是我们又配置了SNAT。
+
+  ```bash
+  iptables -t nat -A POSTROUTING -s 10.1.0.0/16 -j SNAT --to-source 2.2.2.2
+  ```
+
+
+
+### 9.5 MASQUERADE
+
+当我们拨号网上时，每次分配的IP地址往往不同，不会长期分给我们一个固定的IP地址，如果这时，我们想要让内网主机共享公网IP上网，就会很麻烦，因为每次IP地址发生变化以后，我们都要重新配置SNAT规则，这样显示不是很人性化，我们通过MASQUERADE即可解决这个问题，MASQUERADE会动态的将源地址转换为可用的IP地址，其实与SNAT实现的功能完全一致，都是修改源地址。
+
+只不过SNAT需要指明将报文的源地址改为哪个IP，而MASQUERADE则不用指定明确的IP，会动态的将报文的源地址修改为指定网卡上可用的IP地址。
+
+```bash
+iptables -t nat -I POSTROUTING -s 10.1.0.0/16 -j SNAT --to-source 2.2.2.2
+
+# MASQUERADE的对比
+iptables -t nat -I POSTROUTING -s 10.1.0.0/16 -o 网卡名字 -j MASQUERADE
+```
+
+可以把MASQUERADE理解为动态的、自动化的SNAT，如果没有动态SNAT的需求，没有必要使用MASQUERADE，因为SNAT更加高效。
+
+
+
+### 9.6 REDIRECT
+
+使用REDIRECT动作可以在本机上进行端口映射
+
+比如，将本机的80端口映射到本机的8080端口上
+
+```bash
+iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8080
+```
+
+经过上述规则映射后，当别的机器访问本机的80端口时，报文会被重定向到本机的8080端口上。
+
+REDIRECT规则只能定义在PREROUTING链或者OUTPUT链中。
+
+
+
+# 10. 防火墙关系
+
+### 10.1 firewalld 和 iptables 关系(Centos)
+
+ConterOS7.0以上使用的是firewall，ConterOS7.0以下使用的是iptables
+
+在RHEL7里有几种防火墙共存：firewalld、iptables、ebtables，默认是使用firewalld来管理netfilter子系统，不过底层调用的命令仍然是iptables等。
+
+firewalld跟iptables比起来至少有两大好处：
+
+1、firewalld可以动态修改单条规则，而不需要像iptables那样，在修改了规则后必须得全部刷新才可以生效；
+
+2、firewalld在使用上要比iptables人性化很多，即使不明白“五张表五条链”而且对TCP/IP协议也不理解也可以实现大部分功能。
+
+firewalld跟iptables比起来，不好的地方是每个服务都需要去设置才能放行，因为默认是拒绝。而iptables里默认是每个服务是允许，需要拒绝的才去限制。
+
+
+
+### 10.2 ufw 和 iptables 关系(Ubuntu)
+
+Uncomplicated Firewall，简称 UFW，是Ubuntu系统上默认的防火墙组件。UFW是为轻量化配置iptables而开发的一款工具。UFW 提供一个非常友好的界面用于创建基于IPV4，IPV6的防火墙规则。UFW 在 Ubuntu 8.04 LTS 后的所有发行版中默认可用。
+
+当使用了 ufw 这类前端时，就最好不要再碰 iptables 了，尤其要慎重使用 iptables – 来清空所有链的规则。在不了解 iptables 的表、链、规则之前，盲目的清空 iptables”规则” 就是耍流氓！
+
+试想，假如你在服务器上ufw enable，那么 INPUT 和 FORWARD 就是 DROP，那么当你iptables -F时，不仅仅是 SSH 的例外规则没了，所有出网的包也都出不去了！此时唯一能做的事情就是去 VNC、或者去机房插鼠标键盘显示器。
+
+
+
+### 10.3 虚拟防火墙和安全组有什么差异
+
++ 云虚拟防火墙是互联网边界防火墙、VPC边界防火墙、主机边界防火墙的统称，为您提供互联网边界、VPC网络边界、ECS实例间的三重防护。
+
++ 安全组是ECS提供的虚拟主机防火墙，对ECS实例间的流量进行访问控制。
+
+结论: 
+
+1. 防火墙是在安全组之前生效的。
+
+2. 防火墙主要是做南北向的访问控制，作用范围是整个VPC，安全组主要是做东西向的访问控制，作用范围是虚拟机网卡，和防火墙形成互补的关系。
+
+![1](iptables使用教程/99.png)
+
+
+
+
+
+# 11. 命令总结
+
+### 11.1 过滤查看
 
 ```bash
 #查看对应表的所有规则，-t选项指定要操作的表，省略"-t 表名"时，默认表示操作filter表，-L表示列出规则，即查看规则
@@ -905,7 +1053,7 @@ iptables --line -t filter -nvxL INPUT
 
 
 
-### 10.2 过滤增删存
+### 11.2 过滤增删存
 
 + 增加
 
@@ -984,7 +1132,7 @@ sudo netfilter-persistent reload
 
 
 
-### 8.3 协议, 网卡匹配
+### 11.3 协议, 网卡匹配
 
 -p用于匹配报文的协议类型,可以匹配的协议类型tcp、udp、udplite、icmp、esp、ah、sctp等（centos7中还支持icmpv6、mh）。
 
@@ -1011,7 +1159,7 @@ iptables -t filter -I OUTPUT -p icmp ! -o eth4 -j DROP
 
 
 
-### 8.3 IP匹配
+### 11.4 IP匹配
 
 -s用于匹配报文的源地址,可以同时指定多个源地址，每个IP之间用逗号隔开，也可以指定为一个网段。
 
@@ -1031,7 +1179,7 @@ iptables -t filter -I INPUT ! -d 192.168.1.0/24 -j ACCEPT
 
 
 
-### 10.4 端口匹配
+### 11.5 端口匹配
 
 + tcp扩展模块
 
@@ -1065,7 +1213,7 @@ iptables -t filter -I OUTPUT -d 192.168.1.146 -p udp -m multiport --s
   
   
 
-### 10.5 tcp头标志位匹配
+### 11.6 tcp头标志位匹配
 
 ```bash
 #第一次握手
@@ -1083,7 +1231,7 @@ iptables -t filter -I INPUT -p tcp -m tcp --dport 22 --syn -j REJEC
 
 
 
-### 10.6 网络防火墙forward
+### 11.7 网络防火墙(filter表forward链)
 
 由于iptables此时的角色为"网络防火墙"，所以需要在filter表中的FORWARD链中设置规则。
 可以使用"白名单机制"，先添加一条默认拒绝的规则，然后再为需要放行的报文设置规则。
@@ -1111,47 +1259,34 @@ iptables -I FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 
 
+### 11.8 SNAT内网外出(nat表postrouting链)
 
-
-# 11. 问题总结
-
-### 11.1 firewalld 和 iptables 关系(Centos)
-
-ConterOS7.0以上使用的是firewall，ConterOS7.0以下使用的是iptables
-
-在RHEL7里有几种防火墙共存：firewalld、iptables、ebtables，默认是使用firewalld来管理netfilter子系统，不过底层调用的命令仍然是iptables等。
-
-firewalld跟iptables比起来至少有两大好处：
-
-1、firewalld可以动态修改单条规则，而不需要像iptables那样，在修改了规则后必须得全部刷新才可以生效；
-
-2、firewalld在使用上要比iptables人性化很多，即使不明白“五张表五条链”而且对TCP/IP协议也不理解也可以实现大部分功能。
-
-firewalld跟iptables比起来，不好的地方是每个服务都需要去设置才能放行，因为默认是拒绝。而iptables里默认是每个服务是允许，需要拒绝的才去限制。
-
-### 11.2 ufw 和 iptables 关系(Ubuntu)
-
-Uncomplicated Firewall，简称 UFW，是Ubuntu系统上默认的防火墙组件。UFW是为轻量化配置iptables而开发的一款工具。UFW 提供一个非常友好的界面用于创建基于IPV4，IPV6的防火墙规则。UFW 在 Ubuntu 8.04 LTS 后的所有发行版中默认可用。
-
-当使用了 ufw 这类前端时，就最好不要再碰 iptables 了，尤其要慎重使用 iptables – 来清空所有链的规则。在不了解 iptables 的表、链、规则之前，盲目的清空 iptables”规则” 就是耍流氓！
-
-试想，假如你在服务器上ufw enable，那么 INPUT 和 FORWARD 就是 DROP，那么当你iptables -F时，不仅仅是 SSH 的例外规则没了，所有出网的包也都出不去了！此时唯一能做的事情就是去 VNC、或者去机房插鼠标键盘显示器。
+```bash
+iptables -t nat -A POSTROUTING -s 10.1.0.0/16 -j SNAT --to-source 公网IP
+iptables -t nat -A POSTROUTING -s 10.1.0.0/16 -o eth0 -j MASQUERADE
+```
 
 
 
-### 11.3 虚拟防火墙和安全组有什么差异
+### 11.9 DNAT外网进来(nat表prerouting链)
 
-+ 云虚拟防火墙是互联网边界防火墙、VPC边界防火墙、主机边界防火墙的统称，为您提供互联网边界、VPC网络边界、ECS实例间的三重防护。
+```bash
+iptables -t nat -I PREROUTING -d 公网IP -p tcp --dport 公网端口 -j DNAT --to-destination 私网IP:端口号
+iptables -t nat -I PREROUTING -d 公网IP -p tcp --dport 8080 -j DNAT --to-destination 10.1.0.1:80
 
-+ 安全组是ECS提供的虚拟主机防火墙，对ECS实例间的流量进行访问控制。
+# 但是在测试DNAT时，对应SNAT规则也需要配置，才能正常DNAT，可以先尝试只配置DNAT规则，如果无法正常DNAT，再尝试添加对应的SNAT规则，SNAT规则配置一条即可，DNAT规则需要根据实际情况配置不同的DNAT规则。
+iptables -t nat -A POSTROUTING -s 10.1.0.0/16 -j SNAT --to-source 公网IP
+```
 
-结论: 
 
-1. 防火墙是在安全组之前生效的。
 
-2. 防火墙主要是做南北向的访问控制，作用范围是整个VPC，安全组主要是做东西向的访问控制，作用范围是虚拟机网卡，和防火墙形成互补的关系。
+### 11.10 本机目标端口映射
 
-![1](iptables使用教程/99.png)
+```bash
+iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8080
+```
+
+配置完成上述规则后，其他机器访问本机的80端口时，会被映射到8080端口。
 
 
 
