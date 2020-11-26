@@ -113,6 +113,10 @@
 
 
 
+需要点开 KeepPlainText
+
+
+
 ### 6.1 history
 
 - **Clipboard Histroy：**剪切板历史，用于设置粘贴板历史保存的时间（默认为 24 小时）。
@@ -157,28 +161,126 @@
 
 
 
-# 8. TODO
+# 8. 脑力
 
-chrome 书签
-
-In 定位到行数
-
-增加百度查询
-
-结合 iterm2
-
-词典设置
-
-粘贴板
+Alfred一个很重要的命令操作就是：`↑`，可以调用上次的历史命令！
 
 
+
+### 8.1 chrome 书签
+
+### 8.6 粘贴板
+
+
+
+### 8.2 增加百度查询
+
++ web Search 上添加百度链接，里面图标部分 http://baidu.com/favicon.ico直接去百度上下载，然后直接拖进来就行了
+
+```bash
+http://www.baidu.com/s?wd={query}
+
+Search Baidu for 'query'
+```
+
++ 点击Default Results下的Setup fallback results 下点击加号便能找到（另外我这个是破解版的，破解版和付费才能设置Setup fallback results）
+
+### 8.3 In 定位到行数
+
+
+
+### 8.4 结合 iterm2
+
+https://github.com/alanhg/others-note/issues/25
+
+前缀设置为$
+
+更改命令从 `iTerm` 打开的方式很简单，在 `Application` 选择为 `Custom`（自定义），然后在下方的文本框输入下面的苹果脚本代码就可以：
+
+```bash
+on alfred_script(q)  
+    if application "iTerm2" is running or application "iTerm" is running then  
+        run script "  
+            on run {q}  
+                tell application \":Applications:iTerm.app\"  
+                    activate  
+                    try  
+                        select first window  
+                        set onlywindow to false  
+                    on error  
+                        create window with default profile  
+                        select first window  
+                        set onlywindow to true  
+                    end try  
+                    tell current session of the first window  
+                        if onlywindow is false then  
+                            tell split vertically with default profile  
+                                write text q  
+                            end tell  
+                        end if  
+                    end tell  
+                end tell  
+            end run  
+        " with parameters {q}  
+    else  
+        run script "  
+            on run {q}  
+                tell application \":Applications:iTerm.app\"  
+                    activate  
+                    try  
+                        select first window  
+                    on error  
+                        create window with default profile  
+                        select first window  
+                    end try  
+                    tell the first window  
+                        tell current session to write text q  
+                    end tell  
+                end tell  
+            end run  
+        " with parameters {q}  
+    end if  
+end alfred_script
+```
+
+
+
+### 8.5 词典设置
+
+### 
+
+### 8.6 配置同步
+
+
+
+在 `Advanced` 选项卡中点击 `Set sync folder` 按钮把同步文件设置到iCloud中即可保持同步备份。
+
+### 
 
 # 9. 自定义的修改
+
++  设定->键盘->快捷键->聚焦->去掉快捷键，Spotlight快捷
+
+
+
+# 11 . 扩展
+
+### 11.1 http://www.packal.org/
+
+# 
+
+https://github.com/TKkk-iOSer/wechat-alfred-workflow
 
 
 
 # 10. 参考资料
 
 + https://sspai.com/post/32979
+
++ https://juejin.cn/post/6844904062484217863
+
 + https://wellsnake.com/alfred/2014/08/17/alfred-work-flows.html
+
 + https://1991421.cn/2019/04/06/b908e228/
+
+  
