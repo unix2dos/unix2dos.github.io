@@ -89,6 +89,13 @@ deploy:
         github: git@unix2dos:unix2dos/unix2dos.github.io.git
         coding: git@e.coding.net:levonfly/levonfly.git
      branch: master
+    - 
+     type: cos-cdn
+     cloud: tencent
+     bucket: blog-1300740185
+     region: ap-beijing
+     secretId: AKIDHOuQp6t0hNrFQMHnAJMEQOEwhaHjtzqU
+     secretKey: ebsyqY8Oo0pUv9IDvQgtzrUdXClT2MR2
 
 # Generate categories from directory-tree
 # Dependencies: https://github.com/xu-song/hexo-auto-category
