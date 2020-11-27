@@ -15,7 +15,7 @@ server:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: https://unix2dos.github.io
+url: https://www.liuvv.com
 root: /
 permalink: p/:abbrlink.html
 abbrlink:
@@ -83,11 +83,11 @@ theme: next
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-    - 
+    -
      type: git
-     repo: 
-        github: git@unix2dos:unix2dos/unix2dos.github.io.git
-        coding: git@e.coding.net:levonfly/levonfly.git
+     repo:
+      github: git@unix2dos:unix2dos/unix2dos.github.io.git
+      coding: git@e.coding.net:levonfly/levonfly.git
      branch: master
     - 
      type: cos-cdn
