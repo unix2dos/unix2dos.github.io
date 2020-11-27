@@ -1,4 +1,11 @@
+---
+title: "alfred的使用"
+date: 2020-11-27 00:00:00
+tags:
+- alfred
+---
 
+<!-- more -->
 
 
 
@@ -191,63 +198,17 @@ Search Baidu for 'query'
 
 ### 8.4 结合 iterm2
 
-https://github.com/alanhg/others-note/issues/25
+https://github.com/vitorgalvao/custom-alfred-iterm-scripts
 
 前缀设置为$
 
 更改命令从 `iTerm` 打开的方式很简单，在 `Application` 选择为 `Custom`（自定义），然后在下方的文本框输入下面的苹果脚本代码就可以：
 
-```bash
-on alfred_script(q)  
-    if application "iTerm2" is running or application "iTerm" is running then  
-        run script "  
-            on run {q}  
-                tell application \":Applications:iTerm.app\"  
-                    activate  
-                    try  
-                        select first window  
-                        set onlywindow to false  
-                    on error  
-                        create window with default profile  
-                        select first window  
-                        set onlywindow to true  
-                    end try  
-                    tell current session of the first window  
-                        if onlywindow is false then  
-                            tell split vertically with default profile  
-                                write text q  
-                            end tell  
-                        end if  
-                    end tell  
-                end tell  
-            end run  
-        " with parameters {q}  
-    else  
-        run script "  
-            on run {q}  
-                tell application \":Applications:iTerm.app\"  
-                    activate  
-                    try  
-                        select first window  
-                    on error  
-                        create window with default profile  
-                        select first window  
-                    end try  
-                    tell the first window  
-                        tell current session to write text q  
-                    end tell  
-                end tell  
-            end run  
-        " with parameters {q}  
-    end if  
-end alfred_script
-```
-
 
 
 ### 8.5 词典设置
 
-### 
+
 
 ### 8.6 配置同步
 
@@ -255,7 +216,9 @@ end alfred_script
 
 在 `Advanced` 选项卡中点击 `Set sync folder` 按钮把同步文件设置到iCloud中即可保持同步备份。
 
-### 
+We recommend Dropbox as the most reliable way to sync your preferences. iCloud and Google Drive are not recommended.
+
+
 
 # 9. 自定义的修改
 
@@ -266,8 +229,6 @@ end alfred_script
 # 11 . 扩展
 
 ### 11.1 http://www.packal.org/
-
-# 
 
 ### 11.2 微信插件
 
