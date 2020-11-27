@@ -1,8 +1,12 @@
 ---
-title: "php8.0安装和php-fpm"
-date: 2020-11-27 00:00:01
+title: php8.0安装和php-fpm
 tags:
-- php
+  - php
+categories:
+  - 1-编程语言
+  - php
+abbrlink: ad42ac48
+date: 2020-11-27 00:00:01
 ---
 
 # 1. 安装
