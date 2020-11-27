@@ -13,6 +13,7 @@
     "hexo-abbrlink": "^2.0.5",
     "hexo-asset-image": "git+https://github.com/CodeFalling/hexo-asset-image.git",
     "hexo-auto-category": "^0.2.0",
+    "hexo-deployer-cos-cdn": "^1.7.1",
     "hexo-deployer-git": "^1.0.0",
     "hexo-generator-archive": "^0.1.5",
     "hexo-generator-category": "^0.1.3",
