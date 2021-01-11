@@ -33,7 +33,7 @@ SQL提供了多种类型的连接方式，它们之间的区别在于：从相�
 | 其他       | 自然连接         | 自然连接是一种特殊的等值连接,在连接条件中使用等于(=)运算符比较被连接列的列值，但它使用选择列表指出查询结果集合中所包括的列，并删除连接表中的重复列。 |
 | 其他       | 自连接           | 某个表和其自身连接，常用在同一表内不同数据间对同一列的比较   |
 
-### 
+
 
 ### 1.2 常见分类
 
@@ -43,17 +43,6 @@ There are 4 different types of Oracle joins:
 - Oracle LEFT OUTER JOIN (or sometimes called LEFT JOIN)
 - Oracle RIGHT OUTER JOIN (or sometimes called RIGHT JOIN)
 - Oracle FULL OUTER JOIN (or sometimes called FULL JOIN)
-
-
-
-### 1.3 注意事项
-
-+  LEFT JOIN and LEFT OUTER JOIN 完全一样
-+ RIGHT JOIN and RIGHT OUTER JOIN 完全一样
-+ JOIN 默认情况下是 INNER JOIN
-+ 对于INNER JOIN，顺序无关紧要, 对于（LEFT，RIGHT或FULL）OUTER JOIN，顺序很重要
-+ Mysql  不支持 full join
-+ Mysql中,cross join ,inner join和 join所实现的功能是一样的。
 
 
 
@@ -142,7 +131,7 @@ null |    5
 
 
 
-### 3.2 inner join, 多表连查
+### 3.2 inner join 和 多表连查 一致
 
 ```sql
 SELECT * FROM
@@ -162,7 +151,7 @@ WHERE a.id = b.id;
 
 
 
-### 3.3  left join, 多表连查
+### 3.3  left join 和 多表连查 区别
 
 实际项目中, 最常用的两种方式.
 
@@ -171,7 +160,7 @@ WHERE a.id = b.id;
 
 
 
-### 3.4 on, where
+### 3.4 on, where 的区别
 
 + 对于inner joins, 无关紧要
 
@@ -292,6 +281,8 @@ AND username = 'sandeep'
 
 ### 3.5 mysql 实现 full join
 
+ mysql  默认不支持 full join, 但是可以用下面实现
+
 ```sql
 SELECT * FROM t1
 LEFT JOIN t2 ON t1.id = t2.id
@@ -302,7 +293,7 @@ RIGHT JOIN t2 ON t1.id = t2.id
 
 
 
-# 4. cross join
+# 4. cross join 笛卡尔查询
 
 ### 4.1 cross join , inner join
 
@@ -326,17 +317,19 @@ Use the last method
 
 
 
-### 4.2 cross join, full outer join
+### 4.2 cross join, full outer join区别
 
-交叉联接会在两个表之间产生笛卡尔乘积，并返回所有行的所有可能组合。 它没有on子句，因为您只是将所有内容连接到所有内容。
++  cross join
 
-使用空表（或结果集）的交叉联接会导致空表（M x N；因此M x 0 = 0)
+  交叉联接会在两个表之间产生笛卡尔乘积，并返回所有行的所有可能组合。 它没有on子句，因为您只是将所有内容连接到所有内容。
 
+  使用空表（或结果集）的交叉联接会导致空表（M x N；因此M x 0 = 0)
 
++ full outer join
 
-完全外部联接是左外部联接和右外部联接的组合。 它返回两个表中与查询的where子句匹配的所有行，并且在无法满足这些行的打开条件的情况下，它将为未填充的字段放入空值。
+  完全外部联接是左外部联接和右外部联接的组合。 它返回两个表中与查询的where子句匹配的所有行，并且在无法满足这些行的打开条件的情况下，它将为未填充的字段放入空值。
 
-完全外部联接将始终具有行，除非M和N均为0。
+  完全外部联接将始终具有行，除非M和N均为0。
 
 
 
@@ -350,7 +343,30 @@ In MySQL, JOIN, CROSS JOIN, and INNER JOIN are syntactic equivalents (they can r
 
 
 
-# 5. 参考资料
+# 5. 头脑风暴
+
+### 5.1 等价行为
+
++  LEFT JOIN and LEFT OUTER JOIN 完全一样,  RIGHT JOIN and RIGHT OUTER JOIN 完全一样
++  JOIN 默认情况下是 INNER JOIN, MySQL中,cross join ,inner join和 join所实现的功能是一样的。
+
+### 5.2 查询顺序
+
++  对于INNER JOIN，顺序无关紧要, 对于（LEFT，RIGHT或FULL）OUTER JOIN，顺序很重要
+
+### 5.3 性能
+
++ INNER JOIN 和 LEFT JOIN 的性能
+
+  1. 如果它们返回相同的结果，则它们的速度相同。但是，我们必须记住它们不是相同的查询，并且LEFT JOIN可能会返回更多的结果（当某些ON条件不满足时）--这就是为什么它通常比较慢的原因。
+
+  2. 当主表（执行计划中的第一个表）具有限制条件（其中id=？）而相应的ON条件为空值，则“right”表未联接——此时LEFT联接速度更快。
+
+  3. 如第1点所讨论的，通常INNER JOIN限制更严格，返回的结果更少，因此速度更快。
+
+  
+
+# 6. 参考资料
 
 + https://blog.csdn.net/u012861978/article/details/52203818
 + https://stackoverflow.com/a/38578
