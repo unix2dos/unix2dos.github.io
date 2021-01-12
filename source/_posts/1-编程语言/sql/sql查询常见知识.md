@@ -343,6 +343,18 @@ WHERE Field = INVERSE_FUNCTION('BLAH')
 
 
 
+### 5.3 BETWEEN vs <= and >=
+
+建议少使用BETWEEN, 因为不同的 sql 实现可能不一样
+
++ between 的范围是包含两边的边界值
+  eg： id between 3 and 7 等价与 id >=3 and id<=7
+
++ not between 的范围是不包含边界值
+  eg：id not between 3 and 7 等价与 id < 3 or id>7
+
+
+
 # 6. 参考资料:
 
 + https://blog.csdn.net/shiyong1949/article/details/80923083
