@@ -1,8 +1,11 @@
 ---
-title: "sql查询常见知识"
-date: 2021-01-12 00:00:00
+title: sql查询常见知识
 tags:
-- sql
+  - sql
+categories:
+  - 1-编程语言
+  - sql
+date: 2021-01-12 00:00:00
 ---
 
 # 1. 关键词
