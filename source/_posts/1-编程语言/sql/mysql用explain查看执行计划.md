@@ -542,6 +542,20 @@ explain SELECT * FROM `lottery_user_log` WHERE (user_id=279223 and award_id = 8 
 
 
 
+### 3.4 不满足最左匹配, 也用了索引
+
+> 就是  possible_keys is null but key isn't null
+
+key可能有一个不存在于possible_keys值中的索引。
+
+如果所有可能的索引都不适合查找行，但查询选择的所有列都是其他索引的列，则会发生这种情况。
+
+也就是说，命名索引覆盖选定的列尽管它不用于确定要检索的行，但索引扫描比数据行扫描更有效。
+
+https://dev.mysql.com/doc/refman/5.7/en/explain-output.html#explain_key
+
+
+
 # 4. 头脑风暴
 
 + order by 最好和 where 用同一个字段, 能有效避免 Using filesort
