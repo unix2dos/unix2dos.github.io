@@ -208,6 +208,23 @@ select phone where phone = 1000000   # 用不到索引
 
 + 复合索引字段最好不超过5个
 
+### 3.11 离散度更高的索引应该放在联合索引的前面。
+
+因为离散度高索引的可选择性高
+
+```sql
+SELECT count(DISTINCT user_id), count(DISTINCT lottery_id), count(DISTINCT award_id) FROM lottery_user_log
+```
+
+看下面的结果, 越大的适合在前面
+
+```
+count(DISTINCT user_id),count(DISTINCT lottery_id),count(DISTINCT award_id) 
+56135										 1													12
+
+适合创建 (user_id, award_id, lottery_id)
+```
+
   
 
 # 4. BTree和 B+Tree

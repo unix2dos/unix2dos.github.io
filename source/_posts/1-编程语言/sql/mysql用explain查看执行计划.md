@@ -63,7 +63,7 @@ mysql 使用 `explain + sql 语句` 来查看执行计划，执行结果有以�
   `index` 类型通常出现在: 所要查询的数据直接在索引树中就可以获取到, 而不需要扫描数据. 当是这种情况时, Extra 字段 会显示 `Using index`.
 
   ```sql
-  EXPLAIN SELECT name FROM  user_info \G
+  EXPLAIN SELECT name FROM  user_info
   ```
 
 + range
@@ -78,7 +78,7 @@ mysql 使用 `explain + sql 语句` 来查看执行计划，执行结果有以�
   此类型通常出现在多表的 join 查询, 针对于非唯一或非主键索引, 或者是使用了 `最左前缀` 规则索引的查询.
 
   ```sql
-  EXPLAIN SELECT * FROM user_info, order_info WHERE user_info.id = order_info.user_id AND order_info.user_id = 5\G
+  EXPLAIN SELECT * FROM user_info, order_info WHERE user_info.id = order_info.user_id AND order_info.user_id = 5
   ```
 
 + eq_ref
@@ -86,7 +86,7 @@ mysql 使用 `explain + sql 语句` 来查看执行计划，执行结果有以�
   此类型通常出现在多表的 join 查询, 表示对于前表的每一个结果, 都只能匹配到后表的一行结果. 并且查询的比较操作通常是 `=`, 查询效率较高. 例如:
 
   ```sql
-  EXPLAIN SELECT * FROM user_info, order_info WHERE user_info.id = order_info.user_id\G
+  EXPLAIN SELECT * FROM user_info, order_info WHERE user_info.id = order_info.user_id
   ```
 
 + const 
@@ -96,12 +96,14 @@ mysql 使用 `explain + sql 语句` 来查看执行计划，执行结果有以�
   例如下面的这个查询, 它使用了主键索引, 因此 `type` 就是 `const` 类型的.
 
   ```sql
-  explain select * from user_info where id = 2\G
+  explain select * from user_info where id = 2
   ```
 
 + system
 
   表中只有一条数据. 这个类型是特殊的 `const` 类型.
+  
+  
 
 `ALL` 类型因为是全表扫描, 因此在相同的查询条件下, 它是速度最慢的.
 而 `index` 类型的查询虽然不是全表扫描, 但是它扫描了所有的索引, 因此比 ALL 类型的稍快.
@@ -134,7 +136,7 @@ key_len 的计算规则如下:
 ### 1.4 Extra
 
 + Using filesort
-  当 Extra 中有 Using filesort 时, 表示 MySQL 需额外的排序操作, 不能通过索引顺序达到排序效果. 一般有 Using filesort, 都建议优化去掉, 因为这样的查询 CPU 资源消耗大.
+  当 Extra 中有 Using filesort 时, 表示 MySQL 需额外的排序操作, 不能通过索引顺序达到排序效果. 表明此时的查询无法利用索引完成排序操作即索引失效。
 
 + Using index
 
@@ -461,7 +463,7 @@ explain select b from test where a > 10000;
 | :--- | :---------- | :---- | :---- | :------------ | :------ | :------ | :--- | :---- | :----------------------- | -------- |
 | 1    | SIMPLE      | test  | range | idx_a_b,idx_a | idx_a_b | 4       | NULL | 50049 | Using where; Using index | 100      |
 
-##### 
+
 
 + 走 a 的索引树更好, 不回表
 
@@ -473,7 +475,7 @@ explain select a from test where a > 10000;
 | :--- | :---------- | :---- | :---- | :------------ | :---- | :------ | :--- | :---- | :----------------------- | -------- |
 | 1    | SIMPLE      | test  | range | idx_a_b,idx_a | idx_a | 4       | NULL | 50049 | Using where; Using index | 100      |
 
-##### 
+
 
 + 走 b 的索引树,  需要回表. 其实此时走复合索引更好, 所以不建议复合索引和普通索引一起用
 
@@ -497,13 +499,45 @@ explain select a,b from test where a = 90000 and b > 90000;
 | :--- | :---------- | :---- | :---- | :------------------ | :------ | :------ | :--- | :--- | :----------------------- | -------- |
 | 1    | SIMPLE      | test  | range | idx_a_b,idx_a,idx_b | idx_a_b | 8       | NULL | 1    | Using where; Using index | 100      |
 
+##### 2.4.4  复合索引和单个索引占用空间
+
+复合索引(a,b,c)和单列索引(a)在查询条件中只有a字段时都会被调用,但是存在较小的性能差异.主要性能差异取决于IO性能. 
+
+因为索引实质上就是将该条记录的唯一标识rowid和索引字段记录下来.所以一个最小的存储物理块block存储单列索引(a)可能可以存储100条数据,而复合索引(a,b,c)可能只能存储30条,那么在使用索引时,复合索引需要IO到的block更多,自然就会存在性能差异.
+
+但是在表空间的使用上,复合索引的占用空间并不等于所涉及到的列的所有单列索引的总和,而是远远小于,经实测4个字段的复合索引占用空间为3072KB,而4个单列索引占用的空间均为2048KB,即4个单列索引总和为8192KB.主要原因是每个索引中都必须包含rowid,而rowid是比较大的,通常情况下占用空间远大于数据.
 
 
-# 3. 查看 sql 执行时间
+
+# 3. 其他
+
+### 3.1 查看 sql 执行时间
 
 ```bash
 set profiling = 1;
 show profiles;
+```
+
+### 3.2 索引长度
+
+对于myisam和innodb存储引擎，prefixes的长度限制分别为1000 bytes和767 bytes。注意prefix的单位是bytes，但是建表时我们指定的长度单位是字符。 
+
+以utf8字符集为例，一个字符占3个bytes。因此在utf8字符集下，对myisam和innodb存储引擎创建索引的单列长度不能超过333个字符和255个字符。 
+
+smallint 占2个bytes，timestamp占4个bytes，utf8字符集。utf8字符集下，一个character占3个bytes。 
+
+### 3.3 key_len
+
+完全匹配, 就是 key_len 是满的, 不完全匹配, 例如前面, key_len 就是少的
+
+例如: (user_id, award_id, lottery_id)  复合索引, 一共是12
+
+```sql
+explain SELECT * FROM `lottery_user_log` WHERE (user_id=279223)  --key_len:4
+
+explain SELECT * FROM `lottery_user_log` WHERE (user_id=279223 and award_id = 8)  --key_len:8
+
+explain SELECT * FROM `lottery_user_log` WHERE (user_id=279223 and award_id = 8 and lottery_id=1) --key_len:12
 ```
 
 
