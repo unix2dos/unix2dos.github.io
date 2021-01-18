@@ -7,9 +7,14 @@ tags:
 - encrypt
 ---
 
+在前后端数据传输的过程中, 如果没有对数据加密, 抓包软件直接能看到我请求发的是什么数据，服务端给我返回的数据是什么。
 
+并且可以用抓包软件修改响应数据返回给客户端，这样一来，客户端实际上接收到的数据并不是服务端给我的源数据，而是被第三者修改过的数据，如此一来，数据传输的安全就很有必要了。
 
-以客户端给服务端传输数据为例
+<!-- more -->
+
+解决方案可以用对称加密加密数据, 非对称加密加密key,   以客户端给服务端传输数据为例:
+
 1. 服务端生成一对RSA秘钥，私钥放在服务端（不可泄露），公钥下发给客户端。
 2. 客户端使用随机函数生成 key。
 3. 客户端使用随机的 key 对传输的数据用AES进行加密。
@@ -17,10 +22,7 @@ tags:
 5. 客户端将使用AES加密的数据  以及使用 RSA公钥加密的key  一起发给服务端。
 6. 服务端拿到数据后，先使用私钥对加密的随机key进行解密，解密成功即可确定是客户端发来的数据，没有经过他人修改，然后使用解密成功的随机key对使用AES加密的数据进行解密，获取最终的数据。
 
-
 这是单向的加密认证, 如果要实现双向加密验证, 就要生成两对公钥和私钥。
-
-<!-- more -->
 
 
 
@@ -46,7 +48,7 @@ openssl rsa -in private_server.pem -pubout -out public_server.pem
 
 ### 1.2 加解密代码
 
-+ rsa.go
++ rsa.go 非对称加密
 
 ```go
 package encrypt
@@ -123,7 +125,7 @@ func DecryptWithPrivateKey(ciphertext []byte, priv *rsa.PrivateKey) ([]byte, err
 }
 ```
 
-+ aes.go
++ aes.go 对称加密
 
   ```go
   package encrypt
@@ -228,8 +230,6 @@ import (
 	"public/encrypt"
 
 	"github.com/gin-gonic/gin"
-
-	"bookBook/common"
 )
 
 type EncryptParam struct {
@@ -273,7 +273,7 @@ func Encrypt() gin.HandlerFunc {
 				return
 			}
 
-			cert, err := Dao.GetCert(version, "server")
+			cert, err := Dao.GetCert(version, "server")  // 此处是从数据库读取certs, 也可以本地读取文件
 			if err != nil {
 				c.AbortWithStatus(http.StatusBadRequest)
 				common.Log.Errorf("GetCert err: %s", err)
@@ -320,7 +320,7 @@ func Encrypt() gin.HandlerFunc {
 		if encryptType == "response" || encryptType == "all" {
 
 			randomKey := RandStringRunes(16)
-			cert, err := Dao.GetCert(version, "client")
+			cert, err := Dao.GetCert(version, "client") // 此处是从数据库读取certs, 也可以本地读取文件
 			if err != nil {
 				common.Log.Errorf("GetCert err: %s", err)
 				return
@@ -423,9 +423,7 @@ func RandStringRunes(n int) string {
 
 
 
-
-
-# 3. 参考资料
+# 2. 参考资料
 
 + https://blog.csdn.net/yuzhiqiang_1993/article/details/88641265
 + https://www.cnblogs.com/yjf512/p/10570922.html
