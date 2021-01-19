@@ -1,69 +1,112 @@
 ---
 title: "ssl证书后缀"
-date: 2020-01-18 00:00:01
+date: 2021-01-19 00:00:01
 tags:
 - ssl
 ---
 
-# 1 PKCS
+# 0. 概念
 
-PKCS 全称是 Public-Key Cryptography Standards ，是由 RSA 实验室与其它安全系统开发商为促进公钥密码的发展而制订的一系列标准，PKCS 目前共发布过 15 个标准。 
+### 0.1 HTTPS 通信过程
+
+1. 浏览器向网站服务器请求，服务器把公钥A明文给传输浏览器。
+2. 浏览器随机生成一个用于对称加密的密钥X，用公钥A加密后传给服务器。
+3. 服务器拿到后用私钥A’解密得到密钥X。
+4. 这样双方就都拥有密钥X了，且别人无法知道它。之后双方所有数据都用密钥X 对称加密解密。
 
 <!-- more -->
 
-常用的有：
+
+
+### 0.2 中间人攻击
+
+1. 浏览器向网站服务器请求，服务器把公钥A明文给传输浏览器。
+2. 中间人劫持到公钥A，保存下来，把数据包中的公钥A替换成自己伪造的公钥B（它当然也拥有公钥B对应的私钥B’）。
+3. 浏览器随机生成一个用于对称加密的密钥X，用公钥B（浏览器不知道公钥被替换了）加密后传给服务器。
+4. 中间人劫持后用私钥B’解密得到密钥X，再用公钥A加密后传给服务器。
+5. 服务器拿到后用私钥A’解密得到密钥X。
+
+根本原因是浏览器无法确认自己收到的公钥是不是网站自己的。
+
+### 0.3 数字证书
+
+网站在使用HTTPS前，需要向“CA机构”申请颁发一份数字证书，数字证书里有证书持有者、证书持有者的公钥等信息，服务器把证书传输给浏览器，浏览器从证书里取公钥就行了，证书就如身份证一样，可以证明“该公钥对应该网站”。
+
+> 实际上，数字证书就是经过CA认证过的公钥。
+
+### 0.4 数字签名
+
+如何防止数字证书被篡改? 我们把证书内容生成一份“签名”，比对证书内容和签名是否一致就能察觉是否被篡改。这种技术就叫数字签名
+
+1. CA拥有非对称加密的私钥和公钥。
+2. CA对证书明文信息进行hash。
+3. 对hash后的值用私钥加密，得到数字签名。
+
+浏览器验证过程：
+
+1. 拿到证书，得到明文T，数字签名S。
+2. 用CA机构的公钥对S解密（由于是浏览器信任的机构，所以浏览器保有它的公钥。），得到S’。
+3. 用证书里说明的hash算法对明文T进行hash得到T’。
+4. 比较S’是否等于T’，等于则表明证书可信。
+
+
+
+# 1. PKCS
+
+PKCS 全称是 Public-Key Cryptography Standards ，是由 RSA 实验室与其它安全系统开发商为促进公钥密码的发展而制订的一系列标准，PKCS 目前共发布过 15 个标准。 
 
 ### 1.1 PKCS#7 
 
-Cryptographic Message Syntax Standard
-
-PKCS#7 常用的后缀是： .P7B .P7C .SPC
+PKCS#7 cert request response: .p7r 是CA对证书请求的回复，只用于导入
+PKCS#7 binary message: .p7b 以树状展示证书链(certificate chain)，同时也支持单个证书，不含私钥
 
 ### 1.2 PKCS#10 
 
-Certification Request Standard
+Certification Request: .p10 证书请求
 
 ### 1.3 PKCS#12 
 
-Personal Information Exchange Syntax Standard
-
-PKCS#12 常用的后缀有： .P12 .PFX
+Personal Information Exchange: .pfx, .p12 用于存放个人证书/私钥，他通常包含保护密码，2进制方式
 
 ### 1.4 X.509
 
 X.509是常见通用的证书格式。所有的证书都符合为Public Key Infrastructure (PKI) 制定的 ITU-T X509 国际标准。
 
-X.509 DER 编码(ASCII)的后缀是： .DER .CER .CRT
+X.509 der 编码(ASCII)的后缀是： .DER .CER .CRT
 
-X.509 PAM 编码(Base64)的后缀是： .PEM .CER .CRT
+X.509 pem 编码(Base64)的后缀是： .PEM .CER .CRT
 
 
 
 # 2. 证书后缀
 
-### 2.1 pkcs1-pkcs12
+### 2.1 *.der 证书
 
-公钥加密(非对称加密)的一种标准(Pbulic Key Cryptography Standards),一般存储为`*.pn，*.p12`是包含证书和密钥的封装格式。
-
-PKCS 全称是 Public-Key Cryptography Standards ，是由 RSA 实验室与其它安全系统开发商为促进公钥密码的发展而制订的一系列标准，PKCS 目前共发布过 15 个标准。
-
-### 2.2 *.der
-
-ASN.1是一套完整的数据结构与数据存储格式描述，BER/DER是ASN.1的二进制编码方式
+扩展名der用于二进制DER编码的证书。这些证书也可以用cer或者crt作为扩展名。比较合适的说法是“我有一个der编码的证书”，而不是“我有一个der证书”。
 
 Java和Windows服务器偏向于使用这种编码格式。
 
-### 2.3 `*.cer *.crt`
-
-两个指的都是证书。windows下叫cer，linux下叫crt；存储格式可以为pem也可以为der。.cer/.crt是用于存放证书，它是2进制形式存放的，不含私钥。
-
-### 2.4 *.pem
+### 2.2 *.pem base64证书或密钥
 
 Privacy Enhanced Mail，证书或密钥的Base64文本存储格式，可以单独存放证书或密钥，也可以同时存放证书或密钥。
 
 打开看文本格式,以”—–BEGIN…”开头, “—–END…”结尾,内容是BASE64编码。
 
 一般 Apache 和 Nginx 服务器应用偏向于使用 PEM 这种编码格式。
+
+### 2.3 *.cer *.crt 二进制证书
+
+.cer/.crt是用于存放证书，它是2进制形式存放的，不含私钥。 
+
+证书可以是DER编码，也可以是PEM编码。
+
+windows下叫cer，linux下叫crt。 
+
+### 2.4 pkcs1-pkcs12
+
+公钥加密(非对称加密)的一种标准(Pbulic Key Cryptography Standards),一般存储为`*.pn，*.p12`是包含证书和密钥的封装格式。
+
+PKCS 全称是 Public-Key Cryptography Standards ，是由 RSA 实验室与其它安全系统开发商为促进公钥密码的发展而制订的一系列标准，PKCS 目前共发布过 15 个标准。
 
 ### 2.5 *.key
 
