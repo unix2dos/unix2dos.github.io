@@ -148,11 +148,22 @@ sudo mkdir -p /opt/data/my-app1-log
 
 ### 1.4 安装 journalbeat
 
+```bash
+curl -L -O https://artifacts.elastic.co/downloads/beats/journalbeat/journalbeat-7.10.2-linux-x86_64.tar.gz
+tar xzvf journalbeat-7.10.2-linux-x86_64.tar.gz
+
+
+sudo chown root journalbeat.yml 
+sudo ./journalbeat -e
+```
+
+
+
 journalbeat.yml
 
 ```bash
 include_matches:
-          - _SYSTEMD_UNIT=lw-music.service
+	- _SYSTEMD_UNIT=lw-music.service
 ```
 
 
