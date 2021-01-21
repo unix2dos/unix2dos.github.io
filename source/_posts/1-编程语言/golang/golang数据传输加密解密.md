@@ -1,10 +1,14 @@
 ---
-title: "golang数据传输加密解密"
-date: 2021-01-14 00:00:00
+title: golang数据传输加密解密
 tags:
-- golang
-- gin
-- encrypt
+  - golang
+  - gin
+  - encrypt
+categories:
+  - 1-编程语言
+  - golang
+abbrlink: 8ba026f1
+date: 2021-01-14 00:00:00
 ---
 
 在前后端数据传输的过程中, 如果没有对数据加密, 抓包软件直接能看到我请求发的是什么数据，服务端给我返回的数据是什么。

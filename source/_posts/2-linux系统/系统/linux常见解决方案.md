@@ -1,8 +1,12 @@
 ---
-title: "linux常见解决方案"
-date: 2021-01-18 00:00:00
+title: linux常见解决方案
 tags:
-- linux
+  - linux
+categories:
+  - 2-linux系统
+  - 系统
+abbrlink: 182cebe4
+date: 2021-01-18 00:00:00
 ---
 
 记录一些 linux 常见的问题解决方案.

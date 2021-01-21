@@ -1,8 +1,12 @@
 ---
-title: "ssl证书后缀"
-date: 2021-01-19 00:00:01
+title: ssl证书后缀
 tags:
-- ssl
+  - ssl
+categories:
+  - 3-计算机系统
+  - Web
+abbrlink: fe1a2c09
+date: 2021-01-19 00:00:01
 ---
 
 # 0. 概念

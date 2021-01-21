@@ -1,10 +1,14 @@
 ---
-title: "elk安装和使用"
-date: 2021-01-20 00:00:01
+title: elk安装和使用
 tags:
-- elasticsearch
-- elk
-- linux
+  - elasticsearch
+  - elk
+  - linux
+categories:
+  - 2-linux系统
+  - elk
+abbrlink: 4986eca1
+date: 2021-01-20 00:00:01
 ---
 
 # 1. 安装
@@ -18,7 +22,9 @@ cd elasticsearch-7.10.1/bin
 ./elasticsearch
 ```
 
-Make sure Elasticsearch is up and running```curl http://127.0.0.1:9200```
+Make sure Elasticsearch is up and running
+
+`curl http://127.0.0.1:9200`
 
 <!-- more -->
 
@@ -255,8 +261,6 @@ WantedBy=multi-user.target
 ```
 
 systemctl start journalbeat
-
-
 
 
 
