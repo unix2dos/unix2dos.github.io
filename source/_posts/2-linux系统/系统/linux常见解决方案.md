@@ -36,5 +36,9 @@ vi /etc/group
 
 
 
+#### 2. 快速拷贝公钥到服务器
 
+```bash
+ssh-copy-id -i ~/.ssh/fhyx.pub   liuwei@49.234.15.70
+```
 
