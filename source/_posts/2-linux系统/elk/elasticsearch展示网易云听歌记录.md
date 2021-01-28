@@ -105,7 +105,6 @@ processors:
 ### 3.1 row分段
 
 Add Sub-Bucket ->Terms, 选择指定字段
-
 ![1](elasticsearch展示网易云听歌记录/4.png)
 
 
@@ -113,21 +112,22 @@ Add Sub-Bucket ->Terms, 选择指定字段
 
 去索引管理, 字段编辑, string -> url -> audio
 
-![1](elasticsearch展示网易云听歌记录/5.png)
+![1](elasticsearch展示网易云听歌记录/6.png)
+
+
 
 ### 3.3 替换字段内容
 
 去索引管理, 字段编辑, string -> string Static lookup
-
-![1](elasticsearch展示网易云听歌记录/6.png)
+![1](elasticsearch展示网易云听歌记录/5.png)
 
 
 
 ### 3.4 替换字段名字
 
- 7.10.1版本还不支持
+ 7.10.1版本还不支持, 7.11.0版本已经支持
 
-参考这个: https://github.com/elastic/kibana/pull/70039
+参考这个提交: https://github.com/elastic/kibana/pull/70039
 
 
 
@@ -135,13 +135,13 @@ Add Sub-Bucket ->Terms, 选择指定字段
 
 + 查看所有索引
 
-```
+``` bash
 GET /_cat/indices?v
 ```
 
 + 查询指定字段数据
 
-```
+``` bash
 GET _search
 {
   "query": {
@@ -154,7 +154,7 @@ GET _search
 
 + 查询字段为空的数据
 
-```
+``` bash
 GET _search
 {
   "query": {
@@ -171,7 +171,7 @@ GET _search
 
 + 删除查询数据
 
-```
+``` bash
 POST /journalbeat-7.10.2-2021.01.24-000001/_delete_by_query
 {
   "query": {

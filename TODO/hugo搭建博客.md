@@ -74,6 +74,10 @@ mv  content/posts/   content/post/
 
 
 
+### 2.1 图片显示
+
+
+
 # 3. 插件
 
 ### 3.1 评论
@@ -142,7 +146,7 @@ tags: mongodb  这样就会导致 `tags` 不能迭代，需要改成 `tags: [mon
 
 
 
-# 4. 参考资料
+# 5. 参考资料
 
 + https://gohugo.io/getting-started/quick-start/
 + https://cloud.tencent.com/document/product/1210/43389
