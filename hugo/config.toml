@@ -7,6 +7,7 @@ enableRobotsTXT = true
 enableEmoji = true
 theme = "even"
 enableGitInfo = true # use git commit log to generate lastmod record # 可根据 Git 中的提交生成最近更新记录。
+enablePermalinks = true
 
 # Syntax highlighting by Chroma. NOTE: Don't enable `highlightInClient` and `chroma` at the same time!
 pygmentsOptions = "linenos=table"
@@ -27,6 +28,9 @@ copyright = ""            # default: author.name ↓        # 默认为下面配
   changefreq = "weekly"
   priority = 0.5
   filename = "sitemap.xml"
+
+[permalinks]
+  posts = "/posts/:slug.html"
 
 [[menu.main]]             # config your menu              # 配置目录
   name = "Home"

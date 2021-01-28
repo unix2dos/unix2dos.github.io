@@ -7,6 +7,7 @@ categories:
   - 2-linux系统
   - 系统
 abbrlink: c9c96ac3
+slug: c9c96ac3
 date: 2021-01-28 00:00:00
 ---
 

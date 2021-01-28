@@ -53,14 +53,9 @@ hugo -D
 ```bash
 npm install -g @cloudbase/cli
 tcb login
-cloudbase hosting deploy ./public  -e EnvID  #此处的 EnvID 替换为腾讯云CloudBase环境 ID
+cloudbase hosting deploy ./public  -e EnvID -r bj #此处的 EnvID 替换为腾讯云CloudBase环境 ID
+
 ```
-
-
-
-hugo-3gejy0jl4bd348e7
-
-
 
 
 
@@ -87,6 +82,52 @@ params.valine
 
 ### 3.2 唯一地址
 
+原本的Hexo博客使用了`hexo-abbrlink`插件，目的是为每篇文章生成由字母和数字组成的随机URL，这样有利于SEO。迁移到Hugo后没找到类似的插件，只能用自带的`slug`功能来代替。
+
+
+
+```fallback
+---
+abbrlink: 71bd19d3
+slug: 71bd19d3
+---
+```
+
+
+
+
+
+
+
+修改 `archetypes/default.md` 添加如下一行：
+
+```yaml
+---
+#...
+slug: {{ substr (md5 (printf "%s%s" .Date (replace .TranslationBaseName "-" " " | title))) 4 8 }}
+#...
+---
+```
+
+这样在每次使用 `hugo new` 的时候就会自动填写一个永久链接了。
+
+
+
+```fallback
+[permalinks]
+  posts = "/posts/:slug.html"
+  
+enablePermalinks = true
+```
+
+
+
+
+
+
+
+
+
 
 
 # 4. 错误
@@ -106,4 +147,6 @@ tags: mongodb  这样就会导致 `tags` 不能迭代，需要改成 `tags: [mon
 + https://gohugo.io/getting-started/quick-start/
 + https://cloud.tencent.com/document/product/1210/43389
 + https://scarletsky.github.io/2019/05/02/migrate-hexo-to-hugo/
++ https://lewky.cn/posts/hugo-4.html/
++ https://blog.lxdlam.com/post/9cc3283b/
 
