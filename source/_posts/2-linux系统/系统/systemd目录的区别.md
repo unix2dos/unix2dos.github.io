@@ -12,17 +12,23 @@ date: 2019-06-22 20:58:46
 
 
 
-### 1. 区别
+# 1. 目录
 
-##### 1.1 [/usr]/lib/systemd/system/  (软件包安装的单元)
+### 1.1 [/usr]/lib/systemd/system/ 
+
+ (软件包安装的单元)
 
 The expectation is that `/lib/systemd/system` is a directory that should only contain systemd unit files which were put there by the package manager (YUM/DNF/RPM/APT/etc).
 
-##### 1.2 /etc/systemd/system/(系统管理员安装的单元, 优先级更高)
+### 1.2 /etc/systemd/system/
+
+(系统管理员安装的单元, 优先级更高)
 
 Files in `/etc/systemd/system` are manually placed here by the operator of the system for ad-hoc software installations that are not in the form of a package. This would include tarball type software installations or home grown scripts.
 
-### 2. 优先级
+<!-- more -->
+
+# 2. 优先级
 
 systemd的使用大幅提高了系统服务的运行效率, 而unit的文件位置一般主要有三个目录：
 
@@ -39,7 +45,7 @@ systemd的使用大幅提高了系统服务的运行效率, 而unit的文件位�
        └────────────────────────┴─────────────────────────────┘
 ```
 
-<!-- more -->
+
 
 这三个目录的配置文件优先级依次从高到低，如果同一选项三个地方都配置了，优先级高的会覆盖优先级低的。 
 
@@ -52,7 +58,7 @@ systemd的使用大幅提高了系统服务的运行效率, 而unit的文件位�
 
 
 
-参考资料:
+# 3. 参考资料
 
 + https://unix.stackexchange.com/questions/206315/whats-the-difference-between-usr-lib-systemd-system-and-etc-systemd-system
 + https://wiki.archlinux.org/index.php/Systemd
