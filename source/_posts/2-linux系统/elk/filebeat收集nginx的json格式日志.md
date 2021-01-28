@@ -6,6 +6,7 @@ tags:
 categories:
   - 2-linux系统
   - elk
+abbrlink: e36ebda1
 date: 2021-01-23 00:00:00
 ---
 

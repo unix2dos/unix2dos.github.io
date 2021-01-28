@@ -1,9 +1,13 @@
 ---
-title: "elasticsearch展示网易云听歌记录"
-date: 2021-01-27 00:00:00
+title: elasticsearch展示网易云听歌记录
 tags:
-- elasticsearch
-- netease
+  - elasticsearch
+  - netease
+categories:
+  - 2-linux系统
+  - elk
+abbrlink: 84fd7308
+date: 2021-01-27 00:00:00
 ---
 
 打工人每日网抑云, 所以就用 es简单做个网易云听歌记录. 先上效果图.
