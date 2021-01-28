@@ -1,9 +1,13 @@
 ---
-title: "systemctl详解"
-date: 2021-01-28 00:00:00
+title: systemctl详解
 tags:
-- systemctl
-- linux
+  - systemctl
+  - linux
+categories:
+  - 2-linux系统
+  - 系统
+abbrlink: c9c96ac3
+date: 2021-01-28 00:00:00
 ---
 
 # 1. 简介
