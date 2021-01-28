@@ -1,6 +1,6 @@
 ---
 title: github和gitee通过密钥来进行ssh连接
-tags: git
+tags: ["git"]
 abbrlink: a9407b5
 categories:
   - 2-linux系统

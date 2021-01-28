@@ -1,6 +1,6 @@
 ---
 title: python使用正则后向引用替换字符串
-tags: python
+tags: ["python"]
 abbrlink: 136fd428
 categories:
   - 1-编程语言

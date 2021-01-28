@@ -1,7 +1,7 @@
 ---
 title: 英语语法结构
 tags:
-  - english
+  - ["english"]
 abbrlink: d2e27e6
 categories:
   - 5-随笔

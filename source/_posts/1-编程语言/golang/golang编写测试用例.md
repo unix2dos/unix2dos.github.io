@@ -1,7 +1,6 @@
 ---
 title: golang编写测试用例
-tags:
-  - golang
+tags: ["golang"]
 categories:
   - 1-编程语言
   - golang

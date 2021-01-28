@@ -1,6 +1,6 @@
 ---
 title: mac系统vim升级流程
-tags: vim
+tags: ["vim"]
 abbrlink: 4ea69092
 categories:
   - 4-mac系统

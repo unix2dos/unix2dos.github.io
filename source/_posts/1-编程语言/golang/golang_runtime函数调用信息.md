@@ -1,7 +1,6 @@
 ---
 title: golang_runtime函数调用信息
-tags:
-  - golang
+tags: ["golang"]
 abbrlink: 375281af
 categories:
   - 1-编程语言

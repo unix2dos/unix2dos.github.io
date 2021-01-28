@@ -1,7 +1,6 @@
 ---
 title: linux开启ftp服务和golang实现ftp_server_client
-tags:
-  - golang
+tags: ["golang"]
 abbrlink: d43abcbd
 categories:
   - 1-编程语言

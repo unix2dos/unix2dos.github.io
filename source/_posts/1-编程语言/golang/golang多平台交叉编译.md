@@ -1,6 +1,6 @@
 ---
 title: golang多平台交叉编译
-tags: golang
+tags: ["golang"]
 abbrlink: 37af4aa1
 categories:
   - 1-编程语言

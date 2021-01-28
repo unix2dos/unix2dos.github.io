@@ -1,6 +1,6 @@
 ---
 title: gitbook--制作pdf
-tags: others
+tags: ["others"]
 abbrlink: 1f9c8aa6
 categories:
   - 2-linux系统

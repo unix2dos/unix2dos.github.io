@@ -1,6 +1,6 @@
 ---
 title: golang_struct_interface嵌套传参和多态
-tags: golang
+tags: ["golang"]
 abbrlink: a5099912
 categories:
   - 1-编程语言

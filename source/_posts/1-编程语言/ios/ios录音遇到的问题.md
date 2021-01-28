@@ -1,6 +1,6 @@
 ---
 title: iOS录音遇到的问题
-tags: ios
+tags: ["ios"]
 abbrlink: 9ecea432
 categories:
   - 1-编程语言

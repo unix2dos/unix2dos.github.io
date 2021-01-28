@@ -1,8 +1,6 @@
 ---
 title: gc垃圾回收和golang的gc
-tags:
-  - golang
-  - gc
+tags: ["golang", "gc"]
 categories:
   - 1-编程语言
   - golang

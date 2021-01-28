@@ -1,7 +1,6 @@
 ---
 title: golang优雅的等待或通知goroutine退出
-tags:
-  - golang
+tags: ["golang"]
 abbrlink: aca47db0
 categories:
   - 1-编程语言

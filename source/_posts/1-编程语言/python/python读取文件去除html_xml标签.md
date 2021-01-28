@@ -1,6 +1,6 @@
 ---
 title: python读取文件去除html_xml标签
-tags: python
+tags: ["python"]
 abbrlink: f3ea3847
 categories:
   - 1-编程语言

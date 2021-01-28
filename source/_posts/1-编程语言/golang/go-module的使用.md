@@ -1,7 +1,6 @@
 ---
 title: go-module的使用
-tags:
-  - golang
+tags: ["golang"]
 abbrlink: 6c6632b7
 categories:
   - 1-编程语言

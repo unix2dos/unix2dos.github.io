@@ -1,6 +1,6 @@
 ---
 title: android自动添加文件到android-mk
-tags: android
+tags: ["android"]
 abbrlink: 99b8fe68
 categories:
   - 1-编程语言
