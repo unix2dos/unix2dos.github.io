@@ -1,7 +1,6 @@
 ---
 title: goproxy的部署实践
-tags:
-  - golang
+tags: ["golang"]
 categories:
   - 1-编程语言
   - golang

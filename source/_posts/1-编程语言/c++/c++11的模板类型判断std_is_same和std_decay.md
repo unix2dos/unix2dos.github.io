@@ -1,6 +1,6 @@
 ---
 title: 'c++11的模板类型判断std::is_same和std::decay'
-tags: c++
+tags: ["c++"]
 abbrlink: 1e4be646
 categories:
   - 1-编程语言

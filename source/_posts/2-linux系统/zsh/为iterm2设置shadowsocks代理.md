@@ -1,6 +1,6 @@
 ---
 title: 为iterm2设置shadowsocks代理
-tags: linux
+tags: ["linux","iterm2"]
 abbrlink: 937317d6
 categories:
   - 2-linux系统

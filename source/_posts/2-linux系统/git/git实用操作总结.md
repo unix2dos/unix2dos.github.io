@@ -1,6 +1,6 @@
 ---
 title: git实用操作总结
-tags: git
+tags: ["git"]
 abbrlink: 42eae4e7
 categories:
   - 2-linux系统

@@ -1,7 +1,6 @@
 ---
 title: linux部署golang的方式
-tags:
-  - golang
+tags: ["golang"]
 abbrlink: 8956ebfb
 categories:
   - 1-编程语言

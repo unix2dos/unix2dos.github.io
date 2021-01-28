@@ -1,6 +1,6 @@
 ---
 title: gitHub提交PullRequest
-tags: git
+tags: ["git"]
 abbrlink: a35ae0bf
 categories:
   - 2-linux系统
@@ -34,10 +34,10 @@ Add these lines of configuration at the end of file:
   helper = osxkeychain
   useHttpPath = true
 ```
-  
-  
+
+
 ### 更新自己的仓库
-  
+
   ```
   git remote add upstream https://github.com/unix2dos/GolangWeb
   git fetch upstream
@@ -45,4 +45,3 @@ Add these lines of configuration at the end of file:
   git rebase upstream/master
   git push -f origin master
   ```
- 

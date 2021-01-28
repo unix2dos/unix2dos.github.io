@@ -1,7 +1,6 @@
 ---
 title: golang的defer,panic和recover
-tags:
-  - golang
+tags: ["golang"]
 categories:
   - 1-编程语言
   - golang

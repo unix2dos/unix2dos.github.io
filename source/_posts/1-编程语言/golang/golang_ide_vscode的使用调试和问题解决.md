@@ -1,7 +1,6 @@
 ---
 title: golang_ide_vscode的使用调试和问题解决
-tags:
-  - golang
+tags: ["golang"]
 abbrlink: 127812f2
 categories:
   - 1-编程语言
@@ -20,7 +19,7 @@ date: 2018-05-19 10:41:27
 5. markdown auto-open
 6. vscode snippets 模板文件: [https://github.com/Microsoft/vscode-go/blob/master/snippets/go.json](https://github.com/Microsoft/vscode-go/blob/master/snippets/go.json)
 7. theme molokai 自带
-   
+  
 
 <!-- more -->
 ### vscode增加golang debug调试:
@@ -28,7 +27,7 @@ date: 2018-05-19 10:41:27
 1. xcode-select --install
 
 2. 钥匙链创建证书 dlv-cert
-   
+  
 3. 证书签名
 
 ```    

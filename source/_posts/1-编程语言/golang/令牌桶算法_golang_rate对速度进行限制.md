@@ -1,7 +1,6 @@
 ---
 title: 令牌桶算法_golang_rate对速度进行限制
-tags:
-  - golang
+tags: ["golang"]
 abbrlink: e25fe1fc
 categories:
   - 1-编程语言

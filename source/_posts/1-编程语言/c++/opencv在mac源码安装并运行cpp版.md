@@ -1,8 +1,6 @@
 ---
 title: opencv在mac源码安装并运行cpp版
-tags:
-  - opencv
-  - c++
+tags: ["opencv","c++"]
 abbrlink: 9c99a6b7
 categories:
   - 1-编程语言

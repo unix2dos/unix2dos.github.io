@@ -1,7 +1,6 @@
 ---
 title: pr入门教程笔记
-tags:
-  - photo
+tags: ["photo"]
 abbrlink: e24658ca
 categories:
   - 5-随笔

@@ -1,6 +1,6 @@
 ---
 title: markdown语法集合
-tags: markdown
+tags: ["markdown"]
 abbrlink: 1ef7af3b
 categories:
   - 3-计算机系统
@@ -28,7 +28,7 @@ Use two asterisks for **strong emphasis**.
 - Gum.
 - Booze.
 
-		
+	​	
 1. Red
 2. Green
 3. Blue

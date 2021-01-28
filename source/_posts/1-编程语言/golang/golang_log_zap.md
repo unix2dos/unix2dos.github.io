@@ -1,7 +1,6 @@
 ---
 title: golang的log库zap的使用
-tags:
-  - golang
+tags: ["golang"]
 categories:
   - 1-编程语言
   - golang

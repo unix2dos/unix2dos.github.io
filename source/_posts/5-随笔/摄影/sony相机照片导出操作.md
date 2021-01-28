@@ -1,7 +1,6 @@
 ---
 title: sony相机照片导出操作
-tags:
-  - 摄影
+tags: ["摄影"]
 categories:
   - 5-随笔
   - 摄影

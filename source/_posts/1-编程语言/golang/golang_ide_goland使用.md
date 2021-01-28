@@ -1,6 +1,6 @@
 ---
 title: golang_ide_goland使用
-tags: golang
+tags: ["golang"]
 abbrlink: 5a4d0049
 categories:
   - 1-编程语言
