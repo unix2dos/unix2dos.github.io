@@ -1,11 +1,7 @@
 # 1. 安装
 
-
-
 ```bash
 brew install hugo
-
-
 ```
 
 
@@ -16,15 +12,10 @@ hugo new site hugo-demo && cd hugo-demo
 
 
 
-
-
 ```plaintext
-
-
 git init
 git submodule add https://github.com/budparr/gohugo-theme-ananke.git themes/
 echo 'theme = "ananke"' >> config.toml
-
 ```
 
 
@@ -51,10 +42,6 @@ theme = "ananke"
 
 在浏览器输入 `http://localhost:1313` 即可查看效果
 
-
-
-
-
 使用如下代码部署编译完成的静态页面文件：
 
 ```bash
@@ -63,21 +50,21 @@ hugo -D
 
 
 
-
-
+```bash
+npm install -g @cloudbase/cli
+tcb login
+cloudbase hosting deploy ./public  -e EnvID  #此处的 EnvID 替换为腾讯云CloudBase环境 ID
 ```
-cloudbase hosting deploy ./public  -e EnvID
-```
+
+
+
+hugo-3gejy0jl4bd348e7
 
 
 
 
 
-\+ 评论
-
-\+ 唯一地址
-
-\+ 主题
+# 2. 主题
 
 ```bash
 git clone https://github.com/olOwOlo/hugo-theme-even themes/even
@@ -92,16 +79,31 @@ mv  content/posts/   content/post/
 
 
 
+# 3. 插件
+
+### 3.1 评论
+
+
+
+### 3.2 唯一地址
+
+
+
+# 4. 错误
+
+### 4.1  Front-matter 
+
+executing "_internal/schema.html" at <.Params.tags>: range can't iterate over mongodb
+
+tags: mongodb  这样就会导致 `tags` 不能迭代，需要改成 `tags: [mongodb]` 才能解决这个 Bug。
 
 
 
 
 
+# 4. 参考资料
 
-参考资料
++ https://gohugo.io/getting-started/quick-start/
++ https://cloud.tencent.com/document/product/1210/43389
++ https://scarletsky.github.io/2019/05/02/migrate-hexo-to-hugo/
 
-https://gohugo.io/getting-started/quick-start/
-
-https://cloud.tencent.com/document/product/1210/43389
-
-https://scarletsky.github.io/2019/05/02/migrate-hexo-to-hugo/
