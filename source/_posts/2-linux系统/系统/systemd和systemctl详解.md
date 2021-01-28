@@ -1,5 +1,5 @@
 ---
-title: systemctl详解
+title: systemd和systemctl详解
 tags:
   - systemctl
   - linux
@@ -11,9 +11,9 @@ slug: c9c96ac3
 date: 2021-01-28 00:00:00
 ---
 
-# 1. 简介
+# 1. Systemd
 
-### 1.1 介绍
+### 1.1 前言
 
 历史上，Linux 的启动一直采用init进程。 Systemd 设计目标是，为系统的启动和管理提供一套完整的解决方案。
 
@@ -53,7 +53,7 @@ Target 是 Systemd 中用于指定系统资源启动组的方式，相当于 Sys
 
 
 
-### 1.4 systemd 目录
+### 1.4 Systemd 目录
 
 Unit 文件按照 Systemd 约定，应该被放置指定的三个系统目录之一中。这三个目录是有优先级的，如下所示，越靠上的优先级越高。因此，在三个目录中有同名文件的时候，只有优先级最高的目录里的那个文件会被使用。
 
