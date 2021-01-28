@@ -82,7 +82,12 @@ cloudbase hosting deploy ./public  -e EnvID
 ```bash
 git clone https://github.com/olOwOlo/hugo-theme-even themes/even
 
+# Take a look inside the exampleSite folder of this theme. You'll find a file called config.toml. To use it, copy the config.toml in the root folder of your Hugo site. Feel free to change it.
+cp themes/even/exampleSite/config.toml ./
 
+
+#  For this theme, you should use post instead of posts, namely hugo new post/some-content.md
+mv  content/posts/   content/post/
 ```
 
 
