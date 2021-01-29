@@ -1,3 +1,6 @@
 [submodule "themes/next"]
 	path = themes/next
 	url = https://github.com/unix2dos/hexo-theme-next
+[submodule "hugo/themes/even"]
+	path = hugo/themes/even
+	url = https://github.com/olOwOlo/hugo-theme-even.git

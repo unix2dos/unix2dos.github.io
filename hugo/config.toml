@@ -16,7 +16,7 @@ pygmentsUseClasses = true
 pygmentsCodefencesGuessSyntax = true
 
 hasCJKLanguage = true     # has chinese/japanese/korean ? # 自动检测是否包含 中文\日文\韩文
-paginate = 5                                              # 首页每页显示的文章数
+paginate = 10                                              # 首页每页显示的文章数
 disqusShortname = ""      # disqus_shortname
 googleAnalytics = ""      # UA-XXXXXXXX-X
 copyright = ""            # default: author.name ↓        # 默认为下面配置的author.name ↓
@@ -29,8 +29,6 @@ copyright = ""            # default: author.name ↓        # 默认为下面配
   priority = 0.5
   filename = "sitemap.xml"
 
-[permalinks]
-  posts = "/posts/:slug.html"
 
 [[menu.main]]             # config your menu              # 配置目录
   name = "Home"
@@ -113,7 +111,13 @@ copyright = ""            # default: author.name ↓        # 默认为下面配
   customCSS = []
   customJS = []
 
-  uglyURLs = false          # please keep same with uglyurls setting
+  uglyURLs = true          # please keep same with uglyurls setting
+
+#[permalinks]
+#  post = "/post/:slug"
+
+#[permalinks]
+#  post  = "/post/:title.html"
 
   # Show language selector for multilingual site.
   showLanguageSelector = false
@@ -187,20 +191,9 @@ copyright = ""            # default: author.name ↓        # 默认为下面配
 
   [params.social]                                         # 社交链接
     a-email = "mailto:levonfly@gmail.com"
-    b-stack-overflow = "http://localhost:1313"
-    c-twitter = "http://localhost:1313"
-    d-facebook = "http://localhost:1313"
-    e-linkedin = "http://localhost:1313"
-    f-google = "http://localhost:1313"
-    g-github = "http://localhost:1313"
-    h-weibo = "http://localhost:1313"
-    i-zhihu = "http://localhost:1313"
-    j-douban = "http://localhost:1313"
-    k-pocket = "http://localhost:1313"
-    l-tumblr = "http://localhost:1313"
-    m-instagram = "http://localhost:1313"
-    n-gitlab = "http://localhost:1313"
-    o-bilibili = "http://localhost:1313"
+    c-twitter = "https://twitter.com/levonfly"
+    g-github = "https://github.com/unix2dos"
+    h-weibo = "https://weibo.com/l6241425"
 
 # See https://gohugo.io/about/hugo-and-gdpr/
 [privacy]
