@@ -1,11 +1,17 @@
 ---
-title: "hugo搭建博客"
-date: 2021-01-29 00:00:00
+title: hugo搭建博客
 tags:
-- hugo
+  - hugo
+categories:
+  - 5-随笔
+  - 个人记录
+abbrlink: 74f76184
+date: 2021-01-30 00:00:00
 ---
 
-博客之前是用 hexo 来搭建的, 为什么要转移到 hugo, 问就是慢
+博客之前是用 hexo 来搭建的, 问为什么要转移到 hugo, 就是一个字: 太慢.
+
+但是除了快,  hexo 好多牛逼的插件, hugo 目前还没有, 然后模板也比较丑.
 
 <!-- more -->
 
@@ -50,7 +56,7 @@ cloudbase hosting deploy ./public  -e EnvID -r bj # 此处的 EnvID 替换为腾
 
 
 
-# 2. 主题
+# 2. 主题even
 
 ```bash
 git submodule add https://github.com/olOwOlo/hugo-theme-even.git themes/even
@@ -66,79 +72,41 @@ mv  content/posts/   content/post/
 
 
 
-### 2.1 图片显示
+### 2.1 图片相对路径
 
-config.toml
+config.toml 设置
 
-```
+```ini
 uglyurls = true
 ```
 
-
-
-设置环境变量
+如果不行, 再设置环境变量
 
 ```bash
 export HUGO_UGLYURLS=true
 ```
 
+### 2.2 评论
 
+config.toml 设置 valine 的 id
 
-# 3. 插件
-
-### 3.1 评论
-
-config.toml
-
-```
+```ini
 params.valine
 ```
 
+### 2.3 唯一地址
 
+TODO: 没有找到`hexo-abbrlink`类似的插件, 为了和以前的地址兼容, 还是一件麻烦的事情.
 
-### 3.2 唯一地址
+### 2.4 本地搜索
 
-原本的Hexo博客使用了`hexo-abbrlink`插件，目的是为每篇文章生成由字母和数字组成的随机URL，这样有利于SEO。迁移到Hugo后没找到类似的插件，只能用自带的`slug`功能来代替。
-
-```fallback
----
-abbrlink: 71bd19d3
-slug: 71bd19d3
----
-```
+TODO: 没找到简单的方案
 
 
 
-修改 `archetypes/default.md` 添加如下一行：
+# 3. 错误
 
-```yaml
----
-#...
-slug: {{ substr (md5 (printf "%s%s" .Date (replace .TranslationBaseName "-" " " | title))) 4 8 }}
-#...
----
-```
-
-这样在每次使用 `hugo new` 的时候就会自动填写一个永久链接了。
-
-
-
-```fallback
-[permalinks]
-  post = "/post/:slug.html"
-  
-enablePermalinks = true
-```
-
-
-
-### 3.3 本地搜索
-
-
-
-# 4. 错误
-
-### 4.1  Front-matter 
+### 3.1  tags 语法问题
 
 executing "_internal/schema.html" at <.Params.tags>: range can't iterate over mongodb
 
@@ -147,11 +115,8 @@ tags: mongodb  这样就会导致 `tags` 不能迭代，需要改成 `tags: [mon
 
 
 
-# 5. 参考资料
+# 4. 参考资料
 
-+ https://gohugo.io/getting-started/quick-start/
 + https://cloud.tencent.com/document/product/1210/43389
-+ https://scarletsky.github.io/2019/05/02/migrate-hexo-to-hugo/
-+ https://lewky.cn/posts/hugo-4.html/
 + https://blog.lxdlam.com/post/9cc3283b/
 

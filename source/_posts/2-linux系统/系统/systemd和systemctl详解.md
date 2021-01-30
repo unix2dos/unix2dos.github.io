@@ -76,20 +76,20 @@ Unit 是 Systemd 管理系统资源的基本单位。使用一个 Unit File 作�
 
 Systemd 将系统资源划分为12类，对应12种类型的单元文件
 
-| 系统资源类型 | 单元文件扩展名 | 单元文件描述                                                 |
-| ------------ | -------------- | ------------------------------------------------------------ |
-| Service      | .service       | 封装守护进程的启动、停止、重启和重载操作，是最常见的一种 Unit 文件 |
-| Target       | .target        | 定义 target 信息及依赖关系，一般仅包含 Unit 段               |
-| Device       | .device        | 对于 `/dev` 目录下的硬件设备，主要用于定义设备之间的依赖关系 |
-| Mount        | .mount         | 定义文件系统的挂载点，可以替代过去的 `/etc/fstab` 配置文件   |
-| Automount    | .automount     | 用于控制自动挂载文件系统，相当于 SysV-init 的 autofs 服务    |
-| Path         | .path          | 用于监控指定目录或文件的变化，并触发其它 Unit 运行           |
-| Scope        | .scope         | 这种 Unit 文件不是用户创建的，而是 Systemd 运行时产生的，描述一些系统服务的分组信息 |
-| Slice        | .slice         | 用于表示一个 CGroup 的树                                     |
-| Snapshot     | .snapshot      | 用于表示一个由 systemctl snapshot 命令创建的 Systemd Units 运行状态快照，可以切回某个快照 |
-| Socket       | .socket        | 监控来自于系统或网络的数据消息                               |
-| Swap         | .swap          | 定义一个用户做虚拟内存的交换分区                             |
-| Timer        | .timer         | 用于配置在特定时间触发的任务，替代了 Crontab 的功能          |
+| 系统资源类型 | 单元文件扩展名 | 单元文件描述                                                 | 备注                           |
+| ------------ | -------------- | ------------------------------------------------------------ | ------------------------------ |
+| Service      | .service       | 封装守护进程的启动、停止、重启和重载操作，是最常见的一种 Unit 文件 | 系统服务                       |
+| Target       | .target        | 定义 target 信息及依赖关系，一般仅包含 Unit 段               | 多个 Unit 构成的一个组         |
+| Device       | .device        | 对于 `/dev` 目录下的硬件设备，主要用于定义设备之间的依赖关系 | 硬件设备                       |
+| Mount        | .mount         | 定义文件系统的挂载点，可以替代过去的 `/etc/fstab` 配置文件   | 文件系统的挂载点               |
+| Automount    | .automount     | 用于控制自动挂载文件系统，相当于 SysV-init 的 autofs 服务    | 自动挂载点                     |
+| Path         | .path          | 用于监控指定目录或文件的变化，并触发其它 Unit 运行           | 文件或路径                     |
+| Scope        | .scope         | 这种 Unit 文件不是用户创建的，而是 Systemd 运行时产生的，描述一些系统服务的分组信息 | 不是由 Systemd 启动的外部进程  |
+| Slice        | .slice         | 用于表示一个 CGroup 的树                                     | 进程组                         |
+| Snapshot     | .snapshot      | 用于表示一个由 systemctl snapshot 命令创建的 Systemd Units 运行状态快照，可以切回某个快照 | Systemd 快照，可以切回某个快照 |
+| Socket       | .socket        | 监控来自于系统或网络的数据消息                               | 进程间通信的 socket            |
+| Swap         | .swap          | 定义一个用户做虚拟内存的交换分区                             | swap 文件                      |
+| Timer        | .timer         | 用于配置在特定时间触发的任务，替代了 Crontab 的功能          | 定时器                         |
 
 对于操作单元文件的命令，如果缺省扩展名，则默认`.service`扩展名
 
@@ -132,6 +132,8 @@ Service 段：服务（Service）类型的 Unit 文件（后缀为 .service）�
 
 ### 2.3 Unit 段
 
+Unit 通常是配置文件的第一个区块，用来定义 Unit 的元数据，以及配置与其他 Unit 的关系。
+
 - `Description`：当前服务的简单描述
 - `Documentation`：文档地址，可以是一个或多个文档的 URL 路径
 - `Requires`：与其它 Unit 的强依赖关系，如果其中任意一个 Unit 启动失败或异常退出，当前 Unit 也会被退出
@@ -147,7 +149,7 @@ Service 段：服务（Service）类型的 Unit 文件（后缀为 .service）�
 
 ### 2.4 Install段
 
-这部分配置的目标模块通常是特定运行目标的 .target 文件，用来使得服务在系统启动时自动运行。
+Install通常是配置文件的最后一个区块，用来定义如何启动，以及是否开机启动。
 
 - `WantedBy`：它的值是一个或多个 target，执行enable命令时，符号链接会放入`/etc/systemd/system`目录下以 target 名 + `.wants`后缀构成的子目录中
 
@@ -161,11 +163,7 @@ Service 段：服务（Service）类型的 Unit 文件（后缀为 .service）�
 
 ### 2.5 Service段
 
-用来 Service 的配置，只有 Service 类型的 Unit 才有这个区块。
-
-所有的启动设置之前，都可以加上一个连词号（`-`），表示"抑制错误"，即发生错误的时候，不影响其他命令的执行。
-
-比如，`EnvironmentFile=-/etc/sysconfig/sshd`（注意等号后面的那个连词号），就表示即使`/etc/sysconfig/sshd`文件不存在，也不会抛出错误。
+Service 用来 Service 的配置，只有 Service 类型的 Unit 才有这个区块。
 
 ##### 2.5.1 启动类型
 
@@ -277,6 +275,8 @@ Systemd 在运行服务时，首先寻找跟单元名完全匹配的单元文件
 
 # 3. Target
 
+Target 就是一个 Unit 组，包含许多相关的 Unit 。启动某个 Target 的时候，Systemd 就会启动里面所有的 Unit。从这个意义上说，Target 这个概念类似于"状态点"，启动某个 Target 就好比启动到某种状态。
+
 在传统的 SysV-init 启动模式里面，有 RunLevel 的概念，跟 Target 的作用很类似。不同的是，RunLevel 是互斥的，不可能多个 RunLevel 同时启动，但是多个 Target 可以同时启动。
 
 ### 3.1 target vs sysv-init
@@ -339,6 +339,8 @@ $ sudo systemctl isolate multi-user.target
 
 ### 4.1 系统管理命令
 
+`systemctl`是 Systemd 的主命令，用于管理系统。
+
 ```bash
 # 重启系统
 $ sudo systemctl reboot
@@ -364,7 +366,45 @@ $ sudo systemctl rescue
 
 
 
-### 4.2 查看系统Unit
+`systemd-analyze`命令用于查看启动耗时。
+
+```bash
+# 查看启动耗时
+$ systemd-analyze                                                                                       
+
+# 查看每个服务的启动耗时
+$ systemd-analyze blame
+
+# 显示瀑布状的启动过程流
+$ systemd-analyze critical-chain
+
+# 显示指定服务的启动流
+$ systemd-analyze critical-chain atd.service
+```
+
+
+
+### 4.2 查看配置文件
+
+```bash
+# 列出所有配置文件
+# 这个列表显示每个配置文件的状态，一共有四种。
+# enabled：已建立启动链接
+# disabled：没建立启动链接
+# static：该配置文件没有[Install]部分（无法执行），只能作为其他配置文件的依赖
+# masked：该配置文件被禁止建立启动链接
+$ systemctl list-unit-files
+
+# 列出指定类型的配置文件
+$ systemctl list-unit-files --type=service
+
+# 查看当前系统的所有 Target
+$ systemctl list-unit-files --type=target
+```
+
+
+
+### 4.3 查看系统Unit
 
 ```bash
 # 列出正在运行的 Unit
@@ -388,7 +428,7 @@ $ systemctl cat docker.service
 
 
 
-### 4.3 查看 Unit 的状态
+### 4.4 查看 Unit 的状态
 
 ```bash
 # 显示系统状态
@@ -398,12 +438,21 @@ $ systemctl status
 $ systemctl status bluetooth.service
 
 # 显示远程主机的某个 Unit 的状态
-$ systemctl -H root@rhel7.example.com status httpd.service
+$ systemctl -H root@levonfly.example.com status httpd.service
+
+# 显示某个 Unit 是否正在运行
+$ systemctl is-active application.service
+
+# 显示某个 Unit 是否处于启动失败状态
+$ systemctl is-failed application.service
+
+# 显示某个 Unit 服务是否建立了启动链接
+$ systemctl is-enabled application.service
 ```
 
 
 
-### 4.4 Unit 的管理
+### 4.5 Unit 的管理
 
 ```bash
 # 立即启动一个服务
@@ -436,7 +485,7 @@ $ sudo systemctl set-property httpd.service CPUShares=500
 
 
 
-### 4.5 查看 Unit 的依赖关系
+### 4.6 查看 Unit 的依赖关系
 
 ```bash
 # 列出一个 Unit 的所有依赖，默认不会列出 target 类型
@@ -448,7 +497,7 @@ $ systemctl list-dependencies --all nginx.service
 
 
 
-### 4.6 服务的生命周期
+### 4.7 服务的生命周期
 
 当一个新的 Unit 文件被放入 /etc/systemd/system/ 或 /usr/lib/systemd/system/ 目录中时，它是不会被自识识别的。
 
@@ -477,7 +526,7 @@ $ systemctl list-dependencies --all nginx.service
 
   
 
-### 4.7 systemctl 与 service 命令的区别
+### 4.8 systemctl 与 service 命令的区别
 
 1. systemctl 融合了 service 和 chkconfig 的功能
 2. 在 Ubuntu18.04 中没有自带 chkconfig 命令；service 命令实际上重定向到 systemctl 命令
@@ -500,30 +549,104 @@ $ systemctl list-dependencies --all nginx.service
 # 5. system 工具集
 
 - systemctl：用于检查和控制各种系统服务和资源的状态
+
 - bootctl：用于查看和管理系统启动分区
+
 - hostnamectl：用于查看和修改系统的主机名和主机信息
+
+  ```bash
+  # 显示当前主机的信息
+  $ hostnamectl
+  
+  # 设置主机名。
+  $ sudo hostnamectl set-hostname levonfly
+  ```
+
+  
+
 - journalctl：用于查看系统日志和各类应用服务日志
+
 - localectl：用于查看和管理系统的地区信息
+
+  ```bash
+  # 查看本地化设置
+  $ localectl
+  
+  # 设置本地化参数。
+  $ sudo localectl set-locale LANG=en_GB.utf8
+  $ sudo localectl set-keymap en_GB
+  ```
+
+  
+
 - loginctl：用于管理系统已登录用户和 Session 的信息
+
+  ```bash
+  # 列出当前session
+  $ loginctl list-sessions
+  
+  # 列出当前登录用户
+  $ loginctl list-users
+  
+  # 列出显示指定用户的信息
+  $ loginctl show-user ruanyf
+  ```
+
+  
+
 - machinectl：用于操作 Systemd 容器
+
 - timedatectl：用于查看和管理系统的时间和时区信息
+
+  ```bash
+  # 查看当前时区设置
+  $ timedatectl
+  
+  # 显示所有可用的时区
+  $ timedatectl list-timezones                                                                                   
+  
+  # 设置当前时区
+  $ sudo timedatectl set-timezone America/New_York
+  $ sudo timedatectl set-time YYYY-MM-DD
+  $ sudo timedatectl set-time HH:MM:SS
+  ```
+
+  
+
 - systemd-analyze 显示此次系统启动时运行每个服务所消耗的时间，可以用于分析系统启动过程中的性能瓶颈
+
 - systemd-ask-password：辅助性工具，用星号屏蔽用户的任意输入，然后返回实际输入的内容
+
 - systemd-cat：用于将其他命令的输出重定向到系统日志
+
 - systemd-cgls：递归地显示指定 CGroup 的继承链
+
 - systemd-cgtop：显示系统当前最耗资源的 CGroup 单元
+
 - systemd-escape：辅助性工具，用于去除指定字符串中不能作为 Unit 文件名的字符
+
 - systemd-hwdb：Systemd 的内部工具，用于更新硬件数据库
+
 - systemd-delta：对比当前系统配置与默认系统配置的差异
+
 - systemd-detect-virt：显示主机的虚拟化类型
+
 - systemd-inhibit：用于强制延迟或禁止系统的关闭、睡眠和待机事件
+
 - systemd-machine-id-setup：Systemd 的内部工具，用于给 Systemd 容器生成 ID
+
 - systemd-notify：Systemd 的内部工具，用于通知服务的状态变化
+
 - systemd-nspawn：用于创建 Systemd 容器
+
 - systemd-path：Systemd 的内部工具，用于显示系统上下文中的各种路径配置
+
 - systemd-run：用于将任意指定的命令包装成一个临时的后台服务运行
+
 - systemd-stdio- bridge：Systemd 的内部 工具，用于将程序的标准输入输出重定向到系统总线
+
 - systemd-tmpfiles：Systemd 的内部工具，用于创建和管理临时文件目录
+
 - systemd-tty-ask-password-agent：用于响应后台服务进程发出的输入密码请求
 
 
