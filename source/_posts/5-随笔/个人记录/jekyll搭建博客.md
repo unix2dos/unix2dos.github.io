@@ -9,7 +9,6 @@ tags:
 
 ```bash
 sudo gem install jekyll
-sudo gem install bundler
 ```
 
 <!-- more -->
