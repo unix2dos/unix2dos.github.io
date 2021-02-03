@@ -9,6 +9,7 @@ tags:
 
 ```bash
 sudo gem install jekyll
+sudo gem install bundler
 ```
 
 <!-- more -->
@@ -41,6 +42,8 @@ jekyll serve # 启动 server
 
 
 # 2. 使用
+
+### 2.1 简单修改主页
 
 在 github 创建好 githubpage
 
