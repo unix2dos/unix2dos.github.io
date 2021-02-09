@@ -1,8 +1,12 @@
 ---
-title: "jekyll搭建博客"
-date: 2021-02-02 00:00:00
+title: jekyll搭建博客
 tags:
-- jekyll
+  - jekyll
+categories:
+  - 5-随笔
+  - 个人记录
+abbrlink: 139d19f4
+date: 2021-02-02 00:00:00
 ---
 
 # 1. 安装
