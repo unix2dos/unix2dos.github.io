@@ -9,15 +9,17 @@ abbrlink: 139d19f4
 date: 2021-02-02 00:00:00
 ---
 
-# 1. 安装
+# 1. 安装使用
 
 ```bash
 sudo gem install jekyll
 ```
 
+本来以为`jekyll`是最简单部署的, 实践发现, 一点也没少折腾. 
+
 <!-- more -->
 
-### 1.1 报错信息
+### 1.1 报错
 
 + requires ruby version >= 2.4.0.
 
@@ -34,7 +36,7 @@ sudo gem install jekyll
 
   
 
-### 1.2 新建
+### 1.2 新建 blog
 
 ```bash
 jekyll new myblog
