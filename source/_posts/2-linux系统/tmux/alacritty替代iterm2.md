@@ -1,9 +1,12 @@
 ---
-title: "alacritty替代iterm2"
-date: 2021-02-10 00:00:00
+title: alacritty替代iterm2
 tags:
-- alacritty
-- iterm2
+  - alacritty
+  - iterm2
+categories:
+  - 2-linux系统
+  - tmux
+date: 2021-02-10 00:00:00
 ---
 
 # 1. alacritty
