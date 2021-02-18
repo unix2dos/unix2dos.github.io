@@ -6,6 +6,7 @@ tags:
 categories:
   - 2-linux系统
   - tmux
+abbrlink: 3e10f03d
 date: 2021-02-10 00:00:00
 ---
 
@@ -27,7 +28,7 @@ https://github.com/alacritty/alacritty/releases
 
 下载对应安装包安装即可
 
-
+![image-20210218231303338](alacritty%E6%9B%BF%E4%BB%A3iterm2/image-20210218231303338.png)
 
 # 2. 配置
 
