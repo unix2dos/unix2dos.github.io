@@ -65,6 +65,11 @@ font:
   size: 17.0
 
 
+# 选中面板自动复制
+selection:
+  save_to_clipboard: true
+  
+
 # 吸血鬼配色
 colors:
   primary:
