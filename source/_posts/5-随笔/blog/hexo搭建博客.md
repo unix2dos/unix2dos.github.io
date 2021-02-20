@@ -1,23 +1,22 @@
 ---
 title: hexo搭建博客
-urlname: hexo_blog
-tag: hexo
-abbrlink: b37651
-categories: []
+tags:
+  - hexo
+categories:
+  - 5-随笔
+  - 个人记录
 date: 2016-12-01 17:54:46
 ---
 
 # 1. 安装hexo
 
-+ 安装node.js
-+ 安装hexo
-
-	```
-	npm install -g hexo-cli
-	mkdir hexo
-	hexo init hexo
-	cd hexo
-	```
+```bash
+apt install npm
+npm install -g hexo-cli
+mkdir hexo
+hexo init hexo
+cd hexo
+```
 
 <!-- more -->
 
