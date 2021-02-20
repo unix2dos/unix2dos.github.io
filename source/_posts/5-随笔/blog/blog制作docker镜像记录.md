@@ -77,7 +77,34 @@ export LESSCHARSET=utf-8
 ```bash
 git clone git@github.com:unix2dos/unix2dos.github.io.git
 git submodule update --init
+
+# 安装 node 模块
 npm i
+
+# 分享按钮
+git clone https://github.com/theme-next/theme-next-needmoreshare2 source/lib/needsharebutton  
+# 丝带
+git clone https://github.com/theme-next/theme-next-canvas-ribbon source/lib/canvas-ribbon
+# 蜘蛛网
+git clone https://github.com/theme-next/theme-next-canvas-nest source/lib/canvas-nest
+# 三种特效
+git clone https://github.com/theme-next/theme-next-three source/lib/three 
+# 特殊汉字
+git clone https://github.com/theme-next/theme-next-han source/lib/Han
+# 快速点击
+git clone https://github.com/theme-next/theme-next-fastclick source/lib/fastclick
+# 懒加载
+git clone https://github.com/theme-next/theme-next-jquery-lazyload source/lib/jquery_lazyload
+# 顶部的进度
+git clone https://github.com/theme-next/theme-next-pace source/lib/pace 
+# 图片展示
+git clone https://github.com/theme-next/theme-next-fancybox3 source/lib/fancybox 
+# 文字显示加空格
+git clone https://github.com/theme-next/theme-next-pangu.git source/lib/pangu
+# 读取进度
+git clone https://github.com/theme-next/theme-next-reading-progress source/lib/reading_progress
+
+
 
 # check
 hexo server --config source/_data/next.yml
