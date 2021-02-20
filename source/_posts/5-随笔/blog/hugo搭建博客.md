@@ -4,7 +4,7 @@ tags:
   - hugo
 categories:
   - 5-随笔
-  - 个人记录
+  - blog
 abbrlink: 74f76184
 date: 2021-01-30 00:00:00
 ---

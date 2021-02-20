@@ -4,7 +4,7 @@ tags:
   - hexo
 categories:
   - 5-随笔
-  - 个人记录
+  - blog
 date: 2016-12-01 17:54:46
 ---
 

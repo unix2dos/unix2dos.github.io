@@ -1,8 +1,11 @@
 ---
-title: "blog制作docker镜像记录"
-date: 2021-02-21 00:00:00
+title: blog制作docker镜像记录
 tags:
-- blog
+  - blog
+categories:
+  - 5-随笔
+  - blog
+date: 2021-02-21 00:00:00
 ---
 
 # 1. 宿主机准备
