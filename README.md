@@ -1,1 +1,1 @@
-source/_posts/5-随笔/个人记录/hexo搭建博客.md
+source/_posts/5-随笔/blog/hexo搭建博客.md
