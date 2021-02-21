@@ -40,7 +40,7 @@ apt install docker.io
 
 
 
-# 2. docker镜像制作
+# 2. 镜像准备
 
 ### 2.1 创建ubuntu 容器
 
