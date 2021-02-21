@@ -138,6 +138,13 @@ docker tag f71940a6db66 registry.cn-beijing.aliyuncs.com/levonfly/blog:1.0
 docker push registry.cn-beijing.aliyuncs.com/levonfly/blog:1.0
 ```
 
+### 3.3 使用
+
+```bash
+docker run -itd --name blog registry.cn-beijing.aliyuncs.com/levonfly/blog:1.0
+docker exec -it blog /bin/bash  
+```
+
 
 
 # 4.参考资料
