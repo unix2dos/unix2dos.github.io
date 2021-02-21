@@ -116,9 +116,30 @@ hexo clean --config source/_data/next.yml && hexo g -d --config source/_data/nex
 
 
 
-### 2.5 构造镜像
+# 3. 构造镜像
+
+Docker Hub 免费版只有1个私有库，5个私有库要7美元一个月（倒也不是给不起这个钱，只是确实没钱....）
+
+[自己搭 Docker Registry](https://docs.docker.com/registry/) 又嫌麻烦, 就放到国内的免费云服务器商了
+
+### 3.1 从容器构建镜像
 
 ```bash
-TODO:
+docker commit -a "levonfly" -m "my blog images" a404c6c174a2  levonfly/blog
 ```
 
+### 3.2 上传
+
+https://cr.console.aliyun.com/
+
+```bash
+docker login --username=l6241425 registry.cn-beijing.aliyuncs.com
+docker tag f71940a6db66 registry.cn-beijing.aliyuncs.com/levonfly/blog:1.0
+docker push registry.cn-beijing.aliyuncs.com/levonfly/blog:1.0
+```
+
+
+
+# 4.参考资料
+
++ https://1c7.me/2019-1-31-china-free-private-docker-registry/
