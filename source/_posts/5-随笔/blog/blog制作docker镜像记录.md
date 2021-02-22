@@ -134,13 +134,14 @@ https://cr.console.aliyun.com/
 
 ```bash
 docker login --username=l6241425 registry.cn-beijing.aliyuncs.com
-docker tag f71940a6db66 registry.cn-beijing.aliyuncs.com/levonfly/blog:1.0
+docker tag levonfly/blog registry.cn-beijing.aliyuncs.com/levonfly/blog:1.0
 docker push registry.cn-beijing.aliyuncs.com/levonfly/blog:1.0
 ```
 
 ### 3.3 使用
 
 ```bash
+docker login --username=l6241425 registry.cn-beijing.aliyuncs.com
 docker run -itd --name blog registry.cn-beijing.aliyuncs.com/levonfly/blog:1.0
 docker exec -it blog /bin/bash  
 ```
