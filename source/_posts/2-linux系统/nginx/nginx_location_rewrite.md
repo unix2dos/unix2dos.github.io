@@ -10,15 +10,17 @@ categories:
 date: 2019-07-11 23:54:46
 ---
 
+# 0. 前言
 
-
-### 1. location指令
-
-根据请求的URI来设置具体规则, URI是url中除去协议和域名及参数后, 剩下的部分.
+uri是url中除去协议和域名及参数后, 剩下的部分.
 
 比如请求的url为: http://www.liuvv.com/test/index.php?page=1, 则uri 为 `/test/index.php`
 
-##### 1.1 location匹配uri的规则:
+<!-- more -->
+
+# 1. location指令
+
+### 1.1 location匹配uri的规则:
 
 ```
 location [ = | ~ | ~* | ^~ ] uri { ... }
@@ -31,9 +33,7 @@ location [ = | ~ | ~* | ^~ ] uri { ... }
 
 
 
-<!-- more -->
-
-##### 1.2 location匹配uri的优先级:
+### 1.2 location匹配uri的优先级:
 
 1. 首先先检查使用前缀字符定义的location，选择最长匹配的项并记录下来。
 
@@ -55,7 +55,7 @@ location [ = | ~ | ~* | ^~ ] uri { ... }
 
 
 
-##### 1.3 location 测试
+### 1.3 location 测试
 
 ```nginx
 location = / {
@@ -120,7 +120,7 @@ levonfly@hk:~$ curl test.liuvv.com/abc/123/haha #什么都匹配不到, 就到H
 
 
 
-##### 1.4 location @name的用法
+### 1.4 location @name的用法
 
 @用来定义一个命名location。主要用于内部重定向，不能用来处理正常的请求。其用法如下：
 
@@ -140,7 +140,7 @@ location @custom {
 
 
 
-##### 1.5 root和alias的区别
+### 1.5 root和alias的区别
 
 nginx指定文件路径有两种方式root和alias.
 
@@ -183,7 +183,7 @@ location ^~ /t/ { # 特殊的规则是, alias必须以"/" 结束
 
 
 
-##### 1.6 nginx显示目录结构
+### 1.6 nginx显示目录结构
 
 nginx默认是不允许列出整个目录的。如需此功能, 在server或location 段里添加上autoindex on;
 
@@ -209,7 +209,7 @@ location ^~ "/upload-preview" {
 
 
 
-##### 1.7 URL尾部的`/`需不需要
+### 1.7 URL尾部的`/`需不需要
 
 关于URL尾部的`/`有三点也需要说明一下。第一点与location配置有关，其他两点无关。
 
@@ -223,10 +223,10 @@ location ^~ "/upload-preview" {
 
 
 
-### 2. rewirte规则
+# 2. rewirte规则
 
 
-##### 2.1 return指令
+### 2.1 return指令
 
 return指令写在server和location里面
 
@@ -266,7 +266,7 @@ return 401 "Access denied because token is expired or invalid";
 
 
 
-##### 2.2 rewrite指令
+### 2.2 rewrite指令
 
 rewrite指令写在server和location里面, 规则会改变部分或整个用户的URL.
 
@@ -309,12 +309,12 @@ return  403;
 
 
 
-##### 2.3 try_files
+### 2.3 try_files
 
 try_files指令写在server和location里面.
 
 ```nginx
-ry_files file ... uri 或 try_files file ... = code
+try_files file ... uri 或 try_files file ... = code
 ```
 
 try_files 指令的参数是一个或多个文件或目录的列表, 以及后面的uri参数. nginx会按照顺序检查文件或目录是否存在, 并用找到的第一个文件提供服务. 如果都不存在, 内部重定向到最后的这个uri
@@ -390,7 +390,7 @@ location ~.*\.(gif|jpg|jpeg|png)$ {
 
 
 
-##### 2.4 if指令
+### 2.4 if指令
 
 if不是系统级的指令, 是和rewrite配合的. if 必须写在server和location里面.
 
@@ -426,7 +426,7 @@ if (-f $request_filename) {
 
 
 
-### 3. proxy_pass模块
+# 3. proxy_pass模块
 
 proxy_pass指令是将请求反向代理到URL参数指定的服务器上，URL可以是主机名或者IP地址+端口号的形式，例如：
 
@@ -449,7 +449,7 @@ proxy_pass模块基本配置：
 
 
 
-##### 3.1 proxy_set_header
+### 3.1 proxy_set_header
 
 ```bash
 语法:    proxy_set_header field value;
@@ -483,7 +483,7 @@ proxy_set_header也可以自定义参数，如：proxy_set_header test paroxy_te
 
 
 
-##### 3.2 遇到的问题
+### 3.2 遇到的问题
 
 > 经过反向代理后，由于在客户端和web服务器之间增加了中间层，因此web服务器无法直接拿到客户端的ip, 通过$remote_addr变量拿到的将是反向代理服务器的ip地址. 如果我们想要在web端获得用户的真实ip，就必须在nginx这里作一个赋值操作，如下：
 
@@ -568,7 +568,7 @@ Remote Address 无法伪造，因为建立 TCP 连接需要三次握手，如果
 
 
 
-### 4. websocket反向代理
+# 4. websocket反向代理
 
 + nginx 首先确认版本必须是1.3以上。
 
@@ -611,9 +611,7 @@ server {
 
 
 
-
-
-### 5. 参考资料:
+# 5. 参考资料:
 
 + https://nginx.org/en/docs/
 + [Nginx配置location、if以及return、rewrite和 try_files 指令](https://www.xiebruce.top/710.html)
