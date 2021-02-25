@@ -1,8 +1,12 @@
 ---
-title: "nginx常见proxy_pass规则"
-date: 2021-02-25 00:00:00
+title: nginx常见proxy_pass规则
 tags:
-- nginx
+  - nginx
+categories:
+  - 2-linux系统
+  - nginx
+abbrlink: '55856485'
+date: 2021-02-25 00:00:00
 ---
 
 记录一些常用的nginx转发规则记录
