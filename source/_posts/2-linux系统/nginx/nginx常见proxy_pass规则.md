@@ -61,8 +61,6 @@ location /star/ {
 
 需求是 `/api/camps/v1/teacher`   -> 其他服务器  `/api/v1/teacher `, 并且转发参数
 
-
-
 ```nginx
 location ~ ^/api/camps/v1/(.*)$ {
             include /etc/nginx/proxy_params;
@@ -120,9 +118,28 @@ server {
 }
 ```
 
+##### 3.2.1 方案二
+
+```nginx
+server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        location ^~ /liuvv/ {
+                proxy_pass https://www.liuvv.com/;
+        }
+        location ~ ^/([A-Za-z0-9]+) {
+                proxy_pass https://www.liuvv.com;
+        }
+        location / {
+        }
+}
+```
+
 
 
 # 4. 参考资料
 
 + https://stackoverflow.com/a/8130872/7062454
++ https://serverfault.com/a/932636
++ https://www.liuvv.com/p/51e59d76.html
 
