@@ -34,13 +34,12 @@ date: 2021-02-25 00:00:00
 location /star/ {
 	proxy_pass http://ent.163.com;
 }
+
+#如果是location /star/，http://abc.163.com/star/1.html ==> http://ent.163.com/star/1.html。
+#如果是location /blog/，http://abc.163.com/blog/1.html ==> http://ent.163.com/blog/1.html。
 ```
 
-
-相当于告诉nginx，我这个location，是代理访问到http://ent.163.com 这个server的，我的location是什么，nginx 就把location 加在proxy_pass 的 server 后面，
-
-如果是location /star/，   相当于  http://abc.163.com/star/1.html == http://ent.163.com/star/1.html。
-如果是location /blog/ ，相当于  http://abc.163.com/blog/1.html == http://ent.163.com/blog/1.html。
+location是什么，nginx 就把location 加在proxy_pass 的 server 后面 。
 
 
 
@@ -48,15 +47,13 @@ location /star/ {
 location /star/ {
 	proxy_pass http://ent.163.com/;
 }
+
+#如果是location /star/, 	http://abc.163.com/star/1.html ==> http://ent.163.com/1.html。
+#如果是location /blog/,  http://abc.163.com/blog/1.html ==> http://ent.163.com/1.html。
 ```
 
 
-相当于告诉nginx，我这个location，是代理访问到http://ent.163.com/的，改变location，并不能改变返回的内容，返回的内容始终是http://ent.163.com/ 。
-
-
-如果是location /star/, 	相当于  http://abc.163.com/star/1.html == http://ent.163.com/1.html。
-如果是location /blog/ ，相当于 http://abc.163.com/blog/1.html == http://ent.163.com/1.html。
-
+改变location，并不能改变返回的内容，返回的内容始终是http://ent.163.com/ 。
 
 
 
@@ -74,7 +71,7 @@ location ~ ^/api/camps/v1/(.*)$ {
 
 
 
-# 3. 子路径转发
+# 3. 代理相对路径
 
 ### 3.1 完全转发
 
@@ -93,7 +90,7 @@ http://159.75.75.191/  此时是完全代理的
 
 
 
-### 3.2 路由转发
+### 3.2 二级转发
 
 ```nginx
 server {
@@ -135,6 +132,7 @@ server {
                 proxy_pass https://www.liuvv.com;
         }
         location / {
+    						return 403;
         }
 }
 ```
