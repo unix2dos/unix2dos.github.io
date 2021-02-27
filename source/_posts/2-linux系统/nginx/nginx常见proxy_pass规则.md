@@ -88,8 +88,6 @@ server {
 
 http://159.75.75.191/  此时是完全代理的
 
-
-
 ### 3.2 二级转发
 
 ```nginx
@@ -126,13 +124,13 @@ server {
         listen 80 default_server;
         listen [::]:80 default_server;
         location ^~ /liuvv/ {
-                proxy_pass https://www.liuvv.com/;
+        	proxy_pass https://www.liuvv.com/;
         }
         location ~ ^/([A-Za-z0-9]+) {
-                proxy_pass https://www.liuvv.com;
+        	proxy_pass https://www.liuvv.com;
         }
         location / {
-    						return 403;
+    			return 403;
         }
 }
 ```
@@ -144,4 +142,3 @@ server {
 + https://stackoverflow.com/a/8130872/7062454
 + https://serverfault.com/a/932636
 + https://www.liuvv.com/p/51e59d76.html
-

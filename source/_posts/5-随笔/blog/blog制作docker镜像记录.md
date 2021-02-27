@@ -118,7 +118,7 @@ hexo clean --config source/_data/next.yml && hexo g -d --config source/_data/nex
 
 # 3. 构造镜像
 
-Docker Hub 免费版只有1个私有库，5个私有库要7美元一个月（倒也不是给不起这个钱，只是确实没钱....）
+Docker Hub 免费版只有1个私有库，5个私有库要7美元一个月（倒也不是给不起这个钱，只是确实穷....）
 
 [自己搭 Docker Registry](https://docs.docker.com/registry/) 又嫌麻烦, 就放到国内的免费云服务器商了
 
