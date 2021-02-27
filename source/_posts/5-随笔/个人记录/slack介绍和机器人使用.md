@@ -110,7 +110,25 @@ func main() {
 
 
 
-# 2. 参考资料
+# 2. app 使用
+
+### 2.1 订阅github提交记录
+
++ 安装 github app
+
++ 订阅 github 仓库信息
+  
++ https://github.com/integrations/slack/issues/625#issuecomment-405638707
+  
+  ```bash
+  /github subscribe unix2dos/unix2dos.github.io commits:all
+  ```
+
+![image-20210228005233393](slack%E4%BB%8B%E7%BB%8D%E5%92%8C%E6%9C%BA%E5%99%A8%E4%BA%BA%E4%BD%BF%E7%94%A8/image-20210228005233393.png)
+
+
+
+# 3. 参考资料
 
 + https://github.com/slackapi/hubot-slack/issues/584 创建机器人
 + https://app.slack.com/block-kit-builder/ 设计 msg
