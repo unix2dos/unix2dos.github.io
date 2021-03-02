@@ -57,7 +57,7 @@ date: 2021-02-27 00:00:00
 
 
 
-### 1.3 机器人发送信息
+# 2. 机器人发送信息
 
 + 不建议使用 web hookapi, 因为 channel 过多的时候会很累, 并且功能也少
 
@@ -65,9 +65,10 @@ date: 2021-02-27 00:00:00
 
 + 注意需要把bot 拉入channel 里, `/invite @BOT_NAME`
 
-+ golang 代码
+### 2.1 golang 代码
 
-  https://github.com/slack-go/slack/blob/master/examples/messages/messages.go
++ https://github.com/slack-go/slack/blob/master/examples/messages/messages.go
+
 
 ``` go
 package main
@@ -109,11 +110,36 @@ func main() {
 }
 ```
 
+### 2.2 python 代码
+
+pip3 install slack_sdk
+
++ https://github.com/slackapi/python-slack-sdk#sending-a-message-to-slack
+
+```python
+import os
+from slack_sdk import WebClient
+from slack_sdk.errors import SlackApiError
+
+client = WebClient(token=os.environ['SLACK_BOT_TOKEN'])
+
+try:
+    response = client.chat_postMessage(channel='#random', text="Hello world!")
+    assert response["message"]["text"] == "Hello world!"
+except SlackApiError as e:
+    # You will get a SlackApiError if "ok" is False
+    assert e.response["ok"] is False
+    assert e.response["error"]  # str like 'invalid_auth', 'channel_not_found'
+    print(f"Got an error: {e.response['error']}")
+```
 
 
-# 2. app 使用
 
-### 2.1 订阅github提交记录
+
+
+# 3. app 使用
+
+### 3.1 订阅github提交记录
 
 + 安装 github app
 
@@ -129,9 +155,9 @@ func main() {
 
 
 
-# 3. 参考资料
+# 4. 参考资料
 
 + https://github.com/slackapi/hubot-slack/issues/584 创建机器人
-+ https://app.slack.com/block-kit-builder/ 设计 msg
 + https://github.com/slack-go/slack
-
++ https://github.com/slackapi/python-slack-sdk
++ https://stackoverflow.com/a/40408813/7062454
