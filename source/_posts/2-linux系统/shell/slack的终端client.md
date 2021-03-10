@@ -21,15 +21,15 @@ tags:
 
 + 下载最新的 release 二进制
 
-+ 使用
++ 执行
 
   ```bash
   mv slack-term-darwin-amd64 /usr/local/bin/slack-term
 
   slack-term --config ~/.config/slack-term/config
   ```
-  
-+ 注意, 默认执行`slack-term`好像没并且生成配置, 所以带`-- config` 参数
+
++ 注意, 默认执行`slack-term`  并没有生成配置, 所以需要带`-- config` 参数
 
 
 
@@ -39,14 +39,16 @@ tags:
 alias slack="slack-term --config ~/.config/slack-term/config"
 ```
 
-`vi ~/.config/slack-term/config`
-
 获取 token: https://github.com/erroneousboat/slack-term/wiki#running-slack-term-without-legacy-tokens
+
+
+
+`vi ~/.config/slack-term/config`
 
 ```ini
 {
-    "slack_token": "xoxp-",
-		"emoji": true
+	"slack_token": "xoxp-",
+	"emoji": true
 }
 ```
 
