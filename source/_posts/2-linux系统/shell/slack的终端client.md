@@ -1,8 +1,11 @@
 ---
-title: "slack的终端client"
-date: 2021-03-10 00:00:00
+title: slack的终端client
 tags:
-- slack
+  - slack
+categories:
+  - 2-linux系统
+  - shell
+date: 2021-03-10 00:00:00
 ---
 
 # 1. slack term
