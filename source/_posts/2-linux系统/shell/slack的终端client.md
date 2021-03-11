@@ -5,6 +5,7 @@ tags:
 categories:
   - 2-linux系统
   - shell
+abbrlink: b47a642f
 date: 2021-03-10 00:00:00
 ---
 

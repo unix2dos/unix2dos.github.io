@@ -1,8 +1,11 @@
 ---
-title: "tmux的浮动弹窗popup功能"
-date: 2021-03-11 00:00:00
+title: tmux的浮动弹窗popup功能
 tags:
-- tmux
+  - tmux
+categories:
+  - 2-linux系统
+  - tmux
+date: 2021-03-11 00:00:00
 ---
 
 # 1. 介绍
