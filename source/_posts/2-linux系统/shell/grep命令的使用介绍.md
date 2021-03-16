@@ -1,8 +1,11 @@
 ---
-title: "grep命令的使用介绍"
-date: 2021-03-16 00:00:00
+title: grep命令的使用介绍
 tags:
-- linux
+  - linux
+categories:
+  - 2-linux系统
+  - shell
+date: 2021-03-16 00:00:00
 ---
 
 grep是Linux中最常用的”文本处理工具”之一，grep与sed、awk合称为Linux中的三剑客。

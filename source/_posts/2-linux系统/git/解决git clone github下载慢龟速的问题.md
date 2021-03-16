@@ -1,9 +1,12 @@
 ---
-title: "解决git clone github下载慢龟速的问题"
-date: 2021-03-16 00:00:01
+title: 解决git clone github下载慢龟速的问题
 tags:
-- github
-- linux
+  - github
+  - linux
+categories:
+  - 2-linux系统
+  - git
+date: 2021-03-16 00:00:01
 ---
 
 github 在家天天下载十几k, 忍你好久了, 实在是忍不了了..
