@@ -1,5 +1,5 @@
 ---
-title: javascript原形链的自我理解
+title: javascript原链的自我理解
 tags:
   - javascript
 abbrlink: 6d00c950
@@ -19,7 +19,7 @@ date: 2019-02-21 21:05:22
 
 仔细琢磨这两句话, 其实说的 Object 和 Function 是一个鸡生蛋还是蛋生鸡的问题. 为什么这么讲呢? 因为函数也是一个对象, 但对象又是函数创建出来的. 
 
- 其实原形链的一切江湖恩怨都是围绕着Function和Object两大家族展开的.
+ 其实原型链的一切江湖恩怨都是围绕着Function和Object两大家族展开的.
 
 
 
@@ -81,7 +81,7 @@ OK, 如果我调用一个函数, 那么先在我身上找这个函数.
 
 ### 分析一张图
 
-![img](javascript原形链的自我理解/1.png)
+![img](javascript原型链的自我理解/1.png)
 
 
 
