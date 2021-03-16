@@ -5,6 +5,7 @@ tags:
 categories:
   - 2-linux系统
   - tmux
+abbrlink: 1104a363
 date: 2021-03-11 00:00:00
 ---
 
