@@ -1,4 +1,681 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><meta name="generator" content="Hexo 3.9.0"><link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico"><link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico"><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico"><link rel="mask-icon" href="/images/logo.svg" color="#222"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"><script id="hexo-configurations">var NexT=window.NexT||{},CONFIG={hostname:"www.liuvv.com",root:"/",scheme:"Pisces",version:"7.8.0",exturl:!1,sidebar:{position:"left",display:"post",padding:18,offset:12,onmobile:!1,dimmer:!1},copycode:{enable:!1,show_result:!1,style:null},back2top:{enable:!0,sidebar:!1,scrollpercent:!1},bookmark:{enable:!1,color:"#222",save:"auto"},fancybox:!1,mediumzoom:!1,lazyload:!1,pangu:!1,comments:{style:"tabs",active:null,storage:!0,lazyload:!1,nav:null},algolia:{hits:{per_page:10},labels:{input_placeholder:"Search for Posts",hits_empty:"We didn't find any results for the search: ${query}",hits_stats:"${hits} results found in ${time} ms"}},localsearch:{enable:!0,trigger:"auto",top_n_per_article:1,unescape:!1,preload:!1},motion:{enable:!0,async:!1,transition:{post_block:"fadeIn",post_header:"slideDownIn",post_body:"slideDownIn",coll_header:"slideLeftIn",sidebar:"slideUpIn"}},path:"search.json"}</script><meta name="description" content="5. 数据管理5.1 数据卷数据卷 是一个可供一个或多个容器使用的特殊目录，它绕过 UFS，可以提供很多有用的特性：数据卷 可以在容器之间共享和重用对 数据卷 的修改会立马生效对 数据卷 的更新，不会影响镜像数据卷 默认会一直存在，即使容器被删除注意：数据卷 的使用，类似于 Linux 下对目录或文件进行 mount，镜像中的被指定为挂载点的目录中的文件会隐藏掉，能显示看的是挂载的 数据卷。"><meta name="keywords" content="docker"><meta property="og:type" content="article"><meta property="og:title" content="docker基础入门教程(二)"><meta property="og:url" content="https://www.liuvv.com/p/cc94e38a.html"><meta property="og:site_name" content="Levonfly&#39;s Blog"><meta property="og:description" content="5. 数据管理5.1 数据卷数据卷 是一个可供一个或多个容器使用的特殊目录，它绕过 UFS，可以提供很多有用的特性：数据卷 可以在容器之间共享和重用对 数据卷 的修改会立马生效对 数据卷 的更新，不会影响镜像数据卷 默认会一直存在，即使容器被删除注意：数据卷 的使用，类似于 Linux 下对目录或文件进行 mount，镜像中的被指定为挂载点的目录中的文件会隐藏掉，能显示看的是挂载的 数据卷。"><meta property="og:locale" content="zh-CN"><meta property="og:updated_time" content="2021-02-22T10:15:52.554Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="docker基础入门教程(二)"><meta name="twitter:description" content="5. 数据管理5.1 数据卷数据卷 是一个可供一个或多个容器使用的特殊目录，它绕过 UFS，可以提供很多有用的特性：数据卷 可以在容器之间共享和重用对 数据卷 的修改会立马生效对 数据卷 的更新，不会影响镜像数据卷 默认会一直存在，即使容器被删除注意：数据卷 的使用，类似于 Linux 下对目录或文件进行 mount，镜像中的被指定为挂载点的目录中的文件会隐藏掉，能显示看的是挂载的 数据卷。"><link rel="canonical" href="https://www.liuvv.com/p/cc94e38a.html"><script id="page-configurations">CONFIG.page={sidebar:"",isHome:!1,isPost:!0,lang:"zh-CN"}</script><title>docker基础入门教程(二) | Levonfly's Blog</title><script>var _hmt=_hmt||[];!function(){var e=document.createElement("script");e.src="https://hm.baidu.com/hm.js?521e5dbc31dd12bb9431823008da3dfc";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)}()</script><noscript><style>.sidebar-inner,.use-motion .brand,.use-motion .collection-header,.use-motion .comments,.use-motion .menu-item,.use-motion .pagination,.use-motion .post-block,.use-motion .post-body,.use-motion .post-header{opacity:initial}.use-motion .site-subtitle,.use-motion .site-title{opacity:initial;top:initial}.use-motion .logo-line-before i{left:initial}.use-motion .logo-line-after i{right:initial}</style></noscript></head><body itemscope itemtype="http://schema.org/WebPage"><div class="container use-motion"><div class="headband"></div><header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-brand-container"><div class="site-nav-toggle"><div class="toggle" aria-label="切换导航栏"><span class="toggle-line toggle-line-first"></span> <span class="toggle-line toggle-line-middle"></span> <span class="toggle-line toggle-line-last"></span></div></div><div class="site-meta"><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span><h1 class="site-title">Levonfly's Blog</h1><span class="logo-line-after"><i></i></span></a><p class="site-subtitle" itemprop="description">微信: L6241425</p></div><div class="site-nav-right"><div class="toggle popup-trigger"><i class="fa fa-search fa-fw fa-lg"></i></div></div></div><nav class="site-nav"><ul id="menu" class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>日志</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-search"><a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索</a></li></ul></nav><div class="search-pop-overlay"><div class="popup search-popup"><div class="search-header"><span class="search-icon"><i class="fa fa-search"></i></span><div class="search-input-container"><input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input"></div><span class="popup-btn-close"><i class="fa fa-times-circle"></i></span></div><div id="search-result"><div id="no-result"><i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i></div></div></div></div></div></header><div class="back-to-top"><i class="fa fa-arrow-up"></i> <span>0%</span></div><a href="https://github.com/unix2dos" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin:130px 106px" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><main class="main"><div class="main-inner"><div class="content-wrap"><div class="content post posts-expand"><article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN"><link itemprop="mainEntityOfPage" href="https://www.liuvv.com/p/cc94e38a.html"><span hidden itemprop="author" itemscope itemtype="http://schema.org/Person"><meta itemprop="image" content="/images/avatar.jpg"><meta itemprop="name" content="levonfly"><meta itemprop="description" content="Keep it simple, stupid."></span><span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><meta itemprop="name" content="Levonfly's Blog"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">docker基础入门教程(二)</h1><div class="post-meta"><span class="post-meta-item"><span class="post-meta-item-icon"><i class="far fa-calendar"></i> </span><span class="post-meta-item-text">发表于</span> <time title="创建时间：2018-05-25 00:00:02" itemprop="dateCreated datePublished" datetime="2018-05-25T00:00:02+08:00">2018-05-25</time> </span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="far fa-calendar-check"></i> </span><span class="post-meta-item-text">更新于</span> <time title="修改时间：2021-02-22 18:15:52" itemprop="dateModified" datetime="2021-02-22T18:15:52+08:00">2021-02-22</time> </span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="far fa-folder"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/2-linux系统/" itemprop="url" rel="index"><span itemprop="name">2-linux系统</span></a> </span>， <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/2-linux系统/docker/" itemprop="url" rel="index"><span itemprop="name">docker</span></a> </span></span><span id="/p/cc94e38a.html" class="post-meta-item leancloud_visitors" data-flag-title="docker基础入门教程(二)" title="阅读次数"><span class="post-meta-item-icon"><i class="fa fa-eye"></i> </span><span class="post-meta-item-text">阅读次数：</span> <span class="leancloud-visitors-count"></span> </span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="far fa-comment"></i> </span><span class="post-meta-item-text">Valine：</span> <a title="valine" href="/p/cc94e38a.html#valine-comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/p/cc94e38a.html" itemprop="commentCount"></span></a></span><br><span class="post-meta-item" title="本文字数"><span class="post-meta-item-icon"><i class="far fa-file-word"></i> </span><span class="post-meta-item-text">本文字数：</span> <span>12k</span> </span><span class="post-meta-item" title="阅读时长"><span class="post-meta-item-icon"><i class="far fa-clock"></i> </span><span class="post-meta-item-text">阅读时长 &asymp;</span> <span>11 分钟</span></span></div></header><div class="post-body" itemprop="articleBody"><h1 id="5-数据管理"><a href="#5-数据管理" class="headerlink" title="5. 数据管理"></a>5. 数据管理</h1><h3 id="5-1-数据卷"><a href="#5-1-数据卷" class="headerlink" title="5.1 数据卷"></a>5.1 数据卷</h3><p><code>数据卷</code> 是一个可供一个或多个容器使用的特殊目录，它绕过 UFS，可以提供很多有用的特性：</p><ul><li><code>数据卷</code> 可以在容器之间共享和重用</li><li>对 <code>数据卷</code> 的修改会立马生效</li><li>对 <code>数据卷</code> 的更新，不会影响镜像</li><li><code>数据卷</code> 默认会一直存在，即使容器被删除</li></ul><p>注意：<code>数据卷</code> 的使用，类似于 Linux 下对目录或文件进行 mount，镜像中的被指定为挂载点的目录中的文件会隐藏掉，能显示看的是挂载的 <code>数据卷</code>。</p><a id="more"></a><h3 id="5-2-选择-v-还是-–mount-参数"><a href="#5-2-选择-v-还是-–mount-参数" class="headerlink" title="5.2 选择 -v 还是 -–mount 参数"></a>5.2 选择 -v 还是 -–mount 参数</h3><p>Docker 新用户应该选择 <code>--mount</code> 参数，经验丰富的 Docker 使用者对 <code>-v</code> 或者 <code>--volume</code> 已经很熟悉了，但是推荐使用 <code>--mount</code> 参数。</p><h3 id="5-3-创建一个数据卷"><a href="#5-3-创建一个数据卷" class="headerlink" title="5.3 创建一个数据卷"></a>5.3 创建一个数据卷</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker volume create my-vol</span><br></pre></td></tr></table></figure><p>查看所有的 <code>数据卷</code></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ docker volume ls</span><br><span class="line"></span><br><span class="line">local               my-vol</span><br></pre></td></tr></table></figure><p>在主机里使用以下命令可以查看指定 <code>数据卷</code> 的信息</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ docker volume inspect my-vol</span><br><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        &quot;Driver&quot;: &quot;local&quot;,</span><br><span class="line">        &quot;Labels&quot;: &#123;&#125;,</span><br><span class="line">        &quot;Mountpoint&quot;: &quot;/var/lib/docker/volumes/my-vol/_data&quot;,</span><br><span class="line">        &quot;Name&quot;: &quot;my-vol&quot;,</span><br><span class="line">        &quot;Options&quot;: &#123;&#125;,</span><br><span class="line">        &quot;Scope&quot;: &quot;local&quot;</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure><h3 id="5-4-启动一个挂载数据卷的容器"><a href="#5-4-启动一个挂载数据卷的容器" class="headerlink" title="5.4 启动一个挂载数据卷的容器"></a>5.4 启动一个挂载数据卷的容器</h3><p>在用 <code>docker run</code> 命令的时候，使用 <code>--mount</code> 标记来将 <code>数据卷</code> 挂载到容器里。在一次 <code>docker run</code>中可以挂载多个 <code>数据卷</code>。</p><p>下面创建一个名为 <code>web</code> 的容器，并加载一个 <code>数据卷</code> 到容器的 <code>/webapp</code> 目录。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d -P \</span><br><span class="line">    --name web \</span><br><span class="line">    --mount source=my-vol,target=/webapp \ 				(相似) # -v my-vol:/wepapp \</span><br><span class="line">    training/webapp \</span><br><span class="line">    python app.py</span><br></pre></td></tr></table></figure><h3 id="5-5-查看数据卷的具体信息"><a href="#5-5-查看数据卷的具体信息" class="headerlink" title="5.5 查看数据卷的具体信息"></a>5.5 查看数据卷的具体信息</h3><p>在主机里使用以下命令可以查看 <code>web</code> 容器的信息</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker inspect web</span><br></pre></td></tr></table></figure><p><code>数据卷</code> 信息在 “Mounts” Key 下面</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&quot;Mounts&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">        &quot;Type&quot;: &quot;volume&quot;,</span><br><span class="line">        &quot;Name&quot;: &quot;my-vol&quot;,</span><br><span class="line">        &quot;Source&quot;: &quot;/var/lib/docker/volumes/my-vol/_data&quot;,</span><br><span class="line">        &quot;Destination&quot;: &quot;/app&quot;,</span><br><span class="line">        &quot;Driver&quot;: &quot;local&quot;,</span><br><span class="line">        &quot;Mode&quot;: &quot;&quot;,</span><br><span class="line">        &quot;RW&quot;: true,</span><br><span class="line">        &quot;Propagation&quot;: &quot;&quot;</span><br><span class="line">    &#125;</span><br><span class="line">],</span><br></pre></td></tr></table></figure><h3 id="5-6-删除数据卷"><a href="#5-6-删除数据卷" class="headerlink" title="5.6 删除数据卷"></a>5.6 删除数据卷</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker volume rm my-vol</span><br></pre></td></tr></table></figure><p><code>数据卷</code> 是被设计用来持久化数据的，它的生命周期独立于容器，Docker 不会在容器被删除后自动删除 <code>数据卷</code>，并且也不存在垃圾回收这样的机制来处理没有任何容器引用的 <code>数据卷</code>。如果需要在删除容器的同时移除数据卷。可以在删除容器的时候使用 <code>docker rm -v</code> 这个命令。</p><p>无主的数据卷可能会占据很多空间，要清理请使用以下命令</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker volume prune</span><br></pre></td></tr></table></figure><h3 id="5-7-挂载一个主机目录作为数据卷"><a href="#5-7-挂载一个主机目录作为数据卷" class="headerlink" title="5.7 挂载一个主机目录作为数据卷"></a>5.7 挂载一个主机目录作为数据卷</h3><p>使用 <code>--mount</code> 标记可以指定挂载一个本地主机的目录到容器中去。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d -P \</span><br><span class="line">    --name web \</span><br><span class="line">    # -v /src/webapp:/opt/webapp \</span><br><span class="line">    --mount type=bind,source=/src/webapp,target=/opt/webapp \</span><br><span class="line">    training/webapp \</span><br><span class="line">    python app.py</span><br></pre></td></tr></table></figure><p>上面的命令加载主机的 <code>/src/webapp</code> 目录到容器的 <code>/opt/webapp</code>目录。这个功能在进行测试的时候十分方便，比如用户可以放置一些程序到本地目录中，来查看容器是否正常工作。本地目录的路径必须是绝对路径，以前使用 <code>-v</code> 参数时如果本地目录不存在 Docker 会自动为你创建一个文件夹，现在使用 <code>--mount</code>参数时如果本地目录不存在，Docker 会报错</p><p>Docker 挂载主机目录的默认权限是 <code>读写</code>，用户也可以通过增加 <code>readonly</code> 指定为 <code>只读</code>。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d -P \</span><br><span class="line">    --name web \</span><br><span class="line">    # -v /src/webapp:/opt/webapp:ro \</span><br><span class="line">    --mount type=bind,source=/src/webapp,target=/opt/webapp,readonly \</span><br><span class="line">    training/webapp \</span><br><span class="line">    python app.py</span><br></pre></td></tr></table></figure><p>加了 <code>readonly</code> 之后，就挂载为 <code>只读</code> 了。如果你在容器内 <code>/opt/webapp</code> 目录新建文件，会显示如下错误</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/opt/webapp # touch new.txt</span><br><span class="line">touch: new.txt: Read-only file system</span><br></pre></td></tr></table></figure><h3 id="5-8-查看数据卷的具体信息"><a href="#5-8-查看数据卷的具体信息" class="headerlink" title="5.8 查看数据卷的具体信息"></a>5.8 查看数据卷的具体信息</h3><p>在主机里使用以下命令可以查看 <code>web</code> 容器的信息</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker inspect web</span><br></pre></td></tr></table></figure><p><code>挂载主机目录</code> 的配置信息在 “Mounts” Key 下面</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&quot;Mounts&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">        &quot;Type&quot;: &quot;bind&quot;,			#此处为 bind</span><br><span class="line">        &quot;Source&quot;: &quot;/src/webapp&quot;,</span><br><span class="line">        &quot;Destination&quot;: &quot;/opt/webapp&quot;,</span><br><span class="line">        &quot;Mode&quot;: &quot;&quot;,</span><br><span class="line">        &quot;RW&quot;: true,</span><br><span class="line">        &quot;Propagation&quot;: &quot;rprivate&quot;</span><br><span class="line">    &#125;</span><br><span class="line">],</span><br></pre></td></tr></table></figure><h3 id="5-9-挂载一个本地主机文件作为数据卷"><a href="#5-9-挂载一个本地主机文件作为数据卷" class="headerlink" title="5.9 挂载一个本地主机文件作为数据卷"></a>5.9 挂载一个本地主机文件作为数据卷</h3><p><code>--mount</code> 标记也可以从主机挂载单个文件到容器中</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ docker run --rm -it \</span><br><span class="line">   # -v $HOME/.bash_history:/root/.bash_history \</span><br><span class="line">   --mount type=bind,source=$HOME/.bash_history,target=/root/.bash_history \</span><br><span class="line">   ubuntu:17.10 \</span><br><span class="line">   bash</span><br><span class="line"></span><br><span class="line">root@2affd44b4667:/# history</span><br><span class="line">1  ls</span><br><span class="line">2  diskutil list</span><br></pre></td></tr></table></figure><p>这样就可以记录在容器输入过的命令了。</p><h1 id="6-使用网络"><a href="#6-使用网络" class="headerlink" title="6. 使用网络"></a>6. 使用网络</h1><h3 id="6-1-外部访问容器"><a href="#6-1-外部访问容器" class="headerlink" title="6.1 外部访问容器"></a>6.1 外部访问容器</h3><p>容器中可以运行一些网络应用，要让外部也可以访问这些应用，可以通过 <code>-P</code> 或 <code>-p</code> 参数来指定端口映射。</p><p>当使用 <code>-P</code> 标记时，Docker 会随机映射一个 <code>49000~49900</code> 的端口到内部容器开放的网络端口。</p><p>使用 <code>docker container ls</code> 可以看到，本地主机的 49155 被映射到了容器的 5000 端口。此时访问本机的 49155 端口即可访问容器内 web 应用提供的界面。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d -P training/webapp python app.py</span><br><span class="line"></span><br><span class="line">$ docker container ls -l</span><br><span class="line">CONTAINER ID  IMAGE                   COMMAND       CREATED        STATUS        PORTS                    NAMES</span><br><span class="line">bc533791f3f5  training/webapp:latest  python app.py 5 seconds ago  Up 2 seconds  0.0.0.0:49155-&gt;5000/tcp  nostalgic_morse</span><br></pre></td></tr></table></figure><p><code>-p</code> 则可以指定要映射的端口，并且，在一个指定端口上只可以绑定一个容器。支持的格式有</p><p><code>ip:hostPort:containerPort | ip::containerPort | hostPort:containerPort</code>。</p><h3 id="6-2-映射所有接口地址"><a href="#6-2-映射所有接口地址" class="headerlink" title="6.2 映射所有接口地址"></a>6.2 映射所有接口地址</h3><p>使用 <code>hostPort:containerPort</code> 格式本地的 5000 端口映射到容器的 5000 端口，可以执行</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d -p 5000:5000 training/webapp python app.py</span><br></pre></td></tr></table></figure><p>此时默认会绑定本地所有接口上的所有地址。</p><h3 id="6-3-映射到指定地址的指定端口"><a href="#6-3-映射到指定地址的指定端口" class="headerlink" title="6.3 映射到指定地址的指定端口"></a>6.3 映射到指定地址的指定端口</h3><p>可以使用 <code>ip:hostPort:containerPort</code> 格式指定映射使用一个特定地址，比如 localhost 地址 127.0.0.1</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d -p 127.0.0.1:5000:5000 training/webapp python app.py</span><br></pre></td></tr></table></figure><h3 id="6-4-映射到指定地址的任意端口"><a href="#6-4-映射到指定地址的任意端口" class="headerlink" title="6.4 映射到指定地址的任意端口"></a>6.4 映射到指定地址的任意端口</h3><p>使用 <code>ip::containerPort</code> 绑定 localhost 的任意端口到容器的 5000 端口，本地主机会自动分配一个端口。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d -p 127.0.0.1::5000 training/webapp python app.py</span><br></pre></td></tr></table></figure><p>还可以使用 <code>udp</code> 标记来指定 <code>udp</code> 端口</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d -p 127.0.0.1:5000:5000/udp training/webapp python app.py</span><br></pre></td></tr></table></figure><h3 id="6-5-查看映射端口配置"><a href="#6-5-查看映射端口配置" class="headerlink" title="6.5 查看映射端口配置"></a>6.5 查看映射端口配置</h3><p>使用 <code>docker port</code> 来查看当前映射的端口配置，也可以查看到绑定的地址</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ docker port nostalgic_morse 5000</span><br><span class="line">127.0.0.1:49155.</span><br></pre></td></tr></table></figure><ul><li>容器有自己的内部网络和 ip 地址（使用 <code>docker inspect</code> 可以获取所有的变量，Docker 还可以有一个可变的网络配置。）</li><li><code>-p</code> 标记可以多次使用来绑定多个端口</li></ul><p>例如</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d \</span><br><span class="line">    -p 5000:5000 \</span><br><span class="line">    -p 3000:80 \</span><br><span class="line">    training/webapp \</span><br><span class="line">    python app.py</span><br></pre></td></tr></table></figure><h3 id="6-7-容器互联"><a href="#6-7-容器互联" class="headerlink" title="6.7 容器互联"></a>6.7 容器互联</h3><ul><li><p>新建网络</p><p>下面先创建一个新的 Docker 网络。</p></li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker network create -d bridge my-net</span><br></pre></td></tr></table></figure><p><code>-d</code> 参数指定 Docker 网络类型，有 <code>bridge</code> <code>overlay</code>。其中 <code>overlay</code> 网络类型用于 <a href="https://yeasy.gitbooks.io/docker_practice/content/swarm_mode" target="_blank" rel="noopener">Swarm mode</a></p><ul><li>连接容器</li></ul><p>运行一个容器并连接到新建的 <code>my-net</code> 网络</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -it --rm --name busybox1 --network my-net busybox sh</span><br></pre></td></tr></table></figure><p>打开新的终端，再运行一个容器并加入到 <code>my-net</code> 网络</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -it --rm --name busybox2 --network my-net busybox sh</span><br></pre></td></tr></table></figure><p>再打开一个新的终端查看容器信息</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ docker container ls</span><br><span class="line"></span><br><span class="line">CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES</span><br><span class="line">b47060aca56b        busybox             &quot;sh&quot;                11 minutes ago      Up 11 minutes                           busybox2</span><br><span class="line">8720575823ec        busybox             &quot;sh&quot;                16 minutes ago      Up 16 minutes                           busybox1</span><br></pre></td></tr></table></figure><p>下面通过 <code>ping</code> 来证明 <code>busybox1</code> 容器和 <code>busybox2</code> 容器建立了互联关系。</p><p>在 <code>busybox1</code> 容器输入以下命令</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/ # ping busybox2</span><br><span class="line">PING busybox2 (172.19.0.3): 56 data bytes</span><br><span class="line">64 bytes from 172.19.0.3: seq=0 ttl=64 time=0.072 ms</span><br><span class="line">64 bytes from 172.19.0.3: seq=1 ttl=64 time=0.118 ms</span><br></pre></td></tr></table></figure><p>用 ping 来测试连接 <code>busybox2</code> 容器，它会解析成 <code>172.19.0.3</code>。</p><p>同理在 <code>busybox2</code> 容器执行 <code>ping busybox1</code>，也会成功连接到。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/ # ping busybox1</span><br><span class="line">PING busybox1 (172.19.0.2): 56 data bytes</span><br><span class="line">64 bytes from 172.19.0.2: seq=0 ttl=64 time=0.064 ms</span><br><span class="line">64 bytes from 172.19.0.2: seq=1 ttl=64 time=0.143 ms</span><br></pre></td></tr></table></figure><p>这样，<code>busybox1</code> 容器和 <code>busybox2</code> 容器建立了互联关系。</p><p>如果你有多个容器之间需要互相连接，推荐使用 <a href="https://yeasy.gitbooks.io/docker_practice/content/compose" target="_blank" rel="noopener">Docker Compose</a>。</p><h3 id="6-8-配置-DNS"><a href="#6-8-配置-DNS" class="headerlink" title="6.8 配置 DNS"></a>6.8 配置 DNS</h3><p>如何自定义配置容器的主机名和 DNS 呢？秘诀就是 Docker 利用虚拟文件来挂载容器的 3 个相关配置文件。</p><p>在容器中使用 <code>mount</code> 命令可以看到挂载信息：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ mount</span><br><span class="line">/dev/disk/by-uuid/1fec...ebdf on /etc/hostname type ext4 ...</span><br><span class="line">/dev/disk/by-uuid/1fec...ebdf on /etc/hosts type ext4 ...</span><br><span class="line">tmpfs on /etc/resolv.conf type tmpfs ...</span><br></pre></td></tr></table></figure><p>这种机制可以让宿主主机 DNS 信息发生更新后，所有 Docker 容器的 DNS 配置通过 <code>/etc/resolv.conf</code>文件立刻得到更新。</p><p>配置全部容器的 DNS ，也可以在 <code>/etc/docker/daemon.json</code> 文件中增加以下内容来设置。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;dns&quot; : [</span><br><span class="line">    &quot;114.114.114.114&quot;,</span><br><span class="line">    &quot;8.8.8.8&quot;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>如果用户想要手动指定容器的配置，可以在使用 <code>docker run</code> 命令启动容器时加入如下参数：</p><p><code>-h HOSTNAME</code> 或者 <code>--hostname=HOSTNAME</code> 设定容器的主机名，它会被写到容器内的 <code>/etc/hostname</code>和 <code>/etc/hosts</code>。但它在容器外部看不到，既不会在 <code>docker container ls</code> 中显示，也不会在其他的容器的 <code>/etc/hosts</code> 看到。</p><p><code>--dns=IP_ADDRESS</code> 添加 DNS 服务器到容器的 <code>/etc/resolv.conf</code> 中，让容器用这个服务器来解析所有不在 <code>/etc/hosts</code> 中的主机名。</p><p><code>--dns-search=DOMAIN</code> 设定容器的搜索域，当设定搜索域为 <code>.example.com</code> 时，在搜索一个名为 host 的主机时，DNS 不仅搜索 host，还会搜索 <code>host.example.com</code>。</p><blockquote><p>注意：如果在容器启动时没有指定最后两个参数，Docker 会默认用主机上的 <code>/etc/resolv.conf</code> 来配置容器。</p></blockquote><h1 id="7-Docker-Compose-组成-项目"><a href="#7-Docker-Compose-组成-项目" class="headerlink" title="7. Docker Compose(组成) 项目"></a>7. Docker Compose(组成) 项目</h1><h3 id="7-1-Compose-简介"><a href="#7-1-Compose-简介" class="headerlink" title="7.1 Compose 简介"></a>7.1 Compose 简介</h3><p><code>Compose</code> 项目是 Docker 官方的开源项目，负责实现对 Docker 容器集群的快速编排。</p><p>在日常工作中，经常会碰到需要多个容器相互配合来完成某项任务的情况。例如要实现一个 Web 项目，除了 Web 服务容器本身，往往还需要再加上后端的数据库服务容器，甚至还包括负载均衡容器等。</p><p><code>Compose</code> 恰好满足了这样的需求。它允许用户通过一个单独的 <code>docker-compose.yml</code> 模板文件（YAML 格式）来 定义一组相关联的应用容器为一个项目（project）。</p><p><code>Compose</code> 中有两个重要的概念：</p><ul><li>服务 (<code>service</code>)：一个应用的容器，<em>实际上可以包括若干运行相同镜像的容器实例。</em></li><li>项目 (<code>project</code>)：由一组关联的应用容器组成的一个完整业务单元，在 <code>docker-compose.yml</code> 文件中定义。</li></ul><p>一个项目可以由多个服务（容器）关联而成，<code>Compose</code> 面向项目进行管理。</p><h3 id="7-2-安装与卸载"><a href="#7-2-安装与卸载" class="headerlink" title="7.2 安装与卸载"></a>7.2 安装与卸载</h3><ul><li><p><code>Compose</code> 可以通过 Python 的包管理工具 <code>pip</code> 进行安装</p></li><li><p>也可以直接下载编译好的二进制文件使用</p></li><li><p>甚至能够直接在 Docker 容器中运行</p></li></ul><p>前两种方式是传统方式，适合本地环境下安装使用；最后一种方式则不破坏系统环境，更适合云计算场景。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose --version</span><br><span class="line">docker-compose version 1.21.0, build 5920eb0</span><br></pre></td></tr></table></figure><p>8.3 Compose 命令说明使用</p><p>对于 Compose 来说，大部分命令的对象既可以是项目本身，也可以指定为项目中的服务或者容器。如果没有特别的说明，命令对象将是项目，这意味着项目中所有的服务都会受到命令影响。</p><p><code>docker-compose</code> 命令的基本的使用格式是</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose [-f=&lt;arg&gt;...] [options] [COMMAND] [ARGS...]</span><br></pre></td></tr></table></figure><p>命令选项</p><ul><li><code>-f, --file FILE</code> 指定使用的 Compose 模板文件，默认为 <code>docker-compose.yml</code>，可以多次指定。</li><li><code>-p, --project-name NAME</code> 指定项目名称，默认将使用所在目录名称作为项目名。</li><li><code>--x-networking</code> 使用 Docker 的可拔插网络后端特性</li><li><code>--x-network-driver DRIVER</code> 指定网络后端的驱动，默认为 <code>bridge</code></li><li><code>--verbose</code> 输出更多调试信息。</li><li><code>-v, --version</code> 打印版本并退出。</li></ul><p>命令使用说明</p><p>8.1 <code>build</code> 构建（重新构建）项目中的服务容器</p><p>格式为 <code>docker-compose build [options] [SERVICE...]</code>。</p><p>服务容器一旦构建后，将会带上一个标记名，例如对于 web 项目中的一个 db 容器，可能是 web_db。</p><p>可以随时在项目目录下运行 <code>docker-compose build</code> 来重新构建服务。</p><p>选项包括：</p><ul><li><code>--force-rm</code> 删除构建过程中的临时容器。</li><li><code>--no-cache</code> 构建镜像过程中不使用 cache（这将加长构建过程）。</li><li><code>--pull</code> 始终尝试通过 pull 来获取更新版本的镜像。</li></ul><p>8.2 <code>config</code> 验证 Compose 文件格式是否正确，若正确则显示配置，若格式错误显示错误原因</p><p>8.3 <code>down</code> 此命令将会停止 <code>up</code> 命令所启动的容器，并移除网络</p><p>8.4 <code>exec</code> 进入指定的容器</p><p>8.5 <code>help</code> 获得一个命令的帮助</p><p>8.6 <code>images</code> 列出 Compose 文件中包含的镜像</p><p>8.7 <code>kill</code> 通过发送 <code>SIGKILL</code> 信号来强制停止服务容器</p><p>格式为 <code>docker-compose kill [options] [SERVICE...]</code>。</p><p>支持通过 <code>-s</code> 参数来指定发送的信号，例如通过如下指令发送 <code>SIGINT</code> 信号。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose kill -s SIGINT</span><br></pre></td></tr></table></figure><p>8.8 <code>logs</code> 查看服务容器的输出</p><p>格式为 <code>docker-compose logs [options] [SERVICE...]</code>。</p><p>默认情况下，docker-compose 将对不同的服务输出使用不同的颜色来区分。可以通过 <code>--no-color</code> 来关闭颜色。</p><p>该命令在调试问题的时候十分有用。</p><p>8.9 <code>pause</code> 暂停一个服务容器</p><p>格式为 <code>docker-compose pause [SERVICE...]</code>。</p><p>8.10 <code>port</code> 打印某个容器端口所映射的公共端口</p><p>格式为 <code>docker-compose port [options] SERVICE PRIVATE_PORT</code>。</p><p>选项：</p><ul><li><code>--protocol=proto</code> 指定端口协议，tcp（默认值）或者 udp。</li><li><code>--index=index</code> 如果同一服务存在多个容器，指定命令对象容器的序号（默认为 1）。</li></ul><p>8.11 <code>ps</code> 列出项目中目前的所有容器</p><p>格式为 <code>docker-compose ps [options] [SERVICE...]</code>。</p><p>选项：</p><ul><li><code>-q</code> 只打印容器的 ID 信息。</li></ul><p>8.12 <code>pull</code> 拉取服务依赖的镜像</p><p>格式为 <code>docker-compose pull [options] [SERVICE...]</code>。</p><p>选项：</p><ul><li><code>--ignore-pull-failures</code> 忽略拉取镜像过程中的错误。</li></ul><p>8.13 <code>push</code> 推送服务依赖的镜像到 Docker 镜像仓库</p><p>8.14 <code>restart</code> 重启项目中的服务</p><p>格式为 <code>docker-compose restart [options] [SERVICE...]</code>。</p><p>选项：</p><ul><li><code>-t, --timeout TIMEOUT</code> 指定重启前停止容器的超时（默认为 10 秒）。</li></ul><p>8.15 <code>rm</code> 删除所有（停止状态的）服务容器</p><p>推荐先执行 <code>docker-compose stop</code> 命令来停止容器。</p><p>格式为 <code>docker-compose rm [options] [SERVICE...]</code>。</p><p>选项：</p><ul><li><code>-f, --force</code> 强制直接删除，包括非停止状态的容器。一般尽量不要使用该选项。</li><li><code>-v</code> 删除容器所挂载的数据卷。</li></ul><p>8.16 <code>run</code> 在指定服务上执行一个命令</p><p>格式为 <code>docker-compose run [options] [-p PORT...] [-e KEY=VAL...] SERVICE [COMMAND] [ARGS...]</code>。</p><p>例如：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose run ubuntu ping docker.com</span><br></pre></td></tr></table></figure><p>将会启动一个 ubuntu 服务容器，并执行 <code>ping docker.com</code> 命令。</p><p>默认情况下，如果存在关联，则所有关联的服务将会自动被启动，除非这些服务已经在运行中。</p><p>该命令类似启动容器后运行指定的命令，相关卷、链接等等都将会按照配置自动创建。</p><p>两个不同点：</p><ul><li>给定命令将会覆盖原有的自动运行命令；</li><li>不会自动创建端口，以避免冲突。</li></ul><p>如果不希望自动启动关联的容器，可以使用 <code>--no-deps</code> 选项，例如</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose run --no-deps web python manage.py shell</span><br></pre></td></tr></table></figure><p>将不会启动 web 容器所关联的其它容器。</p><p>选项：</p><ul><li><code>-d</code> 后台运行容器。</li><li><code>--name NAME</code> 为容器指定一个名字。</li><li><code>--entrypoint CMD</code> 覆盖默认的容器启动指令。</li><li><code>-e KEY=VAL</code> 设置环境变量值，可多次使用选项来设置多个环境变量。</li><li><code>-u, --user=&quot;&quot;</code> 指定运行容器的用户名或者 uid。</li><li><code>--no-deps</code> 不自动启动关联的服务容器。</li><li><code>--rm</code> 运行命令后自动删除容器，<code>d</code> 模式下将忽略。</li><li><code>-p, --publish=[]</code> 映射容器端口到本地主机。</li><li><code>--service-ports</code> 配置服务端口并映射到本地主机。</li><li><code>-T</code> 不分配伪 tty，意味着依赖 tty 的指令将无法运行。</li></ul><p>8.17 <code>scale</code> 设置指定服务运行的容器个数</p><p>格式为 <code>docker-compose scale [options] [SERVICE=NUM...]</code>。</p><p>通过 <code>service=num</code> 的参数来设置数量。例如：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose scale web=3 db=2</span><br></pre></td></tr></table></figure><p>将启动 3 个容器运行 web 服务，2 个容器运行 db 服务。</p><p>一般的，当指定数目多于该服务当前实际运行容器，将新创建并启动容器；反之，将停止容器。</p><p>选项：</p><ul><li><code>-t, --timeout TIMEOUT</code> 停止容器时候的超时（默认为 10 秒）。</li></ul><p>8.18 <code>start</code> 启动已经存在的服务容器</p><p>格式为 <code>docker-compose start [SERVICE...]</code>。</p><p>8.19 <code>stop</code> 停止已经处于运行状态的容器，但不删除它</p><p>通过 <code>docker-compose start</code> 可以再次启动这些容器。</p><p>格式为 <code>docker-compose stop [options] [SERVICE...]</code>。</p><p>选项：</p><ul><li><code>-t, --timeout TIMEOUT</code> 停止容器时候的超时（默认为 10 秒）。</li></ul><p>8.20 <code>top</code> 查看各个服务容器内运行的进程</p><p>8.21 <code>unpause</code> 恢复处于暂停状态中的服务</p><p>格式为 <code>docker-compose unpause [SERVICE...]</code>。</p><p>8.22 <code>up</code> 启动一个项目</p><p>格式为 <code>docker-compose up [options] [SERVICE...]</code>。</p><p>该命令十分强大，它将尝试自动完成包括构建镜像，（重新）创建服务，启动服务，并关联服务相关容器的一系列操作。</p><p>链接的服务都将会被自动启动，除非已经处于运行状态。</p><p>可以说，大部分时候都可以直接通过该命令来启动一个项目。</p><p>默认情况，<code>docker-compose up</code> 启动的容器都在前台，控制台将会同时打印所有容器的输出信息，可以很方便进行调试。</p><p>当通过 <code>Ctrl-C</code> 停止命令时，所有容器将会停止。</p><p>如果使用 <code>docker-compose up -d</code>，将会在后台启动并运行所有的容器。一般推荐生产环境下使用该选项。</p><p>默认情况，如果服务容器已经存在，<code>docker-compose up</code> 将会尝试停止容器，然后重新创建（保持使用 <code>volumes-from</code> 挂载的卷），以保证新启动的服务匹配 <code>docker-compose.yml</code> 文件的最新内容。如果用户不希望容器被停止并重新创建，可以使用 <code>docker-compose up --no-recreate</code>。这样将只会启动处于停止状态的容器，而忽略已经运行的服务。如果用户只想重新部署某个服务，可以使用 <code>docker-compose up --no-deps -d &lt;SERVICE_NAME&gt;</code> 来重新创建服务并后台停止旧服务，启动新服务，并不会影响到其所依赖的服务。</p><p>选项：</p><ul><li><code>-d</code> 在后台运行服务容器。</li><li><code>--no-color</code> 不使用颜色来区分不同的服务的控制台输出。</li><li><code>--no-deps</code> 不启动服务所链接的容器。</li><li><code>--force-recreate</code> 强制重新创建容器，不能与 <code>--no-recreate</code> 同时使用。</li><li><code>--no-recreate</code> 如果容器已经存在了，则不重新创建，不能与 <code>--force-recreate</code> 同时使用。</li><li><code>--no-build</code> 不自动构建缺失的服务镜像。</li><li><code>-t, --timeout TIMEOUT</code> 停止容器时候的超时（默认为 10 秒）。</li></ul><p>8.23 <code>version</code> 打印版本信息</p><p>格式为 <code>docker-compose version</code>。</p><p>8.24 Compose 模板文件</p><p>模板文件是使用 <code>Compose</code> 的核心，涉及到的指令关键字也比较多。大部分指令跟 <code>docker run</code> 相关参数的含义都是类似的。</p><p>默认的模板文件名称为 <code>docker-compose.yml</code>，格式为 YAML 格式。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">version: &quot;3&quot;</span><br><span class="line"></span><br><span class="line">services:</span><br><span class="line">  webapp:</span><br><span class="line">    image: examples/web</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;80:80&quot;</span><br><span class="line">    volumes:</span><br><span class="line">      - &quot;/data&quot;</span><br></pre></td></tr></table></figure><p>注意每个服务都必须通过 <code>image</code> 指令指定镜像或 <code>build</code> 指令（需要 Dockerfile）等来自动构建生成镜像。</p><p>如果使用 <code>build</code> 指令，在 <code>Dockerfile</code> 中设置的选项(例如：<code>CMD</code>, <code>EXPOSE</code>, <code>VOLUME</code>, <code>ENV</code> 等) 将会自动被获取，无需在 <code>docker-compose.yml</code> 中再次设置。</p><h1 id="8-参考资料"><a href="#8-参考资料" class="headerlink" title="8. 参考资料"></a>8. 参考资料</h1><p>TODO:</p><ul><li><p>根据教程再来一遍</p></li><li><p>docker compose 抽离出去</p></li></ul></div><div class="reward-container"><div>给作者打赏，鼓励TA抓紧创作！</div><button onclick='var qr=document.getElementById("qr");qr.style.display="none"===qr.style.display?"block":"none"'>打赏</button><div id="qr" style="display:none"><div style="display:inline-block"><img src="/images/wechatpay.jpg" alt="levonfly 微信支付"><p>微信支付</p></div><div style="display:inline-block"><img src="/images/alipay.jpg" alt="levonfly 支付宝"><p>支付宝</p></div></div></div><footer class="post-footer"><div class="post-tags"><a href="/tags/docker/" rel="tag"># docker</a></div><div class="post-nav"><div class="post-nav-item"><a href="/p/63a578e8.html" rel="prev" title="docker基础入门教程(一)"><i class="fa fa-chevron-left"></i> docker基础入门教程(一)</a></div><div class="post-nav-item"><a href="/p/6196d525.html" rel="next" title="golang内存模型和happens_before">golang内存模型和happens_before <i class="fa fa-chevron-right"></i></a></div></div></footer></article></div><div class="comments" id="valine-comments"></div><script>window.addEventListener('tabs:register', () => {
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.liuvv.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false,"dimmer":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
+  </script>
+
+  <meta name="description" content="5. 数据管理5.1 数据卷 数据卷 是一个可供一个或多个容器使用的特殊目录，它绕过 UFS，可以提供很多有用的特性：  数据卷 可以在容器之间共享和重用 对 数据卷 的修改会立马生效 对 数据卷 的更新，不会影响镜像 数据卷 默认会一直存在，即使容器被删除  注意：数据卷 的使用，类似于 Linux 下对目录或文件进行 mount，镜像中的被指定为挂载点的目录中的文件会隐藏掉，能显示看的是挂载的">
+<meta name="keywords" content="docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker基础入门教程(二)">
+<meta property="og:url" content="https://www.liuvv.com/p/cc94e38a.html">
+<meta property="og:site_name" content="Levonfly&#39;s Blog">
+<meta property="og:description" content="5. 数据管理5.1 数据卷 数据卷 是一个可供一个或多个容器使用的特殊目录，它绕过 UFS，可以提供很多有用的特性：  数据卷 可以在容器之间共享和重用 对 数据卷 的修改会立马生效 对 数据卷 的更新，不会影响镜像 数据卷 默认会一直存在，即使容器被删除  注意：数据卷 的使用，类似于 Linux 下对目录或文件进行 mount，镜像中的被指定为挂载点的目录中的文件会隐藏掉，能显示看的是挂载的">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-02-22T10:15:52.554Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="docker基础入门教程(二)">
+<meta name="twitter:description" content="5. 数据管理5.1 数据卷 数据卷 是一个可供一个或多个容器使用的特殊目录，它绕过 UFS，可以提供很多有用的特性：  数据卷 可以在容器之间共享和重用 对 数据卷 的修改会立马生效 对 数据卷 的更新，不会影响镜像 数据卷 默认会一直存在，即使容器被删除  注意：数据卷 的使用，类似于 Linux 下对目录或文件进行 mount，镜像中的被指定为挂载点的目录中的文件会隐藏掉，能显示看的是挂载的">
+
+<link rel="canonical" href="https://www.liuvv.com/p/cc94e38a.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>docker基础入门教程(二) | Levonfly's Blog</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?521e5dbc31dd12bb9431823008da3dfc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Levonfly's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">微信:  L6241425</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>日志</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/unix2dos" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.liuvv.com/p/cc94e38a.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="levonfly">
+      <meta itemprop="description" content="Keep it simple, stupid.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Levonfly's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          docker基础入门教程(二)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-05-25 00:00:02" itemprop="dateCreated datePublished" datetime="2018-05-25T00:00:02+08:00">2018-05-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-02-22 18:15:52" itemprop="dateModified" datetime="2021-02-22T18:15:52+08:00">2021-02-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/2-linux系统/" itemprop="url" rel="index"><span itemprop="name">2-linux系统</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/2-linux系统/docker/" itemprop="url" rel="index"><span itemprop="name">docker</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/p/cc94e38a.html" class="post-meta-item leancloud_visitors" data-flag-title="docker基础入门教程(二)" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/p/cc94e38a.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/p/cc94e38a.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>12k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>11 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="5-数据管理"><a href="#5-数据管理" class="headerlink" title="5. 数据管理"></a>5. 数据管理</h1><h3 id="5-1-数据卷"><a href="#5-1-数据卷" class="headerlink" title="5.1 数据卷"></a>5.1 数据卷</h3><p> <code>数据卷</code> 是一个可供一个或多个容器使用的特殊目录，它绕过 UFS，可以提供很多有用的特性：</p>
+<ul>
+<li><code>数据卷</code> 可以在容器之间共享和重用</li>
+<li>对 <code>数据卷</code> 的修改会立马生效</li>
+<li>对 <code>数据卷</code> 的更新，不会影响镜像</li>
+<li><code>数据卷</code> 默认会一直存在，即使容器被删除</li>
+</ul>
+<p>注意：<code>数据卷</code> 的使用，类似于 Linux 下对目录或文件进行 mount，镜像中的被指定为挂载点的目录中的文件会隐藏掉，能显示看的是挂载的 <code>数据卷</code>。</p>
+<a id="more"></a>
+
+<h3 id="5-2-选择-v-还是-–mount-参数"><a href="#5-2-选择-v-还是-–mount-参数" class="headerlink" title="5.2 选择 -v 还是 -–mount 参数"></a>5.2 选择 -v 还是 -–mount 参数</h3><p>Docker 新用户应该选择 <code>--mount</code> 参数，经验丰富的 Docker 使用者对 <code>-v</code> 或者 <code>--volume</code> 已经很熟悉了，但是推荐使用 <code>--mount</code> 参数。</p>
+<h3 id="5-3-创建一个数据卷"><a href="#5-3-创建一个数据卷" class="headerlink" title="5.3 创建一个数据卷"></a>5.3 创建一个数据卷</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker volume create my-vol</span><br></pre></td></tr></table></figure>
+
+<p>查看所有的 <code>数据卷</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ docker volume ls</span><br><span class="line"></span><br><span class="line">local               my-vol</span><br></pre></td></tr></table></figure>
+
+<p>在主机里使用以下命令可以查看指定 <code>数据卷</code> 的信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ docker volume inspect my-vol</span><br><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        &quot;Driver&quot;: &quot;local&quot;,</span><br><span class="line">        &quot;Labels&quot;: &#123;&#125;,</span><br><span class="line">        &quot;Mountpoint&quot;: &quot;/var/lib/docker/volumes/my-vol/_data&quot;,</span><br><span class="line">        &quot;Name&quot;: &quot;my-vol&quot;,</span><br><span class="line">        &quot;Options&quot;: &#123;&#125;,</span><br><span class="line">        &quot;Scope&quot;: &quot;local&quot;</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-4-启动一个挂载数据卷的容器"><a href="#5-4-启动一个挂载数据卷的容器" class="headerlink" title="5.4 启动一个挂载数据卷的容器"></a>5.4 启动一个挂载数据卷的容器</h3><p> 在用 <code>docker run</code> 命令的时候，使用 <code>--mount</code> 标记来将 <code>数据卷</code> 挂载到容器里。在一次 <code>docker run</code>中可以挂载多个 <code>数据卷</code>。</p>
+<p>下面创建一个名为 <code>web</code> 的容器，并加载一个 <code>数据卷</code> 到容器的 <code>/webapp</code> 目录。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d -P \</span><br><span class="line">    --name web \</span><br><span class="line">    --mount source=my-vol,target=/webapp \ 				(相似) # -v my-vol:/wepapp \</span><br><span class="line">    training/webapp \</span><br><span class="line">    python app.py</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-5-查看数据卷的具体信息"><a href="#5-5-查看数据卷的具体信息" class="headerlink" title="5.5 查看数据卷的具体信息"></a>5.5 查看数据卷的具体信息</h3><p>在主机里使用以下命令可以查看 <code>web</code> 容器的信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker inspect web</span><br></pre></td></tr></table></figure>
+
+<p><code>数据卷</code> 信息在 “Mounts” Key 下面</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&quot;Mounts&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">        &quot;Type&quot;: &quot;volume&quot;,</span><br><span class="line">        &quot;Name&quot;: &quot;my-vol&quot;,</span><br><span class="line">        &quot;Source&quot;: &quot;/var/lib/docker/volumes/my-vol/_data&quot;,</span><br><span class="line">        &quot;Destination&quot;: &quot;/app&quot;,</span><br><span class="line">        &quot;Driver&quot;: &quot;local&quot;,</span><br><span class="line">        &quot;Mode&quot;: &quot;&quot;,</span><br><span class="line">        &quot;RW&quot;: true,</span><br><span class="line">        &quot;Propagation&quot;: &quot;&quot;</span><br><span class="line">    &#125;</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-6-删除数据卷"><a href="#5-6-删除数据卷" class="headerlink" title="5.6 删除数据卷"></a>5.6 删除数据卷</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker volume rm my-vol</span><br></pre></td></tr></table></figure>
+
+<p><code>数据卷</code> 是被设计用来持久化数据的，它的生命周期独立于容器，Docker 不会在容器被删除后自动删除 <code>数据卷</code>，并且也不存在垃圾回收这样的机制来处理没有任何容器引用的 <code>数据卷</code>。如果需要在删除容器的同时移除数据卷。可以在删除容器的时候使用 <code>docker rm -v</code> 这个命令。</p>
+<p> 无主的数据卷可能会占据很多空间，要清理请使用以下命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker volume prune</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-7-挂载一个主机目录作为数据卷"><a href="#5-7-挂载一个主机目录作为数据卷" class="headerlink" title="5.7 挂载一个主机目录作为数据卷"></a>5.7 挂载一个主机目录作为数据卷</h3><p>使用 <code>--mount</code> 标记可以指定挂载一个本地主机的目录到容器中去。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d -P \</span><br><span class="line">    --name web \</span><br><span class="line">    # -v /src/webapp:/opt/webapp \</span><br><span class="line">    --mount type=bind,source=/src/webapp,target=/opt/webapp \</span><br><span class="line">    training/webapp \</span><br><span class="line">    python app.py</span><br></pre></td></tr></table></figure>
+
+<p>上面的命令加载主机的 <code>/src/webapp</code> 目录到容器的 <code>/opt/webapp</code>目录。这个功能在进行测试的时候十分方便，比如用户可以放置一些程序到本地目录中，来查看容器是否正常工作。本地目录的路径必须是绝对路径，以前使用 <code>-v</code> 参数时如果本地目录不存在 Docker 会自动为你创建一个文件夹，现在使用 <code>--mount</code>参数时如果本地目录不存在，Docker 会报错</p>
+<p>Docker 挂载主机目录的默认权限是 <code>读写</code>，用户也可以通过增加 <code>readonly</code> 指定为 <code>只读</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d -P \</span><br><span class="line">    --name web \</span><br><span class="line">    # -v /src/webapp:/opt/webapp:ro \</span><br><span class="line">    --mount type=bind,source=/src/webapp,target=/opt/webapp,readonly \</span><br><span class="line">    training/webapp \</span><br><span class="line">    python app.py</span><br></pre></td></tr></table></figure>
+
+<p>加了 <code>readonly</code> 之后，就挂载为 <code>只读</code> 了。如果你在容器内 <code>/opt/webapp</code> 目录新建文件，会显示如下错误</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/opt/webapp # touch new.txt</span><br><span class="line">touch: new.txt: Read-only file system</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-8-查看数据卷的具体信息"><a href="#5-8-查看数据卷的具体信息" class="headerlink" title="5.8 查看数据卷的具体信息"></a>5.8 查看数据卷的具体信息</h3><p>在主机里使用以下命令可以查看 <code>web</code> 容器的信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker inspect web</span><br></pre></td></tr></table></figure>
+
+<p><code>挂载主机目录</code> 的配置信息在 “Mounts” Key 下面</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&quot;Mounts&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">        &quot;Type&quot;: &quot;bind&quot;,			#此处为 bind</span><br><span class="line">        &quot;Source&quot;: &quot;/src/webapp&quot;,</span><br><span class="line">        &quot;Destination&quot;: &quot;/opt/webapp&quot;,</span><br><span class="line">        &quot;Mode&quot;: &quot;&quot;,</span><br><span class="line">        &quot;RW&quot;: true,</span><br><span class="line">        &quot;Propagation&quot;: &quot;rprivate&quot;</span><br><span class="line">    &#125;</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-9-挂载一个本地主机文件作为数据卷"><a href="#5-9-挂载一个本地主机文件作为数据卷" class="headerlink" title="5.9 挂载一个本地主机文件作为数据卷"></a>5.9 挂载一个本地主机文件作为数据卷</h3><p><code>--mount</code> 标记也可以从主机挂载单个文件到容器中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ docker run --rm -it \</span><br><span class="line">   # -v $HOME/.bash_history:/root/.bash_history \</span><br><span class="line">   --mount type=bind,source=$HOME/.bash_history,target=/root/.bash_history \</span><br><span class="line">   ubuntu:17.10 \</span><br><span class="line">   bash</span><br><span class="line"></span><br><span class="line">root@2affd44b4667:/# history</span><br><span class="line">1  ls</span><br><span class="line">2  diskutil list</span><br></pre></td></tr></table></figure>
+
+<p>这样就可以记录在容器输入过的命令了。</p>
+<h1 id="6-使用网络"><a href="#6-使用网络" class="headerlink" title="6. 使用网络"></a>6. 使用网络</h1><h3 id="6-1-外部访问容器"><a href="#6-1-外部访问容器" class="headerlink" title="6.1 外部访问容器"></a>6.1 外部访问容器</h3><p>容器中可以运行一些网络应用，要让外部也可以访问这些应用，可以通过 <code>-P</code> 或 <code>-p</code> 参数来指定端口映射。</p>
+<p>当使用 <code>-P</code> 标记时，Docker 会随机映射一个 <code>49000~49900</code> 的端口到内部容器开放的网络端口。</p>
+<p>使用 <code>docker container ls</code> 可以看到，本地主机的 49155 被映射到了容器的 5000 端口。此时访问本机的 49155 端口即可访问容器内 web 应用提供的界面。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d -P training/webapp python app.py</span><br><span class="line"></span><br><span class="line">$ docker container ls -l</span><br><span class="line">CONTAINER ID  IMAGE                   COMMAND       CREATED        STATUS        PORTS                    NAMES</span><br><span class="line">bc533791f3f5  training/webapp:latest  python app.py 5 seconds ago  Up 2 seconds  0.0.0.0:49155-&gt;5000/tcp  nostalgic_morse</span><br></pre></td></tr></table></figure>
+
+
+
+<p><code>-p</code> 则可以指定要映射的端口，并且，在一个指定端口上只可以绑定一个容器。支持的格式有 </p>
+<p><code>ip:hostPort:containerPort | ip::containerPort | hostPort:containerPort</code>。</p>
+<h3 id="6-2-映射所有接口地址"><a href="#6-2-映射所有接口地址" class="headerlink" title="6.2 映射所有接口地址"></a>6.2 映射所有接口地址</h3><p>使用 <code>hostPort:containerPort</code> 格式本地的 5000 端口映射到容器的 5000 端口，可以执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d -p 5000:5000 training/webapp python app.py</span><br></pre></td></tr></table></figure>
+
+<p>此时默认会绑定本地所有接口上的所有地址。</p>
+<h3 id="6-3-映射到指定地址的指定端口"><a href="#6-3-映射到指定地址的指定端口" class="headerlink" title="6.3 映射到指定地址的指定端口"></a>6.3 映射到指定地址的指定端口</h3><p>可以使用 <code>ip:hostPort:containerPort</code> 格式指定映射使用一个特定地址，比如 localhost 地址 127.0.0.1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d -p 127.0.0.1:5000:5000 training/webapp python app.py</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-4-映射到指定地址的任意端口"><a href="#6-4-映射到指定地址的任意端口" class="headerlink" title="6.4 映射到指定地址的任意端口"></a>6.4 映射到指定地址的任意端口</h3><p>使用 <code>ip::containerPort</code> 绑定 localhost 的任意端口到容器的 5000 端口，本地主机会自动分配一个端口。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d -p 127.0.0.1::5000 training/webapp python app.py</span><br></pre></td></tr></table></figure>
+
+<p>还可以使用 <code>udp</code> 标记来指定 <code>udp</code> 端口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d -p 127.0.0.1:5000:5000/udp training/webapp python app.py</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-5-查看映射端口配置"><a href="#6-5-查看映射端口配置" class="headerlink" title="6.5 查看映射端口配置"></a>6.5 查看映射端口配置</h3><p> 使用 <code>docker port</code> 来查看当前映射的端口配置，也可以查看到绑定的地址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ docker port nostalgic_morse 5000</span><br><span class="line">127.0.0.1:49155.</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>容器有自己的内部网络和 ip 地址（使用 <code>docker inspect</code> 可以获取所有的变量，Docker 还可以有一个可变的网络配置。）</li>
+<li><code>-p</code> 标记可以多次使用来绑定多个端口</li>
+</ul>
+<p>例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d \</span><br><span class="line">    -p 5000:5000 \</span><br><span class="line">    -p 3000:80 \</span><br><span class="line">    training/webapp \</span><br><span class="line">    python app.py</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-7-容器互联"><a href="#6-7-容器互联" class="headerlink" title="6.7 容器互联"></a>6.7 容器互联</h3><ul>
+<li><p>新建网络</p>
+<p>下面先创建一个新的 Docker 网络。</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker network create -d bridge my-net</span><br></pre></td></tr></table></figure>
+
+<p><code>-d</code> 参数指定 Docker 网络类型，有 <code>bridge</code> <code>overlay</code>。其中 <code>overlay</code> 网络类型用于 <a href="https://yeasy.gitbooks.io/docker_practice/content/swarm_mode" target="_blank" rel="noopener">Swarm mode</a></p>
+<ul>
+<li>连接容器</li>
+</ul>
+<p>运行一个容器并连接到新建的 <code>my-net</code> 网络</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -it --rm --name busybox1 --network my-net busybox sh</span><br></pre></td></tr></table></figure>
+
+<p>打开新的终端，再运行一个容器并加入到 <code>my-net</code> 网络</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -it --rm --name busybox2 --network my-net busybox sh</span><br></pre></td></tr></table></figure>
+
+<p>再打开一个新的终端查看容器信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ docker container ls</span><br><span class="line"></span><br><span class="line">CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES</span><br><span class="line">b47060aca56b        busybox             &quot;sh&quot;                11 minutes ago      Up 11 minutes                           busybox2</span><br><span class="line">8720575823ec        busybox             &quot;sh&quot;                16 minutes ago      Up 16 minutes                           busybox1</span><br></pre></td></tr></table></figure>
+
+<p>下面通过 <code>ping</code> 来证明 <code>busybox1</code> 容器和 <code>busybox2</code> 容器建立了互联关系。</p>
+<p>在 <code>busybox1</code> 容器输入以下命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/ # ping busybox2</span><br><span class="line">PING busybox2 (172.19.0.3): 56 data bytes</span><br><span class="line">64 bytes from 172.19.0.3: seq=0 ttl=64 time=0.072 ms</span><br><span class="line">64 bytes from 172.19.0.3: seq=1 ttl=64 time=0.118 ms</span><br></pre></td></tr></table></figure>
+
+<p>用 ping 来测试连接 <code>busybox2</code> 容器，它会解析成 <code>172.19.0.3</code>。</p>
+<p>同理在 <code>busybox2</code> 容器执行 <code>ping busybox1</code>，也会成功连接到。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/ # ping busybox1</span><br><span class="line">PING busybox1 (172.19.0.2): 56 data bytes</span><br><span class="line">64 bytes from 172.19.0.2: seq=0 ttl=64 time=0.064 ms</span><br><span class="line">64 bytes from 172.19.0.2: seq=1 ttl=64 time=0.143 ms</span><br></pre></td></tr></table></figure>
+
+<p>这样，<code>busybox1</code> 容器和 <code>busybox2</code> 容器建立了互联关系。</p>
+<p>如果你有多个容器之间需要互相连接，推荐使用 <a href="https://yeasy.gitbooks.io/docker_practice/content/compose" target="_blank" rel="noopener">Docker Compose</a>。</p>
+<h3 id="6-8-配置-DNS"><a href="#6-8-配置-DNS" class="headerlink" title="6.8 配置 DNS"></a>6.8 配置 DNS</h3><p> 如何自定义配置容器的主机名和 DNS 呢？秘诀就是 Docker 利用虚拟文件来挂载容器的 3 个相关配置文件。</p>
+<p>在容器中使用 <code>mount</code> 命令可以看到挂载信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ mount</span><br><span class="line">/dev/disk/by-uuid/1fec...ebdf on /etc/hostname type ext4 ...</span><br><span class="line">/dev/disk/by-uuid/1fec...ebdf on /etc/hosts type ext4 ...</span><br><span class="line">tmpfs on /etc/resolv.conf type tmpfs ...</span><br></pre></td></tr></table></figure>
+
+<p>这种机制可以让宿主主机 DNS 信息发生更新后，所有 Docker 容器的 DNS 配置通过 <code>/etc/resolv.conf</code>文件立刻得到更新。</p>
+<p>配置全部容器的 DNS ，也可以在 <code>/etc/docker/daemon.json</code> 文件中增加以下内容来设置。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;dns&quot; : [</span><br><span class="line">    &quot;114.114.114.114&quot;,</span><br><span class="line">    &quot;8.8.8.8&quot;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果用户想要手动指定容器的配置，可以在使用 <code>docker run</code> 命令启动容器时加入如下参数：</p>
+<p> <code>-h HOSTNAME</code> 或者 <code>--hostname=HOSTNAME</code> 设定容器的主机名，它会被写到容器内的 <code>/etc/hostname</code>和 <code>/etc/hosts</code>。但它在容器外部看不到，既不会在 <code>docker container ls</code> 中显示，也不会在其他的容器的 <code>/etc/hosts</code> 看到。</p>
+<p><code>--dns=IP_ADDRESS</code> 添加 DNS 服务器到容器的 <code>/etc/resolv.conf</code> 中，让容器用这个服务器来解析所有不在 <code>/etc/hosts</code> 中的主机名。</p>
+<p><code>--dns-search=DOMAIN</code> 设定容器的搜索域，当设定搜索域为 <code>.example.com</code> 时，在搜索一个名为 host 的主机时，DNS 不仅搜索 host，还会搜索 <code>host.example.com</code>。</p>
+<blockquote>
+<p>注意：如果在容器启动时没有指定最后两个参数，Docker 会默认用主机上的 <code>/etc/resolv.conf</code> 来配置容器。</p>
+</blockquote>
+<h1 id="7-Docker-Compose-组成-项目"><a href="#7-Docker-Compose-组成-项目" class="headerlink" title="7. Docker Compose(组成) 项目"></a>7. Docker Compose(组成) 项目</h1><h3 id="7-1-Compose-简介"><a href="#7-1-Compose-简介" class="headerlink" title="7.1 Compose 简介"></a>7.1 Compose 简介</h3><p><code>Compose</code> 项目是 Docker 官方的开源项目，负责实现对 Docker 容器集群的快速编排。</p>
+<p>在日常工作中，经常会碰到需要多个容器相互配合来完成某项任务的情况。例如要实现一个 Web 项目，除了 Web 服务容器本身，往往还需要再加上后端的数据库服务容器，甚至还包括负载均衡容器等。</p>
+<p><code>Compose</code> 恰好满足了这样的需求。它允许用户通过一个单独的 <code>docker-compose.yml</code> 模板文件（YAML 格式）来    定义一组相关联的应用容器为一个项目（project）。</p>
+<p><code>Compose</code> 中有两个重要的概念：</p>
+<ul>
+<li>服务 (<code>service</code>)：一个应用的容器，<em>实际上可以包括若干运行相同镜像的容器实例。</em></li>
+<li>项目 (<code>project</code>)：由一组关联的应用容器组成的一个完整业务单元，在 <code>docker-compose.yml</code> 文件中定义。</li>
+</ul>
+<p>一个项目可以由多个服务（容器）关联而成，<code>Compose</code> 面向项目进行管理。</p>
+<h3 id="7-2-安装与卸载"><a href="#7-2-安装与卸载" class="headerlink" title="7.2 安装与卸载"></a>7.2 安装与卸载</h3><ul>
+<li><p><code>Compose</code> 可以通过 Python 的包管理工具 <code>pip</code> 进行安装</p>
+</li>
+<li><p>也可以直接下载编译好的二进制文件使用</p>
+</li>
+<li><p>甚至能够直接在 Docker 容器中运行</p>
+</li>
+</ul>
+<p>前两种方式是传统方式，适合本地环境下安装使用；最后一种方式则不破坏系统环境，更适合云计算场景。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose --version</span><br><span class="line">docker-compose version 1.21.0, build 5920eb0</span><br></pre></td></tr></table></figure>
+
+<p>8.3 Compose 命令说明使用</p>
+<p>对于 Compose 来说，大部分命令的对象既可以是项目本身，也可以指定为项目中的服务或者容器。如果没有特别的说明，命令对象将是项目，这意味着项目中所有的服务都会受到命令影响。</p>
+<p><code>docker-compose</code> 命令的基本的使用格式是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose [-f=&lt;arg&gt;...] [options] [COMMAND] [ARGS...]</span><br></pre></td></tr></table></figure>
+
+
+
+<p>命令选项</p>
+<ul>
+<li><code>-f, --file FILE</code> 指定使用的 Compose 模板文件，默认为 <code>docker-compose.yml</code>，可以多次指定。</li>
+<li><code>-p, --project-name NAME</code> 指定项目名称，默认将使用所在目录名称作为项目名。</li>
+<li><code>--x-networking</code> 使用 Docker 的可拔插网络后端特性</li>
+<li><code>--x-network-driver DRIVER</code> 指定网络后端的驱动，默认为 <code>bridge</code></li>
+<li><code>--verbose</code> 输出更多调试信息。</li>
+<li><code>-v, --version</code> 打印版本并退出。</li>
+</ul>
+<p>命令使用说明</p>
+<p>8.1 <code>build</code> 构建（重新构建）项目中的服务容器</p>
+<p>格式为 <code>docker-compose build [options] [SERVICE...]</code>。</p>
+<p>服务容器一旦构建后，将会带上一个标记名，例如对于 web 项目中的一个 db 容器，可能是 web_db。</p>
+<p>可以随时在项目目录下运行 <code>docker-compose build</code> 来重新构建服务。</p>
+<p>选项包括：</p>
+<ul>
+<li><code>--force-rm</code> 删除构建过程中的临时容器。</li>
+<li><code>--no-cache</code> 构建镜像过程中不使用 cache（这将加长构建过程）。</li>
+<li><code>--pull</code> 始终尝试通过 pull 来获取更新版本的镜像。</li>
+</ul>
+<p>8.2 <code>config</code> 验证 Compose 文件格式是否正确，若正确则显示配置，若格式错误显示错误原因</p>
+<p>8.3 <code>down</code> 此命令将会停止 <code>up</code> 命令所启动的容器，并移除网络</p>
+<p>8.4 <code>exec</code> 进入指定的容器</p>
+<p>8.5 <code>help</code> 获得一个命令的帮助</p>
+<p>8.6 <code>images</code> 列出 Compose 文件中包含的镜像</p>
+<p>8.7 <code>kill</code> 通过发送 <code>SIGKILL</code> 信号来强制停止服务容器</p>
+<p>格式为 <code>docker-compose kill [options] [SERVICE...]</code>。</p>
+<p>支持通过 <code>-s</code> 参数来指定发送的信号，例如通过如下指令发送 <code>SIGINT</code> 信号。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose kill -s SIGINT</span><br></pre></td></tr></table></figure>
+
+<p>8.8 <code>logs</code> 查看服务容器的输出</p>
+<p>格式为 <code>docker-compose logs [options] [SERVICE...]</code>。</p>
+<p>默认情况下，docker-compose 将对不同的服务输出使用不同的颜色来区分。可以通过 <code>--no-color</code> 来关闭颜色。</p>
+<p>该命令在调试问题的时候十分有用。</p>
+<p>8.9 <code>pause</code> 暂停一个服务容器</p>
+<p>格式为 <code>docker-compose pause [SERVICE...]</code>。</p>
+<p>8.10 <code>port</code> 打印某个容器端口所映射的公共端口</p>
+<p>格式为 <code>docker-compose port [options] SERVICE PRIVATE_PORT</code>。</p>
+<p>选项：</p>
+<ul>
+<li><code>--protocol=proto</code> 指定端口协议，tcp（默认值）或者 udp。</li>
+<li><code>--index=index</code> 如果同一服务存在多个容器，指定命令对象容器的序号（默认为 1）。</li>
+</ul>
+<p>8.11 <code>ps</code> 列出项目中目前的所有容器</p>
+<p>格式为 <code>docker-compose ps [options] [SERVICE...]</code>。</p>
+<p>选项：</p>
+<ul>
+<li><code>-q</code> 只打印容器的 ID 信息。</li>
+</ul>
+<p>8.12 <code>pull</code> 拉取服务依赖的镜像</p>
+<p>格式为 <code>docker-compose pull [options] [SERVICE...]</code>。</p>
+<p>选项：</p>
+<ul>
+<li><code>--ignore-pull-failures</code> 忽略拉取镜像过程中的错误。</li>
+</ul>
+<p>8.13 <code>push</code> 推送服务依赖的镜像到 Docker 镜像仓库</p>
+<p>8.14 <code>restart</code> 重启项目中的服务</p>
+<p>格式为 <code>docker-compose restart [options] [SERVICE...]</code>。</p>
+<p>选项：</p>
+<ul>
+<li><code>-t, --timeout TIMEOUT</code> 指定重启前停止容器的超时（默认为 10 秒）。</li>
+</ul>
+<p>8.15 <code>rm</code> 删除所有（停止状态的）服务容器</p>
+<p>推荐先执行 <code>docker-compose stop</code> 命令来停止容器。</p>
+<p>格式为 <code>docker-compose rm [options] [SERVICE...]</code>。</p>
+<p>选项：</p>
+<ul>
+<li><code>-f, --force</code> 强制直接删除，包括非停止状态的容器。一般尽量不要使用该选项。</li>
+<li><code>-v</code> 删除容器所挂载的数据卷。</li>
+</ul>
+<p>8.16 <code>run</code> 在指定服务上执行一个命令</p>
+<p>格式为 <code>docker-compose run [options] [-p PORT...] [-e KEY=VAL...] SERVICE [COMMAND] [ARGS...]</code>。</p>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose run ubuntu ping docker.com</span><br></pre></td></tr></table></figure>
+
+<p>将会启动一个 ubuntu 服务容器，并执行 <code>ping docker.com</code> 命令。</p>
+<p>默认情况下，如果存在关联，则所有关联的服务将会自动被启动，除非这些服务已经在运行中。</p>
+<p>该命令类似启动容器后运行指定的命令，相关卷、链接等等都将会按照配置自动创建。</p>
+<p>两个不同点：</p>
+<ul>
+<li>给定命令将会覆盖原有的自动运行命令；</li>
+<li>不会自动创建端口，以避免冲突。</li>
+</ul>
+<p>如果不希望自动启动关联的容器，可以使用 <code>--no-deps</code> 选项，例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose run --no-deps web python manage.py shell</span><br></pre></td></tr></table></figure>
+
+<p>将不会启动 web 容器所关联的其它容器。</p>
+<p>选项：</p>
+<ul>
+<li><code>-d</code> 后台运行容器。</li>
+<li><code>--name NAME</code> 为容器指定一个名字。</li>
+<li><code>--entrypoint CMD</code> 覆盖默认的容器启动指令。</li>
+<li><code>-e KEY=VAL</code> 设置环境变量值，可多次使用选项来设置多个环境变量。</li>
+<li><code>-u, --user=&quot;&quot;</code> 指定运行容器的用户名或者 uid。</li>
+<li><code>--no-deps</code> 不自动启动关联的服务容器。</li>
+<li><code>--rm</code> 运行命令后自动删除容器，<code>d</code> 模式下将忽略。</li>
+<li><code>-p, --publish=[]</code> 映射容器端口到本地主机。</li>
+<li><code>--service-ports</code> 配置服务端口并映射到本地主机。</li>
+<li><code>-T</code> 不分配伪 tty，意味着依赖 tty 的指令将无法运行。</li>
+</ul>
+<p>8.17 <code>scale</code> 设置指定服务运行的容器个数</p>
+<p>格式为 <code>docker-compose scale [options] [SERVICE=NUM...]</code>。</p>
+<p>通过 <code>service=num</code> 的参数来设置数量。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose scale web=3 db=2</span><br></pre></td></tr></table></figure>
+
+<p>将启动 3 个容器运行 web 服务，2 个容器运行 db 服务。</p>
+<p>一般的，当指定数目多于该服务当前实际运行容器，将新创建并启动容器；反之，将停止容器。</p>
+<p>选项：</p>
+<ul>
+<li><code>-t, --timeout TIMEOUT</code> 停止容器时候的超时（默认为 10 秒）。</li>
+</ul>
+<p>8.18 <code>start</code> 启动已经存在的服务容器</p>
+<p>格式为 <code>docker-compose start [SERVICE...]</code>。</p>
+<p>8.19 <code>stop</code> 停止已经处于运行状态的容器，但不删除它</p>
+<p>通过 <code>docker-compose start</code> 可以再次启动这些容器。</p>
+<p>格式为 <code>docker-compose stop [options] [SERVICE...]</code>。</p>
+<p>选项：</p>
+<ul>
+<li><code>-t, --timeout TIMEOUT</code> 停止容器时候的超时（默认为 10 秒）。</li>
+</ul>
+<p>8.20 <code>top</code> 查看各个服务容器内运行的进程</p>
+<p>8.21 <code>unpause</code> 恢复处于暂停状态中的服务</p>
+<p>格式为 <code>docker-compose unpause [SERVICE...]</code>。</p>
+<p>8.22 <code>up</code> 启动一个项目</p>
+<p>格式为 <code>docker-compose up [options] [SERVICE...]</code>。</p>
+<p>该命令十分强大，它将尝试自动完成包括构建镜像，（重新）创建服务，启动服务，并关联服务相关容器的一系列操作。</p>
+<p>链接的服务都将会被自动启动，除非已经处于运行状态。</p>
+<p>可以说，大部分时候都可以直接通过该命令来启动一个项目。</p>
+<p>默认情况，<code>docker-compose up</code> 启动的容器都在前台，控制台将会同时打印所有容器的输出信息，可以很方便进行调试。</p>
+<p>当通过 <code>Ctrl-C</code> 停止命令时，所有容器将会停止。</p>
+<p>如果使用 <code>docker-compose up -d</code>，将会在后台启动并运行所有的容器。一般推荐生产环境下使用该选项。</p>
+<p>默认情况，如果服务容器已经存在，<code>docker-compose up</code> 将会尝试停止容器，然后重新创建（保持使用 <code>volumes-from</code> 挂载的卷），以保证新启动的服务匹配 <code>docker-compose.yml</code> 文件的最新内容。如果用户不希望容器被停止并重新创建，可以使用 <code>docker-compose up --no-recreate</code>。这样将只会启动处于停止状态的容器，而忽略已经运行的服务。如果用户只想重新部署某个服务，可以使用 <code>docker-compose up --no-deps -d &lt;SERVICE_NAME&gt;</code> 来重新创建服务并后台停止旧服务，启动新服务，并不会影响到其所依赖的服务。</p>
+<p>选项：</p>
+<ul>
+<li><code>-d</code> 在后台运行服务容器。</li>
+<li><code>--no-color</code> 不使用颜色来区分不同的服务的控制台输出。</li>
+<li><code>--no-deps</code> 不启动服务所链接的容器。</li>
+<li><code>--force-recreate</code> 强制重新创建容器，不能与 <code>--no-recreate</code> 同时使用。</li>
+<li><code>--no-recreate</code> 如果容器已经存在了，则不重新创建，不能与 <code>--force-recreate</code> 同时使用。</li>
+<li><code>--no-build</code> 不自动构建缺失的服务镜像。</li>
+<li><code>-t, --timeout TIMEOUT</code> 停止容器时候的超时（默认为 10 秒）。</li>
+</ul>
+<p>8.23 <code>version</code> 打印版本信息</p>
+<p>格式为 <code>docker-compose version</code>。</p>
+<p>8.24 Compose 模板文件</p>
+<p>模板文件是使用 <code>Compose</code> 的核心，涉及到的指令关键字也比较多。大部分指令跟 <code>docker run</code> 相关参数的含义都是类似的。</p>
+<p>默认的模板文件名称为 <code>docker-compose.yml</code>，格式为 YAML 格式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">version: &quot;3&quot;</span><br><span class="line"></span><br><span class="line">services:</span><br><span class="line">  webapp:</span><br><span class="line">    image: examples/web</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;80:80&quot;</span><br><span class="line">    volumes:</span><br><span class="line">      - &quot;/data&quot;</span><br></pre></td></tr></table></figure>
+
+<p>注意每个服务都必须通过 <code>image</code> 指令指定镜像或 <code>build</code> 指令（需要 Dockerfile）等来自动构建生成镜像。</p>
+<p>如果使用 <code>build</code> 指令，在 <code>Dockerfile</code> 中设置的选项(例如：<code>CMD</code>, <code>EXPOSE</code>, <code>VOLUME</code>, <code>ENV</code> 等) 将会自动被获取，无需在 <code>docker-compose.yml</code> 中再次设置。</p>
+<h1 id="8-参考资料"><a href="#8-参考资料" class="headerlink" title="8. 参考资料"></a>8. 参考资料</h1><p>TODO: </p>
+<ul>
+<li><p>根据教程再来一遍</p>
+</li>
+<li><p>docker compose 抽离出去</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>给作者打赏，鼓励TA抓紧创作！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="levonfly 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="levonfly 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/docker/" rel="tag"># docker</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/p/63a578e8.html" rel="prev" title="docker基础入门教程(一)">
+      <i class="fa fa-chevron-left"></i> docker基础入门教程(一)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/p/6196d525.html" rel="next" title="golang内存模型和happens_before">
+      golang内存模型和happens_before <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
     let { activeClass } = CONFIG.comments;
     if (CONFIG.comments.storage) {
       activeClass = localStorage.getItem('comments_active') || activeClass;
@@ -16,7 +693,195 @@
       let commentClass = event.target.classList[1];
       localStorage.setItem('comments_active', commentClass);
     });
-  }</script></div><div class="toggle sidebar-toggle"><span class="toggle-line toggle-line-first"></span> <span class="toggle-line toggle-line-middle"></span> <span class="toggle-line toggle-line-last"></span></div><aside class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc">文章目录</li><li class="sidebar-nav-overview">站点概览</li></ul><div class="post-toc-wrap sidebar-panel"><div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#5-数据管理"><span class="nav-text">5. 数据管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-数据卷"><span class="nav-text">5.1 数据卷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-选择-v-还是-–mount-参数"><span class="nav-text">5.2 选择 -v 还是 -–mount 参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-创建一个数据卷"><span class="nav-text">5.3 创建一个数据卷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-4-启动一个挂载数据卷的容器"><span class="nav-text">5.4 启动一个挂载数据卷的容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-5-查看数据卷的具体信息"><span class="nav-text">5.5 查看数据卷的具体信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-6-删除数据卷"><span class="nav-text">5.6 删除数据卷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-7-挂载一个主机目录作为数据卷"><span class="nav-text">5.7 挂载一个主机目录作为数据卷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-8-查看数据卷的具体信息"><span class="nav-text">5.8 查看数据卷的具体信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-9-挂载一个本地主机文件作为数据卷"><span class="nav-text">5.9 挂载一个本地主机文件作为数据卷</span></a></li></ol></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#6-使用网络"><span class="nav-text">6. 使用网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-外部访问容器"><span class="nav-text">6.1 外部访问容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-映射所有接口地址"><span class="nav-text">6.2 映射所有接口地址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-映射到指定地址的指定端口"><span class="nav-text">6.3 映射到指定地址的指定端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-4-映射到指定地址的任意端口"><span class="nav-text">6.4 映射到指定地址的任意端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-5-查看映射端口配置"><span class="nav-text">6.5 查看映射端口配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-7-容器互联"><span class="nav-text">6.7 容器互联</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-8-配置-DNS"><span class="nav-text">6.8 配置 DNS</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-Docker-Compose-组成-项目"><span class="nav-text">7. Docker Compose(组成) 项目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-Compose-简介"><span class="nav-text">7.1 Compose 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-安装与卸载"><span class="nav-text">7.2 安装与卸载</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-参考资料"><span class="nav-text">8. 参考资料</span></a></li></div></div><div class="site-overview-wrap sidebar-panel"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" alt="levonfly" src="/images/avatar.jpg"><p class="site-author-name" itemprop="name">levonfly</p><div class="site-description" itemprop="description">Keep it simple, stupid.</div></div><div class="site-state-wrap motion-element"><nav class="site-state"><div class="site-state-item site-state-posts"><a href="/archives/"><span class="site-state-item-count">206</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories/"><span class="site-state-item-count">45</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags/"><span class="site-state-item-count">120</span> <span class="site-state-item-name">标签</span></a></div></nav></div><div class="links-of-author motion-element"><span class="links-of-author-item"><a href="https://github.com/unix2dos" title="GitHub → https://github.com/unix2dos" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a> </span><span class="links-of-author-item"><a href="mailto:levonfly@gmail.com" title="E-Mail → mailto:levonfly@gmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a> </span><span class="links-of-author-item"><a href="https://twitter.com/levonfly" title="Twitter → https://twitter.com/levonfly" rel="noopener" target="_blank"><i class="twitter fa-fw"></i>Twitter</a> </span><span class="links-of-author-item"><a href="https://weibo.com/l6241425" title="Weibo → https://weibo.com/l6241425" rel="noopener" target="_blank"><i class="weibo fa-fw"></i>Weibo</a></span></div><div class="links-of-blogroll motion-element"><div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i> Links</div><ul class="links-of-blogroll-list"><li class="links-of-blogroll-item"><a href="http://luanruisong.com/" title="http://luanruisong.com/" rel="noopener" target="_blank">anwu's blog</a></li></ul></div></div></div></aside><div id="sidebar-dimmer"></div></div></main><footer class="footer"><div class="footer-inner"><div class="beian"><a href="https://beian.miit.gov.cn" rel="noopener" target="_blank">京ICP备20000727号 </a><img src="/images/beian.png" style="display:inline-block"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=11010502039978" rel="noopener" target="_blank">京公网安备11010502039978号</a></div><div class="copyright">&copy; <span itemprop="copyrightYear">2021</span> <span class="with-love"><i class="fa fa-heart"></i> </span><span class="author" itemprop="copyrightHolder">levonfly</span></div></div></footer></div><script src="/lib/anime.min.js"></script><script src="/lib/velocity/velocity.min.js"></script><script src="/lib/velocity/velocity.ui.min.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/pisces.js"></script><script src="/js/next-boot.js"></script><script>!function(){var e,t,o,n,r,a=document.getElementsByTagName("link");if(0<a.length)for(i=0;i<a.length;i++)"canonical"==a[i].rel.toLowerCase()&&a[i].href&&(e=a[i].href);t=e?e.split(":")[0]:window.location.protocol.split(":")[0],e=e||window.location.href,window,n=e,r=document.referrer,/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi.test(n)||(o="https"===String(t).toLowerCase()?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif",r?(o+="?r="+encodeURIComponent(document.referrer),n&&(o+="&l="+n)):n&&(o+="?l="+n),(new Image).src=o)}()</script><script src="/js/local-search.js"></script><script>NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#5-数据管理"><span class="nav-text">5. 数据管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-数据卷"><span class="nav-text">5.1 数据卷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-选择-v-还是-–mount-参数"><span class="nav-text">5.2 选择 -v 还是 -–mount 参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-创建一个数据卷"><span class="nav-text">5.3 创建一个数据卷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-4-启动一个挂载数据卷的容器"><span class="nav-text">5.4 启动一个挂载数据卷的容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-5-查看数据卷的具体信息"><span class="nav-text">5.5 查看数据卷的具体信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-6-删除数据卷"><span class="nav-text">5.6 删除数据卷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-7-挂载一个主机目录作为数据卷"><span class="nav-text">5.7 挂载一个主机目录作为数据卷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-8-查看数据卷的具体信息"><span class="nav-text">5.8 查看数据卷的具体信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-9-挂载一个本地主机文件作为数据卷"><span class="nav-text">5.9 挂载一个本地主机文件作为数据卷</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-使用网络"><span class="nav-text">6. 使用网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-外部访问容器"><span class="nav-text">6.1 外部访问容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-映射所有接口地址"><span class="nav-text">6.2 映射所有接口地址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-映射到指定地址的指定端口"><span class="nav-text">6.3 映射到指定地址的指定端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-4-映射到指定地址的任意端口"><span class="nav-text">6.4 映射到指定地址的任意端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-5-查看映射端口配置"><span class="nav-text">6.5 查看映射端口配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-7-容器互联"><span class="nav-text">6.7 容器互联</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-8-配置-DNS"><span class="nav-text">6.8 配置 DNS</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-Docker-Compose-组成-项目"><span class="nav-text">7. Docker Compose(组成) 项目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-Compose-简介"><span class="nav-text">7.1 Compose 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-安装与卸载"><span class="nav-text">7.2 安装与卸载</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-参考资料"><span class="nav-text">8. 参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="levonfly"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">levonfly</p>
+  <div class="site-description" itemprop="description">Keep it simple, stupid.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">206</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">45</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">120</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/unix2dos" title="GitHub → https://github.com/unix2dos" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:levonfly@gmail.com" title="E-Mail → mailto:levonfly@gmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/levonfly" title="Twitter → https://twitter.com/levonfly" rel="noopener" target="_blank"><i class="twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/l6241425" title="Weibo → https://weibo.com/l6241425" rel="noopener" target="_blank"><i class="weibo fa-fw"></i>Weibo</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://luanruisong.com/" title="http://luanruisong.com/" rel="noopener" target="_blank">anwu's blog</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn" rel="noopener" target="_blank">京ICP备20000727号 </a>
+      <img src="/images/beian.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=11010502039978" rel="noopener" target="_blank">京公网安备11010502039978号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">levonfly</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
   NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
     var GUEST = ['nick', 'mail', 'link'];
     var guest = 'nick,mail,link';
@@ -40,4 +905,8 @@
       serverURLs : ''
     });
   }, window.Valine);
-});</script></body></html>
+});
+</script>
+
+</body>
+</html>
