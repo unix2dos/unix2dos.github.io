@@ -1,10 +1,14 @@
 ---
-title: "文本搜索神器rg的介绍和使用"
-date: 2021-03-18 00:00:01
+title: 文本搜索神器rg的介绍和使用
 tags:
-- rg
-- grep
-- linux
+  - rg
+  - grep
+  - linux
+categories:
+  - 2-linux系统
+  - shell
+abbrlink: 868944ef
+date: 2021-03-18 00:00:01
 ---
 
 说到文本搜索工具，大家一定会知道 grep, 它是 linux 最有用并最常用的工具之一。但如果在一个大的工程项目中搜索某个关键词，它会有些耗时。
