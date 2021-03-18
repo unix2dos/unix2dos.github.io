@@ -12,7 +12,7 @@ fzf可以用于文件、命令历史记录、进程、主机名、书签、git�
 
 <!-- more -->
 
-# 1. 使用
+# 1. fzf使用
 
 ### 1.1 安装
 
@@ -27,6 +27,8 @@ source ~/.zshrc
 
 安装后, 可以执行下`fzf`, 先体验下, 另外 fzf 重写了 `ctrl+r` 搜索历史命令
 
+![image-20210318231127907](fzf%E6%A8%A1%E7%B3%8A%E6%90%9C%E7%B4%A2%E7%A5%9E%E5%99%A8%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/image-20210318231127907.png)
+
 ```bash
 vim $(fzf)  # 搜索后, 回车直接用 vi 打开
 vim $(fzf --height 40%) # 高度40%打开
@@ -36,7 +38,7 @@ vim $(fzf --height 40%) # 高度40%打开
 
 + bash和zsh的模糊完备, 默认触发是`**`,  例如: `vim **<TAB>`, 或 `cd **<TAB>`, 或 `ssh **<TAB>`, 简直好用到飞起.
 
-  ![image-20210318000439297](fzf%E6%90%9C%E7%B4%A2%E6%96%87%E4%BB%B6%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/image-20210318000439297.png)
+  ![image-20210318000439297](fzf%E6%A8%A1%E7%B3%8A%E6%90%9C%E7%B4%A2%E7%A5%9E%E5%99%A8%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/1.png)
 
 + 一边查一边预览
 
@@ -94,7 +96,7 @@ fo() {
 }
 ```
 
-
+![image-20210318231156159](fzf%E6%A8%A1%E7%B3%8A%E6%90%9C%E7%B4%A2%E7%A5%9E%E5%99%A8%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/image-20210318231156159.png)
 
 ### 1.6 切换目录
 
@@ -126,9 +128,26 @@ fif() {
 
 
 
-# 2. vim使用
+# 2. vim使用fzf
 
+### 2.1 安装
 
+```bash
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } "极限搜索文件
+Plug 'junegunn/fzf.vim'
+nnoremap <leader>fo :Files<CR>"映射
+nnoremap <leader>fif :Rg<CR> "映射
+```
+
+### 2.2 使用
+
+`:Files`
+
+![image-20210318230744605](fzf%E6%A8%A1%E7%B3%8A%E6%90%9C%E7%B4%A2%E7%A5%9E%E5%99%A8%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/2.png)
+
+`:Rg`
+
+![image-20210318230855552](fzf%E6%A8%A1%E7%B3%8A%E6%90%9C%E7%B4%A2%E7%A5%9E%E5%99%A8%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/3.png)
 
 
 
@@ -136,3 +155,4 @@ fif() {
 
 + https://github.com/junegunn/fzf
 + https://github.com/junegunn/fzf/wiki/Examples
++ https://github.com/junegunn/fzf.vim
