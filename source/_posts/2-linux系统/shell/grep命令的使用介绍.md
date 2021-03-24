@@ -144,12 +144,20 @@ grep -ino "test" a.txt
 
 
 
-我们想搜索结果只显示文件名
+如果我们搜索内容, 但结果只想展示文件名, 可以用`-l`选项
 
 ```bash
 grep -l "test" a.txt
 
 a.txt
+```
+
+
+
+如果我们想搜索文件的名字(注意不是内容), 需要用到 `find`指令
+
+``` bash
+find <path> -name *FileName*
 ```
 
 
