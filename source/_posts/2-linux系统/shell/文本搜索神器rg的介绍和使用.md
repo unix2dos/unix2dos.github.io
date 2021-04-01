@@ -27,7 +27,7 @@ RipGrep 是一个以行为单位的搜索工具， 它根据提供的 pattern �
 + 自动忽略.gitignore 中的文件以及二进制文件
 + 可以搜索指定文件类型（rg -t py foo限定 python 文件， rg -T js foo排除 js 文件)
 + 支持大部分 grep 的 feature(常用的都有)
-+ 支持各种文件编译（UTF-8， UTF-16， latin-1, GBK, EUC-JP, Shift_JIS 等等）
++ 支持各种文件编码（UTF-8， UTF-16， latin-1, GBK, EUC-JP, Shift_JIS 等等）
 + 支持搜索常见压缩文件(gzip, xz, lzma, bzip2, lz4)
 + 自动高亮匹配的结果
 
