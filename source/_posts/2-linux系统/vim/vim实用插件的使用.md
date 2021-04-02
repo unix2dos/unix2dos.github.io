@@ -1,8 +1,12 @@
 ---
-title: "vim实用插件的使用"
-date: 2021-03-20 00:00:00
+title: vim实用插件的使用
 tags:
-- vim
+  - vim
+categories:
+  - 2-linux系统
+  - vim
+abbrlink: 999f6ee6
+date: 2021-03-20 00:00:00
 ---
 
 工欲善其事必先利其器,  记录一些 vim 常用的插件。
