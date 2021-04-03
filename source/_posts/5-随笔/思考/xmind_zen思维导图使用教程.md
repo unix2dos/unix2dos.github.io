@@ -1,8 +1,12 @@
 ---
-title: "xmind_zen思维导图使用教程"
-date: 2021-04-02 00:00:00
+title: xmind_zen思维导图使用教程
 tags:
-- xmind
+  - xmind
+categories:
+  - 5-随笔
+  - 思考
+abbrlink: 2c700d35
+date: 2021-04-02 00:00:00
 ---
 
 # 1. 介绍
