@@ -9,9 +9,9 @@
 ### 1.1 安装
 
 ```bash
-$ wget https://mirrors.bfsu.edu.cn/apache/kafka/2.8.0/kafka_2.13-2.8.0.tgz
-$ tar -xzf kafka_2.13-2.8.0.tgz 
-$ cd kafka_2.13-2.8.0
+wget https://mirrors.bfsu.edu.cn/apache/kafka/2.8.0/kafka_2.13-2.8.0.tgz
+tar -xzf kafka_2.13-2.8.0.tgz 
+cd kafka_2.13-2.8.0
 ```
 
 启动
