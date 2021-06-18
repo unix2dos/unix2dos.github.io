@@ -1,9 +1,12 @@
 ---
-title: "filebeat输出到kafka"
-date: 2021-06-18 00:00:00
+title: filebeat输出到kafka
 tags:
-- kafka
-- filebeat
+  - kafka
+  - filebeat
+categories:
+  - 3-计算机系统
+  - 中间件
+date: 2021-06-18 00:00:00
 ---
 
 # 1. kafka
