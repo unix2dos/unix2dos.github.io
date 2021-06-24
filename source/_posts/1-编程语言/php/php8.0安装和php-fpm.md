@@ -116,6 +116,33 @@ server {
  <? phpinfo();
 ```
 
+### 1.5 systemctl 服务
+
+`vi /usr/lib/systemd/system/php-fpm.service`
+
+```bash
+[Unit]
+Description=The PHP FastCGI Process Manager
+After=syslog.target network.target
+
+[Service]
+Type=forking
+PIDFile=/usr/local/php/var/run/php-fpm.pid
+ExecStart=/usr/local/php/sbin/php-fpm
+ExecReload=/bin/kill -USR2 $MAINPID
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
+```
+
+启动服务
+
+```bash
+systemctl daemon-reload
+systemctl start php-fpm
+```
+
 
 
 # 2. fastcgi和php-fpm

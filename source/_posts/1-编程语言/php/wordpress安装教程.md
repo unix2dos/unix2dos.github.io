@@ -65,7 +65,6 @@ WordPress是使用PHP语言开发的博客平台，用户可以在支持PHP和My
   tar -xzvf latest.tar.gz 
   
   mv wordpress/ /var/www/
-  chown -R www-data:www-data /var/www/wordpress
   ```
 
 
