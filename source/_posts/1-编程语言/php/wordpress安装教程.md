@@ -1,10 +1,13 @@
 ---
-title: "wordpress安装教程"
-date: 2021-06-24 00:00:01
+title: wordpress安装教程
 tags:
-- php
-- wordpress
-- blog
+  - php
+  - wordpress
+  - blog
+categories:
+  - 1-编程语言
+  - php
+date: 2021-06-24 00:00:01
 ---
 
 
