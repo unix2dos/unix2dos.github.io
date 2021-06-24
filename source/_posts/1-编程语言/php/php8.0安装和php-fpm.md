@@ -23,9 +23,9 @@ https://www.php.net/downloads  下载php-8.0.0.tar.gz
 tar zxvf php-8.0.0.tar.gz
 
 
-sudo apt install -y pkg-config build-essential autoconf bison re2c libxml2-dev libsqlite3-dev libssl-dev libonig-dev
+sudo apt install -y pkg-config build-essential autoconf bison re2c libxml2-dev libsqlite3-dev libssl-dev libonig-dev libpng-dev zlib1g-dev libzip-dev
 
-./configure --prefix=/usr/local/php8 --with-config-file-path=/usr/local/php8/etc --enable-fpm --with-fpm-user=www --with-fpm-group=www --enable-mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --enable-mysqlnd-compression-support     --with-zlib  --enable-xml --disable-rpath --enable-bcmath --enable-shmop --enable-sysvsem  --with-curl --enable-mbregex --enable-mbstring --enable-intl   --enable-ftp  --enable-gd-jis-conv  --with-openssl --with-mhash --enable-pcntl --enable-sockets   --enable-soap --with-gettext --enable-fileinfo --enable-opcache --with-pear --without-gdbm --enable-gd --enable-exif --with-zip
+./configure --prefix=/usr/local/php8 --with-config-file-path=/usr/local/php8/etc --enable-fpm --enable-mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --enable-mysqlnd-compression-support  --with-zlib  --enable-xml --disable-rpath --enable-bcmath --enable-shmop --enable-sysvsem  --with-curl --enable-mbregex --enable-mbstring --enable-intl   --enable-ftp  --enable-gd-jis-conv  --with-openssl --with-mhash --enable-pcntl --enable-sockets   --enable-soap --with-gettext --enable-fileinfo --enable-opcache --with-pear --without-gdbm --enable-gd --enable-exif --with-zip
 
 make && make  install
 
