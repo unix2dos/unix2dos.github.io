@@ -25,38 +25,12 @@ tar zxvf php-8.0.0.tar.gz
 
 sudo apt install -y pkg-config build-essential autoconf bison re2c libxml2-dev libsqlite3-dev libssl-dev libonig-dev
 
-./configure --prefix=/usr/local/php --with-config-file-path=/usr/local/php/etc --enable-fpm --with-fpm-user=www --with-fpm-group=www --enable-mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --enable-mysqlnd-compression-support     --with-zlib  --enable-xml --disable-rpath --enable-bcmath --enable-shmop --enable-sysvsem  --with-curl --enable-mbregex --enable-mbstring --enable-intl   --enable-ftp  --enable-gd-jis-conv  --with-openssl --with-mhash --enable-pcntl --enable-sockets   --enable-soap --with-gettext --disable-fileinfo --enable-opcache --with-pear --without-gdbm
+./configure --prefix=/usr/local/php8 --with-config-file-path=/usr/local/php8/etc --enable-fpm --with-fpm-user=www --with-fpm-group=www --enable-mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --enable-mysqlnd-compression-support     --with-zlib  --enable-xml --disable-rpath --enable-bcmath --enable-shmop --enable-sysvsem  --with-curl --enable-mbregex --enable-mbstring --enable-intl   --enable-ftp  --enable-gd-jis-conv  --with-openssl --with-mhash --enable-pcntl --enable-sockets   --enable-soap --with-gettext --enable-fileinfo --enable-opcache --with-pear --without-gdbm --enable-gd --enable-exif --with-zip
 
 make && make  install
 
-
-# 最后安装如下
-Installing shared extensions:     /usr/local/php/lib/php/extensions/no-debug-non-zts-20200930/
-Installing PHP CLI binary:        /usr/local/php/bin/
-Installing PHP CLI man page:      /usr/local/php/php/man/man1/
-Installing PHP FPM binary:        /usr/local/php/sbin/
-Installing PHP FPM defconfig:     /usr/local/php/etc/
-Installing PHP FPM man page:      /usr/local/php/php/man/man8/
-Installing PHP FPM status page:   /usr/local/php/php/php/fpm/
-Installing phpdbg binary:         /usr/local/php/bin/
-Installing phpdbg man page:       /usr/local/php/php/man/man1/
-Installing PHP CGI binary:        /usr/local/php/bin/
-Installing PHP CGI man page:      /usr/local/php/php/man/man1/
-Installing build environment:     /usr/local/php/lib/php/build/
-Installing header files:          /usr/local/php/include/php/
-Installing helper programs:       /usr/local/php/bin/
-  program: phpize
-  program: php-config
-Installing man pages:             /usr/local/php/php/man/man1/
-  page: phpize.1
-  page: php-config.1
-/root/workspace/php-8.0.0/build/shtool install -c ext/phar/phar.phar /usr/local/php/bin/phar.phar
-ln -s -f phar.phar /usr/local/php/bin/phar
-Installing PDO headers:           /usr/local/php/include/php/ext/pdo/
-
-
 # 查看版本
-/usr/local/php/bin/php -v 
+/usr/local/php8/bin/php -v 
 ```
 
 
@@ -64,21 +38,21 @@ Installing PDO headers:           /usr/local/php/include/php/ext/pdo/
 ### 1.3 启动 php-fpm
 
 ```bash
-cd /usr/local/php/etc
+cd /usr/local/php8/etc
 cp php-fpm.conf.default  php-fpm.conf
 vi php-fpm.conf   
 去掉# pid = run/php-fpm.pid 前面的注释
 
 
-cd /usr/local/php/etc/php-fpm.d
+cd /usr/local/php8/etc/php-fpm.d
 cp www.conf.default  www.conf
 
 
 # 测试
-/usr/local/php/sbin/php-fpm -t
+/usr/local/php8/sbin/php-fpm -t
 
 # 启动
-/usr/local/php/sbin/php-fpm  # 报错 cannot get gid for group 'nobody'
+/usr/local/php8/sbin/php-fpm  # 报错 cannot get gid for group 'nobody'
 groupadd nobody # 增加组即可
 ```
 
