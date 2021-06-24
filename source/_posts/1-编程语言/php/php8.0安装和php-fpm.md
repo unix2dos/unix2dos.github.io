@@ -23,9 +23,9 @@ https://www.php.net/downloads  下载php-8.0.0.tar.gz
 tar zxvf php-8.0.0.tar.gz
 
 
-sudo apt install -y pkg-config build-essential autoconf bison re2c libxml2-dev libsqlite3-dev
+sudo apt install -y pkg-config build-essential autoconf bison re2c libxml2-dev libsqlite3-dev libssl-dev libonig-dev
 
-./configure --prefix=/usr/local/php  --enable-fpm
+./configure --prefix=/usr/local/php --with-config-file-path=/usr/local/php/etc --enable-fpm --with-fpm-user=www --with-fpm-group=www --enable-mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --enable-mysqlnd-compression-support     --with-zlib  --enable-xml --disable-rpath --enable-bcmath --enable-shmop --enable-sysvsem  --with-curl --enable-mbregex --enable-mbstring --enable-intl   --enable-ftp  --enable-gd-jis-conv  --with-openssl --with-mhash --enable-pcntl --enable-sockets   --enable-soap --with-gettext --disable-fileinfo --enable-opcache --with-pear --without-gdbm
 
 make && make  install
 
