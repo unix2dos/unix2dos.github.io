@@ -13,9 +13,9 @@ date: 2021-06-24 00:00:01
 
 WordPress是使用PHP语言开发的博客平台，用户可以在支持PHP和MySQL数据库的服务器上架设属于自己的网站。也可以把 WordPress当作一个内容管理系统（CMS）来使用。
 
-网站: https://cn.wordpress.org/
-
 <!-- more -->
+
+中文官网: https://cn.wordpress.org/
 
 # 1. 安装
 

@@ -198,6 +198,6 @@ PHP的解释器是php-cgi。php-cgi只是个CGI程序，他自己本身只能解
 # 3. 参考资料
 
 + https://www.jianshu.com/p/7627c794b272
-
 + https://segmentfault.com/q/1010000000256516
++ https://huaien.co/technology/no-enough-memory-to-make-php/ (编译时内存不足的问题)
 
