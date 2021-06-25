@@ -7,13 +7,11 @@ tags:
 - blog
 ---
 
-记录配置 wordpress 时的一些问题.
-
-<!-- more -->
-
 # 1. 安装插件需要ftp
 
 Wordpress安装主题或者插件的时候会遇到需要输入FTP的情况，这种情况是由于网站目录权限引起的。
+
+<!-- more -->
 
 1. 在wp-config.php文件添加以下代码：
 
