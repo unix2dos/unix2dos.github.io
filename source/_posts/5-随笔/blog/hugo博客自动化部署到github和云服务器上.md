@@ -1,10 +1,14 @@
 ---
-title: "hugo博客自动化部署到github和云服务器上"
-date: 2021-06-27 00:00:01
+title: hugo博客自动化部署到github和云服务器上
 tags:
-- hugo
-- 博客
-- github
+  - hugo
+  - 博客
+  - github
+categories:
+  - 5-随笔
+  - blog
+abbrlink: 35554ffc
+date: 2021-06-27 00:00:01
 ---
 
 新的博客系统准备使用hugo,  更想专注于写, 而不是写完每次都敲命令部署, 接下来搞下自动化部署.
