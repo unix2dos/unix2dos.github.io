@@ -81,7 +81,7 @@ chown -R nobody:nobody /var/www/wordpress/  # 不知道用户可以把目录权�
 
 3. 进入WP后台，进入设置-常规 将WordPress地址（URL）、站点地址（URL）两项修改为：https。
 
-   ![1](wordpress%E9%85%8D%E7%BD%AE/1-4589820.png)
+   ![1](wordpress配置技巧/1.png)
 
 
 4. 登录和后台强制开启SSL, 修改WP-config.php文件

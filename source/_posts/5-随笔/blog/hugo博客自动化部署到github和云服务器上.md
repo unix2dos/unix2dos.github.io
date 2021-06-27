@@ -102,7 +102,7 @@ cd .. && rm -rf public
 
   去项目的`Actions`增加自己的workflow
   
-  ![1](hugo%E5%8D%9A%E5%AE%A2%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%E5%88%B0github%E5%92%8C%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A/1.png)
+  ![1](hugo博客自动化部署到github和云服务器上/1.png)
 
   内容如下:
 
@@ -148,8 +148,8 @@ cd .. && rm -rf public
 
 首先先设置国内外分流, 就要求同一个域名, 不同的线路指向不同的地址: 如下图
 
-![1](hugo%E5%8D%9A%E5%AE%A2%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%E5%88%B0github%E5%92%8C%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A/2.png)
-![1](hugo%E5%8D%9A%E5%AE%A2%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%E5%88%B0github%E5%92%8C%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A/3.png)
+![1](hugo博客自动化部署到github和云服务器上/2.png)
+![1](hugo博客自动化部署到github和云服务器上/3.png)
 
 境内我指向了我的云服务器, 境外我指向了`github page`, 国外github已经帮我们处理好了, 接下来需要处理一下国内的访问.
 
@@ -196,7 +196,7 @@ server {
 
 在项目->Settings->Secrets, 添加相应的变量
 
-![1](hugo%E5%8D%9A%E5%AE%A2%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%E5%88%B0github%E5%92%8C%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A/4.png)
+![1](hugo博客自动化部署到github和云服务器上/4.png)
 
 + github action 配置如下
 
@@ -245,7 +245,7 @@ server {
 
 在项目的`Actions`下可以看到相应的执行状态:
 
-![1](hugo%E5%8D%9A%E5%AE%A2%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%E5%88%B0github%E5%92%8C%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A/5.png)
+![1](hugo博客自动化部署到github和云服务器上/5.png)
 
 # 3. 参考资料
 
