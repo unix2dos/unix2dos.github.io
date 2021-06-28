@@ -17,7 +17,7 @@ uTP协议是一个基于UDP的开放的BT点对点文件共享协议。在uTP协
 
 一个有效的uTP数据包包含下面格式的报头
 
-![1](Kademlia_DHT_KRPC_BitTorrent协议/2.png)
+![1](Kademlia_DHT_KRPC_BitTorrent协议2/1.png)
 
 
 1. type(包类型):
