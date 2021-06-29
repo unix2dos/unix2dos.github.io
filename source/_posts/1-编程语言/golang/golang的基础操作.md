@@ -1,11 +1,11 @@
 ---
-title: "golang的一些基础操作"
+title: "golang的基础操作"
 date: 2021-06-29 00:00:01
 tags:
 - golang
 ---
 
-好久没写golang相关的blog了, 记录一些常见的golang操作
+好久没写golang相关的blog了, 记录一些常见的golang操作.
 
 <!-- more -->
 
