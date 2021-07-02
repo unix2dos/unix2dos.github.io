@@ -32,13 +32,17 @@ date: 2019-07-02 21:40:46
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 
-有效配置
+`.zshrc`文件加下面配置
+
+```ini
+# ~/.zshrc
+export ZSH="/Users/liuwei/.oh-my-zsh"
+```
+
+重置下配置文件
 
 ```bash
- export ZSH="/Users/liuwei/.oh-my-zsh"
- ZSH_THEME="robbyrussell"
- plugins=(git)
- source $ZSH/oh-my-zsh.sh
+source $ZSH/oh-my-zsh.sh
 ```
 
 
@@ -59,6 +63,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 + 主题配置
 
 ```bash
+# ~/.zshrc
 POWERLEVEL9K_MODE='nerdfont-complete'
 ZSH_THEME="powerlevel10k/powerlevel10k"
 POWERLEVEL9K_CONTEXT_TEMPLATE='%n'
@@ -75,7 +80,7 @@ POWERLEVEL9K_WIFI_FOREGROUND="black"
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon context ssh dir vcs)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status proxy anaconda node_version go_version wifi)
 
-# 看颜色
+# 在终端下执行下面的命令, 可以看到代号对应的颜色
 # for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}; done
 ```
 
@@ -83,33 +88,20 @@ POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status proxy anaconda node_version go_versio
 
 ### 1.3 安装字体
 
-```bash
-# 下载推荐字体
-https://github.com/romkatv/powerlevel10k#meslo-nerd-font-patched-for-powerlevel10k
-```
+下载推荐字体
+
++ https://github.com/romkatv/powerlevel10k#meslo-nerd-font-patched-for-powerlevel10k
 
 也可选择其他字体安装
 
-```bash
-# powerline
-git clone https://github.com/powerline/fonts
-./install.sh
-
-# awesome-terminal-font
-git clone https://github.com/gabrielelana/awesome-terminal-fonts
-打开build文件夹双击安装
-
-# nerd-fonts, 装这个即可
-https://github.com/ryanoasis/nerd-fonts/
-
-brew tap homebrew/cask-fonts
-brew cask install font-hack-nerd-font
-```
-
-
+  ```bash
+  # 几个字体仓库
+  https://github.com/powerline/fonts
+  https://github.com/gabrielelana/awesome-terminal-fonts
+  https://github.com/ryanoasis/nerd-fonts/
+  ```
 
 然后在iterm2里面，把字体改成后缀为powerline的字体就行了
-
 ![1](iterm2_zsh配置/1.png)
 
 
@@ -149,17 +141,13 @@ plugins=(zsh-syntax-highlighting)
 
 # 3. 配色
 
-
-
 ### 3.1 配色项目
 
 ```bash
-https://github.com/dracula/dracula-theme/ # 选用的这个!!!好看!!!支持各种终端
+https://github.com/dracula/dracula-theme/ # 选用的这个!!!好看!!!支持各种终端,吸血鬼配色
 https://github.com/mbadolato/iTerm2-Color-Schemes # 这上面好多, 慢慢挑
 https://github.com/MartinSeeler/iterm2-material-design 
 ```
-
-
 
 ### 3.2 安装dracula
 
@@ -195,5 +183,4 @@ source $ZSH/oh-my-zsh.sh
 + [打造 Mac 下高颜值好用的终端环境](https://blog.biezhi.me/2018/11/build-a-beautiful-mac-terminal-environment.html)
 
 + https://medium.com/@Clovis_app/configuration-of-a-beautiful-efficient-terminal-and-prompt-on-osx-in-7-minutes-827c29391961
-
 
