@@ -74,7 +74,7 @@ Undo log中存储的是老版本数据，当一个事务需要读取记录行时
 
 # 2. MVCC流程
 
-### 2.1 undo log 链
+### 2.1 版本链
 
   假设有一条记录行如下，字段有Name和Honor，值分别为"curry"和"mvp"，最新修改这条记录的事务ID为1。
 
@@ -87,7 +87,7 @@ Undo log中存储的是老版本数据，当一个事务需要读取记录行时
   ```ini
   ①事务A先对该行加排它锁
   
-  ②然后把该行数据拷贝到undo log中，作为旧版本
+  ②然后把该行数据(修改前)拷贝到undo log中，作为旧版本
   
   ③拷贝完毕后，修改该行的Honor为"fmvp"，并且修改DB_TRX_ID为2（事务A的ID）, 回滚指针指向拷贝到undo log的旧版本。（然后还会将修改后的最新数据写入redo log）
   
@@ -113,7 +113,7 @@ Undo log中存储的是老版本数据，当一个事务需要读取记录行时
 
 从上面可以看出，不同事务或者相同事务的对同一记录行的修改，会使该记录行的undo log成为一条链表，undo log的链首就是最新的旧记录，链尾就是最早的旧记录。
 
-### 2.2 数据可见性算法
+### 2.2 记录可见性
 
  在innodb中，创建一个新事务后，执行第一个select语句的时候，innodb会创建一个快照（read view），快照中会保存系统当前不应该被本事务看到的其他活跃事务id列表（即trx_ids）。当用户在这个事务中要读取某个记录行的时候，innodb会将该记录行的DB_TRX_ID与该Read View中的一些变量进行比较，判断是否满足可见性条件。
 
@@ -152,20 +152,19 @@ Undo log中存储的是老版本数据，当一个事务需要读取记录行时
 
 
 
-# 3. 当前读和快照读
+# 3. 快照读和当前读
 
-+ 当前读(current read) ：select ... lock in share mode，select ... for update，insert，update，delete 语句（这些语句获取的是数据库中的最新数据）
-+ 快照读(snapshot read)：普通的 select 语句
+### 3.1 快照读(snapshot read)
 
-### 3.1 普通 select
+快照读是指读取数据时不是读取最新版本的数据，而是基于历史版本读取的一个快照信息（mysql读取undo log历史版本) ，快照读可以使普通的SELECT 读取数据时**不用对表数据进行加锁**。
 
-只靠 MVCC 实现RR隔离级别，可以保证可重复读，还能防止部分幻读，但并不是完全防止。
+比如事务A开始后，执行普通select语句，创建了快照；之后事务B执行insert语句；然后事务A再执行普通select语句，得到的还是之前B没有insert过的数据，因为这时候A读的数据是符合快照可见性条件的数据。
 
-比如事务A开始后，执行普通select语句，创建了快照；之后事务B执行insert语句；然后事务A再执行普通select语句，得到的还是之前B没有insert过的数据，因为这时候A读的数据是符合快照可见性条件的数据。这就防止了部分幻读，此时事务A是快照读。
 
-### 3.2 select ... for update
 
-但是，如果事务A执行的不是普通select语句，而是select ... for update等语句，这时候，事务A是当前读，每次语句执行的时候都是获取的最新数据。
+### 3.2 当前读(current read)
+
+当前读是读取的数据库最新的数据，当前读和快照读不同，因为要读取最新的数据而且要保证事务的隔离性，所以当前读是需要对数据进行加锁的（select ... lock in share mode，select ... for update，insert，update，delete 语句）
 
 也就是说，在只有MVCC时，A先执行 select ... where nid between 1 and 10 … for update；然后事务B再执行  insert … nid = 5 …；然后 A 再执行 select ... where nid between 1 and 10 … for update，就会发现，多了一条B insert进去的记录。这就产生幻读了，所以单独靠MVCC并不能完全防止幻读。
 
@@ -177,13 +176,9 @@ Undo log中存储的是老版本数据，当一个事务需要读取记录行时
 
 查看数据的事务隔离级别:  `SELECT @@tx_isolation;`
 
-+ Read Committed级别, 事务在begin之后，执行每条select（读操作）语句时，快照会被重置，即会重新创建一个快照(read view)。
+1. Read Committed级别, 事务在begin之后，执行每条select（读操作）语句时，快照会被重置，即会重新创建一个快照(read view)。
 
-+ Repeatable Read级别, 只有事务在begin之后，执行第一条select（读操作）时, 才会创建一个快照(read view)，将当前系统中活跃的其他事务记录起来；并且事务之后都是使用的这个快照，不会重新创建，直到事务结束。
-
-  
-
-普通select语句不会对访问的数据加锁，只有普通select语句才会创建快照，select ... lock in share mode，select ... for update不会，update、delete、insert语句也不会，因为它们都是 当前读，会对访问的数据加锁。
+2. Repeatable Read级别, 只有事务在begin之后，执行第一条select（读操作）时, 才会创建一个快照(read view)，将当前系统中活跃的其他事务记录起来；并且事务之后都是使用的这个快照，不会重新创建，直到事务结束。
 
 
 
