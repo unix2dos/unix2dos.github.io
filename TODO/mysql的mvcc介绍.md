@@ -1,6 +1,6 @@
 ---
 title: "mysql的mvcc介绍"
-date: 2021-07-06 00:00:00
+date: 2021-07-06 00:00:01
 tags:
 - mysql
 ---
@@ -74,28 +74,120 @@ Undo log中存储的是老版本数据，当一个事务需要读取记录行时
 
 # 2. MVCC流程
 
+### 2.1 undo log 链
+
+  假设有一条记录行如下，字段有Name和Honor，值分别为"curry"和"mvp"，最新修改这条记录的事务ID为1。
+
+![1](mysql的mvcc介绍/1.png)
+
++ 现在事务A（事务ID为2）对该记录的Honor做出了修改，将Honor改为"fmvp"：
+
+  ![1](mysql的mvcc介绍/2.png)
+  
+  ```ini
+  ①事务A先对该行加排它锁
+  
+  ②然后把该行数据拷贝到undo log中，作为旧版本
+  
+  ③拷贝完毕后，修改该行的Honor为"fmvp"，并且修改DB_TRX_ID为2（事务A的ID）, 回滚指针指向拷贝到undo log的旧版本。（然后还会将修改后的最新数据写入redo log）
+  
+  ④事务提交，释放排他锁
+  ```
 
 
 
++ 接着事务B（事务ID为3）修改同一个记录行，将Name修改为"iguodala"：
+
+	![1](mysql的mvcc介绍/3.png)
+	
+	```ini
+	①事务B先对该行加排它锁
+	
+	②然后把该行数据拷贝到undo log中，作为旧版本
+	
+	③拷贝完毕后，修改该行Name为"iguodala"，并且修改DB_TRX_ID为3（事务B的ID）, 回滚指针指向拷贝到undo log最新的旧版本。
+	
+	④事务提交，释放排他锁
+
+ 
+
+从上面可以看出，不同事务或者相同事务的对同一记录行的修改，会使该记录行的undo log成为一条链表，undo log的链首就是最新的旧记录，链尾就是最早的旧记录。
+
+### 2.2 数据可见性算法
+
+ 在innodb中，创建一个新事务后，执行第一个select语句的时候，innodb会创建一个快照（read view），快照中会保存系统当前不应该被本事务看到的其他活跃事务id列表（即trx_ids）。当用户在这个事务中要读取某个记录行的时候，innodb会将该记录行的DB_TRX_ID与该Read View中的一些变量进行比较，判断是否满足可见性条件。
+
+假设当前事务要读取某一个记录行，该记录行的DB_TRX_ID（即最新修改该行的事务ID）为trx_id，Read View的活跃事务列表trx_ids中最早的事务ID为up_limit_id，将在生成这个Read Vew时系统出现过的最大的事务ID+1记为low_limit_id（即还未分配的事务ID）。
+
+具体的比较算法如下（可以照着后面的 例子）:
+
+```bash
+1. 如果 trx_id < up_limit_id, 那么表明“最新修改该行的事务”在“当前事务”创建快照之前就提交了，所以该记录行的值对当前事务是可见的。跳到步骤5。
+
+2. 如果 trx_id >= low_limit_id, 那么表明“最新修改该行的事务”在“当前事务”创建快照之后才修改该行，所以该记录行的值对当前事务不可见。跳到步骤4。
+
+3. 如果 up_limit_id <= trx_id < low_limit_id, 表明“最新修改该行的事务”在“当前事务”创建快照的时候可能处于“活动状态”或者“已提交状态”；所以就要对活跃事务列表trx_ids进行查找（源码中是用的二分查找，因为是有序的）：
+
+  3.1 如果在活跃事务列表trx_ids中能找到 id 为 trx_id 的事务，表明①在“当前事务”创建快照前，“该记录行的值”被“id为trx_id的事务”修改了，但没有提交；或者②在“当前事务”创建快照后，“该记录行的值”被“id为trx_id的事务”修改了（不管有无提交）；这些情况下，这个记录行的值对当前事务都是不可见的，跳到步骤4；
+
+  3.2 在活跃事务列表中找不到，则表明“id为trx_id的事务”在修改“该记录行的值”后，在“当前事务”创建快照前就已经提交了，所以记录行对当前事务可见，跳到步骤5。
+
+4. 在该记录行的 DB_ROLL_PTR 指针所指向的undo log回滚段中，取出最新的的旧事务号DB_TRX_ID, 将它赋给trx_id，然后跳到步骤1重新开始判断。
+
+5. 将该可见行的值返回。
+```
 
 
 
+### 2.3 例子
 
-1.查看数据的事务隔离级别
+| 假设原始数据行： |           |           |             |
+| ---------------- | --------- | --------- | ----------- |
+| Field            | DB_ROW_ID | DB_TRX_ID | DB_ROLL_PTR |
+| 0                | 10        | 10000     | 0x13525342  |
 
-SELECT @@tx_isolation;
+流程如下:
 
-
-
-
-
-
-
-
+![1](mysql的mvcc介绍/4.png)
 
 
 
+# 3. 当前读和快照读
 
++ 当前读(current read) ：select ... lock in share mode，select ... for update，insert，update，delete 语句（这些语句获取的是数据库中的最新数据）
++ 快照读(snapshot read)：普通的 select 语句
+
+### 3.1 普通 select
+
+只靠 MVCC 实现RR隔离级别，可以保证可重复读，还能防止部分幻读，但并不是完全防止。
+
+比如事务A开始后，执行普通select语句，创建了快照；之后事务B执行insert语句；然后事务A再执行普通select语句，得到的还是之前B没有insert过的数据，因为这时候A读的数据是符合快照可见性条件的数据。这就防止了部分幻读，此时事务A是快照读。
+
+### 3.2 select ... for update
+
+但是，如果事务A执行的不是普通select语句，而是select ... for update等语句，这时候，事务A是当前读，每次语句执行的时候都是获取的最新数据。
+
+也就是说，在只有MVCC时，A先执行 select ... where nid between 1 and 10 … for update；然后事务B再执行  insert … nid = 5 …；然后 A 再执行 select ... where nid between 1 and 10 … for update，就会发现，多了一条B insert进去的记录。这就产生幻读了，所以单独靠MVCC并不能完全防止幻读。
+
+因此，InnoDB在实现RR隔离级别时，不仅使用了MVCC，还会对“当前读语句”读取的记录行加记录锁（record lock）和间隙锁（gap lock），禁止其他事务在间隙间插入记录行，来防止幻读。也就是前文说的"行级锁+MVCC"。
+
+
+
+### 3.3 RR和RC的Read View
+
+查看数据的事务隔离级别:  `SELECT @@tx_isolation;`
+
++ Read Committed级别, 事务在begin之后，执行每条select（读操作）语句时，快照会被重置，即会重新创建一个快照(read view)。
+
++ Repeatable Read级别, 只有事务在begin之后，执行第一条select（读操作）时, 才会创建一个快照(read view)，将当前系统中活跃的其他事务记录起来；并且事务之后都是使用的这个快照，不会重新创建，直到事务结束。
+
+  
+
+普通select语句不会对访问的数据加锁，只有普通select语句才会创建快照，select ... lock in share mode，select ... for update不会，update、delete、insert语句也不会，因为它们都是 当前读，会对访问的数据加锁。
+
+
+
+# 4. 参考资料
 
 + https://zhuanlan.zhihu.com/p/66791480
 + https://zhuanlan.zhihu.com/p/52977862
