@@ -4,7 +4,7 @@ tags:
   - linux
 categories:
   - 2-linux系统
-  - shell
+  - 系统
 abbrlink: 6dc03659
 date: 2020-03-16 00:00:00
 ---

@@ -5,8 +5,8 @@ tags:
   - wordpress
   - blog
 categories:
-  - 5-随笔
-  - blog
+  - 1-编程语言
+  - php
 abbrlink: 311b7b94
 date: 2021-02-25 00:00:01
 ---

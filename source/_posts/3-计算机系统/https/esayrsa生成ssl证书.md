@@ -5,7 +5,7 @@ tags:
   - https
 abbrlink: df25a0d8
 categories:
-  - 2-linux系统
+  - 3-计算机系统
   - https
 date: 2018-07-07 12:01:26
 ---

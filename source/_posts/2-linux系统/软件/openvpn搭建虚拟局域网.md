@@ -5,7 +5,7 @@ tags:
   - openvpn
 categories:
   - 2-linux系统
-  - 系统
+  - 软件
 abbrlink: a84d9911
 date: 2019-11-23 16:11:40
 ---

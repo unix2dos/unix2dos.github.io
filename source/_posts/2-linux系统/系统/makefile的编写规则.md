@@ -4,7 +4,7 @@ tags:
   - makefile
 categories:
   - 2-linux系统
-  - shell
+  - 系统
 abbrlink: 4cf47ff4
 date: 2019-11-21 21:11:46
 ---

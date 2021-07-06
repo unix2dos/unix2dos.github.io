@@ -4,7 +4,7 @@ tags:
   - supervisor
 categories:
   - 2-linux系统
-  - 命令
+  - 系统
 abbrlink: 1825ecdb
 date: 2020-08-23 00:00:01
 ---

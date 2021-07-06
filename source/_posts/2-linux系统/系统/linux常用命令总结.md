@@ -5,7 +5,7 @@ tags:
 abbrlink: 1d063ae7
 categories:
   - 2-linux系统
-  - 命令
+  - 系统
 date: 2019-07-19 17:54:46
 ---
 

@@ -1,8 +1,12 @@
 ---
-title: "mysql的mvcc介绍"
-date: 2021-07-06 00:00:01
+title: mysql的mvcc介绍
 tags:
-- mysql
+  - mysql
+categories:
+  - 1-编程语言
+  - sql
+abbrlink: a0f7945d
+date: 2021-07-06 00:00:01
 ---
 
 # 1. MVCC概念

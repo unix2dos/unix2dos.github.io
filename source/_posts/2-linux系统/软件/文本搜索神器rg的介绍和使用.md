@@ -6,7 +6,7 @@ tags:
   - linux
 categories:
   - 2-linux系统
-  - shell
+  - 软件
 abbrlink: 868944ef
 date: 2021-03-18 00:00:01
 ---

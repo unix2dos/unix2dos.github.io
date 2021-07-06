@@ -5,7 +5,7 @@ tags:
   - linux
 abbrlink: ee822cec
 categories:
-  - 2-linux系统
+  - 3-计算机系统
   - https
 date: 2019-07-23 20:54:46
 ---

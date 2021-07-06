@@ -1,10 +1,11 @@
 ---
 title: shell批量文件内容复制到一个文件内
-tags: ["shell"]
+tags:
+  - shell
 abbrlink: 875a198
 categories:
   - 2-linux系统
-  - shell
+  - 系统
 date: 2016-11-29 17:54:46
 ---
 

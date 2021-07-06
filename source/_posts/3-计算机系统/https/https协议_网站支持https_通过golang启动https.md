@@ -6,7 +6,7 @@ tags:
   - golang
 abbrlink: fcd8becb
 categories:
-  - 2-linux系统
+  - 3-计算机系统
   - https
 date: 2019-07-18 19:08:01
 ---

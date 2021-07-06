@@ -1,10 +1,11 @@
 ---
 title: rsync同步文件
-tags: ["linux"]
+tags:
+  - linux
 abbrlink: f67a2ed5
 categories:
   - 2-linux系统
-  - 命令
+  - 系统
 date: 2017-04-18 17:54:46
 ---
 

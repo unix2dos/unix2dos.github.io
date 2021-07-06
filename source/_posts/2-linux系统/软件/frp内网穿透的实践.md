@@ -5,7 +5,7 @@ tags:
   - linux
 categories:
   - 2-linux系统
-  - 系统
+  - 软件
 abbrlink: cc6fa0e8
 date: 2019-12-13 21:11:46
 ---

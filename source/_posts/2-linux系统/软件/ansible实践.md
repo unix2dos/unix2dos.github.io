@@ -6,7 +6,7 @@ tags:
 abbrlink: 18605da6
 categories:
   - 2-linux系统
-  - 系统
+  - 软件
 date: 2019-08-01 19:54:46
 ---
 

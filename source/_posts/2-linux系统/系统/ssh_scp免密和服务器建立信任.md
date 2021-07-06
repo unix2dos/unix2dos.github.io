@@ -1,10 +1,11 @@
 ---
 title: ssh_scp免密和服务器建立信任
-tags: ["ssh"]
+tags:
+  - ssh
 abbrlink: fe0e5995
 categories:
   - 2-linux系统
-  - 命令
+  - 系统
 date: 2018-02-13 17:54:46
 ---
 

@@ -5,7 +5,7 @@ tags:
   - linux
 categories:
   - 2-linux系统
-  - shell
+  - 系统
 abbrlink: '67723314'
 date: 2020-04-14 15:54:46
 ---

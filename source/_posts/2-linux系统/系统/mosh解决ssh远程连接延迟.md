@@ -1,10 +1,11 @@
 ---
 title: mosh解决ssh远程连接延迟
-tags: ["linux"]
+tags:
+  - linux
 abbrlink: 21b6636c
 categories:
   - 2-linux系统
-  - 命令
+  - 系统
 date: 2017-04-06 17:54:46
 ---
 
