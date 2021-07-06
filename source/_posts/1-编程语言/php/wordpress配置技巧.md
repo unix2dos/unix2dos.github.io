@@ -8,7 +8,7 @@ categories:
   - 5-随笔
   - blog
 abbrlink: 311b7b94
-date: 2021-06-25 00:00:01
+date: 2021-02-25 00:00:01
 ---
 
 # 1. 安装插件需要ftp

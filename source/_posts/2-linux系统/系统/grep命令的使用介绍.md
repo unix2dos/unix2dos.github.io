@@ -6,7 +6,7 @@ categories:
   - 2-linux系统
   - shell
 abbrlink: 6dc03659
-date: 2021-03-16 00:00:00
+date: 2020-03-16 00:00:00
 ---
 
 grep是Linux中最常用的”文本处理工具”之一，grep与sed、awk合称为Linux中的三剑客。
