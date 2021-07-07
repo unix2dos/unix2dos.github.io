@@ -406,7 +406,31 @@ func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
   }
   ```
 
+
+# 5. 数组
+
+### 5.1 数组中重复的数字
+
++ https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof/
+
++ **头脑风暴: 临时数组++**
+
+  ```go
+  func findRepeatNumber(nums []int) int {
   
+      arr := make([]int, len(nums), len(nums))
+      for i := 0; i < len(nums); i++{
+          arr[nums[i]]++   // 题目说明, <n, 不会越界
+          if arr[nums[i]] > 1{
+              return nums[i]
+          }
+      }
+  
+      return 0
+  }
+  ```
+
+
 
 # 8. 其他
 
