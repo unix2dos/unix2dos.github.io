@@ -35,6 +35,8 @@ func reverseList(head *ListNode) *ListNode {
 
 + 循环版本
 
+  **头脑: 头尾四连咬**
+
 ```go
 func reverseList(head *ListNode) *ListNode {
     var prev,curr *ListNode
@@ -54,9 +56,9 @@ func reverseList(head *ListNode) *ListNode {
 
 ### 1.2 链表有环和入口
 
-+ https://leetcode-cn.com/problems/linked-list-cycle/
+##### 1.2.1 有环  
 
-+ https://leetcode-cn.com/problems/linked-list-cycle-ii/
++ https://leetcode-cn.com/problems/linked-list-cycle/
 
 + hash
 
@@ -65,6 +67,8 @@ func reverseList(head *ListNode) *ListNode {
 + 快慢指针 
 
   头结点和相遇节点离入口点距离一样
+  
+  **头脑: fast 阶梯判断**
 
 ```go
 func hasCycle(head *ListNode) bool {
@@ -81,7 +85,9 @@ func hasCycle(head *ListNode) bool {
 }
 ```
 
-+ 找入口
+##### 1.2.2 找入口
+
++ https://leetcode-cn.com/problems/linked-list-cycle-ii/
 
 ```go
 func detectCycle(head *ListNode) *ListNode {
@@ -462,7 +468,6 @@ func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
       this.List = append(this.List, key)
   }
   ```
-  
 
 
 
