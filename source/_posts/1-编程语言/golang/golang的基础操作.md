@@ -6,7 +6,7 @@ categories:
   - 1-编程语言
   - golang
 abbrlink: c79ad2a9
-date: 2021-06-29 00:00:01
+date: 2020-06-29 00:00:01
 ---
 
 好久没写golang相关的blog了, 记录一些常见的golang操作

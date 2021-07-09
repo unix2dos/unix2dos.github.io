@@ -6,7 +6,7 @@ categories:
   - 2-linux系统
   - 软件
 abbrlink: b47a642f
-date: 2021-03-10 00:00:00
+date: 2020-03-10 00:00:00
 ---
 
 # 1. slack terminal client
