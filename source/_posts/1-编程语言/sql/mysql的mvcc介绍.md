@@ -6,7 +6,7 @@ categories:
   - 1-编程语言
   - sql
 abbrlink: a0f7945d
-date: 2021-07-06 00:00:01
+date: 2021-01-06 00:00:01
 ---
 
 # 1. MVCC概念
@@ -17,9 +17,11 @@ date: 2021-07-06 00:00:01
 
 **MVCC在 Read Committed 和 Repeatable Read两个隔离级别下工作。**
 
+<!-- more -->
+
 MySQL的InnoDB存储引擎默认事务隔离级别是RR(可重复读)，是通过 "行级锁+MVCC"一起实现的，正常读的时候不加锁，写的时候加锁。而 MVCC 的实现依赖：隐藏字段、Read View、Undo log。
 
-<!-- more -->
+
 
 ### 1.1 隐藏字段
 
@@ -190,4 +192,4 @@ Undo log中存储的是老版本数据，当一个事务需要读取记录行时
 
 + https://zhuanlan.zhihu.com/p/66791480
 + https://zhuanlan.zhihu.com/p/52977862
-+ https://blog.csdn.net/Waves___/article/details/105295060 (重点)
++ https://blog.csdn.net/Waves___/article/details/105295060

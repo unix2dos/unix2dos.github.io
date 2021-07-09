@@ -11,11 +11,11 @@ date: 2021-03-20 00:00:00
 
 工欲善其事必先利其器,  记录一些 vim 常用的插件。
 
-<!-- more -->
-
 # 1. 插件管理vim-plug
 
 项目地址: https://github.com/junegunn/vim-plug
+
+<!-- more -->
 
 ### 1.1 安装
 
