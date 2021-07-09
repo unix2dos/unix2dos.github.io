@@ -570,3 +570,134 @@ func main() {
 // showA
 // showB,  not b showB
 ```
+
+
+
+# 9. 引用和传值
+
+Go语言是没有引用传递的, Go里只有传值（值传递）。
+
+slice / map / chan 是golang的3个引用类型， 本质上 它本身/或者它的一个成员 是指针
+
++ map
+
+  把 map本身想象成指针, 看指针的值不一样
+
+```go
+func main() {
+	persons := map[string]int{
+		"张三": 19,
+	}
+	fmt.Println("map old:", persons)
+	fmt.Printf("原始map的内存地址是：%p\n", &persons)
+	modify(persons)
+	fmt.Println("map new:", persons)
+}
+
+func modify(p map[string]int) {
+	fmt.Printf("函数里接收到map的内存地址是：%p\n", &p)
+	p["张三"] = 20
+}
+
+
+/*
+map old: map[张三:19]
+
+原始map的内存地址是：0xc000100018
+函数里接收到map的内存地址是：0xc000100028
+
+map new: map[张三:20]
+
+*/
+```
+
++ Slice
+
+  通过下标可以直接修改, 但是 append 指针变了, 需要传出来才可以
+
+```go
+func main() {
+	ages := []int{1, 2, 3}
+	fmt.Println("ages old:", ages)
+	fmt.Printf("原始slice的头内存地址%p  指针:%p\n", ages, &ages)
+	modify(ages)
+	fmt.Println("ages new:", ages)
+}
+
+func modify(ages []int) {
+	fmt.Printf("函数里的头内存地址%p   指针:%p\n", ages, &ages)
+	ages[0] = 0
+	ages = append(ages, 4, 5, 6, 7)
+	fmt.Printf("函数里的 append 头内存地址%p  指针:%p\n", ages, &ages)
+}
+
+
+/*
+ages old: [1 2 3]
+
+原始slice的头内存地址		   0xc00011c000       			  指针:0xc00011a000
+函数里的头内存地址         0xc00011c000 			         指针:0xc00011a060 (内部的指针地址,意义不大)
+函数里的 append 头内存地址 0xc000120040  			  	   指针:0xc00011a060 (内部的指针地址,意义不大)
+
+ages new: [0 2 3]
+
+*/
+```
+
+
+
+# 10. slice
+
+### 10.1 分配内存
+
+https://github.com/golang/go/blob/296ddf2a936a30866303a64d49bc0e3e034730a8/src/runtime/slice.go#L186
+
+slice伸缩容的时候 一般是按照2倍扩容，当oldcap>=1024， 会在原cap上每次递增25%来扩容；
+
+ 扩容时，底层结构体ptr指向的数组放生变化
+
+```go
+/*
+1. 可以看出, cap 是2倍增长的
+2. ss 的指针变了
+3. &ss 的指针没有变, &ss操作返回的是该切片的 内部内部内部  指针地址,这个“指针地址" 本身地址肯定不变, 只是它指的值变了
+*/
+
+func main() {
+	ss := []int{}
+	for i := 1; i < 20; i++ {
+		fmt.Printf("addr:%p %p,len:%d,cap:%d\n", ss, &ss, len(ss), cap(ss))
+		ss = append(ss, i)
+	}
+}
+
+/*
+addr:0x11aac78    0xc0000a6020,len:0,cap:0
+
+addr:0xc0000b4020 0xc0000a6020,len:1,cap:1
+
+addr:0xc0000b4040 0xc0000a6020,len:2,cap:2
+
+addr:0xc0000b6020 0xc0000a6020,len:3,cap:4
+addr:0xc0000b6020 0xc0000a6020,len:4,cap:4
+
+addr:0xc0000b8040 0xc0000a6020,len:5,cap:8
+addr:0xc0000b8040 0xc0000a6020,len:6,cap:8
+addr:0xc0000b8040 0xc0000a6020,len:7,cap:8
+addr:0xc0000b8040 0xc0000a6020,len:8,cap:8
+
+addr:0xc0000ba000 0xc0000a6020,len:9,cap:16
+addr:0xc0000ba000 0xc0000a6020,len:10,cap:16
+addr:0xc0000ba000 0xc0000a6020,len:11,cap:16
+addr:0xc0000ba000 0xc0000a6020,len:12,cap:16
+addr:0xc0000ba000 0xc0000a6020,len:13,cap:16
+addr:0xc0000ba000 0xc0000a6020,len:14,cap:16
+addr:0xc0000ba000 0xc0000a6020,len:15,cap:16
+addr:0xc0000ba000 0xc0000a6020,len:16,cap:16
+
+addr:0xc0000bc000 0xc0000a6020,len:17,cap:32
+addr:0xc0000bc000 0xc0000a6020,len:18,cap:32
+
+*/
+```
+
