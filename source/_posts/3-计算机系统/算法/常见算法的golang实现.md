@@ -165,7 +165,31 @@ func detectCycle(head *ListNode) *ListNode {
   }
   ```
 
-  
+
+
+
+### 1.5 [链表中倒数第k个节点](https://leetcode-cn.com/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof/)(简单)
+
++ 先让快指针走k步，然后两个指针同步走，当快指针走到头时，慢指针就是链表倒数第k个节点。
+
+```go
+
+func getKthFromEnd(head *ListNode, k int) *ListNode {
+    fast := head
+    slow := head
+    for k >0 && fast != nil {
+        fast = fast.Next
+        k--
+    }
+    for fast != nil {
+        fast = fast.Next
+        slow = slow.Next
+    }
+    return slow
+}
+```
+
+
 
 
 
@@ -285,33 +309,29 @@ func main() {
 
 # 3. 树
 
-### 3.1 二叉树最大深度
+### 3.1 [二叉树的最大深度](https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/)(简单)
 
-+ https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/
+```go
+func maxDepth(root *TreeNode) int {
+    if root == nil{
+        return 0
+    }
+    left := maxDepth(root.Left)
+    right := maxDepth(root.Right)
+    return max(left,right)+1
+}
 
-  ```go
-  func maxDepth(root *TreeNode) int {
-      if root == nil{
-          return 0
-      }
-      left := maxDepth(root.Left)
-      right := maxDepth(root.Right)
-      return max(left,right)+1
-  }
-  
-  func max(a,b int) int {
-      if a > b {
-          return a
-      }
-      return b
-  }
-  ```
+func max(a,b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+```
 
-  
 
-### 3.2 平衡二叉树
 
-+ https://leetcode-cn.com/problems/balanced-binary-tree/
+### 3.2 [平衡二叉树](https://leetcode-cn.com/problems/balanced-binary-tree/)
 
 ```go
 func isBalanced(root *TreeNode) bool {
@@ -371,10 +391,48 @@ func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
 }
 ```
 
-### 3.4 二叉树最近祖先
+### 3.4 [重建二叉树](https://leetcode-cn.com/problems/zhong-jian-er-cha-shu-lcof/)(中等)
+
++ 画图, len(preorder[:pos])  是左子树的长度
 
 ```go
+func buildTree(preorder []int, inorder []int) *TreeNode {
+    if len(preorder) == 0{
+        return nil 
+    }
 
+    root := &TreeNode{preorder[0],nil,nil}
+    pos := 0
+    for ; pos < len(inorder); pos++{
+        if inorder[pos] == preorder[0]{
+            break
+        }
+    }
+
+    root.Left = buildTree(preorder[1:len(preorder[:pos])+1],inorder[:pos]) 
+    root.Right =  buildTree(preorder[len(preorder[:pos])+1:],inorder[pos+1:]) 
+    return root
+}
+```
+
+
+
+### 3.5 [合并二叉树](https://leetcode-cn.com/problems/merge-two-binary-trees/)
+
+```go
+func mergeTrees(root1 *TreeNode, root2 *TreeNode) *TreeNode {
+    if root1 == nil{
+        return root2
+    }
+    if root2 == nil{
+        return root1
+    }
+
+    root1.Val = root1.Val + root2.Val
+    root1.Left = mergeTrees(root1.Left, root2.Left)
+    root1.Right = mergeTrees(root1.Right, root2.Right)
+    return root1  
+}
 ```
 
 
@@ -407,20 +465,19 @@ func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
   ```
 
 
+
 # 5. 数组
 
-### 5.1 数组中重复的数字
+### 5.1[数组中重复的数字](https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof/)(简单)
 
-+ https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof/
-
-+ **头脑风暴: 临时数组++**
++ 头脑风暴: 临时数组++
 
   ```go
   func findRepeatNumber(nums []int) int {
   
       arr := make([]int, len(nums), len(nums))
       for i := 0; i < len(nums); i++{
-          arr[nums[i]]++   // 题目说明, <n, 不会越界
+          arr[nums[i]]++   						// 题目说明, <n, 不会越界
           if arr[nums[i]] > 1{
               return nums[i]
           }
@@ -434,64 +491,62 @@ func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
 
 # 8. 其他
 
-### 8.1 LRU
+### 8.1 [LRU 缓存机制](https://leetcode-cn.com/problems/lru-cache/)(中等)
 
-+ https://leetcode-cn.com/problems/lru-cache/solution/
+```go
+type LRUCache struct {
+    Capacity int
+    Map map[int]int
+    List []int
+}
 
-  ```go
-  type LRUCache struct {
-      Capacity int
-      Map map[int]int
-      List []int
-  }
-  
-  
-  func Constructor(capacity int) LRUCache {
-    return LRUCache{
-          Capacity : capacity,
-          Map : make(map[int]int, 0),
-          List : make([]int, 0),
-      }
-  }
-  
-  func DelKey(a []int, key int) []int{
-      for i := 0; i < len(a); i++ {
-  		if a[i] == key {
-              return append(a[:i], a[i+1:]...)
-  		}
-  	}
-  	return a[1:len(a)]
-  }
-  
-  func (this *LRUCache) Get(key int) int {
-      if val, ok := this.Map[key]; ok{
-          this.List = DelKey(this.List, key)
-          this.List = append(this.List, key)
-          return val
-      }
-      return -1
-  }
-  
-  
-  func (this *LRUCache) Put(key int, value int)  {
-  
-      if _, ok := this.Map[key]; ok{
-          this.Map[key] = value
-          this.List = DelKey(this.List, key)
-          this.List = append(this.List, key)
-          return 
-      }
-  
-      if len(this.Map) >= this.Capacity{
-          delKey := this.List[0]      
-          this.List = DelKey(this.List, key)
-          delete(this.Map, delKey)
-      }
-  
-      this.Map[key] = value
-      this.List = append(this.List, key)
-  }
-  ```
+
+func Constructor(capacity int) LRUCache {
+  return LRUCache{
+        Capacity : capacity,
+        Map : make(map[int]int, 0),
+        List : make([]int, 0),
+    }
+}
+
+func DelKey(a []int, key int) []int{
+    for i := 0; i < len(a); i++ {
+		if a[i] == key {
+            return append(a[:i], a[i+1:]...)
+		}
+	}
+	return a[1:len(a)]
+}
+
+func (this *LRUCache) Get(key int) int {
+    if val, ok := this.Map[key]; ok{
+        this.List = DelKey(this.List, key)
+        this.List = append(this.List, key)
+        return val
+    }
+    return -1
+}
+
+
+func (this *LRUCache) Put(key int, value int)  {
+
+    if _, ok := this.Map[key]; ok{
+        this.Map[key] = value
+        this.List = DelKey(this.List, key)
+        this.List = append(this.List, key)
+        return 
+    }
+
+    if len(this.Map) >= this.Capacity{
+        delKey := this.List[0]      
+        this.List = DelKey(this.List, key)
+        delete(this.Map, delKey)
+    }
+
+    this.Map[key] = value
+    this.List = append(this.List, key)
+}
+```
 
 
 
@@ -515,8 +570,6 @@ func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
 
 # 10. 其他TODO
 
-二分查找
-
 反转字符串 
 
 回文字符串
@@ -524,6 +577,8 @@ func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
 最长公用子串
 
 KMP
+
+脑力风暴加强
 
 
 

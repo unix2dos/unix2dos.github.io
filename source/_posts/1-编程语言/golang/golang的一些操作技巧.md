@@ -1,15 +1,17 @@
 ---
-title: golang的一些基础操作
+title: golang的一些操作技巧
 tags:
   - golang
 categories:
   - 1-编程语言
   - golang
 abbrlink: c79ad2a9
-date: 2020-06-29 00:00:01
+date: 2021-01-29 00:00:01
 ---
 
 好久没写golang相关的blog了, 记录一些常见的golang操作
+
+
 
 # 1. 不影响函数调用, 增加参数
 
