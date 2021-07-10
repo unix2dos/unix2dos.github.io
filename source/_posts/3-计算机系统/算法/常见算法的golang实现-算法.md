@@ -89,9 +89,7 @@ func search(nums []int, target int) int {
 2. 我们将其与末尾元素交换，使末尾元素为最大值，然后再调整堆顶元素使得剩下的 n−1 个元素仍为大根堆
 3. 再重复 2 的操作我们即能得到一个有序的序列。
 
-+ 为什么不小顶堆
-
-  因为建好的小顶堆也不是排序好的
+4. 为什么不小顶堆? 因为建好的小顶堆也不是排序好的
 
 ```go
 package main
@@ -143,9 +141,143 @@ func main() {
 
 
 
-# 3. 其他
 
-### 3.1 [LRU 缓存机制](https://leetcode-cn.com/problems/lru-cache/)(中等)
+
+# 3  topK
+
+### 3.1 堆
+
+把堆看作一个数组，也可以被看作一个完全二叉树，通俗来讲堆其实就是利用完全二叉树的结构来维护的一维数组，按照堆的特点可以把堆分为大顶堆和小顶堆。
+
++ 大顶堆：每个结点的值都大于或等于其左右孩子结点的值  (升序, 因为顶和末尾交换, 末尾就最大了啊)
+
++ 小顶堆：每个结点的值都小于或等于其左右孩子结点的值  (降序)
+
+因为不是完全二叉树, 就不好用数组表示了
+
+> 坐标: (2i + 1, 2i + 2)
+
+
+
+### 3.2 **堆和普通树的区别**
+
++ 内存占用：
+
+  普通树占用的内存空间比它们存储的数据要多。你必须为节点对象以及左/右子节点指针分配额外的内存。堆仅仅使用数组，且不使用指针
+
++ 搜索
+
+  在二叉树中搜索会很快，但是在堆中搜索会很慢。在堆中搜索不是第一优先级，因为使用堆的目的是将最大（或者最小）的节点放在最前面，从而快速的进行相关插入、删除操作
+
+
+
+### 3.3 小顶堆, 大顶堆
+
++ top100热词, 肯定用小顶堆, 就和堆顶比较就好, 大于就换顶
+
++ 构建大顶堆
+
+  ```go
+  func main() {
+  	arr := []int{4, 5, 3, 7, 2, 1, 2}
+  	fmt.Println(arr)
+  	buildHeap(arr)
+  	fmt.Println(arr)
+  }
+  
+  func buildHeap(arr []int) {
+  	for i := (len(arr) - 1) / 2; i >= 0; i-- {
+  		heapify(arr, i, len(arr))
+  	}
+  }
+  
+  func heapify(arr []int, index int, length int) {
+  	l := index*2 + 1
+  	r := index*2 + 2
+  
+  	temp := index
+  	if l < length && arr[l] > arr[temp] {
+  		temp = l
+  	}
+  	if r < length && arr[r] > arr[temp] {
+  		temp = r
+  	}
+  
+  	if temp != index {
+  		arr[temp], arr[index] = arr[index], arr[temp]
+  		heapify(arr, temp, length)
+  	}
+  }
+  
+  /*
+  [4 5 3 7 2 1 2]
+  [7 5 3 4 2 1 2]
+  */
+  ```
+
+  
+
+### 3.4 [最小的k个数](https://leetcode-cn.com/problems/zui-xiao-de-kge-shu-lcof/)(简单🔥) [最小K个数](https://leetcode-cn.com/problems/smallest-k-lcci/)(中等)
+
++ 为什么不使用小顶堆:
+
+  大顶堆维护了最小的几个, 顶最大, k后面的值可以方便和顶相比
+
+```go
+func getLeastNumbers(arr []int, k int) []int {
+  
+	buildHeap(arr, k)
+	
+  for i := k; i < len(arr); i++ {
+		if arr[i] < arr[0] {
+			arr[i], arr[0] = arr[0], arr[i]
+			heapify(arr, 0, k)
+		}
+	}
+	res := []int{}
+	for i := 0; i < k; i++ {
+		res = append(res, arr[i])
+	}
+	return res
+  
+}
+
+func buildHeap(arr []int, k int) {
+	for i := (len(arr) - 1) / 2; i >= 0; i-- {
+		heapify(arr, i, k)
+	}
+}
+
+func heapify(arr []int, index int, length int) {
+	l := index*2 + 1
+	r := index*2 + 2
+
+	temp := index
+	if l < length && arr[l] > arr[temp] {
+		temp = l
+	}
+	if r < length && arr[r] > arr[temp] {
+		temp = r
+	}
+
+	if temp != index {
+		arr[temp], arr[index] = arr[index], arr[temp]
+		heapify(arr, temp, length)
+	}
+}
+```
+
+
+
+### 3.5 [前 K 个高频元素](https://leetcode-cn.com/problems/top-k-frequent-elements/)(中等TODO)
+
+### 
+
+
+
+# 4. 其他
+
+### 4.1 [LRU 缓存机制](https://leetcode-cn.com/problems/lru-cache/)(中等)
 
 ```go
 type LRUCache struct {
@@ -204,13 +336,7 @@ func (this *LRUCache) Put(key int, value int)  {
 
 
 
-### 3.2 温度
-
-+ https://leetcode-cn.com/problems/daily-temperatures/
-
-
-
-### 3.3 [ 顺时针打印矩阵](https://leetcode-cn.com/problems/shun-shi-zhen-da-yin-ju-zhen-lcof/)
+### 4.2 [ 顺时针打印矩阵](https://leetcode-cn.com/problems/shun-shi-zhen-da-yin-ju-zhen-lcof/)
 
 ```go
 func spiralOrder(matrix [][]int) []int {
@@ -270,9 +396,17 @@ func spiralOrder(matrix [][]int) []int {
 
 
 
-# 4. 脑力风暴
+### 4.3 温度(TODO)
 
-### 4.1 递归
++ https://leetcode-cn.com/problems/daily-temperatures/
+
+
+
+
+
+# 9. 脑力风暴
+
+### 9.1 递归
 
 适合链表, 和树结构
 
@@ -284,20 +418,6 @@ func spiralOrder(matrix [][]int) []int {
 
 
 
-# 5. TODO
-
-反转字符串 
-
-回文字符串
-
-最长公用子串
-
-KMP
-
-脑力风暴加强
-
-
-
-# 6. 参考资料
+# 10. 参考资料
 
 + https://lyl0724.github.io/2020/01/25/1/
