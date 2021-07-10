@@ -210,17 +210,79 @@ func (this *LRUCache) Put(key int, value int)  {
 
 
 
+### 3.3 [ 顺时针打印矩阵](https://leetcode-cn.com/problems/shun-shi-zhen-da-yin-ju-zhen-lcof/)
+
+```go
+func spiralOrder(matrix [][]int) []int {
+    if len(matrix) == 0 || len(matrix[0]) == 0{
+        return []int{}
+    }
+
+    res := []int{}
+    l := 0
+    r := len(matrix[0]) - 1
+    t := 0
+    b :=  len(matrix) - 1
+
+    for {
+        // 左到右
+        for i := l ; i <= r; i++ {
+            res = append(res, matrix[t][i])
+        }
+        t++
+        if t > b {
+           break 
+        }
+
+        // 右到下
+        for i := t; i <= b; i++ {
+            res = append(res, matrix[i][r])
+        }
+
+        r--
+        if l > r {
+            break
+        }
+
+        // 下到左
+        for i := r; i >= l; i-- {
+            res = append(res, matrix[b][i])
+        }
+        b--
+        if t > b {
+           break 
+        }
+
+
+        // 左到上
+        for i := b; i >= t; i-- {
+            res = append(res, matrix[i][l])
+        }
+        l++
+        if l > r {
+            break
+        }
+    }
+
+    return res
+}
+```
+
+
+
 # 4. 脑力风暴
 
 ### 4.1 递归
 
-+ 第一步考虑出口
+适合链表, 和树结构
 
-+ 第二步, 为了目的, 我应该完成怎么样的返回值
+首先考虑出口, 没有出口死循环了
 
-+ 第三步, 例如考虑倒数第二层或简单理解的层, 只考虑当前层的逻辑
+本次递归做什么, 向上一层返回什么(把自己放在递归中间位置考虑)
 
-  
+先考虑最小递归层, 小的都整不对,别提大的了, 然后可以多用一些临时变量
+
+
 
 # 5. TODO
 
@@ -238,5 +300,4 @@ KMP
 
 # 6. 参考资料
 
-+ https://labuladong.gitbook.io/
 + https://lyl0724.github.io/2020/01/25/1/

@@ -12,30 +12,24 @@ date: 2019-01-07 00:00:00
 
 # 1. 链表
 
-### 1.1 翻转链表
-
-+ https://leetcode-cn.com/problems/reverse-linked-list/
-
-
-+ 递归版本
+### 1.1 [反转链表](https://leetcode-cn.com/problems/reverse-linked-list/)(简单)
 
 ```go
 func reverseList(head *ListNode) *ListNode {
-    if head == nil || head.Next == nil{
+    if head == nil || head.Next == nil {
         return head
     }
-    p := reverseList(head.Next)
-    head.Next.Next = head 
+
+    ok := reverseList(head.Next)
+    head.Next.Next = head
     head.Next = nil
-    return p
+    return ok
 }
 ```
 
 <!-- more -->
 
-+ 循环版本
-
-  头脑: 头尾四连咬
++ 循环版本: 头尾四连咬
 
 ```go
 func reverseList(head *ListNode) *ListNode {
@@ -122,12 +116,10 @@ func swapPairs(head *ListNode) *ListNode {
         return head
     }
 
-    //这一层3个节点, head, next, swapPairs()
-    //换成 next, head, swapPairs()
-
-    next := head.Next
-    head.Next = swapPairs(next.Next)
-    next.Next = head
+    next := head.Next  
+    ok := swapPairs(head.Next.Next)
+    head.Next.Next = head
+    head.Next = ok
 
     return next
 }
@@ -182,6 +174,41 @@ func getKthFromEnd(head *ListNode, k int) *ListNode {
 
 
 
+### 1.6 [删除链表的节点](https://leetcode-cn.com/problems/shan-chu-lian-biao-de-jie-dian-lcof/)(简单)
+
+```go
+func deleteNode(head *ListNode, val int) *ListNode {
+    if head == nil {
+        return nil
+    }
+    head.Next = deleteNode(head.Next, val)
+    if head.Val == val {
+        return head.Next
+    }else{
+        return head
+    }
+}
+```
+
+
+
+### 1.7 [从尾到头打印链表](https://leetcode-cn.com/problems/cong-wei-dao-tou-da-yin-lian-biao-lcof/)(简单)
+
+```go
+func reversePrint(head *ListNode) []int {
+    if head == nil {
+        return nil
+    }
+
+    res := append(reversePrint(head.Next), head.Val) 
+    return res
+}
+```
+
+
+
+
+
 # 2. 数组
 
 ### 2.1[数组中重复的数字](https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof/)(简单)
@@ -211,15 +238,16 @@ func getKthFromEnd(head *ListNode, k int) *ListNode {
 
 ```go
 func maxDepth(root *TreeNode) int {
-    if root == nil{
+    if root == nil {
         return 0
     }
+
     left := maxDepth(root.Left)
     right := maxDepth(root.Right)
-    return max(left,right)+1
+    return Max(left,right)+1
 }
 
-func max(a,b int) int {
+func Max(a, b int) int{
     if a > b {
         return a
     }
@@ -229,7 +257,7 @@ func max(a,b int) int {
 
 
 
-### 3.2 [平衡二叉树](https://leetcode-cn.com/problems/balanced-binary-tree/)
+### 3.2 [平衡二叉树](https://leetcode-cn.com/problems/balanced-binary-tree/)(中等)
 
 ```go
 func isBalanced(root *TreeNode) bool {
