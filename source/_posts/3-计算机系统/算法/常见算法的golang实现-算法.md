@@ -143,7 +143,7 @@ func main() {
 
 
 
-# 3  topK
+# 3  TopK
 
 ### 3.1 二叉堆
 
