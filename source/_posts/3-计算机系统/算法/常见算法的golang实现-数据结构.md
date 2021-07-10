@@ -297,9 +297,7 @@ func abs(a int) int {
 
 
 
-### 3.3 二叉搜索树最近祖先
-
-+ https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-search-tree/
+### 3.3 [二叉搜索树的最近公共祖先](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)(简单)
 
 ```go
 func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
@@ -365,7 +363,105 @@ func mergeTrees(root1 *TreeNode, root2 *TreeNode) *TreeNode {
 
 
 
+### 3.6 [树的子结构](https://leetcode-cn.com/problems/shu-de-zi-jie-gou-lcof/)(中等)TODO
+
+```go
+```
+
+
+
+### 3.7 [相同的树](https://leetcode-cn.com/problems/same-tree/)(简单)
+
+```go
+func isSameTree(p *TreeNode, q *TreeNode) bool {
+    if p == nil && q == nil {
+        return true
+    }
+    if p == nil || q == nil {
+        return false
+    }
+
+    return p.Val == q.Val && isSameTree(p.Left, q.Left) && isSameTree(p.Right, q.Right)
+}
+```
+
+
+
+### 3.8 [单值二叉树](https://leetcode-cn.com/problems/univalued-binary-tree/)(简单)
+
+```go
+func isUnivalTree(root *TreeNode) bool {
+    if root == nil {
+        return true
+    }
+    if root.Left != nil && root.Val != root.Left.Val {
+        return false
+    }
+    if root.Right != nil && root.Val != root.Right.Val {
+        return false
+    }
+    return isUnivalTree(root.Left) && isUnivalTree(root.Right)
+}
+```
+
+
+
+### 3.9 [另一个树的子树](https://leetcode-cn.com/problems/subtree-of-another-tree/)(简单)
+
+```go
+func isSubtree(root *TreeNode, subRoot *TreeNode) bool {
+    if root == nil || subRoot == nil {
+        return false
+    }
+
+    if isSameTree(root, subRoot) {
+        return true
+    }
+
+    return isSubtree(root.Left, subRoot) || isSubtree(root.Right, subRoot)
+}
+
+
+func isSameTree(p *TreeNode, q *TreeNode) bool {
+  if p == nil && q == nil {
+        return true
+    }
+    if p == nil || q == nil {
+        return false
+    }
+
+    return p.Val == q.Val && isSameTree(p.Left, q.Left) && isSameTree(p.Right, q.Right)
+}
+```
+
+
+
+### 3.10 [翻转二叉树](https://leetcode-cn.com/problems/invert-binary-tree/)(简单) brew作者失败的题
+
+```go
+func invertTree(root *TreeNode) *TreeNode {
+    if root == nil {
+        return nil
+    }
+
+    left := invertTree(root.Left)
+    right := invertTree(root.Right)
+    root.Left  = right
+    root.Right = left
+
+    return root
+}
+```
+
+
+
+### 3.11 [对称的二叉树](https://leetcode-cn.com/problems/dui-cheng-de-er-cha-shu-lcof/)(简单)TODO
+
+```go
+```
+
+
+
 # 4. 参考资料
 
-+ https://labuladong.gitbook.io/
-+ https://lyl0724.github.io/2020/01/25/1/
++ https://leetcode-cn.com/problems/shu-de-zi-jie-gou-lcof/solution/yi-pian-wen-zhang-dai-ni-chi-tou-dui-che-uhgs/
