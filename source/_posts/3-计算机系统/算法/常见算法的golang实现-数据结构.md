@@ -363,9 +363,32 @@ func mergeTrees(root1 *TreeNode, root2 *TreeNode) *TreeNode {
 
 
 
-### 3.6 [树的子结构](https://leetcode-cn.com/problems/shu-de-zi-jie-gou-lcof/)(中等)TODO
+### 3.6 [树的子结构](https://leetcode-cn.com/problems/shu-de-zi-jie-gou-lcof/)(中等)
 
 ```go
+func isSubStructure(A *TreeNode, B *TreeNode) bool {
+    if A == nil || B == nil {
+        return false
+    }
+
+    return isContain(A, B) || isSubStructure(A.Left, B) || isSubStructure(A.Right, B)
+    
+}
+
+
+// A,B根节点相同，B是不是A的子结构
+func isContain(A *TreeNode, B *TreeNode) bool {
+    if B == nil {
+        return true
+    }
+    if A == nil {
+        return false
+    }
+    if A.Val != B.Val {
+        return false
+    }
+    return isContain(A.Left, B.Left) && isContain(A.Right, B.Right)
+}
 ```
 
 
@@ -455,9 +478,27 @@ func invertTree(root *TreeNode) *TreeNode {
 
 
 
-### 3.11 [对称的二叉树](https://leetcode-cn.com/problems/dui-cheng-de-er-cha-shu-lcof/)(简单)TODO
+### 3.11 [对称的二叉树](https://leetcode-cn.com/problems/dui-cheng-de-er-cha-shu-lcof/)(简单)
 
 ```go
+func isSymmetric(root *TreeNode) bool {
+    if root == nil {
+        return true
+    }
+    return isMirror(root.Left, root.Right)
+}
+
+
+func isMirror(l, r *TreeNode) bool {
+    if l == nil && r == nil {
+        return true
+    }
+    if l == nil || r == nil{
+        return false
+    }
+
+   return l.Val == r.Val && isMirror(l.Right, r.Left) && isMirror(l.Left,r.Right)
+}
 ```
 
 
