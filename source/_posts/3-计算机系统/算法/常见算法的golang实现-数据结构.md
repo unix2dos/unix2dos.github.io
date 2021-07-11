@@ -205,12 +205,31 @@ func reversePrint(head *ListNode) []int {
 
 
 
-### + [两个链表的第一个公共节点](https://leetcode-cn.com/problems/liang-ge-lian-biao-de-di-yi-ge-gong-gong-jie-dian-lcof/)(简单)TODO
+### + [两个链表的第一个公共节点](https://leetcode-cn.com/problems/liang-ge-lian-biao-de-di-yi-ge-gong-gong-jie-dian-lcof/)(简单) [相交链表](https://leetcode-cn.com/problems/intersection-of-two-linked-lists/)TODO
+
+- 程序尽量满足 O(*n*) 时间复杂度，且仅用 O(*1*) 内存。
+- 两个指针( 两个链表长度分别为L1+C、L2+C， C为公共部分的长度，按照楼主的做法： 第一个人走了L1+C步后，回到第二个人起点走L2步；第2个人走了L2+C步后，回到第一个人起点走L1步。 当两个人走的步数都为L1+L2+C时就两个家伙就相爱了)
 
 ```go
+func getIntersectionNode(headA, headB *ListNode) *ListNode {
+    pos1 := headA
+    pos2 := headB
+    for pos1 != pos2 {
+        if pos1 != nil{
+            pos1 = pos1.Next
+        }else{
+            pos1 = headB
+        }
+
+        if pos2 != nil {
+            pos2 = pos2.Next
+        }else{
+            pos2 = headA
+        }
+    }
+    return pos2
+}   
 ```
-
-
 
 
 
