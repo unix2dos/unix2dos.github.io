@@ -12,7 +12,7 @@ date: 2019-01-07 00:00:00
 
 # 1. 链表
 
-### 1.1 [反转链表](https://leetcode-cn.com/problems/reverse-linked-list/)(简单)
+### + [反转链表](https://leetcode-cn.com/problems/reverse-linked-list/)(简单🔥)
 
 ```go
 func reverseList(head *ListNode) *ListNode {
@@ -48,9 +48,7 @@ func reverseList(head *ListNode) *ListNode {
 
 
 
-### 1.2 链表有环和入口
-
-##### 1.2.1 [环形链表](https://leetcode-cn.com/problems/linked-list-cycle/)
+### + [环形链表](https://leetcode-cn.com/problems/linked-list-cycle/)(简单)
 
 + hash
 
@@ -77,7 +75,7 @@ func hasCycle(head *ListNode) bool {
 }
 ```
 
-##### 1.2.2 [环形链表 II](https://leetcode-cn.com/problems/linked-list-cycle-ii/)(中等)
+### + [环形链表 II](https://leetcode-cn.com/problems/linked-list-cycle-ii/)(中等)
 
 ```go
 func detectCycle(head *ListNode) *ListNode {
@@ -108,7 +106,7 @@ func detectCycle(head *ListNode) *ListNode {
 
 
 
-### 1.3 [两两交换链表中的节点](https://leetcode-cn.com/problems/swap-nodes-in-pairs/)(中等)
+### + [两两交换链表中的节点](https://leetcode-cn.com/problems/swap-nodes-in-pairs/)(中等)
 
 ```go
 func swapPairs(head *ListNode) *ListNode {
@@ -128,22 +126,22 @@ func swapPairs(head *ListNode) *ListNode {
 
 
 
-### 1.4 [合并两个有序链表](https://leetcode-cn.com/problems/merge-two-sorted-lists/)(简单)
+### + [合并两个有序链表](https://leetcode-cn.com/problems/merge-two-sorted-lists/)(简单)[合并两个排序的链表](https://leetcode-cn.com/problems/he-bing-liang-ge-pai-xu-de-lian-biao-lcof/)（🔥）
 
 ```go
 func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
-    if l1 == nil{
+    if l1 == nil {
         return l2
     }
     if l2 == nil {
         return l1
     }
-    
-    if l1.Val < l2.Val {
+
+    if l1.Val < l2.Val{
         l1.Next = mergeTwoLists(l1.Next, l2)
         return l1
-    }else {
-        l2.Next = mergeTwoLists(l1, l2.Next)
+    }else{
+        l2.Next = mergeTwoLists(l2.Next,l1)
         return l2
     }
 }
@@ -151,7 +149,7 @@ func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
 
 
 
-### 1.5 [链表中倒数第k个节点](https://leetcode-cn.com/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof/)(简单)
+### + [链表中倒数第k个节点](https://leetcode-cn.com/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof/)(简单)
 
 + 先让快指针走k步，然后两个指针同步走，当快指针走到头时，慢指针就是链表倒数第k个节点。
 
@@ -174,7 +172,7 @@ func getKthFromEnd(head *ListNode, k int) *ListNode {
 
 
 
-### 1.6 [删除链表的节点](https://leetcode-cn.com/problems/shan-chu-lian-biao-de-jie-dian-lcof/)(简单)
+### + [删除链表的节点](https://leetcode-cn.com/problems/shan-chu-lian-biao-de-jie-dian-lcof/)(简单)
 
 ```go
 func deleteNode(head *ListNode, val int) *ListNode {
@@ -192,7 +190,7 @@ func deleteNode(head *ListNode, val int) *ListNode {
 
 
 
-### 1.7 [从尾到头打印链表](https://leetcode-cn.com/problems/cong-wei-dao-tou-da-yin-lian-biao-lcof/)(简单)
+### + [从尾到头打印链表](https://leetcode-cn.com/problems/cong-wei-dao-tou-da-yin-lian-biao-lcof/)(简单)
 
 ```go
 func reversePrint(head *ListNode) []int {
@@ -203,6 +201,13 @@ func reversePrint(head *ListNode) []int {
     res := append(reversePrint(head.Next), head.Val) 
     return res
 }
+```
+
+
+
+### + [两个链表的第一个公共节点](https://leetcode-cn.com/problems/liang-ge-lian-biao-de-di-yi-ge-gong-gong-jie-dian-lcof/)(简单)TODO
+
+```go
 ```
 
 
@@ -234,7 +239,7 @@ func reversePrint(head *ListNode) []int {
 
 # 3. 树
 
-### 3.1 [二叉树的最大深度](https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/)(简单)
+### + [二叉树的最大深度](https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/)(简单) [二叉树的深度](https://leetcode-cn.com/problems/er-cha-shu-de-shen-du-lcof/)
 
 ```go
 func maxDepth(root *TreeNode) int {
@@ -257,7 +262,7 @@ func Max(a, b int) int{
 
 
 
-### 3.2 [平衡二叉树](https://leetcode-cn.com/problems/balanced-binary-tree/)(中等)
+### + [平衡二叉树](https://leetcode-cn.com/problems/balanced-binary-tree/)(中等) [平衡二叉树](https://leetcode-cn.com/problems/ping-heng-er-cha-shu-lcof/)(🔥)
 
 ```go
 func isBalanced(root *TreeNode) bool {
@@ -297,27 +302,7 @@ func abs(a int) int {
 
 
 
-### 3.3 [二叉搜索树的最近公共祖先](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)(简单)
-
-```go
-func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
-	val := root.Val
-    pv := p.Val
-    qv := q.Val
-
-    if pv > val && qv > val {
-        return lowestCommonAncestor(root.Right, p, q)
-    }else if pv < val && qv < val {
-        return lowestCommonAncestor(root.Left, p, q)
-    }else{
-        return root
-    }
-}
-```
-
-
-
-### 3.4 [重建二叉树](https://leetcode-cn.com/problems/zhong-jian-er-cha-shu-lcof/)(中等)
+### + [重建二叉树](https://leetcode-cn.com/problems/zhong-jian-er-cha-shu-lcof/)(中等)
 
 + 画图, len(preorder[:pos])  是左子树的长度
 
@@ -343,7 +328,7 @@ func buildTree(preorder []int, inorder []int) *TreeNode {
 
 
 
-### 3.5 [合并二叉树](https://leetcode-cn.com/problems/merge-two-binary-trees/)(简单)
+### + [合并二叉树](https://leetcode-cn.com/problems/merge-two-binary-trees/)(简单)
 
 ```go
 func mergeTrees(root1 *TreeNode, root2 *TreeNode) *TreeNode {
@@ -361,39 +346,7 @@ func mergeTrees(root1 *TreeNode, root2 *TreeNode) *TreeNode {
 }
 ```
 
-
-
-### 3.6 [树的子结构](https://leetcode-cn.com/problems/shu-de-zi-jie-gou-lcof/)(中等)
-
-```go
-func isSubStructure(A *TreeNode, B *TreeNode) bool {
-    if A == nil || B == nil {
-        return false
-    }
-
-    return isContain(A, B) || isSubStructure(A.Left, B) || isSubStructure(A.Right, B)
-    
-}
-
-
-// A,B根节点相同，B是不是A的子结构
-func isContain(A *TreeNode, B *TreeNode) bool {
-    if B == nil {
-        return true
-    }
-    if A == nil {
-        return false
-    }
-    if A.Val != B.Val {
-        return false
-    }
-    return isContain(A.Left, B.Left) && isContain(A.Right, B.Right)
-}
-```
-
-
-
-### 3.7 [相同的树](https://leetcode-cn.com/problems/same-tree/)(简单)
+### + [相同的树](https://leetcode-cn.com/problems/same-tree/)(简单)
 
 ```go
 func isSameTree(p *TreeNode, q *TreeNode) bool {
@@ -410,26 +363,7 @@ func isSameTree(p *TreeNode, q *TreeNode) bool {
 
 
 
-### 3.8 [单值二叉树](https://leetcode-cn.com/problems/univalued-binary-tree/)(简单)
-
-```go
-func isUnivalTree(root *TreeNode) bool {
-    if root == nil {
-        return true
-    }
-    if root.Left != nil && root.Val != root.Left.Val {
-        return false
-    }
-    if root.Right != nil && root.Val != root.Right.Val {
-        return false
-    }
-    return isUnivalTree(root.Left) && isUnivalTree(root.Right)
-}
-```
-
-
-
-### 3.9 [另一个树的子树](https://leetcode-cn.com/problems/subtree-of-another-tree/)(简单)
+### + [另一个树的子树](https://leetcode-cn.com/problems/subtree-of-another-tree/)(简单)
 
 ```go
 func isSubtree(root *TreeNode, subRoot *TreeNode) bool {
@@ -459,26 +393,76 @@ func isSameTree(p *TreeNode, q *TreeNode) bool {
 
 
 
-### 3.10 [翻转二叉树](https://leetcode-cn.com/problems/invert-binary-tree/)(简单) brew作者失败的题
+### + [树的子结构](https://leetcode-cn.com/problems/shu-de-zi-jie-gou-lcof/)(中等)
 
 ```go
-func invertTree(root *TreeNode) *TreeNode {
+func isSubStructure(A *TreeNode, B *TreeNode) bool {
+    if A == nil || B == nil {
+        return false
+    }
+
+    return isContain(A, B) || isSubStructure(A.Left, B) || isSubStructure(A.Right, B)
+    
+}
+
+
+// A,B根节点相同，B是不是A的子结构
+func isContain(A *TreeNode, B *TreeNode) bool {
+    if B == nil {
+        return true
+    }
+    if A == nil {
+        return false
+    }
+    if A.Val != B.Val {
+        return false
+    }
+    return isContain(A.Left, B.Left) && isContain(A.Right, B.Right)
+}
+```
+
+
+
+### + [单值二叉树](https://leetcode-cn.com/problems/univalued-binary-tree/)(简单)
+
+```go
+func isUnivalTree(root *TreeNode) bool {
     if root == nil {
+        return true
+    }
+    if root.Left != nil && root.Val != root.Left.Val {
+        return false
+    }
+    if root.Right != nil && root.Val != root.Right.Val {
+        return false
+    }
+    return isUnivalTree(root.Left) && isUnivalTree(root.Right)
+}
+```
+
+
+
+### + [翻转二叉树](https://leetcode-cn.com/problems/invert-binary-tree/)(简单) [二叉树的镜像](https://leetcode-cn.com/problems/er-cha-shu-de-jing-xiang-lcof/)(🔥)
+
++ brew作者失败的题
+
+```go
+func mirrorTree(root *TreeNode) *TreeNode {
+    if root == nil{
         return nil
     }
 
-    left := invertTree(root.Left)
-    right := invertTree(root.Right)
-    root.Left  = right
+    left := mirrorTree(root.Left)
+    right := mirrorTree(root.Right)
+    root.Left = right
     root.Right = left
-
     return root
 }
 ```
 
 
 
-### 3.11 [对称的二叉树](https://leetcode-cn.com/problems/dui-cheng-de-er-cha-shu-lcof/)(简单)
+### + [对称的二叉树](https://leetcode-cn.com/problems/dui-cheng-de-er-cha-shu-lcof/)(简单)
 
 ```go
 func isSymmetric(root *TreeNode) bool {
@@ -502,6 +486,48 @@ func isMirror(l, r *TreeNode) bool {
 ```
 
 
+
+### + [二叉搜索树的最近公共祖先](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)(简单) [二叉树的最近公共祖先](https://leetcode-cn.com/problems/er-cha-shu-de-zui-jin-gong-gong-zu-xian-lcof/) TODO
+
+```go
+func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
+	val := root.Val
+    pv := p.Val
+    qv := q.Val
+
+    if pv > val && qv > val {
+        return lowestCommonAncestor(root.Right, p, q)
+    }else if pv < val && qv < val {
+        return lowestCommonAncestor(root.Left, p, q)
+    }else{
+        return root
+    }
+}
+```
+
+
+
+### + [二叉搜索树的第k大节点](https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-di-kda-jie-dian-lcof/)(简单)TODO
+
+```go
+```
+
+### + [二叉树中和为某一值的路径](https://leetcode-cn.com/problems/er-cha-shu-zhong-he-wei-mou-yi-zhi-de-lu-jing-lcof/)(中等) TODO
+
+```go
+
+```
+
+### + [二叉搜索树的后序遍历序列](https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-hou-xu-bian-li-xu-lie-lcof/)(中等) TODO
+```go
+
+```
+
+
+### + [二叉搜索树与双向链表](https://leetcode-cn.com/problems/er-cha-sou-suo-shu-yu-shuang-xiang-lian-biao-lcof/)(中等) TODO
+```go
+
+```
 
 # 4. 参考资料
 
