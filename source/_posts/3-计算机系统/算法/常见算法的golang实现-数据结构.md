@@ -205,7 +205,7 @@ func reversePrint(head *ListNode) []int {
 
 
 
-### + [两个链表的第一个公共节点](https://leetcode-cn.com/problems/liang-ge-lian-biao-de-di-yi-ge-gong-gong-jie-dian-lcof/)(简单) [相交链表](https://leetcode-cn.com/problems/intersection-of-two-linked-lists/)TODO
+### + [两个链表的第一个公共节点](https://leetcode-cn.com/problems/liang-ge-lian-biao-de-di-yi-ge-gong-gong-jie-dian-lcof/)(简单) [相交链表](https://leetcode-cn.com/problems/intersection-of-two-linked-lists/)
 
 - 程序尽量满足 O(*n*) 时间复杂度，且仅用 O(*1*) 内存。
 - 两个指针( 两个链表长度分别为L1+C、L2+C， C为公共部分的长度，按照楼主的做法： 第一个人走了L1+C步后，回到第二个人起点走L2步；第2个人走了L2+C步后，回到第一个人起点走L1步。 当两个人走的步数都为L1+L2+C时就两个家伙就相爱了)
@@ -506,7 +506,7 @@ func isMirror(l, r *TreeNode) bool {
 
 
 
-### + [二叉搜索树的最近公共祖先](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)(简单) [二叉树的最近公共祖先](https://leetcode-cn.com/problems/er-cha-shu-de-zui-jin-gong-gong-zu-xian-lcof/) TODO
+### + [二叉搜索树的最近公共祖先](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)(简单) 
 
 ```go
 func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
@@ -521,6 +521,35 @@ func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
     }else{
         return root
     }
+}
+```
+
+
+
+### + [二叉树的最近公共祖先](https://leetcode-cn.com/problems/er-cha-shu-de-zui-jin-gong-gong-zu-xian-lcof/) (中等)
+
+```go
+func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
+    if root == nil {
+        return nil
+    }
+    if p == root || q == root {
+        return root
+    }
+
+    l := lowestCommonAncestor(root.Left, p, q)
+    r := lowestCommonAncestor(root.Right,p, q)
+    if l != nil && r != nil {// 左右各一个
+        return root
+    }
+    if l != nil {// 两都在左边
+        return l
+    }
+    if r != nil{ // 两都在右边
+        return r
+    }
+
+    return nil
 }
 ```
 
