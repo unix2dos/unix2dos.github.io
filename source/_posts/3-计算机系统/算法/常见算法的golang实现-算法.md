@@ -3,6 +3,10 @@ title: 常见算法的golang实现-算法
 tags:
   - golang
   - 算法
+categories:
+  - 3-计算机系统
+  - 算法
+abbrlink: b24fd949
 date: 2019-01-07 00:00:01
 ---
 
