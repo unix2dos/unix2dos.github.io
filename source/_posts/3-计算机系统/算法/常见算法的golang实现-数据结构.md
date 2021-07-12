@@ -555,9 +555,28 @@ func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
 
 
 
-### + [二叉搜索树的第k大节点](https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-di-kda-jie-dian-lcof/)(简单)TODO
+### + [二叉搜索树的第k大节点](https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-di-kda-jie-dian-lcof/)(简单)
 
 ```go
+var arr[]int
+
+func kthLargest(root *TreeNode, k int) int {
+    if root == nil {
+        return 0
+    }
+    arr = []int{}
+    dfs(root)
+    return arr[k-1]
+}
+
+func dfs(root *TreeNode) {
+    if root == nil  {
+        return 
+    }
+    dfs(root.Right)
+    arr = append(arr, root.Val)
+    dfs(root.Left)
+}
 ```
 
 ### + [二叉树中和为某一值的路径](https://leetcode-cn.com/problems/er-cha-shu-zhong-he-wei-mou-yi-zhi-de-lu-jing-lcof/)(中等) TODO

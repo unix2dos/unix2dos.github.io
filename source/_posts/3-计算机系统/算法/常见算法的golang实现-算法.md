@@ -12,7 +12,7 @@ date: 2019-01-07 00:00:01
 
 # 1. 查找
 
-### 1.1 [二分查找](https://leetcode-cn.com/problems/binary-search/)(简单)
+### + [二分查找](https://leetcode-cn.com/problems/binary-search/)(简单) 
 
 ```go
 func search(nums []int, target int) int {    
@@ -34,6 +34,13 @@ func search(nums []int, target int) int {
 ```
 
 <!-- more -->
+
+### + [在排序数组中查找数字 I](https://leetcode-cn.com/problems/zai-pai-xu-shu-zu-zhong-cha-zhao-shu-zi-lcof/)
+
+```go
+```
+
+
 
 # 2. 排序
 
