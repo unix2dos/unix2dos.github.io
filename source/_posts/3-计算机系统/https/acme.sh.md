@@ -12,7 +12,7 @@ date: 2019-07-23 20:54:46
 
 
 
-### 1. 证书类型
+# 1. 证书类型
 
 + 目前主流的SSL证书主要分为DV SSL(域名型) 、 OV SSL(组织型) 、EV SSL(增强型)。
 
@@ -28,7 +28,7 @@ DV类型仅在浏览器显示一个小锁，OV和EV类型证书都包含了企�
 
 
 
-### 2. ACME协议
+# 2. ACME协议
 
 ACME全称The Automatic Certificate Management Environment，而[acme.sh](https://link.jianshu.com/?t=https%3A%2F%2Fgithub.com%2FNeilpang%2Facme.sh)这个库，则能够在Linux上实现如下功能：
 
@@ -39,9 +39,9 @@ ACME全称The Automatic Certificate Management Environment，而[acme.sh](https:
 
 
 
-### 3. 配置证书
+# 3. 配置证书
 
-##### 3.1 安装acme.sh
+### 3.1 安装acme.sh
 
 ```bash
 curl https://get.acme.sh | sh
@@ -55,7 +55,7 @@ curl https://get.acme.sh | sh
 
 
 
-##### 3.2 dns验证并安装部署
+### 3.2 dns验证并安装部署
 
 acme.sh 实现了 acme 协议支持的所有验证协议. 一般有两种方式验证: http 和 dns 验证. 接下来我们说下 dns的验证.
 
@@ -118,7 +118,7 @@ acme.sh 实现了 acme 协议支持的所有验证协议. 一般有两种方式�
 
 
 
-### 4. 参考资料
+# 4. 参考资料
 
 + [https://github.com/Neilpang/acme.sh/wiki/%E8%AF%B4%E6%98%8E](https://github.com/Neilpang/acme.sh/wiki/说明)
 
