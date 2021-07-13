@@ -2,6 +2,9 @@
 title: http2的介绍
 tags:
   - http
+categories:
+  - 3-计算机系统
+  - web
 date: 2019-04-08 00:00:00
 ---
 

@@ -8,7 +8,7 @@ tags:
 abbrlink: bf531b37
 categories:
   - 3-计算机系统
-  - BitTorrent
+  - bittorrent
 date: 2018-07-08 16:38:13
 ---
 

@@ -4,7 +4,7 @@ tags:
   - dht
 categories:
   - 3-计算机系统
-  - BitTorrent
+  - bittorrent
 abbrlink: 22f54442
 date: 2018-05-13 00:00:01
 ---

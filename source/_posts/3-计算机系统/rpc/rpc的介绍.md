@@ -4,7 +4,7 @@ tags:
   - rpc
 categories:
   - 3-计算机系统
-  - RPC
+  - rpc
 abbrlink: 317a11e
 date: 2020-01-01 00:00:11
 ---

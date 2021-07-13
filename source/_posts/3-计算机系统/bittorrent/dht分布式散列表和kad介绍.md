@@ -1,10 +1,11 @@
 ---
 title: dht分布式散列表和kad介绍
-tags: ["dht"]
+tags:
+  - dht
 abbrlink: 2c46e603
 categories:
   - 3-计算机系统
-  - BitTorrent
+  - bittorrent
 date: 2018-05-14 00:30:01
 ---
 

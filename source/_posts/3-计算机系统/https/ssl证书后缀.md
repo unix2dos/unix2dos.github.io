@@ -4,7 +4,7 @@ tags:
   - ssl
 categories:
   - 3-计算机系统
-  - Web
+  - https
 abbrlink: fe1a2c09
 date: 2021-01-19 00:00:01
 ---

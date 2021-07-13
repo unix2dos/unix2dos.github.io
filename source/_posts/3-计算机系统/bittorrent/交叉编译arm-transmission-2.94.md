@@ -8,7 +8,7 @@ tags:
 abbrlink: 73da9612
 categories:
   - 3-计算机系统
-  - BitTorrent
+  - bittorrent
 date: 2018-10-08 17:02:00
 ---
 

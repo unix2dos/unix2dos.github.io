@@ -1,11 +1,12 @@
 ---
-title: 'https协议'
+title: https协议
 tags:
   - http
   - linux
 categories:
   - 3-计算机系统
   - https
+abbrlink: be73ec63
 date: 2019-07-18 19:08:00
 ---
 
