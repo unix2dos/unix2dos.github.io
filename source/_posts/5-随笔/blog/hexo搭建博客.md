@@ -154,6 +154,9 @@ search:
 local_search:
 	enable: true
   
+
+5. npm install hexo-asset-image --save
+post_asset_folder: true
 ```
 
 
