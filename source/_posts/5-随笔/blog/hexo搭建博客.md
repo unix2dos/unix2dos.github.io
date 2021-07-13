@@ -187,6 +187,13 @@ https://github.com/netcan/hexo-generator-index-pin-top
 
 // var endPos = link.length-1; // 换成下面的这句话
 var endPos = link.length-5; //因为我的permalink: p/:abbrlink.html,  这里要改成-5
+
+
+// 正则也要替换
+/*
+/http[s]*.*|\/\/.*/.test(src)  
+/^(((http|https|ftp|rtsp|mms)+:\/{2})|\/).+/.test(src)
+*/
 ```
 
 ### 5.4 证书更新
