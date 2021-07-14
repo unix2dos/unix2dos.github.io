@@ -581,21 +581,66 @@ func dfs(root *TreeNode) {
 
 ### + [二叉树中和为某一值的路径](https://leetcode-cn.com/problems/er-cha-shu-zhong-he-wei-mou-yi-zhi-de-lu-jing-lcof/)(中等) TODO
 
-```go
-
-```
-
 ### + [二叉搜索树的后序遍历序列](https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-hou-xu-bian-li-xu-lie-lcof/)(中等) TODO
-```go
-
-```
-
 
 ### + [二叉搜索树与双向链表](https://leetcode-cn.com/problems/er-cha-sou-suo-shu-yu-shuang-xiang-lian-biao-lcof/)(中等) TODO
-```go
 
+# 4. 字符串
+
+### + [ 翻转单词顺序](https://leetcode-cn.com/problems/fan-zhuan-dan-ci-shun-xu-lcof/)(简单)
+
+```go
+func reverseWords(s string) string {
+
+    s = strings.TrimSpace(s)
+
+    j := len(s)-1
+    i := j
+    res := []string{}
+    for i >= 0 {
+        for i >= 0 &&  s[i] != ' '{
+            i--
+        }
+        res = append(res, s[i+1:j+1])
+        for i >= 0 &&  s[i] == ' '{
+            i--
+        }
+        j = i
+
+    }
+
+    return strings.Join(res," ")
+}
 ```
 
-# 4. 参考资料
+### + [罗马数字转整数](https://leetcode-cn.com/problems/roman-to-integer/)(简单)
+
+```go
+func romanToInt(s string) int {
+  res := map[string]int{
+        "I": 1,
+        "V": 5,
+        "X": 10,
+        "L": 50,
+        "C": 100,
+        "D": 500,
+        "M": 1000,
+    }
+    sum := 0
+    for i := 0; i < len(s); i++ {
+        val := res[string(s[i])]
+        if i < len(s)-1 && val < res[string(s[i+1])] {
+            sum -= val
+        } else {
+            sum += val
+        }
+    }
+    return sum
+}
+```
+
+
+
+# 5. 参考资料
 
 + https://leetcode-cn.com/problems/shu-de-zi-jie-gou-lcof/solution/yi-pian-wen-zhang-dai-ni-chi-tou-dui-che-uhgs/
