@@ -340,12 +340,7 @@ func heapify(arr []int, index int, length int) {
 
 ### 3.6 [前 K 个高频元素](https://leetcode-cn.com/problems/top-k-frequent-elements/)(中等TODO)
 
-```go
-```
 
-
-
-### 
 
 # 4. 其他
 
