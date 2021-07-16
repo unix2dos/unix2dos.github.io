@@ -1,12 +1,19 @@
+---
+title: "golang内存管理"
+date: 2021-01-20 00:02:00
+tags:
+- golang
+---
+
 # 1. 基础
 
 ### 1.1 进程的内存
 
 程序运行进程的总大小可以超过实际可用的物理内存的大小。每个进程都可以有自己独立的虚拟地址空间。然后通过CPU和MMU把虚拟内存地址转换为实际物理地址。
 
-![0](golang%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/0.png)
+![0](golang%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/1.png)
 
-
+<!-- more -->
 
 最高位的1GB是linux内核空间，用户代码不能写，否则触发段错误。下面的3GB是进程使用的内存。
 
@@ -61,61 +68,75 @@ $ go run -gcflags '-m -l' main.go
 
 
 
-# 2. 内存分配数据结构
+### 1.3 golang内存结构
+
+Go程序启动的时候，会将“虚拟内存”按照自己的方式，切成小块后管理。申请到的内存块被分配了三个区域，在X64上分别是512MB，16GB，512GB大小。
+
+![heap-before-go-1-10](golang%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/2.png)
+
+`spans区域`存放`mspan`的指针。
+
+`bitmap区域`标识`arena`区域哪些地址保存了对象，并且用`4bit`标志位表示对象是否包含指针、`GC`标记信息。
+
+`arena区域`就是我们所谓的堆区，Go动态分配的内存都是在这个区域，它把内存分割成`8KB`大小的页，一些页组合起来称为`mspan`。
+
+
+
+### 1.4 golang内存管理单元mspan
+
+Go默认采用8192B(8KB)大小的页，页的粒度保持为8KB。
+
+但是有的变量很小就是数字，有的却是一个复杂的结构体，所以基于TCMalloc模型的Go还将内存页分为67个不同大小级别，从8字节到32KB分了67 种( 8 byte, 16 byte....32KB）。
+
+例如下图, 将8 KB页 划分为1KB的大小等级。
+
+![img{512x368}](golang%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/3.png)
+
+
+
+`mspan`：Go中内存管理的基本单元，是一个双向链表对象，其中包含页面的起始地址，它具有的页面的span类以及它包含的页面数。
+
+```go
+// path: /usr/local/go/src/runtime/mheap.go
+
+type mspan struct {
+    //链表前向指针，用于将span链接起来
+    next *mspan 
+    //链表前向指针，用于将span链接起来
+    prev *mspan 
+    // 起始地址，也即所管理页的地址
+    startAddr uintptr 
+    // 管理的页数
+    npages uintptr 
+    // 块个数，表示有多少个块可供分配
+    nelems uintptr 
+
+    //分配位图，每一位代表一个块是否已分配
+    allocBits *gcBits 
+
+    // 已分配块的个数
+    allocCount uint16 
+    // class表中的class ID，和Size Classs相关
+    spanclass spanClass  
+
+    // class表中的对象大小，也即块大小
+    elemsize uintptr 
+}
+```
+
+
+
+# 2. 内存管理组件
 
 Golang运行时的内存分配算法主要源自 Google 为 C 语言开发的 **TCMalloc** 算法，全称Thread-Caching Malloc。
 
 核心思想就是把内存分为多级管理，从而降低锁的粒度。它将可用的堆内存采用二级分配的方式进行管理：每个线程都会自行维护一个独立的内存池，进行内存分配时优先从该内存池中分配，当内存池不足时才会向全局内存池申请，以避免不同线程对全局内存池的频繁竞争。
 
-![1](golang%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/1.png)
+![1](golang%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/4.png)
 
 
 
-### 2.1 mspan
-
-mspan它是golang内存管理中的基本单位，也是由页组成的。一个页的大小是:   ?
-
-mspan里面按照8*2n大小（8b，16b，32b .... ），每一个mspan又分为多个object。mspan中的m应该是memory的第一个字母。
-
-```go
-type mspan struct {
-    next *mspan     // next span in list, or nil if none
-    prev *mspan     // previous span in list, or nil if none
-    list *mSpanList // For debugging. TODO: Remove.
-
-    startAddr     uintptr   // address of first byte of span aka s.base()
-    npages        uintptr   // number of pages in span
-    stackfreelist gclinkptr // list of free stacks, avoids overloading freelist
-    // freeindex is the slot index between 0 and nelems at which to begin scanning
-    // for the next free object in this span.
-    freeindex uintptr
-    // TODO: Look up nelems from sizeclass and remove this field if it
-    // helps performance.
-    nelems uintptr // number of object in the span.
-    ...
-    // 用位图来管理可用的 free object，1 表示可用
-    allocCache uint64
-    
-    ...
-    sizeclass   uint8      // size class
-    ...
-    elemsize    uintptr    // computed from sizeclass or from npages
-    ...
-}
-```
-
-解释:
-
-```bash
-next, prev: 指针域，因为 mspan 一般都是以链表形式使用。
-npages: mspan 的大小为 page 大小的整数倍。
-sizeclass: 0 ~ _NumSizeClasses 之间的一个值。比如，sizeclass = 3，那么这个 mspan 被分割成 32 byte 的块。
-elemsize: elemsize = page_size * npages。
-```
-
-
-
-### 2.2 mcache
+### 2.1 mcache
 
 mcache可以为golang中每个Processor提供内存cache使用，每一个mcache的组成单位也是mspan。
 
@@ -151,16 +172,21 @@ type mcache struct {
 解释:
 ```bash
 alloc [_NumSizeClasses]*mspan
-_NumSizeClasses = 67, 每个数组元素用来包含特定大小的块。67 种块大小为 0，8 byte, 16 byte....
+_NumSizeClasses = 67, 每个数组元素用来包含特定大小的块。67 种块大小为 0，8 byte, 16 byte....32KB
 
 var class_to_size = [_NumSizeClasses]uint16{0, 8, 16, 32, 48, 64, 80, 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 256, 288, 320, 352, 384, 416, 448, 480, 512, 576, 640, 704, 768, 896, 1024, 1152, 1280, 1408, 1536, 1792, 2048, 2304, 2688, 3072, 3200, 3456, 4096, 4864, 5376, 6144, 6528, 6784, 6912, 8192, 9472, 9728, 10240, 10880, 12288, 13568, 14336, 16384, 18432, 19072, 20480, 21760, 24576, 27264, 28672, 32768}
 ```
 
 
 
-### 2.3 mcentral
+例如: 申请32字节内存,  32b的这种`mspan`能满足需求，那么分配内存的时候就会给它分配一个32字节大小的`mspan`。
 
-当mcache中空间不够用，可以向mcentral申请内存。可以理解为mcentral为mcache的一个“缓存库”，供mcaceh使用。它的内存组成单位也是mspan。
+![11](golang%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/5.png)
+
+### 2.2 mcentral
+
+当工作线程的`mcache`中没有合适（也就是特定大小的）的`mspan`时就会从`mcentral` 去获取。`mcentral`被所有的工作线程共同享有，存在多个`goroutine`竞争的情况，因此从`mcentral`获取资源时需要加锁。
+
 mcentral里有两个双向链表，一个链表表示还有空闲的mspan待分配，一个表示链表里的mspan都被分配了。
 
 ```go
@@ -187,11 +213,18 @@ nonempty: mspan 的双向链表，当前 mcentral 中可用的 mspan list。
 empty: 已经被使用的，可以认为是一种对所有 mspan 的 track。
 ```
 
-mcentral 存在于什么地方？ mcentral 和 mheap 作为全局的结构，这两部分是可以定义在一起的。实际上也是这样，mcentral 包含在 mheap 中。
+`mcentral`里维护着两个双向链表，**nonempty**表示链表里还有空闲的`mspan`待分配。**empty**表示这条链表里的`mspan`都被分配了`object`。
+
+![12](golang%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/6.png)
+
+`mcache`从`mcentral`获取和归还`mspan`的流程：
+
+- 获取 加锁；从`nonempty`链表找到一个可用的`mspan`；并将其从`nonempty`链表删除；将取出的`mspan`加入到`empty`链表；将`mspan`返回给工作线程；解锁。
+- 归还 加锁；将`mspan`从`empty`链表删除；将`mspan`加入到`nonempty`链表；解锁。
 
 
 
-### 2.4 mheap
+### 2.3 mheap
 
 mheap负责大内存的分配。当mcentral内存不够时，可以向mheap申请。那mheap没有内存资源呢？跟tcmalloc一样，向OS操作系统申请。
 还有，大于32KB的内存，也是直接向mheap申请。
@@ -253,39 +286,28 @@ type mheap struct {
 var mheap_ mheap  // mheap_ 是一个全局变量，会在系统初始化的时候初始化
 ```
 
-解释
-
-```bash
-allspans []*mspan: 所有的 spans 都是通过 mheap_ 申请，所有申请过的 mspan 都会记录在 allspans。结构体中的 lock 就是用来保证并发安全的。
-
-sweepgen, sweepdone: GC 相关。（Golang 的 GC 策略是 Mark & Sweep, 这里是用来表示 sweep 的)
-```
+`mheap`里的`arena` 区域是真正的堆区，运行时会将 `8KB` 看做一页，这些内存页中存储了所有在堆上初始化的对象。
 
 
 
 # 3. 内存分配
 
-1. object size > 32K，则使用 mheap 直接分配。
-2. object size < 16 byte，使用 mcache 的小对象分配器 tiny 直接分配。 
-3. object size > 16 byte && size <=32K byte 时，先使用 mcache 中对应的 size class 分配。
-4. 如果 mcache 对应的 size class 的 span 已经没有可用的块，则向 mcentral 请求。
-5. 如果 mcentral 也没有可用的块，则向 mheap 申请，并切分。
-6. 如果 mheap 也没有合适的 span，则想操作系统申请。
+### 3.1 分配策略
+
+- Go在程序启动时，会向操作系统申请一大块内存，由`mheap`结构全局管理。
+- Go内存管理的基本单元是`mspan`，每种`mspan`可以分配特定大小的`object`。
+- `mcache`, `mcentral`, `mheap`是`Go`内存管理的三大组件，`mcache`管理线程在本地缓存的`mspan`；`mcentral`管理全局的`mspan`供所有线程使用；`mheap`管理`Go`的所有动态分配内存。
+- object size < 16 byte，使用 mcache 的小对象分配器 tiny 直接分配。 object size > 16 byte && size <=32K byte 时，先使用 mcache 中对应的 size class 分配。object size > 32K，则使用 mheap 直接分配。
+- 如果 mcache 对应的 size class 的 span 已经没有可用的块，则向 mcentral 请求。如果 mcentral 也没有可用的块，则向 mheap 申请。如果 mheap 也没有合适的 span，则想操作系统申请。
 
 
 
 # 4. 参考资料
 
 + https://www.cnblogs.com/jiujuan/p/13922551.html
-
 + http://legendtkl.com/2017/04/02/golang-alloc/
-
-
-
-
-https://juejin.cn/post/6844903795739082760
-
-
++ https://zhuanlan.zhihu.com/p/352133292
++ https://draveness.me/golang/docs/part3-runtime/ch07-memory/golang-memory-allocator/
 
 
 
